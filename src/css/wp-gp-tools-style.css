@@ -1,0 +1,428 @@
+/* ToDo: Remove !important and load stylesheet in the footer */
+/*General*/
+.navigation-main,
+.site-branding{
+	max-width: 1050px !important;
+}
+
+@media screen and (max-width: 1000px){
+.navigation-main {
+   margin: 18px 5px 5px !important;
+}}
+
+
+/* Settings */
+
+.wpgpt-settings-window  {
+   min-height: 100vh;
+   margin:50px 0 100px 0;
+}
+
+.wpgpt-settings-window label,
+.wpgpt-settings-window input{
+    cursor:pointer;
+}
+
+.wpgpt-setting-description,
+.wpgpt-setting-type-2,
+.wpgpt-setting-type-3 {
+    display:inline-block
+}
+
+.wpgpt-setting-description{
+    width:35%;
+}
+
+.wpgpt-sub-setting .wpgpt-setting-description{
+    width: 34.5%;
+}
+
+.wpgpt-sub-sub-setting .wpgpt-setting-description{
+    width:34.4%;
+}
+
+.wpgpt-main-setting .wpgpt-setting-description{
+    font-size:1.3em;
+    color:#036b9c;
+    font-weight:600;
+}
+
+.wpgpt-setting-type-2{
+    width:100px;
+}
+
+.wpgpt-setting-type-3 {
+   width:20%;
+}
+
+.wpgpt-setting-type-3:nth-of-type(3n+2){
+   width:25%;
+}
+
+.wpgpt-main-setting{
+    margin-top:20px;
+	padding:0px 0 10px 0;
+}
+
+.wpgpt-main-setting + .wpgpt-sub-setting {
+    border-top:2px solid #0073aa;
+}
+
+.wpgpt-sub-setting {
+    padding:10px 10px 10px;
+    background:#f7f7f7;
+    border-bottom:1px solid #dadada;
+    border-left:5px solid #0073aa;
+}
+.wpgpt-sub-sub-setting{
+padding:10px 10px 10px;
+    background:#f7f7f7;
+    border-bottom:1px solid #dadada;
+    border-left:3px solid #aa003a;
+}
+
+.note{
+	color: #8e8989;
+}
+
+#warning_words,
+#notice_words {
+	width:62%;
+	cursor: text;
+	border: 1px  solid #d8d8d8;
+    color:#4a4a4a;
+}
+
+#save_settings {
+    float:left;
+    height:30px;
+	width: 200px;
+    font-size:1.1em;
+    margin-top:25px;
+    background-color:#0073aa;
+    color:#fff;
+}
+
+.gp-shortcuts{
+    font-size:1.3em;
+	clear: both;
+    padding-top: 30px;
+}
+
+.gp-shortcut {
+    display: inline-block;
+}
+
+.gp-row .gp-shortcut {
+    width:30%;
+    padding:5px;
+}
+
+.gp-row {
+    border-bottom:1px solid #e8e8e8;
+}
+
+.gp-row.sep{
+    border-bottom: 1px solid #bdbdbd;
+}
+
+.gp-header {
+    font-weight:600;
+}
+
+.gp-shortcuts h3{
+    font-size:1em;
+    color:#036b9c
+}
+
+span.big {
+    font-size:1.3em;
+}
+
+span.s{
+    color:orange;
+    font-weight:700;
+}
+
+span.c{
+    color:blue;
+    font-weight:700;
+}
+
+span.a{
+    color:green;
+    font-weight:700;
+}
+span.r{
+    color:red;
+    font-weight:700;
+}
+span.f{
+    color:#6f089a;
+    font-weight:700;
+}
+
+span.small {
+    font-size:0.7em;
+}
+
+span.right-note {
+   float:right;
+   font-size:0.7em;
+   color:grey;
+
+}
+
+span.right-note.down{
+    margin-top: 12px;
+}
+
+.wpgpt-update-notice{
+	width: 600px;
+    margin: 25px auto;
+    display: block;
+    color: #000000;
+    font-size: 1.1em;
+    border: 3px solid #046492;
+    padding: 25px;
+}
+
+/* Snippets */
+
+.wpgpt-snippets-window .projects .project-status > div {
+    width: 33% !important;
+}
+
+.wpgpt-snippets-window .projects .project {
+	width:30% !important;
+}
+
+.wpgpt-snippets-window .projects .project:nth-child(odd) {
+    clear: none !important;
+}
+
+.wpgpt-snippets-window .projects .project-name {
+    margin-left: 135px !important;
+}
+
+.wpgpt-snippet-date {
+	color: #8a9093;
+	float: right;
+	margin-right: 10px;
+	margin-top: -30px;
+	top: 20px;
+	position: relative;
+	font-size: 15px;
+	margin-bottom: -5px;
+	font-size: 1em;
+}
+
+.single-project .wpgpt-diff.adif {
+    color:yellow;
+}
+
+.wpgpt-remove-all {
+	float: right;
+	position: relative;
+	bottom: -5px;
+}
+
+.single-project .project-status-remaining:before,
+.single-project .project-status-waiting:before {
+   content:"•";
+   padding-right:7px;
+   color:#989898
+ }
+
+.single-project .project-status-progress,
+.single-project .project-status-remaining,
+.single-project .project-status-waiting {
+    padding: 0 2px;
+    color:#e2e2e2;
+ }
+
+.single-project .project-status-progress span,
+.single-project .project-status-remaining span,
+.single-project .project-status-waiting span{
+    color:#fff;
+}
+
+.wpgpt-diff {
+	color: #8a9093;
+}
+ 
+.wpgpt-diff.adif {
+	color: red;
+}
+
+ .single-project .wpgpt-snippet-date {
+    color: #d2d2d2;
+	float: none;
+    margin-top: 0px;
+    top: 0px;
+    margin-right: 0px;
+	font-size: 0.9em;
+}
+
+.single-project a.contribute-button {
+	padding: 0 7px;
+    height: 25px;
+    margin: 0 3px;
+    font-size: 0.9em;
+    float:right;
+    line-height: 2;
+}
+
+/* Checks */
+
+ul.wpgpt-warnings-list li {
+	color: red;
+}
+
+.wpgpt-ignore-warnings {
+	display: none;
+	float: right;
+    margin: 0 10px;
+    color: red;
+}
+
+.wpgpt-ignore-warnings label,
+.wpgpt-ignore-warnings input
+{
+    cursor:pointer;
+}
+
+.wpgpt-filters{
+	display: inline-block;
+    float: right;
+}
+
+/* Search */
+
+.wpgpt-search {
+	padding: 0 15px 0 15px;
+}
+
+.wpgpt-search-action,
+.wpgpt-search input,
+.wpgpt-search button,
+.wpgpt-search label {
+	vertical-align: middle
+}
+
+.wpgpt-search label {
+	cursor: pointer;
+}
+
+.wpgpt-search input[type=submit],
+.wpgpt-search button {
+	height: 25px;
+}
+
+.wpgpt-search input[type=checkbox] {
+	margin-left: 5px;
+}
+
+.wpgpt-search-plugin-slug {
+	display: none;
+}
+
+.wpgpt-search-plugin-slug {
+	height: 1.5em;
+	border: #efefef 1px solid;
+}
+
+.wpgpt-search-action,
+.wpgpt-search-close-tabs {
+	font-size: 1.1em;
+}
+
+.wpgpt-search-close-tabs {
+    float: right;
+    margin-right: 17px !important;
+    margin-top: 6px !important;
+}
+
+.wpgpt-search-notice {
+	padding-bottom: 15px;
+}
+
+.wpgpt-search-dismiss-notice {
+	cursor: pointer;
+}
+
+.wpgpt-search-word {
+	margin-right: 5px;
+}
+
+.wpgpt-search .error-notice {
+	display: block;
+	height: 20px;
+	color: #6d6d6d;
+}
+
+.wpgpt-results-notice span {
+	color: #d04300;
+	font-weight: 500;
+}
+
+.noselect {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.wpgpt-google-translate {
+	margin-left: 10px !important;
+	margin-top: 2px !important;
+	height: 26px !important;
+}
+
+.editor-panel__right .panel-header button {
+    background: none;
+    border: none;
+    height: 40px;
+    width: 40px;
+    padding: 0;
+    margin: 0;
+    vertical-align: middle;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+.wpgpt-actions_plus {
+ margin: 0 10px;
+ color:#0073aa;
+}
+
+.wpgpt-actions_plus.dashicons-plus{
+	cursor:pointer;
+}
+
+.wpgpt-actions_copy.active {
+ color:#0073aa;
+}
+.wpgpt-actions_copy.active:hover, 
+.wpgpt-actions_copy.active:focus {
+ color:#046594;
+}
+
+.wpgpt-actions_plus .separator:before {content:"|";  color:#c3c0c0;}
+.wpgpt-actions_plus .separator {margin:0px 7px 0px 7px;}
+
+.translation-suggestion__translation .index {
+    color: #a0a5aa;
+}
+
+/* Glossary  */
+
+table.my-glossary.glossary tr td {
+	padding: 5px !important;
+}
+
+.my-glossary.glossary{
+	padding: 10px 15px 15px 15px;
+}

@@ -1,0 +1,33 @@
+{
+	"manifest_version":2,
+	"name":"WPGP Tools",
+	"version":"1.0",
+	"description":"Tools for GP usage on WP",
+	"permissions":[
+		"activeTab",
+		"tabs",
+		"storage"
+	],
+	"web_accessible_resources": [
+		"js/wp-gp-tools-checks.js",
+		"js/wp-gp-tools-settings.js",
+		"js/wp-gp-tools-functions.js",
+		"js/wp-gp-tools-shortcuts.js",
+		"img/warning.png",
+		"img/notice.png"
+	],
+	"content_scripts":[
+	{
+		"matches":[
+			"https://translate.wordpress.org/*"
+		],
+		"js":[
+			"js/init.js",
+			"js/jquery-3.6.0.min.js",
+			"js/wp-gp-tools-consistency.js"
+			],
+		"css":[
+			"css/wp-gp-tools-style.css"
+		]
+	}]
+}
