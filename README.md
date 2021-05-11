@@ -85,7 +85,7 @@ Currently, it only has Romanian checks, but additional locale specific checks ca
 
 1. Get the lates release from [here](https://github.com/vlad-timotei/wpgp-tools/releases) and extract to a folder.
 2. Open Chrome extensions `chrome://extensions/` or `edge://extensions/` and enable Developer mode.
-3. Then use Load Unpacked button and point to the `wpgp-tools\src\chrome` folder
+3. Then use Load Unpacked button and point to the `wpgp-tools\src\` folder
 4. That's it! Go to a translate project to see it in action.
 
 ### Known issues
