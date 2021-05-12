@@ -327,7 +327,7 @@ function check_version() {
 }
 	
 function display_check_version(){
-	if( settings['last_version']['state'] != WPGPT_VERSION )
+	if( settings['last_version']['state'] > WPGPT_VERSION )
 		var notice_msg = 	'<span class="wpgpt-update-notice"><b>WPGlotPress Tools</b>: Please update to version <b>' + settings['last_version']['state'] + '</b> from  ' +
 							WPGPT_VERSION + '<a href="https://github.com/vlad-timotei/wpgp-tools/releases/tag/' + settings['last_version']['state']  + '"><br> Click here</a>' +
 							', unzip the files, replace them and click <i>Reload</i> in chrome://extensions/';
