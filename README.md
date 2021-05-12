@@ -1,7 +1,8 @@
 # WP GlotPress Tools
 This is a Chrome/Edge extension to help you translate faster. 
 
-## #1 Consistency Tools 
+## #1 Consistency Tools - [view Demo](https://youtu.be/Ve9DSOfFBeA) 
+
 <img align="right" src="https://user-images.githubusercontent.com/65488419/117619811-61cdc800-b178-11eb-8754-88d03ca00c09.png">
 
 **Search** a string in:
@@ -34,7 +35,7 @@ This is a Chrome/Edge extension to help you translate faster.
 - To copy 2nd suggestion, click on it or press Alt + 2
 - Keyboard shortcut works for suggestion 1, 2 and 3
 
-## #2 General Checks
+## #2 General Checks - [view Demo](https://youtu.be/pG92jygfWpY) 
 ![image](https://user-images.githubusercontent.com/65488419/117623706-c9861200-b17c-11eb-99d6-614d9ab41f91.png)
 
 <img align="right" src="https://user-images.githubusercontent.com/65488419/117624878-14ecf000-b17e-11eb-8b34-c9410e226469.png" >
@@ -89,7 +90,11 @@ Currently, it only has Romanian checks, but additional locale specific checks ca
 4. That's it! Go to a translate project to see it in action.
 
 ### Known issues
-- none, so far
+- only works for Chrome/Edge
+- it's an unpacked extension
+- doesn't display Close all btn when Quick Links are fired (future release will fix it)
+- the repo doesn't use workflows to build the release additional zip - I couldn't make it work - if anyone has some hints, let me know.
+
 
 ### Contributing
 Contributions are welcome, bugreports, suggestions and even pull requests! No limitations, shoot for the stars!
