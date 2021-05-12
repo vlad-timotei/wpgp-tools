@@ -189,7 +189,9 @@ function get_consistency_suggestions(string_id, get_consistency_btn){
 	$(get_consistency_btn).remove();   
 
 	if( user_settings['autocomplete_suggestion'] && translations.length == 1 )
-		$(".editor:visible .suggestions__translation-consistency .copy-suggestion:eq(0)").click();    
+		$(".editor:visible .suggestions__translation-consistency .copy-suggestion:eq(0)").click(); 
+		
+	ifr.remove();
     });
 
 }
