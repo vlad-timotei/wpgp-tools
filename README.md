@@ -110,4 +110,5 @@ Contributions are welcome, bugreports, suggestions and even pull requests! No li
 ##### v.1.1
 - Consistency data fetching performance 
 
- 
+##### v.1.2
+- Don't promt to "update" to an older version
