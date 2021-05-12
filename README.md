@@ -79,6 +79,7 @@ Currently, it only has Romanian checks, but additional locale specific checks ca
 - Alert for unsaved string
 - Personal user notes & project status snippets
 - Personal glossary
+- a Firefox version or a TamperMonkey script
  
 ### Installation
 
