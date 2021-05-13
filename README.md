@@ -104,11 +104,11 @@ Only choose one of these two:
 
 
 ### Known issues
-- it's an unpacked extension
-- doesn't display Close all btn when Quick Links are fired (future release will fix it)
-- the repo doesn't use workflows to build the release additional zip - I couldn't make it work - if anyone has some hints, let me know.
-- tooltips overlap for the Quick Links section (should be fixed upstream)
-- not all buttons work on mobile since they have a .click listener not a .touch one
+- It's an unpacked extension
+- Doesn't display Close all btn when Quick Links are fired (future release will fix it)
+- The repo doesn't use workflows to build the release additional zip - I couldn't make it work - if anyone has some hints, let me know.
+- Tooltips overlap for the Quick Links section (should be fixed upstream)
+- Doesn't work on mobile (needs .touch() event listeners)
 
 ### Contributing
 Contributions are welcome, bugreports, suggestions and even pull requests! No limitations, shoot for the stars!
