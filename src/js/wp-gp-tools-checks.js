@@ -26,7 +26,6 @@ function checks_init(){
 		run_current_translations_checks(); 
 		// To do: swap for performance reasons, but initialize "Save with warnings" check first!
 		strings_filters();
-		console.log("This page runs string checks...");
 	}
 }
 
