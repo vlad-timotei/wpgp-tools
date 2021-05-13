@@ -110,7 +110,7 @@ Only choose one of these two:
 
 ### Known issues
 - It's an unpacked extension
-- Doesn't display Close all btn when Quick Links are fired (future release will fix it)
+- Doesn't display Close all btn when Quick Links are fired & throws error if attempts to close a manually closed tab (future release will fix it)
 - The repo doesn't use workflows to build the release additional zip - I couldn't make it work - if anyone has some hints, let me know.
 - Tooltips overlap for the Quick Links section (should be fixed upstream)
 - Doesn't work on mobile (needs .touch() event listeners)
