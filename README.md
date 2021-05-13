@@ -78,7 +78,7 @@ Currently, it only has Romanian checks, but additional locale specific checks ca
 ### Future version features
 - Alert for unsaved string
 - Personal user notes & project status snippets
-- Personal glossary
+- ~~Personal glossary~~ (this is included in [WPTranslationFiller extension](https://github.com/vibgyj/WPTranslationFiller/) and I don't plan to overlap features)
 - a Firefox version or a TamperMonkey script
  
 ### Installation
@@ -101,11 +101,11 @@ Only choose one of these two:
 
 
 ### Known issues
-- only works for Chrome/Edge
 - it's an unpacked extension
 - doesn't display Close all btn when Quick Links are fired (future release will fix it)
 - the repo doesn't use workflows to build the release additional zip - I couldn't make it work - if anyone has some hints, let me know.
-- tooltip overlap for the Quick Links section (should be fixed upstream)
+- tooltips overlap for the Quick Links section (should be fixed upstream)
+- not all buttons work on mobile since they have a .click listener not a .touch one
 
 ### Contributing
 Contributions are welcome, bugreports, suggestions and even pull requests! No limitations, shoot for the stars!
