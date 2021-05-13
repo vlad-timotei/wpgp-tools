@@ -94,10 +94,10 @@ Only choose one of these two:
 3. Then use Load Unpacked button and point to the `wpgp-tools\src\` folder
 4. That's it! Go to a translate project to see it in action.
 
-##### Firefox and other browsers via Tampermonkey or Greasemonkey
+##### Firefox and other browsers via Tampermonkey
 
-1. Install the [Tampermonkey](http://tampermonkey.net/) or [Greasemonkey](http://www.greasespot.net/) browser extensions.
-2. Visit [this page](https://raw.githubusercontent.com/vlad-timotei/wpgp-tools/main/userscript/wpgpt-userscript-main-latest.js). TamperMonkey or GreaseMonkey should take over from there. I don't know why Tampermonkey doesn't automatically prompt to install this particular script.
+1. Install the [Tampermonkey](http://tampermonkey.net/) browser extensions.
+2. Visit [this page](https://raw.githubusercontent.com/vlad-timotei/wpgp-tools/main/userscript/wpgpt-userscript-main-latest.js). TamperMonkey should take over from there, but sometimes it doesn't (no idea why).
 **If that is the case, either:**
 * manually copy the URL and install it in the Utilities > Install from URL 
 * OR manually copy the script, click the + button and install it.
