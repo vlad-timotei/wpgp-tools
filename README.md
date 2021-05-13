@@ -101,6 +101,10 @@ Only choose one of these two:
 **If that is the case, either:**
 * manually copy the URL and install it in the Utilities > Install from URL 
 * OR manually copy the script, click the + button and install it.
+3. **Important note** The first time you use Search in multiple projects feature, the browser will prevent opening multiple tabs. Click on Options > Allow pop-ups for translate.wordpress.org and this will work properly in the future.
+
+![7](https://user-images.githubusercontent.com/65488419/118153870-0a04ba80-b41f-11eb-9e96-bfb9dc405247.png)
+
 
 
 ### Known issues
