@@ -68,11 +68,11 @@ Currently, it only has Romanian checks, but additional locale specific checks ca
 
 | Action | Shortcut | Alternative Shortcut |
 | --- | --- | ---|
-| Fuzzy | Ctrl + \* (numeric keyboard) | Ctrl + Shift + F | 
-| Google Translate | Alt + G | 
-| Consistency | Alt + C | 
-| Copy consistency #3 | Alt + 3 | *works for 1-3* |
-| Focus on Search in projects | Alt + S | 
+| **F**uzzy | Ctrl + \* (numeric keyboard) | Ctrl + Shift + **F** | 
+| **G**oogle Translate | Alt + **G** | 
+| **C**onsistency | Alt + **C** | 
+| Copy consistency #**3** | Alt + **3** | *works for 1-3* |
+| Focus on **S**earch in **P**rojects | Alt + **S** | Alt + **P** (since v.1.3 for Firefox) |
 
 ### Other features
 - Keeps the editor in the middle of the screen when Page Up/Page Down shortcuts are used
