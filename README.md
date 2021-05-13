@@ -85,7 +85,7 @@ Currently, it only has Romanian checks, but additional locale specific checks ca
 
 ##### Google Chrome & Edge
 
-1. Get the lates release from [here](https://github.com/vlad-timotei/wpgp-tools/releases/latest) and extract to a folder.
+1. Get the latest release from [here](https://github.com/vlad-timotei/wpgp-tools/releases/latest) and extract to a folder.
 2. Open Chrome extensions `chrome://extensions/` or `edge://extensions/` and enable Developer mode.
 3. Then use Load Unpacked button and point to the `wpgp-tools\src\` folder
 4. That's it! Go to a translate project to see it in action.
@@ -95,7 +95,7 @@ Currently, it only has Romanian checks, but additional locale specific checks ca
 - it's an unpacked extension
 - doesn't display Close all btn when Quick Links are fired (future release will fix it)
 - the repo doesn't use workflows to build the release additional zip - I couldn't make it work - if anyone has some hints, let me know.
-
+- tooltip overlap for the Quick Links section (should be fixed upstream)
 
 ### Contributing
 Contributions are welcome, bugreports, suggestions and even pull requests! No limitations, shoot for the stars!
