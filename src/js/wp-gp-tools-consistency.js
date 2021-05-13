@@ -336,6 +336,9 @@ $(document).keydown( function(event) {
 			case 71: $(".editor:visible .wpgpt-google-translate").click(); // Alt + G - Google Translate string
 			break;
 			
+			case 80: $(".editor:visible .wpgpt-search-word").focus(); // Alt + P - Focus on Search ( since 1.3 for Firefox users )
+			break;
+			
 			case 83: $(".editor:visible .wpgpt-search-word").focus(); // Alt + S - Focus on Search
 			break;
 		}	
