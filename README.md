@@ -76,12 +76,14 @@ Currently, it only has Romanian checks, but additional locale specific checks ca
 
 
 ### Future version features
-- Alert for unsaved string
-- Personal user notes & project status snippets
-- Personal glossary
-- a Firefox version or a TamperMonkey script
+
+- Personal translation notes & project status snippets
+- Alert for unsaved string (v.1.2 has such a feature included but it is disabled because it has flaws)
+- ~~Personal glossary~~ (this is included in [WPTranslationFiller extension](https://github.com/vibgyj/WPTranslationFiller/) and I don't plan to overlap features)
+- ~~a Firefox version or a TamperMonkey script~~ (available for testing [here](https://github.com/vlad-timotei/wpgp-tools/blob/main/userscript/wpgpt-userscript-main-latest.js))
  
 ### Installation
+Only choose one of these two:
 
 ##### Google Chrome & Edge
 
@@ -90,7 +92,8 @@ Currently, it only has Romanian checks, but additional locale specific checks ca
 3. Then use Load Unpacked button and point to the `wpgp-tools\src\` folder
 4. That's it! Go to a translate project to see it in action.
 
-##### UserScript for Firefox and other browsers via Tampermonkey or Greasemonkey
+##### Firefox and other browsers via Tampermonkey or Greasemonkey
+
 1. Install the [Tampermonkey](http://tampermonkey.net/) or [Greasemonkey](http://www.greasespot.net/) browser extensions.
 2. Visit [this page](https://raw.githubusercontent.com/vlad-timotei/wpgp-tools/main/userscript/wpgpt-userscript-main-latest.js). TamperMonkey or GreaseMonkey should take over from there. I don't know why Tampermonkey doesn't automatically prompt to install this particular script.
 **If that is the case, either:**
@@ -99,11 +102,11 @@ Currently, it only has Romanian checks, but additional locale specific checks ca
 
 
 ### Known issues
-- only works for Chrome/Edge
 - it's an unpacked extension
 - doesn't display Close all btn when Quick Links are fired (future release will fix it)
 - the repo doesn't use workflows to build the release additional zip - I couldn't make it work - if anyone has some hints, let me know.
-- tooltip overlap for the Quick Links section (should be fixed upstream)
+- tooltips overlap for the Quick Links section (should be fixed upstream)
+- not all buttons work on mobile since they have a .click listener not a .touch one
 
 ### Contributing
 Contributions are welcome, bugreports, suggestions and even pull requests! No limitations, shoot for the stars!
