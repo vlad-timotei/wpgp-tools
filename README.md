@@ -79,7 +79,7 @@ Currently, it only has Romanian checks, but additional locale specific checks ca
 - Alert for unsaved string
 - Personal user notes & project status snippets
 - ~~Personal glossary~~ (this is included in [WPTranslationFiller extension](https://github.com/vibgyj/WPTranslationFiller/) and I don't plan to overlap features)
-- a Firefox version or a TamperMonkey script
+- ~~a Firefox version or a TamperMonkey script~~ (available for testing [here](https://github.com/vlad-timotei/wpgp-tools/blob/main/userscript/wpgpt-userscript-main-latest.js))
  
 ### Installation
 Only choose one of these two:
