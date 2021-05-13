@@ -74,13 +74,15 @@ Currently, it only has Romanian checks, but additional locale specific checks ca
 | Copy consistency #3 | Alt + 3 | *works for 1-3* |
 | Focus on Search in projects | Alt + S | 
 
+### Other features
+- Keeps the editor in the middle of the screen when Page Up/Page Down shortcuts are used
 
 ### Future version features
 
 - Personal translation notes & project status snippets
 - Alert for unsaved string (v.1.2 has such a feature included but it is disabled because it has flaws)
 - ~~Personal glossary~~ (this is included in [WPTranslationFiller extension](https://github.com/vibgyj/WPTranslationFiller/) and I don't plan to overlap features)
-- ~~a Firefox version or a TamperMonkey script~~ (available for testing [here](https://github.com/vlad-timotei/wpgp-tools/blob/main/userscript/wpgpt-userscript-main-latest.js))
+- ~~A Firefox version or a TamperMonkey script~~ (available for testing [here](https://github.com/vlad-timotei/wpgp-tools/blob/main/userscript/wpgpt-userscript-main-latest.js))
  
 ### Installation
 Only choose one of these two:
