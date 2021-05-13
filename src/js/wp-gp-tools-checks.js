@@ -21,7 +21,7 @@ var next_is_strict = true; // When false, allow Save / Approve next string with 
 var notification_error_message = "<b>Fix warnings first!</b><br><br>Alternatively, check <br><i>Save / Approve with warnings!</i><br><br>";
 
 function checks_init(){
-	if( typeof $gp !== 'undefined'){		
+	if( typeof $gp !== 'undefined' ){		
 		init_new_translations_checks();
 		run_current_translations_checks(); 
 		// To do: swap for performance reasons, but initialize "Save with warnings" check first!
@@ -64,19 +64,19 @@ function init_new_translations_checks(){
 	jQuery("#translations tbody tr.editor").each(function(){
 		var translation_id = jQuery(this).attr("id");
 		jQuery(this).find(".translation-actions__save").click(function(event){
-		if( !run_this_translation_checks( translation_id ) && next_is_strict )
-            {event.preventDefault();
-			 event.stopPropagation();
-			 $gp.notices.error( notification_error_message );
+			if( !run_this_translation_checks( translation_id ) && next_is_strict ){
+				event.preventDefault();
+				event.stopPropagation();
+				$gp.notices.error( notification_error_message );
 			}
 			next_is_strict = true;
 		});
 				
 		jQuery(this).find(".approve").click(function(event){
-			if( !run_this_translation_checks( translation_id ) && next_is_strict )
-            {event.preventDefault();
-			 event.stopPropagation();
-			 $gp.notices.error( notification_error_message );
+			if( !run_this_translation_checks( translation_id ) && next_is_strict ){
+				event.preventDefault();
+				event.stopPropagation();
+				$gp.notices.error( notification_error_message );
 			}
 			next_is_strict = true;
 		});
@@ -85,11 +85,12 @@ function init_new_translations_checks(){
 	});
    
    jQuery(".wpgpt-ignore-warnings input").click(function(){
-	   if (jQuery(this).prop("checked") == true)
+	   if( jQuery(this).prop("checked") == true ){
 			next_is_strict = false;
-       else
+	   }
+       else{
 			next_is_strict = true;
-		console.log(next_is_strict);
+	   }
    });
 	
 }
@@ -105,28 +106,29 @@ function run_this_translation_checks( translation_id ){
 	jQuery("#" + translation_id + " .translation-wrapper div.textareas").each(function(){ translated.push( jQuery(this).find("textarea").val() ); } );
 
 	translations = translated.length;
-	if (original.length == 2 && translations == 3)
+	if( original.length == 2 && translations == 3 ){
 		original[2] = original[1];
+	}
 	
-	for (var i = 0; i < translations; i++){
-		check_results = check_translation(original[i], translated[i]);
+	for( var i = 0; i < translations; i++ ){
+		check_results = check_translation( original[i], translated[i] );
 		
-		if(check_results[0] != 'none'){
+		if( check_results[0] != 'none' ){
 			warnings_passed = false;
 		}
 		
 		editor_html_output += '<dl><dt>Warnings' +
-		((translations > 1) ? (' #'+( i + 1 ) ) : '' ) +
+		( (translations > 1) ? ( ' #'+( i + 1 ) ) : '' ) +
 		':</dt><dd>' +
 		check_results[0] +
-		((check_results[0] == 'none') ? ' <b>&#10003;</b>' :'') +
+		( ( check_results[0] == 'none' ) ? ' <b>&#10003;</b>' :'') +
 		'</dd></dl>';
 		
 		if( check_results[1]!= 'none' ){
 			notices_passed = false;
 
 			editor_html_output += '<dl><dt>Notices' +
-			((translations > 1) ? (' #'+( i + 1 ) ) : '' ) +
+			( ( translations > 1 ) ? (' #'+( i + 1 ) ) : '' ) +
 			':</dt><dd>' +
 			check_results[1] +
 			'</dd></dl>';			
@@ -139,35 +141,36 @@ function run_this_translation_checks( translation_id ){
 		}
 		else{
 			editor_html_output = '<div class="wpgpt-checks-list">' + editor_html_output + '</div>';
-			jQuery("#" + translation_id ).find('.meta dl').first().before(editor_html_output); 
+			jQuery("#" + translation_id ).find('.meta dl').first().before( editor_html_output ); 
 		}
 		
 		if( warnings_passed ){
 			var next_preview;
-			if( notices_passed )
+			if( notices_passed ){
 				next_preview = '<div class="wpgpt-check-preview"><b>&#10003;</b></div>';
-			else 
+			}
+			else{
 				next_preview = '<div class="wpgpt-check-preview"><img class src="' + notice_icon + '"></div>';
-			
+			}
 			translation_id=translation_id.replace(/(?:(editor-[^- ]*)(?:-[^' ]*))/g,'$1').replace("editor", "preview"); // Look for original ID prefix only
-			setTimeout(function(){ 
+			setTimeout( function(){ 
 				var current_preview = jQuery("tr[id^='" + translation_id +"']").find('.wpgpt-check-preview');
-				if( current_preview.length > 0 )
+				if( current_preview.length > 0 ){
 					current_preview.html(next_preview);
-				else
+				}
+				else{
 					jQuery("tr[id^='" + translation_id +"']").find('.actions .action.edit').prepend(next_preview);
-		
+				}
 			},750); // Important: wait for the new translation to load before display preview warning state
         }
 		else{
-
 			jQuery("#" + translation_id).find(".wpgpt-ignore-warnings").fadeIn().css('display', 'block');
 		}
 	return warnings_passed;
 }
 
 function run_current_translations_checks(){ 
-	jQuery("#translations tbody tr.preview.has-translations").each(function(){
+	jQuery("#translations tbody tr.preview.has-translations").each( function(){
 		var translated = [];
 		var check_results, translations, preview_class; 
 		var preview_html_output = "", editor_html_output = "";
@@ -177,26 +180,26 @@ function run_current_translations_checks(){
 		jQuery(this).find('td.translation .translation-text').each( function(){	translated.push( jQuery( this ).text() ); } );
 		translations = translated.length;
 	
-		for (var i = 0; i < translations; i++){
-			check_results = check_translation(original, translated[i]);
+		for( var i = 0; i < translations; i++ ){
+			check_results = check_translation( original, translated[i] );
 			
 			editor_html_output += '<dl><dt>Warnings' +
-			((translations > 1) ? (' #'+( i + 1 ) ) : '' ) +
+			( (translations > 1) ? (' #'+( i + 1 ) ) : '' ) +
 			':</dt><dd>' +
 			check_results[0] +
-			((check_results[0] == 'none') ? ' <b>&#10003;</b>' :'') +
+			( (check_results[0] == 'none') ? ' <b>&#10003;</b>' :'') +
 			'</dd></dl>';
 			
 			if( check_results[1]!= 'none' ){
 				editor_html_output += '<dl><dt>Notices' +
-				((translations > 1) ? (' #'+( i + 1 ) ) : '' ) +
+				( (translations > 1) ? (' #'+( i + 1 ) ) : '' ) +
 				':</dt><dd>' +
 				check_results[1] +
 				'</dd></dl>';
 				preview_notice = true;
 			}
 			
-			if(check_results[0] != 'none'){
+			if( check_results[0] != 'none' ){
 				preview_warning = true;
 			}
 		}
@@ -207,21 +210,23 @@ function run_current_translations_checks(){
 			preview_html_output = '<div class="wpgpt-warning-preview"> <img class src="' + warning_icon + '"></div>';
 			jQuery("#" + jQuery(this).attr('id').replace('preview', 'editor')).find('.wpgpt-ignore-warnings').show();	
 			preview_class = "wpgpt-has-warning";
-		} else if( preview_notice ){
-				preview_html_output = '<div class="wpgpt-check-preview"><img class src="' + notice_icon + '"></div>'; 
-				preview_class = "wpgpt-has-notice";
-				} else {
-					preview_html_output = '<div class="wpgpt-check-preview"><b>&#10003;</b></div>';
-					preview_class = "wpgpt-has-nothing";
-				}
+		} 
+		else if( preview_notice ){
+			preview_html_output = '<div class="wpgpt-check-preview"><img class src="' + notice_icon + '"></div>'; 
+			preview_class = "wpgpt-has-notice";
+			}
+			else {
+				preview_html_output = '<div class="wpgpt-check-preview"><b>&#10003;</b></div>';
+				preview_class = "wpgpt-has-nothing";
+			}
 			
 		jQuery(this).addClass(preview_class);
 		jQuery("#" + jQuery(this).attr('id').replace("preview", "editor")).find('.meta .status-actions').after(editor_html_output);
-		jQuery(this).find('.actions .action.edit').prepend(preview_html_output);
+		jQuery(this).find('.actions .action.edit').prepend( preview_html_output );
 	});
 }
 
-function check_translation (original, translated){
+function check_translation( original, translated ){
 	var warnings = {
 		'placeholders'		:	"",
 		'start_space' 		:	"",
@@ -239,21 +244,21 @@ function check_translation (original, translated){
 		'ro_quotes'		:	""
 	};
 	
-	let first_original_char = original.substr(0, 1);
-	let first_translated_char = translated.substr(0, 1);
+	let first_original_char = original.substr( 0, 1 );
+	let first_translated_char = translated.substr( 0, 1 );
 	
-	let last_original_char = original.substr(original.length - 1);
-	let last_translated_char = translated.substr(translated.length - 1);
+	let last_original_char = original.substr( original.length - 1 );
+	let last_translated_char = translated.substr( translated.length - 1 );
 	
-	let last_two_original_char = original.substr(original.length-2,2);
-	let last_two_translated_char = translated.substr(translated.length-2,2);
+	let last_two_original_char = original.substr( original.length-2, 2 );
+	let last_two_translated_char = translated.substr( translated.length-2, 2 );
 	
 	var error_message = "";
 			
 	/** Wrong Placeholders **/
 	let placeholder_pattern =  /(?:%[a-z]|%\d[$][a-z])/ig; 
-	var original_ph = original.match(placeholder_pattern);
-	var translated_ph = translated.match(placeholder_pattern);
+	var original_ph = original.match( placeholder_pattern );
+	var translated_ph = translated.match( placeholder_pattern );
 
 	if(
 		original_ph != null ||
@@ -264,26 +269,30 @@ function check_translation (original, translated){
 			translated_ph == null
 		){
 			warnings['placeholders'] = "<li>Missing placeholder(s): " + original_ph.toString() + "</li>";
-		} else {
+		}
+		else{
 			if(
 				original_ph == null &&
 				translated_ph != null
 			){
 				warnings['placeholders'] = "<li>Additional placeholder(s): " + translated_ph.toString() + "</li>";
-			} else {
-				if (original_ph.length < translated_ph.length)
+			}
+			else{
+				if ( original_ph.length < translated_ph.length ){
 					warnings['placeholders'] = "<li>Additional placeholder(s) found</li>";
-				if (original_ph.length > translated_ph.length)
+				}
+				if ( original_ph.length > translated_ph.length ){
 					warnings['placeholders'] = "<li>Placeholder(s) missing or broken</li>";
-				if (original_ph.length == translated_ph.length) {
+				}
+				if ( original_ph.length == translated_ph.length ) {
 					original_ph.sort();
 					translated_ph.sort();
 					var broken_placeholders = [];
-					for (var i = 0; i < original_ph.length; i++)
-						if (original_ph[i] != translated_ph[i]){
+					for ( var i = 0; i < original_ph.length; i++ )
+						if ( original_ph[i] != translated_ph[i] ){
 							broken_placeholders.push(translated_ph[i]);
 						}
-					if (broken_placeholders.length){
+					if ( broken_placeholders.length ){
 						warnings['placeholders'] = "<li>Possible broken placeholder(s): " + broken_placeholders.toString() + "</li>";
 					}
 				}
@@ -300,7 +309,7 @@ if( settings['checks']['state'] == "enabled" ){
 		first_original_char  != " "
 	){  
 		error_message = "<li>Additional start space</li>";
-		switch(settings['start_space']['state']){
+		switch( settings['start_space']['state'] ){
 			case "warning": warnings['start_space'] = error_message; break;
 			case "notice": notices['start_space'] = error_message; 
 		}
@@ -312,7 +321,7 @@ if( settings['checks']['state'] == "enabled" ){
 		first_original_char  == " "
 	){	
 		error_message = "<li>Missing start space</li>";
-		switch(settings['start_space']['state']){
+		switch( settings['start_space']['state'] ){
 			case "warning": warnings['start_space'] = error_message; break;
 			case "notice": notices['start_space'] = error_message; 
 		}
@@ -324,7 +333,7 @@ if( settings['checks']['state'] == "enabled" ){
 		/** Additional end space **/
 	    if( last_translated_char == " "){
 			error_message = "<li>Additional end space</li>";
-			switch(settings['end_space']['state']){
+			switch( settings['end_space']['state'] ){
 				case "warning": warnings['end_char'] = error_message; break;
 				case "notice": notices['end_char'] = error_message; 
 			}
@@ -336,7 +345,7 @@ if( settings['checks']['state'] == "enabled" ){
 			warnings['end_char'] == ""
 		){
 			error_message = "<li>Missing end space</li>";
-			switch(settings['end_space']['state']){
+			switch( settings['end_space']['state'] ){
 				case "warning": warnings['end_char'] = error_message; break;
 				case "notice": notices['end_char'] = error_message; 
 			}
@@ -350,7 +359,7 @@ if( settings['checks']['state'] == "enabled" ){
 			warnings['end_char'] == ""
 		){
 			error_message = "<li>Missing end .</li>";
-			switch(settings['end_period']['state']){
+			switch( settings['end_period']['state'] ){
 				case "warning": warnings['end_char'] = error_message; break;
 				case "notice": notices['end_char'] = error_message; 
 			}
@@ -366,7 +375,7 @@ if( settings['checks']['state'] == "enabled" ){
 			warnings['end_char'] == ""
 		){		
 			error_message = "<li>Additional end .</li>";
-			switch(settings['end_period']['state']){
+			switch( settings['end_period']['state'] ){
 				case "warning": warnings['end_char'] = error_message; break;
 				case "notice": notices['end_char'] = error_message; 
 			}
@@ -378,7 +387,7 @@ if( settings['checks']['state'] == "enabled" ){
 			warnings['end_char'] == ""
 		){
 			error_message = "<li>Missing end :</li>";
-			switch(settings['end_colon']['state']){
+			switch( settings['end_colon']['state'] ){
 				case "warning": warnings['end_char'] = error_message; break;
 				case "notice": notices['end_char'] = error_message; 
 			}
@@ -389,7 +398,7 @@ if( settings['checks']['state'] == "enabled" ){
 			warnings['end_char'] == ""
 		){
 			error_message = "<li>Additional end :</li>";
-			switch(settings['end_colon']['state']){
+			switch( settings['end_colon']['state'] ){
 				case "warning": warnings['end_char'] = error_message; break;
 				case "notice": notices['end_char'] = error_message; 
 			}
@@ -397,7 +406,7 @@ if( settings['checks']['state'] == "enabled" ){
 		
 		/** Other different symbol Exceptions: … " and ) **/
 		if (
-			(/[^a-zA-Z1-50]/).test(last_original_char) &&
+			(/[^a-zA-Z1-50]/).test( last_original_char ) &&
 			last_original_char != "…" &&
 			last_original_char != '"' &&
 			last_original_char != ')' &&
@@ -408,7 +417,7 @@ if( settings['checks']['state'] == "enabled" ){
 			warnings['end_char'] == ""
 		){
 			error_message = "<li>Notice: different ending symbol: <b>'" + last_original_char + "'</b></li>";
-			switch(settings['end_different']){
+			switch( settings['end_different'] ){
 				case "warning": warnings['end_char'] = error_message; break;
 				case "notice": notices['end_char'] = error_message; 
 			}
@@ -424,11 +433,12 @@ if( settings['checks']['state'] == "enabled" ){
 	
 	if( using_double_spaces.length > original_double_spaces.length ){
 		error_message = "<li>" + using_double_spaces.length + " double space(s) detected </li>"; 
-		switch(settings['double_spaces']['state']){
+		switch( settings['double_spaces']['state'] ){
 				case "warning": warnings['others'] += error_message; break;
 				case "notice": notices['others'] += error_message; 
 		}
-	} else if( settings['double_spaces'] !== "nothing" && ( using_double_spaces.lenght < original_double_spaces.lenght ) ){
+	} 
+	else if( settings['double_spaces'] !== "nothing" && ( using_double_spaces.lenght < original_double_spaces.lenght ) ){
 			notices['others'] += "<li>" + ( original_double_spaces.lenght - using_double_spaces.lenght ) + "missing double space(s)</li>";	
 	}
 		
@@ -437,10 +447,10 @@ if( settings['checks']['state'] == "enabled" ){
 	/** Warning words **/
 	if( settings['warning_words']['state'] != "" ){
 		bad_words_list = settings['warning_words']['state'].split(',');
-	for ( bad_word of bad_words_list ) {
-		if( bad_word != "" && bad_word != " " && translated.match( bad_word ) !== null){
-			warnings['others'] += "<li>You use '" + bad_word + "'</li>";
-			break;
+		for ( bad_word of bad_words_list ) {
+			if( bad_word != "" && bad_word != " " && translated.match( bad_word ) !== null){
+				warnings['others'] += "<li>You use '" + bad_word + "'</li>";
+				break;
 			}
 		}
 	}
@@ -448,10 +458,10 @@ if( settings['checks']['state'] == "enabled" ){
 	/** Notice words */
 	if( settings['notice_words']['state'] != "" ){
 		bad_words_list = settings['notice_words']['state'].split(',');
-	for ( bad_word of bad_words_list) {
-		if( bad_word != "" && bad_word != " " && translated.match( bad_word ) !== null ){
-			notices['others'] += "<li>You use '" + bad_word + "'</li>";
-			break;
+		for ( bad_word of bad_words_list) {
+			if( bad_word != "" && bad_word != " " && translated.match( bad_word ) !== null ){
+				notices['others'] += "<li>You use '" + bad_word + "'</li>";
+				break;
 			}
 		}
 	}
@@ -480,23 +490,24 @@ if( settings['ro_checks']['state'] == "enabled" ){
 	**/ 
 	
 	/** ro diacritics **/
-	var not_using_ro_diacritics = translated.match(not_ro_diacritics);
-	if(not_using_ro_diacritics != null){
+	var not_using_ro_diacritics = translated.match( not_ro_diacritics );
+	if( not_using_ro_diacritics != null ){
 		error_message = "<li>" + not_using_ro_diacritics.length + ' wrong diacritic(s) found: ' + not_using_ro_diacritics.toString() + "</li>";
-		switch(settings['ro_diacritics']['state']){
+		switch( settings['ro_diacritics']['state'] ){
 			case "warning": warnings['ro_diacritics'] = error_message; break;
 			case "notice": notices['ro_diacritics'] = error_message; 
 		}
 	}
 		
 	/** ro quotes **/
-	var not_using_ro_quotes = translated.match(not_ro_quotes);
-	if(not_using_ro_quotes != null){ 
+	var not_using_ro_quotes = translated.match( not_ro_quotes );
+	if( not_using_ro_quotes != null ){ 
 		var i;
-		for (i = 0; i < not_using_ro_quotes.length; i++) 
-			not_using_ro_quotes [i] = not_using_ro_quotes[i].substring(1)	
+		for ( i = 0; i < not_using_ro_quotes.length; i++ ){
+			not_using_ro_quotes [i] = not_using_ro_quotes[i].substring(1);
+		}
 		error_message = "<li>" + not_using_ro_quotes.length + ' pair' + ( ( i > 1 ) ? 's' : '' ) + ' of wrong quotes: ' + not_using_ro_quotes.toString() + " Use „ ”</li>";
-		switch(settings['ro_quotes']['state']){
+		switch( settings['ro_quotes']['state'] ){
 			case "warning": warnings['ro_quotes'] = error_message; break;
 			case "notice": notices['ro_quotes'] = error_message; 
 		}
@@ -506,7 +517,7 @@ if( settings['ro_checks']['state'] == "enabled" ){
 		for ( bad_word of bad_words_list) {
 			if( translated.match( bad_word ) !== null ){
 				error_message = "<li>At least one wrong quote: ' " + bad_word.replace("&","&amp;") + " '</li>";
-				switch(settings['ro_quotes']['state']){
+				switch( settings['ro_quotes']['state'] ){
 					case "warning": warnings['ro_quotes'] = error_message; break;
 					case "notice": notices['ro_quotes'] = error_message; 
 				}
@@ -516,30 +527,30 @@ if( settings['ro_checks']['state'] == "enabled" ){
 	}
 
 	/** ro slash spaces **/
-	var not_using_ro_slash_spaces = translated.match(not_ro_slash_spaces);
+	var not_using_ro_slash_spaces = translated.match( not_ro_slash_spaces );
 	if ( not_using_ro_slash_spaces != null ){
 		error_message =  "<li>" + not_using_ro_slash_spaces.length + " / space detected </li>";
-		switch(settings['ro_slash']['state']){
+		switch( settings['ro_slash']['state'] ){
 				case "warning": warnings['others'] += error_message; break;
 				case "notice": notices['others'] += error_message; 
 		}
 	}
 	
 	/** ro ampersand **/
-	var not_using_ro_ampersand = translated.match(not_ro_ampersand);
+	var not_using_ro_ampersand = translated.match( not_ro_ampersand );
 	if ( not_using_ro_ampersand!= null ){
 		error_message = "<li>" + not_using_ro_ampersand.length + " & detected</li>";
-		switch(settings['ro_ampersand']['state']){
+		switch( settings['ro_ampersand']['state'] ){
 				case "warning": warnings['others'] += error_message; break;
 				case "notice": notices['others'] += error_message; 
 		}
 	}
 	
 	/** ro — dash **/
-	var not_using_ro_dash = translated.match(not_ro_dash);
+	var not_using_ro_dash = translated.match( not_ro_dash );
 	if ( not_using_ro_dash!= null ){
 		error_message = "<li>" + not_using_ro_dash.length + " — detected</li>";
-		switch(settings['ro_dash']['state']){
+		switch( settings['ro_dash']['state'] ){
 				case "warning": warnings['others'] += error_message; break;
 				case "notice": notices['others'] += error_message; 
 		}

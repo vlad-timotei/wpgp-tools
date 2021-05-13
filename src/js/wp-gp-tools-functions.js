@@ -1,13 +1,13 @@
 const WPGPT_VERSION = '1.2'; 
 
-function setLS(name, value) {
-  localStorage.setItem(name, value);
+function setLS( name, value ){
+  localStorage.setItem( name, value );
 }
 
-function getLS(name) {
-  return localStorage.getItem(name);
+function getLS( name ){
+  return localStorage.getItem( name );
 }
 
-function delLS(name){
-  localStorage.removeItem(name);
+function delLS( name ){
+  localStorage.removeItem( name );
 }

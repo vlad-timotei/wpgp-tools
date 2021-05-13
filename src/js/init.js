@@ -15,19 +15,19 @@ function parse_img(){
 	var img_script = document.createElement('script');
 	img_script.type = 'text/javascript';
 	img_script.innerHTML = ' var warning_icon = "' + warning_icon + '"; var notice_icon = "' + notice_icon + '";';    
-	document.getElementsByTagName('head')[0].appendChild(img_script);
+	document.getElementsByTagName('head')[0].appendChild( img_script );
 }
 
-function load_script(url) {
-  if (Array.isArray(url)) {
+function load_script( url ) {
+  if( Array.isArray( url ) ) {
     var self = this,
       prom = [];
-    url.forEach(function(item) {
-      prom.push(self.load_script(item));
+    url.forEach( function( item ){
+      prom.push( self.load_script( item ) );
     });
-    return Promise.all(prom);
+    return Promise.all( prom );
   } 
-  return new Promise(function(resolve, reject) {
+  return new Promise( function( resolve, reject ) {
     var r = false,
 	t = document.getElementsByTagName('head')[0],
     s = document.createElement('script'); 
@@ -35,12 +35,12 @@ function load_script(url) {
     s.src = chrome.extension.getURL('js/wp-gp-tools-' + url + '.js');
     s.async = false;
     s.onload = s.onreadystatechange = function() {
-      if (!r && (!this.readyState || this.readyState === 'complete')) {
+      if( !r && (!this.readyState || this.readyState === 'complete') ){
         r = true;
-        resolve(this);
+        resolve( this );
       }
     };
     s.onerror = s.onabort = reject;
-    t.appendChild(s);
+    t.appendChild( s );
   });
 }
