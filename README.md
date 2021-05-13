@@ -97,10 +97,8 @@ Only choose one of these two:
 ##### Firefox and other browsers via Tampermonkey
 
 1. Install the [Tampermonkey](http://tampermonkey.net/) browser extensions.
-2. Visit [this page](https://raw.githubusercontent.com/vlad-timotei/wpgp-tools/main/userscript/wpgpt-userscript-main-latest.js). TamperMonkey should take over from there, but sometimes it doesn't (no idea why).
-**If that is the case, either:**
-* manually copy the URL and install it in the Utilities > Install from URL 
-* OR manually copy the script, click the + button and install it.
+2. Visit [this page](https://github.com/vlad-timotei/wpgp-tools/raw/main/userscript/wpgpt-userscript-latest.user.js). TamperMonkey should take over from there and prompt to install the userscript.
+If this somehow fails, you can: manually copy the URL and install it in the Utilities > Install from URL or manually copy the script, click the + button and install it.
 
 <img align="right" src="https://user-images.githubusercontent.com/65488419/118153870-0a04ba80-b41f-11eb-9e96-bfb9dc405247.png">
 
