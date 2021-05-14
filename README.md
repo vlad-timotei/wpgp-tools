@@ -21,18 +21,19 @@ This is a Chrome/Edge extension to help you translate faster.
 <img align="right" src="https://user-images.githubusercontent.com/65488419/117621284-203e1c80-b17a-11eb-8a86-26c34f17f1b3.png" >
 
 **GoogleTranslate** button 
-- new tab with current translated string in current locale
+- Button or Alt + G opens new tab with current translated string in current locale
 
 <img align="right" src="https://user-images.githubusercontent.com/65488419/117621916-c1c56e00-b17a-11eb-9cab-a593532a8e05.png" >
 
 **Suggestions** directly from Consistency
+ - Button or Alt + C
  - Translation Memory sometimes has bad translations (see [#meta5340](https://meta.trac.wordpress.org/ticket/5340))
  - This shows Consistency translations directly in the editor panel
 
 <img align="right" src="https://user-images.githubusercontent.com/65488419/117623006-eec65080-b17b-11eb-94b9-18ec705ed359.png" >
 <br>
 
-- To copy 2nd suggestion, click on it or press Alt + 2
+- Button or Alt + 2 to copy 2nd suggestion, 
 - Keyboard shortcut works for suggestion 1, 2 and 3
 
 ## #2 General Checks - [view Demo](https://youtu.be/pG92jygfWpY) 
@@ -62,6 +63,8 @@ Checks can be set as:
 ## #3 Locale specific Checks
 
 Currently, it only has Romanian checks, but additional locale specific checks can be added. These work the same way as general checks.
+Please open an issue with the checks you'd like implemented for your locale and I'll try to make it happen.
+
 ![image](https://user-images.githubusercontent.com/65488419/117628526-f0931280-b181-11eb-942e-7a611bb70e39.png)
 
 ## #4 Custom Keyboard Shortcuts
