@@ -1,5 +1,13 @@
+
 # WP GlotPress Tools
+<img align="right" src="https://user-images.githubusercontent.com/65488419/118821977-6a34aa00-b8c0-11eb-9e1e-9304db38c434.png">
+
+
 This is a Chrome/Edge extension to help you translate faster. 
+
+
+You can find the **Settings** for this extension in the top blue navigation menu *Tools Settings*
+
 
 ## #1 Consistency Tools - [view Demo](https://youtu.be/Ve9DSOfFBeA) 
 
