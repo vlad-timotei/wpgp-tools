@@ -59,7 +59,7 @@ if( user_env_settings['search'] == "enabled"){
 	"<label class='noselect'><input type='checkbox' data-search-project='plugin' class='wpgpt-search-option wpgpt-search-plugin-option'> another plugin </label>" +
 	"<input type='text' class='wpgpt-search-plugin-slug' name='wpgpt-search-plugin-slug' placeholder=' enter slug' size='15'  >" +
 	"<br><label class='noselect'><input type='checkbox' data-search-project='consistency' class='wpgpt-search-option'> consistency tool</label>" +
-	"<br></form><button type='button' class='wpgpt-search-close-tabs' style='display:none;'>Close all tabsclose</button><br>";
+	"<br></form><button type='button' class='wpgpt-search-close-tabs' style='display:none;'>Close all tabs</button><br>";
 	
 	let actions_html_output = '' +
 	'<button type="button" class="wpgpt-actions_copy with-tooltip' +
