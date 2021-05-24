@@ -349,34 +349,51 @@ if( settings['checks']['state'] == "enabled" ){
 	
 		/** Missing end period symbol; 
 		** Ignore if:
-		**	a. char - period swap( char should not be a letter or number ); Ideal examples: ". => ." or ). => .) 
-		**	b. tag - period swap 
+		**	a. original ends with . and translation ends with a period symbol
+		**	b. char - period swap( char should not be a letter or number ); Ideal examples: ". => ." or ). => .) 
+		**	c. tag - period swap 
+		**	d. 3 periods translated as elipsis
 		**/
+	
+		var not_tag_period_swap = true,
+			not_translated_as_elipsis = true,
+			not_character_period_swap = true;
 
 		if( 
 			warnings['end_char'] == "" &&
 			last_original_char == "." &&
-			last_translated_char != period
-		){	
-			var tag_period_swap = false;			
-			if( last_translated_char == ">" ){
-				var last_period_index = translated.lastIndexOf( period );
-				var last_tag = translated.substr( last_period_index  + 1 );
-				if( last_tag == original.substr( original.lenght - last_tag.lenght - 1, last_tag.lenght ) ){
-					tag_period_swap = true;
+			last_translated_char != period &&
+			last_translated_char != "."
+		){	not_character_period_swap = !(	 (		last_but_one_translated_char == period ||
+													last_but_one_translated_char == "."
+											 ) &&
+											 (		last_but_one_original_char == last_translated_char  ||
+													is_locale_alternative( last_but_one_original_char, last_translated_char )
+											 ) &&
+											 (/[^a-zA-Z1-50]/).test( last_translated_char )
+										 ); 
+			if ( not_character_period_swap ){
+				if( last_translated_char == ">" ){
+					var translated_last_period_index = translated.lastIndexOf( period );
+					var translated_last_tag = translated.substr( translated_last_period_index  + 1 );
+					if( translated_last_tag == original.substr( original.length - translated_last_tag.length - 1, translated_last_tag.length ) ){
+						not_tag_period_swap = false;
+					}
+					else if ( period != "." ) {
+						translated_last_period_index = translated.lastIndexOf( "." );
+						translated_last_tag = translated.substr( translated_last_period_index  + 1 );
+							if( translated_last_tag == original.substr( original.length - translated_last_tag.length - 1, translated_last_tag.length ) ){
+								not_tag_period_swap = false;
+							}
+					}
+				}
+				if ( not_tag_period_swap ){
+					not_translated_as_elipsis = !( last_translated_char == "…" && last_but_one_original_char == "."  );
 				}
 			}
-			if(!(		last_translated_char == "…" || // and last_but_one_original_char == "."
-						tag_period_swap ||
-					(	last_but_one_translated_char == period &&
-						( last_but_one_original_char == last_translated_char  ||
-						  is_locale_alternative( last_but_one_original_char, last_translated_char )
-						) &&
-						(/[^a-zA-Z1-50]/).test( last_translated_char )
-					) 
-				)
-			){
-				error_message = "<li>Missing end period: " + period + "</li>";
+			
+			if( not_tag_period_swap && not_translated_as_elipsis && not_character_period_swap ){
+				error_message = "<li>Missing end period: " + period + ( ( period != "." ) ? " or . " : "" ) + "</li>";
 				switch( settings['end_period']['state'] ){
 					case "warning": warnings['end_char'] = error_message; break;
 					case "notice": notices['end_char'] = error_message; 
@@ -386,27 +403,45 @@ if( settings['checks']['state'] == "enabled" ){
 		
 		/** Additional end period; 
 		** Ignore if:
-		**	a. period - char swap ( char should not be a letter or number )
-		**	b. period - tag swap
-		**	c. … translated as ...
+		**	a. original doesn't end with . and translation doesn't end with period symbol
+		**	b. period - char swap ( char should not be a letter or number )
+		**	c. period - tag swap
+		**	d. elipsis translated as 3 periods
 		**/
+		
+		var not_period_tag_swap = true,
+			not_translated_from_elipsis = true,
+			not_period_character_swap = true;
 
 		if( 
 			warnings['end_char'] == "" &&
 			last_original_char != "." &&
-			last_translated_char == period			
-		){			
-			if(!(		last_original_char == "…" || // and last_but_one_translated_char == "."
-						last_but_one_translated_char == '>' || // needs to be replaced with period_tag_swap
-					(	last_but_one_original_char == period &&
-						( last_original_char == last_but_one_translated_char ||
-						  is_locale_alternative( last_original_char, last_but_one_translated_char ) 
-						) &&
-						(/[^a-zA-Z1-50]/).test( last_original_char )
-					) 
-				)
-			){
-				error_message = "<li>Additional end period: " + period + "</li>";
+			( last_translated_char == period ||
+			  last_translated_char == "." )
+		){	
+			not_period_character_swap = !(	(		last_but_one_original_char == period ||
+													last_but_one_original_char == "."
+											) &&
+											(		last_original_char == last_but_one_translated_char ||
+													is_locale_alternative( last_original_char, last_but_one_translated_char ) 
+											) &&
+											(/[^a-zA-Z1-50]/).test( last_original_char )
+										 );
+			if ( not_period_character_swap ){
+				if( last_but_one_translated_char == '>' ){
+					var original_last_period_index = original.lastIndexOf( "." );
+					var original_last_tag = original.substr( original_last_period_index  + 1 );
+					if( original_last_tag == translated.substr( translated.length - original_last_tag.length - 1, original_last_tag.length ) ){
+						not_period_tag_swap = false;
+					}
+				}
+				if( not_period_tag_swap ){
+					not_translated_from_elipsis = !( last_original_char == "…" && last_but_one_translated_char == "." );
+				}
+			}
+			
+			if(	not_translated_from_elipsis && not_period_character_swap && not_period_tag_swap ){
+				error_message = "<li>Additional end period: " + period + ( ( period != "." ) ? " or . " : "" ) + "</li>";
 				switch( settings['end_period']['state'] ){
 					case "warning": warnings['end_char'] = error_message; break;
 					case "notice": notices['end_char'] = error_message; 
@@ -464,8 +499,8 @@ if( settings['checks']['state'] == "enabled" ){
 				case "notice": notices['others'] += error_message; 
 		}
 	} 
-	else if( settings['double_spaces'] !== "nothing" && ( using_double_spaces.lenght < original_double_spaces.lenght ) ){
-			notices['others'] += "<li>" + ( original_double_spaces.lenght - using_double_spaces.lenght ) + "missing double space(s)</li>";	
+	else if( settings['double_spaces'] !== "nothing" && ( using_double_spaces.length < original_double_spaces.length ) ){
+			notices['others'] += "<li>" + ( original_double_spaces.length - using_double_spaces.length ) + "missing double space(s)</li>";	
 	}
 		
 	var bad_words_list, bad_word; 
@@ -595,11 +630,16 @@ if( settings['ro_checks']['state'] == "enabled" ){
 **	Others alternatives can be added for other locales 
 */ 
 function is_locale_alternative( original, translated ){
-	if(
-		settings['ro_checks']['state'] == "enabled" &&
-		original == '"' &&
-		( translated == '”' )
-	) return true;		
+	if( settings['ro_checks']['state'] == "enabled" ){
+		var en_end_characters = ['"'];
+		var ro_end_characters = ['”'];
+		
+		for ( var i = 0; i < en_end_characters.length; i++ ){
+			if( en_end_characters [i] == original && ro_end_characters[i] == translated ){
+				return true;
+			}			
+		}	
+	}
 	
 	return false;
 }
