@@ -35,9 +35,6 @@ var settings = {
 			'type' : 3,
 			'parent' : 'checks'
 		},
-		/*'end_different' : {}
-		** deprecated since v.1.3
-		*/
 		'double_spaces' : {
 			'desc' : 'Multiple spaces',
 			'state' : 'warning',
@@ -120,26 +117,22 @@ var settings = {
 			'type' : 2,
 			'parent' : 'others'
 		},
-	/**	'snippets' : {
-			'desc' : 'Snippets & notes',
-			'state' : 'disabled',
-			'type' : 2,
-			'parent' : 'others'
-		}, ToDo: in future version*/
 		'shortcuts' : {
 			'desc' : 'Custom Keyboard Shortcuts',
 			'state' : 'enabled',
 			'type' : 2,
 			'parent' : 'others'
 		},
-	'autocomplete_suggestion' : {
-		'state' : false,
-		'parent' : 'none'
-	}, /** I rather this is not a setting to prevent mistakes */
-	'prevent_unsaved' : {
+		'prevent_unsaved' : {
 			'state' : 'disabled',
 			'parent' : 'none'
-	}, /** ToDO: in future version improve algorithm and make is a setting */
+		}, 
+	/**	'snippets' : {
+	**		'desc' : 'Snippets & notes',
+	**		'state' : 'disabled',
+	**		'type' : 2,
+	**		'parent' : 'others'
+	**	}, ToDo: in future version */
 	'last_checked' :{
 			'state' : 'never',
 			'parent' : 'none'
