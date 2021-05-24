@@ -124,8 +124,10 @@ var settings = {
 			'parent' : 'others'
 		},
 		'prevent_unsaved' : {
+			'desc' : 'Save before leaving prompt',
 			'state' : 'disabled',
-			'parent' : 'none'
+			'type' : 2,
+			'parent' : 'others'
 		}, 
 	/**	'snippets' : {
 	**		'desc' : 'Snippets & notes',
