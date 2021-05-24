@@ -45,7 +45,7 @@ You can find the **Settings** for this extension in the top blue navigation menu
 - Keyboard shortcut works for suggestion 1, 2 and 3
 
 ## #2 General Checks - [view Demo](https://youtu.be/pG92jygfWpY) 
-![image](https://user-images.githubusercontent.com/65488419/117623706-c9861200-b17c-11eb-99d6-614d9ab41f91.png)
+![1](https://user-images.githubusercontent.com/65488419/119268740-fc102000-bbfc-11eb-8902-011638dc2675.jpg)
 
 <img align="right" src="https://user-images.githubusercontent.com/65488419/117624878-14ecf000-b17e-11eb-8b34-c9410e226469.png" >
 
@@ -70,10 +70,11 @@ Checks can be set as:
 
 ## #3 Locale specific Checks
 
-Currently, it only has Romanian checks, but additional locale specific checks can be added. These work the same way as general checks.
+If your locale uses a different symbol other than `.` for period, you can set it here.
+Additional specific locale checks can be added if requested. These work the same way as general checks.
 Please open an issue with the checks you'd like implemented for your locale and I'll try to make it happen.
 
-![image](https://user-images.githubusercontent.com/65488419/117628526-f0931280-b181-11eb-942e-7a611bb70e39.png)
+![image](https://user-images.githubusercontent.com/65488419/119268770-1a761b80-bbfd-11eb-96ed-037e1c54ba1d.png)
 
 ## #4 Custom Keyboard Shortcuts
 
@@ -83,18 +84,11 @@ Please open an issue with the checks you'd like implemented for your locale and 
 | **G**oogle Translate | Alt + **G** | 
 | **C**onsistency | Alt + **C** | 
 | Copy consistency #**3** | Alt + **3** | *works for 1-3* |
-| Focus on **S**earch in **P**rojects | Alt + **S** | Alt + **P** (since v.1.3 for Firefox) |
+| Focus on **S**earch in **P**rojects | Alt + **S** | Alt + **P**|
 
 ### Other features
 - Keeps the editor in the middle of the screen when Page Up/Page Down shortcuts are used
 
-### Future version features
-
-- Personal translation notes & project status snippets
-- Alert for unsaved string (v.1.2 has such a feature included but it is disabled because it has flaws)
-- ~~Personal glossary~~ (this is included in [WPTranslationFiller extension](https://github.com/vibgyj/WPTranslationFiller/) and I don't plan to overlap features)
-- ~~A Firefox version or a TamperMonkey script~~ (available for testing [here](https://github.com/vlad-timotei/wpgp-tools/blob/main/userscript/wpgpt-userscript-main-latest.js))
- 
 ### Installation
 Only choose one of these two:
 
@@ -122,22 +116,26 @@ If this somehow fails, you can: manually copy the URL and install it in the Util
 - Doesn't display Close all btn when Quick Links are fired & throws error if attempts to close a manually closed tab (future release will fix it)
 - The repo doesn't use workflows to build the release additional zip - I couldn't make it work - if anyone has some hints, let me know.
 - Tooltips overlap for the Quick Links section (should be fixed upstream)
-- Doesn't work on mobile (needs .touch() event listeners)
+
+
+### Future version features
+
+- Personal translation notes & project status snippets
+- Alert for unsaved string (v.1.2 has such a feature included but it is disabled because it has flaws)
+- ~~Personal glossary~~ (this is included in [WPTranslationFiller extension](https://github.com/vibgyj/WPTranslationFiller/) and [GlotDict](https://github.com/Mte90/GlotDict) I don't plan to overlap features!)
+
 
 ### Contributing
 Contributions are welcome, bugreports, suggestions and even pull requests! No limitations, shoot for the stars!
 
 ### Changelog
 ##### v.1.0
-- Consistency
   * Search in projects
   * Quick links
   * Google Translate
   * Consistency suggestions
-- Checks
   * General checks
   * Romanian checks
-- Others
   * Custom Shortcuts
 
 ##### v.1.1
@@ -145,3 +143,16 @@ Contributions are welcome, bugreports, suggestions and even pull requests! No li
 
 ##### v.1.2
 - Don't promt to "update" to an older version
+
+##### v.1.3 (alpha)
+- new custom_period check
+- improve last_char checks ([see comment](https://github.com/vlad-timotei/wpgp-tools/issues/1#issuecomment-843997677))
+- obsolete different_ending check (irrelevant after all end checks)
+- improve checks performance (checks order)
+- obsolete ro_glossary (not on the roadmap anymore)
+- fix not_ro_quotes regex
+- fix not_ro_ampersand regex
+- new logo
+- new extension settings page (just for those used to go there)
+- new shortcut - Alt + P (for Firefox users)
+- get settings template from script instead of LS (to improve update flow)
