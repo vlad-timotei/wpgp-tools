@@ -11,6 +11,7 @@
 **/
 
 var checks_shortcuts = false;
+var period = ( ( settings['custom_period']['state'] != "" ) ? settings['custom_period']['state'] : ".");
 
 if( settings['checks']['state'] == "enabled" || settings['ro_checks']['state'] == "enabled" ){
 	jQuery(document).ready(checks_init);
@@ -160,7 +161,7 @@ function run_this_translation_checks( translation_id ){
 				else{
 					jQuery("tr[id^='" + translation_id +"']").find('.actions .action.edit').prepend(next_preview);
 				}
-			},750); // Important: wait for the new translation to load before display preview warning state
+			},1000); // Important: wait for the new translation to load before display preview warning state
         }
 		else{
 			jQuery("#" + translation_id).find(".wpgpt-ignore-warnings").fadeIn().css('display', 'block');
@@ -243,15 +244,6 @@ function check_translation( original, translated ){
 		'ro_quotes'		:	""
 	};
 	
-	let first_original_char = original.substr( 0, 1 );
-	let first_translated_char = translated.substr( 0, 1 );
-	
-	let last_original_char = original.substr( original.length - 1 );
-	let last_translated_char = translated.substr( translated.length - 1 );
-	
-	let last_two_original_char = original.substr( original.length-2, 2 );
-	let last_two_translated_char = translated.substr( translated.length-2, 2 );
-	
 	var error_message = "";
 			
 	/** Wrong Placeholders **/
@@ -302,6 +294,16 @@ function check_translation( original, translated ){
 /** General checks */
 if( settings['checks']['state'] == "enabled" ){
 	
+	let first_original_char = original.substr( 0, 1 );
+	let first_translated_char = translated.substr( 0, 1 );
+	
+	let last_original_char = original.substr( original.length - 1 );
+	let last_translated_char = translated.substr( translated.length - 1 );
+	
+	
+	let last_but_one_original_char = original.substr( original.length-2, 1 );
+	let last_but_one_translated_char = translated.substr( translated.length-2, 1 );
+		
 	/** Additional start space **/
 	if(
 		first_translated_char == " " &&
@@ -330,7 +332,7 @@ if( settings['checks']['state'] == "enabled" ){
 	if( last_original_char != last_translated_char ){
 		
 		/** Additional end space **/
-	    if( last_translated_char == " "){
+		if( last_translated_char == " "){
 			error_message = "<li>Additional end space</li>";
 			switch( settings['end_space']['state'] ){
 				case "warning": warnings['end_char'] = error_message; break;
@@ -340,8 +342,8 @@ if( settings['checks']['state'] == "enabled" ){
 		
 		/** Missing end space **/
 		if( 
-			last_original_char == " " &&
-			warnings['end_char'] == ""
+			warnings['end_char'] == "" &&
+			last_original_char == " "
 		){
 			error_message = "<li>Missing end space</li>";
 			switch( settings['end_space']['state'] ){
@@ -349,41 +351,78 @@ if( settings['checks']['state'] == "enabled" ){
 				case "notice": notices['end_char'] = error_message; 
 			}
 		}
-		
-		/** Missing end period; Exceptions: Translator approved swap in ". and ). **/
+	
+		/** Missing end period symbol; 
+		** Ignore if:
+		**	a. char - period swap( char should not be a letter or number ); Ideal examples: ". => ." or ). => .) 
+		**	b. tag - period swap 
+		**/
+
 		if( 
+			warnings['end_char'] == "" &&
 			last_original_char == "." &&
-			last_two_original_char != '".' &&
-			last_two_original_char != ').' &&
-			warnings['end_char'] == ""
-		){
-			error_message = "<li>Missing end .</li>";
-			switch( settings['end_period']['state'] ){
-				case "warning": warnings['end_char'] = error_message; break;
-				case "notice": notices['end_char'] = error_message; 
+			last_translated_char != period
+		){	
+			var tag_period_swap = false;			
+			if( last_translated_char == ">" ){
+				var last_period_index = translated.lastIndexOf( period );
+				var last_tag = translated.substr( last_period_index  + 1 );
+				if( last_tag == original.substr( original.lenght - last_tag.lenght - 1, last_tag.lenght ) ){
+					tag_period_swap = true;
+				}
+			}
+			if(!(		last_translated_char == "…" || // and last_but_one_original_char == "."
+						tag_period_swap ||
+					(	last_but_one_translated_char == period &&
+						( last_but_one_original_char == last_translated_char  ||
+						  is_locale_alternative( last_but_one_original_char, last_translated_char )
+						) &&
+						(/[^a-zA-Z1-50]/).test( last_translated_char )
+					) 
+				)
+			){
+				error_message = "<li>Missing end period: " + period + "</li>";
+				switch( settings['end_period']['state'] ){
+					case "warning": warnings['end_char'] = error_message; break;
+					case "notice": notices['end_char'] = error_message; 
+				}
 			}
 		}
 		
-		/** Additional end period; Exceptions: … and translator approved swap in ." OR .) OR >. **/
+		/** Additional end period; 
+		** Ignore if:
+		**	a. period - char swap ( char should not be a letter or number )
+		**	b. period - tag swap
+		**	c. … translated as ...
+		**/
+
 		if( 
-			last_translated_char == "." &&
-			last_original_char != "…" &&
-			last_two_original_char != '."' &&
-			last_two_original_char != '.)' &&
-			last_two_translated_char != '>.' &&
-			warnings['end_char'] == ""
-		){		
-			error_message = "<li>Additional end .</li>";
-			switch( settings['end_period']['state'] ){
-				case "warning": warnings['end_char'] = error_message; break;
-				case "notice": notices['end_char'] = error_message; 
+			warnings['end_char'] == "" &&
+			last_original_char != "." &&
+			last_translated_char == period			
+		){			
+			if(!(		last_original_char == "…" || // and last_but_one_translated_char == "."
+						last_but_one_translated_char == '>' || // needs to be replaced with period_tag_swap
+					(	last_but_one_original_char == period &&
+						( last_original_char == last_but_one_translated_char ||
+						  is_locale_alternative( last_original_char, last_but_one_translated_char ) 
+						) &&
+						(/[^a-zA-Z1-50]/).test( last_original_char )
+					) 
+				)
+			){
+				error_message = "<li>Additional end period: " + period + "</li>";
+				switch( settings['end_period']['state'] ){
+					case "warning": warnings['end_char'] = error_message; break;
+					case "notice": notices['end_char'] = error_message; 
+				}
 			}
 		}
 		
 		/** Missing end : **/
 		if( 
-			last_original_char == ":" &&
-			warnings['end_char'] == ""
+			warnings['end_char'] == "" &&
+			last_original_char == ":"
 		){
 			error_message = "<li>Missing end :</li>";
 			switch( settings['end_colon']['state'] ){
@@ -393,8 +432,8 @@ if( settings['checks']['state'] == "enabled" ){
 		}
 		/** Additional end : **/
 		if( 
-			last_translated_char == ":" &&
-			warnings['end_char'] == ""
+			warnings['end_char'] == "" &&
+			last_translated_char == ":"
 		){
 			error_message = "<li>Additional end :</li>";
 			switch( settings['end_colon']['state'] ){
@@ -403,20 +442,13 @@ if( settings['checks']['state'] == "enabled" ){
 			}
 		}
 		
-		/** Other different symbol Exceptions: … " and ) **/
-		if (
-			(/[^a-zA-Z1-50]/).test( last_original_char ) &&
-			last_original_char != "…" &&
-			last_original_char != '"' &&
-			last_original_char != ')' &&
-			last_two_original_char != '".' &&
-			last_two_original_char != ').' &&
-			last_two_original_char != '."' &&
-			last_two_original_char != '.)' &&
-			warnings['end_char'] == ""
+		/** Missing end ? **/
+		if( 
+			warnings['end_char'] == "" &&
+			last_original_char == "?"
 		){
-			error_message = "<li>Notice: different ending symbol: <b>'" + last_original_char + "'</b></li>";
-			switch( settings['end_different'] ){
+			error_message = "<li>Missing end question mark ?</li>";
+			switch( settings['end_question']['state'] ){
 				case "warning": warnings['end_char'] = error_message; break;
 				case "notice": notices['end_char'] = error_message; 
 			}
@@ -469,23 +501,24 @@ if( settings['checks']['state'] == "enabled" ){
 /** Romanian checks **/
 if( settings['ro_checks']['state'] == "enabled" ){
 	let not_ro_diacritics =  /[ÃãŞşŢţ]/ig;  
-	let not_ro_quotes = /[^=]"(?:[^"<=]*)"/g;
+	let not_ro_quotes = /(?<!=)"(?:[^"<=]*)"/g; 
 	let not_ro_slash_spaces = / [/] /g;
-	let not_ro_ampersand = /[&](?!.{1,7}?;)/g;
+	let not_ro_ampersand = /[&](?!.{1,7}?[;=])/g;
 	let not_ro_dash = /[—]/g;
 
 	/** RegEx explications
-	**	not_ro_diacritics =  /[ÃãŞşŢţ]/ig; 		Find globally, case insensitive any of the chars inside []
-	**	not_ro_quotes = /[^=]"(?:[^"<=]*)"/g;	Find globally strings, using a non-capturing group
-	**											- doesn't start with =
-	**											- next, have "
-	**											- next, don't have ", = nor < in any of the following characters
-	**											- ends with "
-	** not_ro_slash_spaces = / [/] /g;			Find globally strings that have space/space
-	** not_ro_ampersand = /[&](?!.{1,7}?;)/g;	Find globally strings, using negative lookahead and lazy matching
-	**											- starts with &
-	**											- doesn't have ; after 1 to 7 characters
-	** not_ro_dash = /[—]/g;					Find globally strings with —
+	**	not_ro_diacritics =  /[ÃãŞşŢţ]/ig; 			Find globally, case insensitive any of the chars inside []
+	**	not_ro_quotes = /(?<!=)"(?:[^"<=]*)"/g; 	Find globally strings, using a non-capturing group
+	**												- doesn't start with = 
+	**												- next, have "
+	**												- next, don't have ", = nor < in any of the following characters
+	**												- ends with "
+	** not_ro_slash_spaces = / [/] /g;				Find globally strings that have space/space
+	** not_ro_ampersand = /[&](?!.{1,7}?[;=])/g;	Find globally strings, using negative lookahead and lazy matching
+	**												- starts with &
+	**												- doesn't have ; nor = after 1 to 7 characters
+													- ; is for HTML entities AND = is for URL parameters
+	** not_ro_dash = /[—]/g;						Find globally strings with —
 	**/ 
 	
 	/** ro diacritics **/
@@ -502,10 +535,7 @@ if( settings['ro_checks']['state'] == "enabled" ){
 	var not_using_ro_quotes = translated.match( not_ro_quotes );
 	if( not_using_ro_quotes != null ){ 
 		var i;
-		for ( i = 0; i < not_using_ro_quotes.length; i++ ){
-			not_using_ro_quotes [i] = not_using_ro_quotes[i].substring(1);
-		}
-		error_message = "<li>" + not_using_ro_quotes.length + ' pair' + ( ( i > 1 ) ? 's' : '' ) + ' of wrong quotes: ' + not_using_ro_quotes.toString() + " Use „ ”</li>";
+		error_message = "<li>" + not_using_ro_quotes.length + ' pair' + ( ( i > 1 ) ? 's' : '' ) + ' of wrong quotes: ' + not_using_ro_quotes.toString() + "<br> Use „ ” instead.</li>";
 		switch( settings['ro_quotes']['state'] ){
 			case "warning": warnings['ro_quotes'] = error_message; break;
 			case "notice": notices['ro_quotes'] = error_message; 
@@ -564,4 +594,17 @@ if( settings['ro_checks']['state'] == "enabled" ){
 	
 	var results = [ warnings_results, notices_results ]; 
 	return results;
+}
+
+/** Fix for ro_RO case where original ends with << "WordPress." >> and translation ends with << „WordPress”. >>
+**	Others alternatives can be added for other locales 
+*/ 
+function is_locale_alternative( original, translated ){
+	if(
+		settings['ro_checks']['state'] == "enabled" &&
+		original == '"' &&
+		( translated == '”' )
+	) return true;		
+	
+	return false;
 }
