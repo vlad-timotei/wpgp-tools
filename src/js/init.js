@@ -3,12 +3,12 @@
  ** Scripts are loaded at the end of the head to override some editor keyboard shortcuts*
  */
 
-var wp_gp_tools_scripts = ['functions', 'settings' , 'checks', 'shortcuts' ]; /*ToDo: future version: 'snippets', 'glossary', */
+var wp_gp_tools_scripts = ['functions', 'settings' , 'checks', 'shortcuts' ]; /* ToDo: future version: 'snippets' */
 /** wp-gp-tools-consistency.js must load as content_script to prevent new windows being blocked */
 
 load_script(wp_gp_tools_scripts );
-
 parse_img();
+
 function parse_img(){
 	var warning_icon = chrome.extension.getURL('img/warning.png');
 	var notice_icon = chrome.extension.getURL('img/notice.png');
@@ -18,8 +18,8 @@ function parse_img(){
 	document.getElementsByTagName('head')[0].appendChild( img_script );
 }
 
-function load_script( url ) {
-  if( Array.isArray( url ) ) {
+function load_script( url ){
+  if( Array.isArray( url ) ){
     var self = this,
       prom = [];
     url.forEach( function( item ){
