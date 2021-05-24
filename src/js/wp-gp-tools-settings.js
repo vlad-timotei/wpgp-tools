@@ -134,7 +134,7 @@ var settings = {
 	**		'state' : 'disabled',
 	**		'type' : 2,
 	**		'parent' : 'others'
-	**	}, ToDo: in future version */
+	**	}, #to-do: future version */
 	'last_checked' :{
 			'state' : 'never',
 			'parent' : 'none'
@@ -150,9 +150,7 @@ var update_notif_template = '<span class="wpgpt-update-notice"><b>WPGlotPress To
 							', download, unzip the files, replace them and click <i>Reload</i> in chrome://extensions/';
 	
 jQuery('#menu-headline-nav').append('<li class="menu-item wpgpt_settings" style="cursor:pointer;"><a>Tools Settings</a></li>');
-jQuery('.wpgpt_settings').click(function() {
-	wpgpt_settings();
-});
+jQuery('.wpgpt_settings').click( function() { wpgpt_settings(); } );
 
 var user_settings = {}; 
 if( getLS('wpgpt-user-settings') !== null ){
@@ -170,7 +168,7 @@ var settings_state = 0;
 function wpgpt_settings(){
 	if( settings_state ){
 		exit_settings();
-		return; //ToDo: don't refresh, but instead reload changes only
+		return;
 	}
 	else{
 		jQuery(".wpgpt_settings a").html("<b>Close</b> Settings");
@@ -272,7 +270,8 @@ function wpgpt_settings(){
 						'</div>';
 									
 	jQuery('.wpgpt-settings-window').append( shortcuts_html );
-	jQuery(".wpgpt-update").click(function(){
+	jQuery(".wpgpt-update").click( function(){
+		
 		var option_name = jQuery(this).attr('name'); 
 		var option_value = jQuery(this).val();
 		update_setting( option_name, option_value );	
@@ -309,7 +308,7 @@ function update_setting( name, val ){
 
 function exit_settings(){
 	settings["custom_period"]['state'] = jQuery("#custom_period").val();
-	settings["warning_words"]['state'] = jQuery("#warning_words").val(); // this instead update_setting to avoid redundancy;
+	settings["warning_words"]['state'] = jQuery("#warning_words").val(); // this instead update_setting to avoid redundancy
 	update_setting("notice_words", jQuery("#notice_words").val());	
 	location.reload();
 }
@@ -344,7 +343,7 @@ function check_version() {
     var req = "https://wptools.vladtimotei.ro/wpgp-tools/version.php";
     jQuery.get( req, function( current_version ) {
         if ( current_version != WPGPT_VERSION ){
-			settings["last_version"]['state'] = current_version; // this instead update_setting to avoid redundancy;
+			settings["last_version"]['state'] = current_version; // this instead update_setting to avoid redundancy
 		}
 		update_setting( "last_checked", Date.now() );
 		display_check_version();

@@ -1,22 +1,13 @@
-/**	Translation checks 
-*	- additional or missing end or start spaces
-*	- additional or missing end spaces
-*	- additional, missing or broken placeholders
-*	- different ending character
-*	- wrong diacritics (ro_RO)
-*	- wrong quotes (ro_RO)
-*	- double spaces
-*	- additional/missing slash/dash spaces (ro_RO)
-*	- & symbol (ro_RO)
+/**	
+** Translation checks 
 **/
-
 var checks_shortcuts = false;
 var user_edited = false;
 
-var period = ( ( settings['custom_period']['state'] != "" ) ? settings['custom_period']['state'] : ".");
+var period = ( settings['custom_period']['state'] != "" ) ? settings['custom_period']['state'] : ".";
 
 if( settings['checks']['state'] == "enabled" || settings['ro_checks']['state'] == "enabled" ){
-	jQuery(document).ready(checks_init);
+	jQuery(document).ready( checks_init );
 	checks_shortcuts = true;
 }
 
@@ -27,7 +18,7 @@ function checks_init(){
 	if( typeof $gp !== 'undefined' ){		
 		init_new_translations_checks();
 		run_current_translations_checks(); 
-		// To do: swap for performance reasons, but initialize "Save with warnings" check first!
+		// #to-do: swap for performance reasons, but initialize "Save with warnings" check first!
 		strings_filters();
 	}
 }
