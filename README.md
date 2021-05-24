@@ -143,7 +143,7 @@ Contributions are welcome, bugreports, suggestions and even pull requests! No li
 ##### v.1.2
 - Don't promt to "update" to an older version
 
-##### v.1.3 (alpha)
+##### v.1.3
 - Adds user custom period check
 - Adds end question mark check 
 - Adds extension settings page
