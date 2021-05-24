@@ -88,6 +88,7 @@ Please open an issue with the checks you'd like implemented for your locale and 
 
 ### Other features
 - Keeps the editor in the middle of the screen when Page Up/Page Down shortcuts are used
+- Prompts for unsaved strings
 
 ### Installation
 Only choose one of these two:
