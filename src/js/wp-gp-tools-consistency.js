@@ -1,4 +1,4 @@
-var user_env_settings = { 'search' : 'enabled', 'prevent_unsaved': 'disabled'}; 
+var user_env_settings = { 'search' : 'enabled' }; 
 /** 'prevent_unsaved': 'disabled' => it doesn't work properly yet ToDO: in future version improve algorithm 
 	user_env_settings is a known/accepted redundancy for TM script that runs in the same environment, compared to the different extension env
 */
@@ -35,8 +35,6 @@ if( user_env_settings['search'] == "enabled"){
 	}
 	var notice_time;
 	
-	var user_edited = false;
-
 	const protocol = 'https://';
 	const hostname = window.location.hostname;
 	const pathname = window.location.pathname;
@@ -96,80 +94,74 @@ function elements_init(){
 		$([document.documentElement, document.body]).animate({ scrollTop: $(".breadcrumb").offset().top }, 5);
 		jQuery(".translations-unique").toggle();
 	}
-	else{
-		
-	$(".editor-panel .editor-panel__right .panel-content").append(search_html_output);
-	$(".wpgpt-search-option").each(function() { $(this).prop( 'checked', user_search_settings[ $(this).data('search-project') ] ); } );
-	if( user_search_settings['plugin'] ){
-		$(".wpgpt-search-plugin-slug").show();
-	}
-	fill_plugin_slug();
+	else{	
+		$(".editor-panel .editor-panel__right .panel-content").append(search_html_output);
+		$(".wpgpt-search-option").each(function() { $(this).prop( 'checked', user_search_settings[ $(this).data('search-project') ] ); } );
+		if( user_search_settings['plugin'] ){
+			$(".wpgpt-search-plugin-slug").show();
+		}
+		fill_plugin_slug();
 	
-	$(".editor-panel__right .panel-header").append( actions_html_output );
-	$(".editor-panel__left .suggestions-wrapper").prepend( consistency_suggestions_output );
+		$(".editor-panel__right .panel-header").append( actions_html_output );
+		$(".editor-panel__left .suggestions-wrapper").prepend( consistency_suggestions_output );
 
-	var menu_links;
-	$(".editor").each( function(){
-		menu_links = [];
-		$(this).find(".button-menu__dropdown li a").each( function(){ menu_links.push( $(this).attr('href') ); } );
-		$(this).find(".wpgpt-actions_permalink").data('link', "https://translate.wordpress.org/" + menu_links[0]);
-		$(this).find(".wpgpt-actions_history").data('link', "https://translate.wordpress.org/" + menu_links[1]);
-		$(this).find(".wpgpt-actions_consistency").data('link', menu_links[2]);
-	});
+		var menu_links;
+		$(".editor").each( function(){
+			menu_links = [];
+			$(this).find(".button-menu__dropdown li a").each( function(){ menu_links.push( $(this).attr('href') ); } );
+			$(this).find(".wpgpt-actions_permalink").data('link', "https://translate.wordpress.org/" + menu_links[0]);
+			$(this).find(".wpgpt-actions_history").data('link', "https://translate.wordpress.org/" + menu_links[1]);
+			$(this).find(".wpgpt-actions_consistency").data('link', menu_links[2]);
+		});
 	
-	display_google_translate();
+		display_google_translate();
 	
-	$(".wpgpt-search").submit( submit_form, event );
+		$(".wpgpt-search").submit( submit_form, event );
 	
-	$(".wpgpt-search-close-tabs").click( function(){close_tabs('all');});
-	$(".wpgpt-search-plugin-option").click( function(){ $(".wpgpt-search-plugin-slug").toggle(); } );
+		$(".wpgpt-search-close-tabs").click( function(){close_tabs('all');});
+		$(".wpgpt-search-plugin-option").click( function(){ $(".wpgpt-search-plugin-slug").toggle(); } );
 	
-	$('.wpgpt-search-option').click( function() {
-		if( $(this).prop("checked") == true ){
-			user_search_settings[$(this).data('search-project')] = true;
-		}
-		else{
-			user_search_settings[$(this).data('search-project')] = false;
-		}
+		$('.wpgpt-search-option').click( function() {
+			if( $(this).prop("checked") == true ){
+				user_search_settings[$(this).data('search-project')] = true;
+			}
+			else{
+				user_search_settings[$(this).data('search-project')] = false;
+			}
     
-		$(".wpgpt-search-option").each( function() { $(this).prop( 'checked', user_search_settings[ $(this).data( 'search-project' ) ] ); } );
-		setLS('wpgpt-search', JSON.stringify( user_search_settings ) );
-	});
+			$(".wpgpt-search-option").each( function() { $(this).prop( 'checked', user_search_settings[ $(this).data( 'search-project' ) ] ); } );
+			setLS('wpgpt-search', JSON.stringify( user_search_settings ) );
+		});
 	
-	$(".source-details__references ul li a").click(function(event){
-		event.preventDefault();
-		open_tab('references', $(this).attr('href') );
-	});
+		$(".source-details__references ul li a").click(function(event){
+			event.preventDefault();
+			open_tab('references', $(this).attr('href') );
+		});
 		
 	
-	$(".wpgpt-actions_copy, .wpgpt-actions_plus").click(toggle_copy);
+		$(".wpgpt-actions_copy, .wpgpt-actions_plus").click(toggle_copy);
 	
-	$(".wpgpt-actions").click(function(){
-		if( user_search_settings['copy-me'] ){
-			var _this = this;
-			var current_aria_label = $(_this).attr("aria-label");
-			copyToClipboard($(_this).data('link'));
-			$(_this).attr("aria-label","Copied!");
-			setTimeout(function() { $(_this).attr("aria-label", current_aria_label); }, 2000);
-		}
-		else{
-			open_tab('panel_links', $(this).data('link') + resultpage );
+		$(".wpgpt-actions").click(function(){
+			if( user_search_settings['copy-me'] ){
+				var _this = this;
+				var current_aria_label = $(_this).attr("aria-label");
+				copyToClipboard($(_this).data('link'));
+				$(_this).attr("aria-label","Copied!");
+				setTimeout(function() { $(_this).attr("aria-label", current_aria_label); }, 2000);
+			}
+			else{
+				open_tab('panel_links', $(this).data('link') + resultpage );
+				$(".wpgpt-search-close-tabs").show();
+			}
+		});
+	
+		$(".wpgpt-get-consistency").click(function(){ get_consistency_suggestions( $(this).closest('tr').attr('id'), this ); } );	
+		$(".wpgpt-google-translate.wpgpt-google-translate").click( function(){ 
+			open_tab('google-translate', $(this).data('gt-string') ); 
 			$(".wpgpt-search-close-tabs").show();
-		}
-	});
-	
-	$(".wpgpt-get-consistency").click(function(){ get_consistency_suggestions( $(this).closest('tr').attr('id'), this ); } );	
-	$(".wpgpt-google-translate.wpgpt-google-translate").click( function(){ 
-		open_tab('google-translate', $(this).data('gt-string') ); 
-		$(".wpgpt-search-close-tabs").show();
-	} );
-	
-	$(window).on("beforeunload", function(){
-		close_tabs('all');
-		if( user_edited && user_env_settings['prevent_unsaved'] == "enabled" && $(".editor:visible textarea").val() !== undefined ){
-			return false;
-		}
-	});
+		});
+		
+		$(window).on("beforeunload", function(){ close_tabs('all');	});
 	}
 }
 
@@ -341,8 +333,6 @@ $(document).keydown( function(event) {
 			break;
 		}	
 	}
-	else if( event.which > 65 && event.which < 91 )
-		user_edited = true;
 });
 
 })( jQuery );

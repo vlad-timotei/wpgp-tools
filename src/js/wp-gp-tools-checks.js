@@ -11,6 +11,8 @@
 **/
 
 var checks_shortcuts = false;
+var user_edited = false;
+
 var period = ( ( settings['custom_period']['state'] != "" ) ? settings['custom_period']['state'] : ".");
 
 if( settings['checks']['state'] == "enabled" || settings['ro_checks']['state'] == "enabled" ){
@@ -70,6 +72,7 @@ function init_new_translations_checks(){
 				$gp.notices.error( notification_error_message );
 			}
 			next_is_strict = true;
+			user_edited = false;
 		});
 				
 		jQuery(this).find(".approve").click(function(event){
@@ -79,6 +82,7 @@ function init_new_translations_checks(){
 				$gp.notices.error( notification_error_message );
 			}
 			next_is_strict = true;
+			user_edited = false;
 		});
 		
 		jQuery(this).find(".translation-wrapper").after('<div class="wpgpt-ignore-warnings noselect"><label>Save / Approve with warnings <input type="checkbox"></label></div>');	
@@ -608,3 +612,14 @@ function is_locale_alternative( original, translated ){
 	
 	return false;
 }
+
+/** 
+** Prevent leaving without saving
+*/
+
+jQuery('textarea').bind('input propertychange', function() { user_edited = true; });
+jQuery(window).on("beforeunload", function(){
+	if( settings['prevent_unsaved']['state'] == "enabled" && user_edited && jQuery(".editor:visible textarea").val() !== undefined ){
+		return false;
+	}
+});
