@@ -148,11 +148,9 @@ var settings = {
 var update_notif_template = '<span class="wpgpt-update-notice"><b>WPGlotPress Tools new version available</b><br>Update to version <b>%%last_version%%</b> (from  ' +
 							WPGPT_VERSION + ')<br><a href="https://github.com/vlad-timotei/wpgp-tools/releases/tag/%%last_version%%"><br> Click here</a>' +
 							', download, unzip the files, replace them and click <i>Reload</i> in chrome://extensions/';
-
-( function( $ ){
 	
-$('#menu-headline-nav').append('<li class="menu-item wpgpt_settings" style="cursor:pointer;"><a>Tools Settings</a></li>');
-$('.wpgpt_settings').click(function() {
+jQuery('#menu-headline-nav').append('<li class="menu-item wpgpt_settings" style="cursor:pointer;"><a>Tools Settings</a></li>');
+jQuery('.wpgpt_settings').click(function() {
 	wpgpt_settings();
 });
 
@@ -175,21 +173,21 @@ function wpgpt_settings(){
 		return; //ToDo: don't refresh, but instead reload changes only
 	}
 	else{
-		$(".wpgpt_settings a").html("<b>Close</b> Settings");
+		jQuery(".wpgpt_settings a").html("<b>Close</b> Settings");
 		settings_state = 1;
 	}
 	
-	if( $('.wpgpt-snippets-window').length !== 0 ){
-		$('.wpgpt-snippets-window').hide();
+	if( jQuery('.wpgpt-snippets-window').length !== 0 ){
+		jQuery('.wpgpt-snippets-window').hide();
 	}
 	
-	if( $('.wpgpt-settings-window').length !== 0 ){
-		$('.wpgpt-settings-window').toggle();
+	if( jQuery('.wpgpt-settings-window').length !== 0 ){
+		jQuery('.wpgpt-settings-window').toggle();
 		return;
 	}
 	
 	var container = '<div class="wpgpt-settings-window"></div>';
-	$('.gp-content').html(container);
+	jQuery('.gp-content').html(container);
 
 	var settings_count = Object.keys( settings ).length;
 	var i = 1;
@@ -198,7 +196,7 @@ function wpgpt_settings(){
 	var shtml = ""; 
 	var shtmlo = "";
 	
-	$.each( settings, function( key ) {
+	jQuery.each( settings, function( key ) {
 		if( settings[key]['parent'] != 'none' ){
 			this_shtml = "";
 			this_shtml_class = "";
@@ -245,10 +243,10 @@ function wpgpt_settings(){
 		
 		if( i == settings_count ){
 			shtml += '<button id="save_settings" >Save all settings</button>'
-			$('.wpgpt-settings-window').append( shtml );
-			$.each(settings, function( key ) {
+			jQuery('.wpgpt-settings-window').append( shtml );
+			jQuery.each(settings, function( key ) {
 				if( settings[key]['state'] == "disabled" ){
-					$(".wpgpt-child-of-" + key ).hide();
+					jQuery(".wpgpt-child-of-" + key ).hide();
 				}
 			});
 		}
@@ -273,29 +271,29 @@ function wpgpt_settings(){
 						'<span class="right-note">* if <i>Consistency Tools</i> enabled<span>' +
 						'</div>';
 									
-	$('.wpgpt-settings-window').append( shortcuts_html );
-	$(".wpgpt-update").click(function(){
-		var option_name = $(this).attr('name'); 
-		var option_value = $(this).val();
+	jQuery('.wpgpt-settings-window').append( shortcuts_html );
+	jQuery(".wpgpt-update").click(function(){
+		var option_name = jQuery(this).attr('name'); 
+		var option_value = jQuery(this).val();
 		update_setting( option_name, option_value );	
 		
 		if( option_value == "disabled" ){
-			$(".wpgpt-child-of-" + option_name ).hide(200);
+			jQuery(".wpgpt-child-of-" + option_name ).hide(200);
 		}
 		else{
-			$(".wpgpt-child-of-" + option_name ).show(200);
+			jQuery(".wpgpt-child-of-" + option_name ).show(200);
 		}			
 	}); 
 	
-	$("#save_settings").click( exit_settings );
- }
+	jQuery("#save_settings").click( exit_settings );
+}
  
 function update_feature( feature_name, feature_status ){
 	if( feature_status == "nothing" ){
-		$(".wpgpt-settings-" + feature_name ).hide(200);
+		jQuery(".wpgpt-settings-" + feature_name ).hide(200);
 	}
 	else{
-		$(".wpgpt-settings-" + feature_name ).show(200);
+		jQuery(".wpgpt-settings-" + feature_name ).show(200);
 	}
 }
  
@@ -310,9 +308,9 @@ function update_setting( name, val ){
 }
 
 function exit_settings(){
-	settings["custom_period"]['state'] = $("#custom_period").val();
-	settings["warning_words"]['state'] = $("#warning_words").val(); // this instead update_setting to avoid redundancy;
-	update_setting("notice_words", $("#notice_words").val());	
+	settings["custom_period"]['state'] = jQuery("#custom_period").val();
+	settings["warning_words"]['state'] = jQuery("#warning_words").val(); // this instead update_setting to avoid redundancy;
+	update_setting("notice_words", jQuery("#notice_words").val());	
 	location.reload();
 }
 
@@ -334,6 +332,8 @@ if( typeof $gp !== 'undefined' ){
 	})( $gp.editor.show );
 }
 
+/** Check version */
+
 function check_version() {
 	if( settings['last_checked']['state'] != 'never' )
 		if( ( Date.now() - settings['last_checked']['state'] ) < 43200000 ){ // check every 12h
@@ -342,7 +342,7 @@ function check_version() {
 		}
 		
     var req = "https://wptools.vladtimotei.ro/wpgp-tools/version.php";
-    $.get( req, function( current_version ) {
+    jQuery.get( req, function( current_version ) {
         if ( current_version != WPGPT_VERSION ){
 			settings["last_version"]['state'] = current_version; // this instead update_setting to avoid redundancy;
 		}
@@ -353,10 +353,8 @@ function check_version() {
 	
 function display_check_version(){
 	if( settings['last_version']['state'] > WPGPT_VERSION ){	
-		$("#masthead").after( update_notif_template.replaceAll( '%%last_version%%', settings['last_version']['state'] ) );
+		jQuery("#masthead").after( update_notif_template.replaceAll( '%%last_version%%', settings['last_version']['state'] ) );
 	}
 }
 
 setTimeout(check_version, 3000); 
-
-})( jQuery );
