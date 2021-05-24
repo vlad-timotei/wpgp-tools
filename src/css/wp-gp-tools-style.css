@@ -339,9 +339,10 @@ ul.wpgpt-warnings-list li {
 }
 
 .wpgpt-search-close-tabs {
-    float: right;
-    margin-right: 17px !important;
-    margin-top: 6px !important;
+    float: left;
+    margin-left: 17px !important;
+    margin-top: 15px !important;
+	margin-bottom: 10px;
 }
 
 .wpgpt-search-notice {

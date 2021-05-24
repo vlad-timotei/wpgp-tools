@@ -56,14 +56,12 @@ if( user_env_settings['search'] == "enabled"){
 	"<span class='error-notice'></span>" +
 	"<input type='text' class='wpgpt-search-word' name='wpgpt-search-word' placeholder='Search for...'  >" +
 	"<input type='submit' class='wpgpt-search-action' value='Search'><br >" +
-	"<label class='noselect'><input type='checkbox' data-search-project='this-project' class='wpgpt-search-option'> this project </label>" +
-	"<button type='button' class='wpgpt-search-close-tabs' style='display:none;'>Close all</button><br>" +
+	"<label class='noselect'><input type='checkbox' data-search-project='this-project' class='wpgpt-search-option'> this project </label><br>" +
 	"<label class='noselect'><input type='checkbox' data-search-project='wp' class='wpgpt-search-option'> WordPress </label><br>" +
 	"<label class='noselect'><input type='checkbox' data-search-project='plugin' class='wpgpt-search-option wpgpt-search-plugin-option'> another plugin </label>" +
 	"<input type='text' class='wpgpt-search-plugin-slug' name='wpgpt-search-plugin-slug' placeholder=' enter slug' size='15'  >" +
 	"<br><label class='noselect'><input type='checkbox' data-search-project='consistency' class='wpgpt-search-option'> consistency tool</label>" +
-	"<br>" +
-    "</form>";
+	"<br></form><button type='button' class='wpgpt-search-close-tabs' style='display:none;'>Close all tabsclose</button><br>";
 	
 	let actions_html_output = '' +
 	'<button type="button" class="wpgpt-actions_copy with-tooltip' +
@@ -156,11 +154,16 @@ function elements_init(){
 		}
 		else{
 			open_tab('panel_links', $(this).data('link') + resultpage );
+			$(".wpgpt-search-close-tabs").show();
 		}
 	});
 	
 	$(".wpgpt-get-consistency").click(function(){ get_consistency_suggestions( $(this).closest('tr').attr('id'), this ); } );	
-	$(".wpgpt-google-translate.wpgpt-google-translate").click( function(){ open_tab('google-translate', $(this).data('gt-string') ); } );
+	$(".wpgpt-google-translate.wpgpt-google-translate").click( function(){ 
+		open_tab('google-translate', $(this).data('gt-string') ); 
+		$(".wpgpt-search-close-tabs").show();
+	} );
+	
 	$(window).on("beforeunload", function(){
 		close_tabs('all');
 		if( user_edited && user_env_settings['prevent_unsaved'] == "enabled" && $(".editor:visible textarea").val() !== undefined ){
@@ -308,7 +311,7 @@ function display_google_translate(){
 
 function close_tabs( tags_group ){
   for( const [tab_key] of Object.entries(tabs_state) ){
-    if ( ( tabs_state[tab_key] === 'opened' ) && ( tags_group == 'all' || ( tab_key !== 'google-translate' && tab_key !== 'references' ) ) ) {
+    if ( ( tabs_state[tab_key] === 'opened' ) && ( tags_group == 'all' || ( tab_key !== 'google-translate' && tab_key !== 'references' && tab_key !== 'panel_links'  ) ) ) {
 		tabs[tab_key].close();
 		tabs_state[tab_key] = 'closed';
     }
