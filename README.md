@@ -121,7 +121,6 @@ If this somehow fails, you can: manually copy the URL and install it in the Util
 ### Future version features
 
 - Personal translation notes & project status snippets
-- Alert for unsaved string (v.1.2 has such a feature included but it is disabled because it has flaws)
 - ~~Personal glossary~~ (this is included in [WPTranslationFiller extension](https://github.com/vibgyj/WPTranslationFiller/) and [GlotDict](https://github.com/Mte90/GlotDict) and I don't plan to overlap features!)
 
 
@@ -149,6 +148,7 @@ Contributions are welcome, bugreports, suggestions and even pull requests! No li
 - Adds end question mark check 
 - Adds extension settings page
 - Adds new shortcut - Alt + P (Firefox users need it)
+- Adds a prompt for unsaved strings when leaving the page
 - Improves last character checks ([see comment](https://github.com/vlad-timotei/wpgp-tools/issues/1#issuecomment-843997677))
 - Improves checks performance
 - Improves ro_RO quotes regex
