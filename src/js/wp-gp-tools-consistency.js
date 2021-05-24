@@ -1,4 +1,4 @@
-var user_env_settings = { 'search' : 'enabled', 'prevent_unsaved': 'disabled', 'autocomplete_suggestion' : false}; 
+var user_env_settings = { 'search' : 'enabled', 'prevent_unsaved': 'disabled'}; 
 /** 'prevent_unsaved': 'disabled' => it doesn't work properly yet ToDO: in future version improve algorithm 
 	user_env_settings is a known/accepted redundancy for TM script that runs in the same environment, compared to the different extension env
 */
@@ -199,12 +199,7 @@ function get_consistency_suggestions( string_id, get_consistency_btn ){
 		}
 			
 	$( get_consistency_btn ).before(list_of_suggestions);
-	$( get_consistency_btn ).remove();   
-
-	if( user_env_settings['autocomplete_suggestion'] && translations.length == 1 ){
-		$(".editor:visible .suggestions__translation-consistency .copy-suggestion:eq(0)").click();
-	}
-		
+	$( get_consistency_btn ).remove();		
 	ifr.remove();
     });
 
