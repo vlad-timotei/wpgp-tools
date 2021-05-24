@@ -86,7 +86,8 @@ padding:10px 10px 10px;
 }
 
 #warning_words,
-#notice_words {
+#notice_words,
+#custom_period {
 	width:62%;
 	cursor: text;
 	border: 1px  solid #d8d8d8;

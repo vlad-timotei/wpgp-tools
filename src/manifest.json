@@ -1,7 +1,7 @@
 {
 	"manifest_version":2,
 	"name":"WPGP Tools",
-	"version":"1.2",
+	"version":"1.3",
 	"description":"Tools for GP usage on WP",
 	"permissions":[
 		"activeTab",
@@ -29,5 +29,16 @@
 		"css":[
 			"css/wp-gp-tools-style.css"
 		]
-	}]
+	}],
+   	 "options_ui": {
+   		 "page": "wpgpt-settings.html",
+   		 "open_in_tab": false
+  	},
+	"icons": {
+  		"16": "img/icon-16.png",
+		"48": "img/icon-48.png",
+		"64": "img/icon-128.png",
+		"128": "img/icon-128.png"
+   	 
+  }
 }

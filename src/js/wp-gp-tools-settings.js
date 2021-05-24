@@ -18,7 +18,7 @@ var settings = {
 		'parent' : 'checks'
 		},
 		'end_period' : {
-			'desc' : 'Additional or missing end period (.)',
+			'desc' : 'Additional or missing end period',
 			'state' : 'warning',
 			'type' : 3,
 			'parent' : 'checks'
@@ -29,12 +29,15 @@ var settings = {
 			'type' : 3,
 			'parent' : 'checks'
 		},
-		'end_different' : {
-			'desc' : 'Different ending',
+		'end_question' : {
+			'desc' : 'Missing end question mark (?)',
 			'state' : 'notice',
 			'type' : 3,
 			'parent' : 'checks'
 		},
+		/*'end_different' : {}
+		** deprecated since v.1.3
+		*/
 		'double_spaces' : {
 			'desc' : 'Multiple spaces',
 			'state' : 'warning',
@@ -48,7 +51,7 @@ var settings = {
 			'parent' : 'checks'
 		},
 		'notice_words' : {
-			'desc'	: 'Notification about these words',
+			'desc'	: 'Notify about these words',
 			'state' : '',
 			'type'	: 4,
 			'parent' : 'checks'
@@ -64,18 +67,18 @@ var settings = {
 		'type' : 0,
 		'parent' : 'self'
 	},
+		'custom_period' : {
+			'desc'	: 'My locale uses this custom period symbol:',
+			'state' : '',
+			'type'	: 5,
+			'parent' : 'locale_checks'
+		},
 		'ro_checks' : {
 			'desc' : 'Romanian checks',
 			'state' : 'disabled',
 			'type' : 2,
 			'parent' : 'locale_checks'
 		},
-		/**	'ro_glossary' : {
-				'desc' : 'Romanian glossary',
-				'state' : 'disabled',
-				'type' : 2,
-				'parent' : 'ro_checks'
-		}, ToDo: in future version: custom Glosarry */
 			'ro_diacritics' : {
 				'desc' : 'Wrong ro_RO diacritics (ÃãŞşŢţ)',
 				'state' : 'warning',
@@ -90,13 +93,13 @@ var settings = {
 				},
 			'ro_ampersand' : {
 				'desc' : '& instead of „și”',
-				'state' : 'notice',
+				'state' : 'warning',
 				'type' : 3,
 				'parent' : 'ro_checks'
 				},
 			'ro_slash' : {
 				'desc' : 'No spaces around slash (/) ',
-				'state' : 'notice',
+				'state' : 'warning',
 				'type' : 3,
 				'parent' : 'ro_checks'
 				},
@@ -161,8 +164,10 @@ $('.wpgpt_settings').click(function() {
 var user_settings = {}; 
 if( getLS('wpgpt-user-settings') !== null ){
 	user_settings = JSON.parse( getLS('wpgpt-user-settings') ); 
-	for( const property in user_settings ){
-		settings[property]['state'] = user_settings[property];
+	for( const property in settings ){
+		if( settings[property]['type'] && user_settings[property]!== undefined ){
+			settings[property]['state'] = user_settings[property];
+		}
 	}
 }
 
@@ -203,24 +208,30 @@ function wpgpt_settings(){
 			this_shtml = "";
 			this_shtml_class = "";
 		
-			if( settings[key]['type'] == 0 ){
-				this_shtml = '<div class="wpgpt-setting-description">' + settings[key]['desc'] + '</div>' + ((settings[key]['state'] != undefined ) ? settings[key]['state'] : '');
-			}
-			else if( settings[key]['type'] == 2 ){
+			switch ( settings[key]['type'] ){
+				case 0:
+					this_shtml = 	'<div class="wpgpt-setting-description">' + settings[key]['desc'] + '</div>' + ( ( settings[key]['state'] != undefined ) ? settings[key]['state'] : '');
+					break;
+				case 2:
 					this_shtml = 	'<div class="wpgpt-setting-description">' + settings[key]['desc'] +'</div>' + 
 									'<div class="wpgpt-setting-type-2"><label><input type="radio" class="wpgpt-update" name="' + key + '" value="enabled" ' + ( ( settings[key]['state'] == 'enabled' ) ? 'checked' : '' ) + '> Enabled</label></div>'+
 									'<div class="wpgpt-setting-type-2"><label><input type="radio" class="wpgpt-update" name="' + key + '" value="disabled" ' + ( ( settings[key]['state'] == 'disabled' ) ? 'checked' : '' ) + '> Disabled</label></div>';
-			}
-			else if( settings[key]['type'] == 3 ){
+					break;
+				case 3:
 					this_shtml = 	'<div class="wpgpt-setting-description">' + settings[key]['desc'] +'</div>' + 
 									'<div class="wpgpt-setting-type-3"><label><input type="radio" class="wpgpt-update" name="' + key + '" value="warning" ' + ( ( settings[key]['state'] == 'warning' ) ? 'checked' : '' ) + '> Warn & prevent save</label></div>'+
 									'<div class="wpgpt-setting-type-3"><label><input type="radio" class="wpgpt-update" name="' + key + '" value="notice" ' + ( ( settings[key]['state'] == 'notice' ) ? 'checked' : '' )  + '> Just notification</label></div>'+
 									'<div class="wpgpt-setting-type-3"><label><input type="radio" class="wpgpt-update" name="' + key + '" value="nothing" ' + ( ( settings[key]['state'] == 'nothing' ) ? 'checked' : '' ) + '> Don\'t check</label></div>';
-			}
-			else if( settings[key]['type'] == 4){
-				this_shtml = 	'<div class="wpgpt-setting-description">' + settings[key]['desc'] +'</div>' + 
-								'<input type="text" id="' + key +'" placeholder="Leave empty to disable. Case sensitive. Separate words by , " value="' + 
-								settings[key]['state'] + '">';
+					break;
+				case 4:
+					this_shtml = 	'<div class="wpgpt-setting-description">' + settings[key]['desc'] +'</div>' + 
+									'<input type="text" id="' + key +'" placeholder="Leave empty to disable. Case sensitive. Separate words by , " value="' + 
+									settings[key]['state'] + '">';
+					break;
+				case 5:
+					this_shtml = 	'<div class="wpgpt-setting-description">' + settings[key]['desc'] +'</div>' + 
+									'<input type="text" id="' + key +'" placeholder="E.g. 。 Leave empty if you use . symbol"value="' + 
+									settings[key]['state'] + '">';
 			}
 			
 			if( settings[key]['parent'] != 'self' ){
@@ -263,7 +274,7 @@ function wpgpt_settings(){
 						'<div class="gp-row"><div class="gp-shortcut"><span class="r">G</span>oogle Translate*</div><div class="gp-shortcut">Alt + <span class="r">G</span></div></div>' +
 						'<div class="gp-row"><div class="gp-shortcut"><span class="s">C</span>onsistency*</div><div class="gp-shortcut">Alt + <span class="s">C</span></div></div>' +
 						'<div class="gp-row"><div class="gp-shortcut">Copy consistency* <span class="c">#2</span></div><div class="gp-shortcut">Alt + <span class="c">2</span></div><div class="gp-shortcut"><span class="small note">works with #1, #2 and #3</span></div></div>' +
-						'<div class="gp-row"><div class="gp-shortcut"><span class="a">S</span>earch focus* </div><div class="gp-shortcut">Alt + <span class="a">S</span></div></div>' +
+						'<div class="gp-row"><div class="gp-shortcut">Focus on <span class="a">S</span>earch in <span class="a">P</span>rojects* </div><div class="gp-shortcut">Alt + <span class="a">S</span></div><div class="gp-shortcut">Alt + <span class="a">P</span></div></div>' +
 						'<span class="right-note">* if <i>Consistency Tools</i> enabled<span>' +
 						'</div>';
 									
@@ -304,6 +315,7 @@ function update_setting( name, val ){
 }
 
 function exit_settings(){
+	settings["custom_period"]['state'] = $("#custom_period").val();
 	settings["warning_words"]['state'] = $("#warning_words").val(); // this instead update_setting to avoid redundancy;
 	update_setting("notice_words", $("#notice_words").val());	
 	location.reload();

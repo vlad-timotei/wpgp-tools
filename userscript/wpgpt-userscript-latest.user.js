@@ -2,7 +2,7 @@
 // @name         WPGP Tools
 // @namespace    https://vladtimotei.ro
 // @description  Tools for a faster translation flow
-// @version      1.2
+// @version      1.3
 // @author       Vlad T
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
