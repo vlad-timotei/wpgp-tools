@@ -122,7 +122,7 @@ If this somehow fails, you can: manually copy the URL and install it in the Util
 
 - Personal translation notes & project status snippets
 - Alert for unsaved string (v.1.2 has such a feature included but it is disabled because it has flaws)
-- ~~Personal glossary~~ (this is included in [WPTranslationFiller extension](https://github.com/vibgyj/WPTranslationFiller/) and [GlotDict](https://github.com/Mte90/GlotDict) I don't plan to overlap features!)
+- ~~Personal glossary~~ (this is included in [WPTranslationFiller extension](https://github.com/vibgyj/WPTranslationFiller/) and [GlotDict](https://github.com/Mte90/GlotDict) and I don't plan to overlap features!)
 
 
 ### Contributing
