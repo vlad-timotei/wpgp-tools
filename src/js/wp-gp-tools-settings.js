@@ -128,7 +128,7 @@ var settings = {
 			'state' : 'disabled',
 			'type' : 2,
 			'parent' : 'others'
-		}, 
+		},
 	/**	'snippets' : {
 	**		'desc' : 'Snippets & notes',
 	**		'state' : 'disabled',
@@ -137,18 +137,19 @@ var settings = {
 	**	}, #to-do: future version */
 	'last_checked' :{
 			'state' : 'never',
-			'parent' : 'none'
+			'parent' : 'none',
+			'type'	: -1
 	},
 	'last_version' :{
 			'state' : WPGPT_VERSION,
-			'parent' : 'none'
+			'parent' : 'none',
+			'type' : -1
 	},
 };
 
 var update_notif_template = '<span class="wpgpt-update-notice"><b>WPGlotPress Tools new version available</b><br>Update to version <b>%%last_version%%</b> (from  ' +
 							WPGPT_VERSION + ')<br><a href="https://github.com/vlad-timotei/wpgp-tools/releases/tag/%%last_version%%"><br> Click here</a>' +
 							', download, unzip the files, replace them and click <i>Reload</i> in chrome://extensions/';
-	
 jQuery('#menu-headline-nav').append('<li class="menu-item wpgpt_settings" style="cursor:pointer;"><a>Tools Settings</a></li>');
 jQuery('.wpgpt_settings').click( function() { wpgpt_settings(); } );
 
@@ -156,7 +157,7 @@ var user_settings = {};
 if( getLS('wpgpt-user-settings') !== null ){
 	user_settings = JSON.parse( getLS('wpgpt-user-settings') ); 
 	for( const property in settings ){
-		if( settings[property]['type'] && user_settings[property]!== undefined ){
+		if( settings[property]['type'] != 0 && user_settings[property]!== undefined ){
 			settings[property]['state'] = user_settings[property];
 		}
 	}
@@ -332,14 +333,13 @@ if( typeof $gp !== 'undefined' ){
 }
 
 /** Check version */
-
 function check_version() {
-	if( settings['last_checked']['state'] != 'never' )
+	if( settings['last_checked']['state'] != 'never' ){
 		if( ( Date.now() - settings['last_checked']['state'] ) < 43200000 ){ // check every 12h
 			display_check_version();
 			return;
 		}
-		
+	}
     var req = "https://wptools.vladtimotei.ro/wpgp-tools/version.php";
     jQuery.get( req, function( current_version ) {
         if ( current_version != WPGPT_VERSION ){
@@ -356,4 +356,4 @@ function display_check_version(){
 	}
 }
 
-setTimeout(check_version, 3000); 
+setTimeout(check_version, 5000); 
