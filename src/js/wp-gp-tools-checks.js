@@ -245,7 +245,7 @@ function wpgpt_run_checks( original, translated ){
 					var broken_placeholders = [];
 					for ( var i = 0; i < original_ph.length; i++ )
 						if ( original_ph[i] != translated_ph[i] ){
-							broken_placeholders.push(translated_ph[i]);
+							broken_placeholders.push( "<br>" + original_ph[i] + " is translated as " + translated_ph[i] );
 						}
 					if ( broken_placeholders.length ){
 						warnings['placeholders'] = "<li>Possible broken placeholder(s): " + broken_placeholders.toString() + "</li>";
