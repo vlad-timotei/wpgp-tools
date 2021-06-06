@@ -154,6 +154,7 @@ Contributions are welcome, bugreports, suggestions and even pull requests! No li
 - Improves ro_RO quotes regex
 - Improves ro_Ro ampersand regex
 - Improves settings update flow to allow new settings
+- Fixes additional `/` in QuickLinks
 - Obsoletes different ending check (now redundant)
 - Obsoletes glossary idea (to prevent tools overlap)
 - New logo
