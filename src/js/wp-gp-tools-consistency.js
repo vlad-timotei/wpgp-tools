@@ -111,8 +111,8 @@ function consistency_tools(){
 			jQuery(".editor").each( function(){
 				menu_links = [];
 				jQuery(this).find(".button-menu__dropdown li a").each( function(){ menu_links.push( jQuery(this).attr('href') ); } );
-				jQuery(this).find(".wpgpt-actions_permalink").data('link', "https://translate.wordpress.org/" + menu_links[0]);
-				jQuery(this).find(".wpgpt-actions_history").data('link', "https://translate.wordpress.org/" + menu_links[1]);
+				jQuery(this).find(".wpgpt-actions_permalink").data('link', "https://translate.wordpress.org" + menu_links[0]);
+				jQuery(this).find(".wpgpt-actions_history").data('link', "https://translate.wordpress.org" + menu_links[1]);
 				jQuery(this).find(".wpgpt-actions_consistency").data('link', menu_links[2]);
 			});
 	
