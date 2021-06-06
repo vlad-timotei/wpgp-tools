@@ -234,10 +234,10 @@ function wpgpt_run_checks( original, translated ){
 			}
 			else{
 				if ( original_ph.length < translated_ph.length ){
-					warnings['placeholders'] = '<li>Additional placeholder(s) found: ' + arr_diff(translated_ph, original_ph) + '</li>';
+					warnings['placeholders'] = '<li>Additional placeholder(s) found: ' + arr_diff( translated_ph, original_ph ) + '</li>';
 				}
 				if ( original_ph.length > translated_ph.length ){
-					warnings['placeholders'] = '<li>Placeholder(s) missing or broken: ' + arr_diff(original_ph, translated_ph) + '</li>';
+					warnings['placeholders'] = '<li>Placeholder(s) missing or broken: ' + arr_diff( original_ph, translated_ph ) + '</li>';
 				}
 				if ( original_ph.length == translated_ph.length ) {
 					original_ph.sort();
@@ -245,7 +245,7 @@ function wpgpt_run_checks( original, translated ){
 					var broken_placeholders = [];
 					for ( var i = 0; i < original_ph.length; i++ )
 						if ( original_ph[i] != translated_ph[i] ){
-							broken_placeholders.push( '<br>' + original_ph[i] + ' is translated as ' + translated_ph[i] );
+							broken_placeholders.push( '<br>' + original_ph[i] + ' might be translated as ' + translated_ph[i] );
 						}
 					if ( broken_placeholders.length ){
 						warnings['placeholders'] = '<li>Possible broken placeholder(s): ' + broken_placeholders.toString() + '</li>';
@@ -643,5 +643,13 @@ function wpgpt_filters(){
 }
 
 function arr_diff( a, b ){
-    return a.filter(function(i) {return b.indexOf(i) < 0;}).toString();
+    return a.filter(function(i){
+		var pos = b.indexOf(i);
+		if( pos >= 0 ){
+			b[pos] += '-checked';
+			return true;
+		}
+		else 
+			return false;
+	}).toString();
 }

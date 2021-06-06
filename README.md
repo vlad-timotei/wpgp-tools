@@ -116,6 +116,7 @@ If this somehow fails, you can: manually copy the URL and install it in the Util
 - It's an unpacked extension
 - The repo doesn't use workflows to build the release additional zip
 - Tooltips overlap for the Quick Links section (should be fixed upstream)
+- GoogleTranslate link doesn't work for locales that use a different abreviation than GT uses (future release will fix this)
 
 
 ### Future version features
