@@ -460,7 +460,7 @@ function wpgpt_run_checks( original, translated ){
 				case "notice": notices['others'] += error_message; 
 			}
 		} 
-		else if( settings['double_spaces'] !== "nothing" && ( using_double_spaces.length < original_double_spaces.length ) ){
+		else if( settings['double_spaces']['state'] !== "nothing" && ( using_double_spaces.length < original_double_spaces.length ) ){
 				notices['others'] += "<li>" + ( original_double_spaces.length - using_double_spaces.length ) + "missing double space(s)</li>";	
 		}
 		
