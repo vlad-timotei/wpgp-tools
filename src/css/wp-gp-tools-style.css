@@ -298,6 +298,32 @@ ul.wpgpt-warnings-list li {
     float: right;
 }
 
+a.wpgpt-filter-notices.count{
+    color:#673AB7;
+}
+
+a.wpgpt-filter-warnings.count{
+    color:#E91E63;
+}
+
+a.wpgpt-filter-notices.count.ncount-0,
+a.wpgpt-filter-warnings.count.wcount-0{
+    color:#9E9E9E;
+}
+
+a.wpgpt-filter-notices.count:hover{
+    color:#340a7d;
+}
+
+a.wpgpt-filter-warnings.count:hover{
+    color:#ad1347;
+}
+
+a.wpgpt-filter-notices.count.ncount-0:hover,
+a.wpgpt-filter-warnings.count.wcount-0:hover{
+    color:#807e7e
+}
+
 /* Search */
 
 .wpgpt-search {
