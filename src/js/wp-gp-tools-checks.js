@@ -223,21 +223,21 @@ function wpgpt_run_checks( original, translated ){
 			original_ph != null &&
 			translated_ph == null
 		){
-			warnings['placeholders'] = '<li>Missing placeholder(s): ' + original_ph.toString() + '</li>';
+			warnings['placeholders'] = '<li>Missing or broken placeholder(s): ' + original_ph.toString() + '</li>';
 		}
 		else{
 			if(
 				original_ph == null &&
 				translated_ph != null
 			){
-				warnings['placeholders'] = '<li>Additional placeholder(s): ' + translated_ph.toString() + '</li>';
+				warnings['placeholders'] = '<li>Additional placeholder(s) found: ' + translated_ph.toString() + '</li>';
 			}
 			else{
 				if ( original_ph.length < translated_ph.length ){
 					warnings['placeholders'] = '<li>Additional placeholder(s) found: ' + arr_diff( translated_ph, original_ph ) + '</li>';
 				}
 				if ( original_ph.length > translated_ph.length ){
-					warnings['placeholders'] = '<li>Placeholder(s) missing or broken: ' + arr_diff( original_ph, translated_ph ) + '</li>';
+					warnings['placeholders'] = '<li>Missing or broken placeholder(s): ' + arr_diff( original_ph, translated_ph ) + '</li>';
 				}
 				if ( original_ph.length == translated_ph.length ) {
 					original_ph.sort();
