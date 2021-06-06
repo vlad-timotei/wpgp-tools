@@ -645,11 +645,12 @@ function wpgpt_filters(){
 function arr_diff( a, b ){
     return a.filter(function(i){
 		var pos = b.indexOf(i);
-		if( pos >= 0 ){
-			b[pos] += '-checked';
+		if( pos < 0 ){
 			return true;
 		}
-		else 
+		else{
+			b[pos] += '-checked';
 			return false;
+		}
 	}).toString();
 }
