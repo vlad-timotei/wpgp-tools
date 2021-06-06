@@ -44,7 +44,7 @@ if( typeof $gp !== 'undefined' ){
 							approve.trigger( 'click' );
 						}
 					}
-			} else if( settings['shortcuts']['state'] == "enabled" && ( ( 106 === event.keyCode && event.ctrlKey ) || ( 70 === event.keyCode && event.shiftKey && event.ctrlKey ) ) ){ // Ctrl-* (NumPad) or Ctrl-Shift-F = Fuzzy.
+			} else if( settings['shortcuts']['state'] == 'enabled' && ( ( 106 === event.keyCode && event.ctrlKey ) || ( 70 === event.keyCode && event.shiftKey && event.ctrlKey ) ) ){ // Ctrl-* (NumPad) or Ctrl-Shift-F = Fuzzy.
 					reject = jQuery( '.editor:visible' ).find( '.fuzzy' );
 					if( reject.length > 0 ){
 						reject.trigger( 'click' );

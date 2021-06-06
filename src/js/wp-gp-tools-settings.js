@@ -163,7 +163,7 @@ if( getLS('wpgpt-user-settings') !== null ){
 	}
 }
 
-var settings_parent = "";
+var settings_parent = '';
 var settings_state = 0;
 
 function wpgpt_settings(){
@@ -172,7 +172,7 @@ function wpgpt_settings(){
 		return;
 	}
 	else{
-		jQuery(".wpgpt_settings a").html("<b>Close</b> Settings");
+		jQuery('.wpgpt_settings a').html('<b>Close</b> Settings');
 		settings_state = 1;
 	}
 	
@@ -192,13 +192,13 @@ function wpgpt_settings(){
 	var i = 1;
 	
 	var this_shtml, this_shtml_class;
-	var shtml = ""; 
-	var shtmlo = "";
+	var shtml = ''; 
+	var shtmlo = '';
 	
 	jQuery.each( settings, function( key ) {
 		if( settings[key]['parent'] != 'none' ){
-			this_shtml = "";
-			this_shtml_class = "";
+			this_shtml = '';
+			this_shtml_class = '';
 		
 			switch ( settings[key]['type'] ){
 				case 0:
@@ -244,8 +244,8 @@ function wpgpt_settings(){
 			shtml += '<button id="save_settings" >Save all settings</button>'
 			jQuery('.wpgpt-settings-window').append( shtml );
 			jQuery.each(settings, function( key ) {
-				if( settings[key]['state'] == "disabled" ){
-					jQuery(".wpgpt-child-of-" + key ).hide();
+				if( settings[key]['state'] == 'disabled' ){
+					jQuery('.wpgpt-child-of-' + key ).hide();
 				}
 			});
 		}
@@ -271,29 +271,29 @@ function wpgpt_settings(){
 						'</div>';
 									
 	jQuery('.wpgpt-settings-window').append( shortcuts_html );
-	jQuery(".wpgpt-update").click( function(){
+	jQuery('.wpgpt-update').click( function(){
 		
 		var option_name = jQuery(this).attr('name'); 
 		var option_value = jQuery(this).val();
 		update_setting( option_name, option_value );	
 		
-		if( option_value == "disabled" ){
-			jQuery(".wpgpt-child-of-" + option_name ).hide(200);
+		if( option_value == 'disabled' ){
+			jQuery('.wpgpt-child-of-' + option_name ).hide(200);
 		}
 		else{
-			jQuery(".wpgpt-child-of-" + option_name ).show(200);
+			jQuery('.wpgpt-child-of-' + option_name ).show(200);
 		}			
 	}); 
 	
-	jQuery("#save_settings").click( exit_settings );
+	jQuery('#save_settings').click( exit_settings );
 }
  
 function update_feature( feature_name, feature_status ){
-	if( feature_status == "nothing" ){
-		jQuery(".wpgpt-settings-" + feature_name ).hide(200);
+	if( feature_status == 'nothing' ){
+		jQuery('.wpgpt-settings-' + feature_name ).hide(200);
 	}
 	else{
-		jQuery(".wpgpt-settings-" + feature_name ).show(200);
+		jQuery('.wpgpt-settings-' + feature_name ).show(200);
 	}
 }
  
@@ -308,9 +308,9 @@ function update_setting( name, val ){
 }
 
 function exit_settings(){
-	settings["custom_period"]['state'] = jQuery("#custom_period").val();
-	settings["warning_words"]['state'] = jQuery("#warning_words").val(); // this instead update_setting to avoid redundancy
-	update_setting("notice_words", jQuery("#notice_words").val());	
+	settings['custom_period']['state'] = jQuery('#custom_period').val();
+	settings['warning_words']['state'] = jQuery('#warning_words').val(); // this instead update_setting to avoid redundancy
+	update_setting('notice_words', jQuery('#notice_words').val());	
 	location.reload();
 }
 
@@ -340,19 +340,19 @@ function check_version() {
 			return;
 		}
 	}
-    var req = "https://wptools.vladtimotei.ro/wpgp-tools/version.php";
+    var req = 'https://wptools.vladtimotei.ro/wpgp-tools/version.php';
     jQuery.get( req, function( current_version ) {
         if ( current_version != WPGPT_VERSION ){
-			settings["last_version"]['state'] = current_version; // this instead update_setting to avoid redundancy
+			settings['last_version']['state'] = current_version; // this instead update_setting to avoid redundancy
 		}
-		update_setting( "last_checked", Date.now() );
+		update_setting( 'last_checked', Date.now() );
 		display_check_version();
     });
 }
 	
 function display_check_version(){
 	if( settings['last_version']['state'] > WPGPT_VERSION ){	
-		jQuery("#masthead").after( update_notif_template.replaceAll( '%%last_version%%', settings['last_version']['state'] ) );
+		jQuery('#masthead').after( update_notif_template.replaceAll( '%%last_version%%', settings['last_version']['state'] ) );
 	}
 }
 
