@@ -234,10 +234,10 @@ function wpgpt_run_checks( original, translated ){
 			}
 			else{
 				if ( original_ph.length < translated_ph.length ){
-					warnings['placeholders'] = "<li>Additional placeholder(s) found</li>";
+					warnings['placeholders'] = '<li>Additional placeholder(s) found: ' + arr_diff(translated_ph, original_ph) + '</li>';
 				}
 				if ( original_ph.length > translated_ph.length ){
-					warnings['placeholders'] = "<li>Placeholder(s) missing or broken</li>";
+					warnings['placeholders'] = '<li>Placeholder(s) missing or broken: ' + arr_diff(original_ph, translated_ph) + '</li>';
 				}
 				if ( original_ph.length == translated_ph.length ) {
 					original_ph.sort();
@@ -640,4 +640,8 @@ function wpgpt_filters(){
 	jQuery(".wpgpt-filter-all").click(function(){ 
 		jQuery('#translations tr.preview').show(200);
 	})
+}
+
+function arr_diff( a, b ){
+    return a.filter(function(i) {return b.indexOf(i) < 0;}).toString();
 }
