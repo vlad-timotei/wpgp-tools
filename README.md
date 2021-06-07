@@ -66,7 +66,7 @@ Checks can be set as:
 
 - To bypass a *Warning & prevent save* check, click Save / approve with warnings
 - Show only strings with failed checks using
-  ![image](https://user-images.githubusercontent.com/65488419/117627508-e7ee0c80-b180-11eb-93e2-8c17c27f5bdf.png)
+  ![image](https://user-images.githubusercontent.com/65488419/120986819-a784ad00-c785-11eb-9819-7c32046b1349.png)
 
 ## #3 Locale specific Checks
 
@@ -158,6 +158,7 @@ Contributions are welcome, bugreports, suggestions and even pull requests! No li
 - Improves settings update flow to allow new settings
 - Improves placeholders check messages
 - Improves checks performance by +10-15%
+- Improves filters design to prevent page style break
 - Fixes additional `/` in QuickLinks
 - Obsoletes different ending check (now redundant)
 - Obsoletes glossary idea (to prevent tools overlap)
