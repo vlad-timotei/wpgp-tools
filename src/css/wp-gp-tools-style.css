@@ -298,30 +298,29 @@ ul.wpgpt-warnings-list li {
     float: right;
 }
 
-a.wpgpt-filter-notices.count{
-    color:#673AB7;
+.wpgpt-filter-notices,
+.wpgpt-filter-warnings{
+    display:inline-block;
 }
 
-a.wpgpt-filter-warnings.count{
-    color:#E91E63;
+.wpgpt-filter-notices .filter-icon,
+.wpgpt-filter-warnings .filter-icon{
+    width: 20px;
+    height: 20px;
+    margin: -5px 3px 0 3px;
 }
 
-a.wpgpt-filter-notices.count.ncount-0,
-a.wpgpt-filter-warnings.count.wcount-0{
-    color:#9E9E9E;
+.wpgpt-filter-notices span,
+.wpgpt-filter-warnings span {
+    margin-top: -7px;
+    display: block;
+    text-align: center;
+    font-size: 0.85em;
 }
 
-a.wpgpt-filter-notices.count:hover{
-    color:#340a7d;
-}
-
-a.wpgpt-filter-warnings.count:hover{
-    color:#ad1347;
-}
-
-a.wpgpt-filter-notices.count.ncount-0:hover,
-a.wpgpt-filter-warnings.count.wcount-0:hover{
-    color:#807e7e
+.wpgpt-filter-notices .filter-icon.count-0,
+.wpgpt-filter-warnings .filter-icon.count-0{
+    opacity:0.4;
 }
 
 /* Search */

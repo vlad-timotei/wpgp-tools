@@ -67,16 +67,16 @@ function wpgpt_check_all_translations(){
 		editor_html_output = '<div class="wpgpt-checks-list">' + editor_html_output + '</div>';
 
 		if( preview_warning ){
-			preview_html_output = '<div class="wpgpt-warning-preview"> <img class src="' + warning_icon + '"></div>';
+			preview_html_output = '<div class="wpgpt-warning-preview"> <img title="String has a warning." src="' + warning_icon + '"></div>';
 			jQuery('#' + jQuery(this).attr('id').replace('preview', 'editor')).find('.wpgpt-ignore-warnings').show();	
 			preview_class = 'wpgpt-has-warning';
 		} 
 		else if( preview_notice ){
-			preview_html_output = '<div class="wpgpt-check-preview"><img class src="' + notice_icon + '"></div>'; 
+			preview_html_output = '<div class="wpgpt-check-preview"><img title="String has a notice." src="' + notice_icon + '"></div>'; 
 			preview_class = 'wpgpt-has-notice';
 			}
 			else {
-				preview_html_output = '<div class="wpgpt-check-preview"><b>&#10003;</b></div>';
+				preview_html_output = '<div class="wpgpt-check-preview"><b title="All checks passed.">&#10003;</b></div>';
 				preview_class = 'wpgpt-has-nothing';
 			}
 			
@@ -619,12 +619,11 @@ function wpgpt_filters(){
 	var notices_count = jQuery('.wpgpt-has-notice').length;
 	var warnings_count = jQuery('.wpgpt-has-warning').length
 	var filters = '';
+	var notice_icon_style = 'background: url(' + notice_icon + ');background-size: 100%;background-repeat: no-repeat;';
+	var warning_icon_style = 'background: url(' + warning_icon + ');background-size: 100%;background-repeat: no-repeat;';
 	filters +='<div class="wpgpt-filters">';
-    filters += '<a href="#" class="wpgpt-filter-notices count ncount-' + notices_count + '">Notices (<span>' + notices_count + '</span>)</a>';
-	filters += '<span class="separator">•</span>';
-    filters += '<a href="#" class="wpgpt-filter-warnings count wcount-' + warnings_count + '">Warnings (<span>' + warnings_count + '</span>)</a>';
-	filters += '<span class="separator">•</span>';
-    filters += '<a href="#" class="wpgpt-filter-all">All</a></div>';
+    filters += '<a href="#" title="Click to view strings with notice only - ' + notices_count + ' strings" class="wpgpt-filter-notices"><span class="filter-icon count-' + notices_count + '" style="' + notice_icon_style + '"></span><span>(' + notices_count + ')</span></a>';
+    filters += '<a href="#" title="Click to view strings with warning only - ' + warnings_count + ' strings" class="wpgpt-filter-warnings"><span class="filter-icon count-' + warnings_count + '" style="' + warning_icon_style + '"></span><span>(' + warnings_count + ')</span></a>';
 	jQuery('#upper-filters-toolbar div').first().append(filters);
 	
 	jQuery('.wpgpt-filter-warnings').click(function(){ 
@@ -636,10 +635,6 @@ function wpgpt_filters(){
 		jQuery('#translations tr.preview.wpgpt-has-nothing, #translations tr.preview.wpgpt-has-warning').hide(200);
 		jQuery('#translations tr.preview.wpgpt-has-notice').show(200);
 	});
-		
-	jQuery('.wpgpt-filter-all').click(function(){ 
-		jQuery('#translations tr.preview').show(200);
-	})
 }
 
 function arr_diff( a, b ){
