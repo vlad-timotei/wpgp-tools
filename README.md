@@ -63,10 +63,11 @@ Checks can be set as:
 
 <br>
 
-
 - To bypass a *Warning & prevent save* check, click Save / approve with warnings
-- Show only strings with failed checks using
-  ![image](https://user-images.githubusercontent.com/65488419/120986819-a784ad00-c785-11eb-9819-7c32046b1349.png)
+- Show only strings with failed checks using icons above pagination
+
+![image](https://user-images.githubusercontent.com/65488419/120995562-2da4f180-c78e-11eb-90aa-db4fa72ce3c3.png)
+
 
 ## #3 Locale specific Checks
 
