@@ -122,7 +122,6 @@ If this somehow fails, you can: manually copy the URL and install it in the Util
 - Doesn't display Close all btn when Quick Links are fired & throws error if attempts to close a manually closed tab (future release will fix it)
 - The repo doesn't use workflows to build the release additional zip - I couldn't make it work - if anyone has some hints, let me know.
 - Tooltips overlap for the Quick Links section (should be fixed upstream)
-- Doesn't work on mobile (needs .touch() event listeners)
 
 ### Contributing
 Contributions are welcome, bugreports, suggestions and even pull requests! No limitations, shoot for the stars!
