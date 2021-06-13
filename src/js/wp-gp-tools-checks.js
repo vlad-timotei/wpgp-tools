@@ -96,6 +96,7 @@ function wpgpt_late_init_editors(){
 				$gp.notices.error( wpgpt_error_message );
 			}
 			wpgpt_next_is_strict = true;
+			jQuery('.wpgpt-ignore-warnings input').prop('checked', false);
 			wpgpt_user_edited = false;
 		});
 				
@@ -106,11 +107,12 @@ function wpgpt_late_init_editors(){
 				$gp.notices.error( wpgpt_error_message );
 			}
 			wpgpt_next_is_strict = true;
+			jQuery('.wpgpt-ignore-warnings input').prop('checked', false);
 			wpgpt_user_edited = false;
 		});
 	});
    
-   jQuery('.wpgpt-ignore-warnings input').click(function(){   
+   jQuery('.wpgpt-ignore-warnings input').click(function(){
 	   wpgpt_next_is_strict = ( jQuery(this).prop('checked') == true ) ? false : true;	 
    });
 }
@@ -212,8 +214,9 @@ function wpgpt_run_checks( original, translated ){
 			
 	/** Wrong Placeholders **/
 	let placeholder_pattern =  /(?:%[bcdefgosuxl]|%\d[$][bcdefgosuxl])/g; 
+	var sanitized_translated = translated.replaceAll( /http[^ "']*/g, "https://w.org/" );
 	var original_ph = original.match( placeholder_pattern );
-	var translated_ph = translated.match( placeholder_pattern );
+	var translated_ph = sanitized_translated.match( placeholder_pattern );
 
 	if(
 		original_ph != null ||
@@ -290,7 +293,7 @@ function wpgpt_run_checks( original, translated ){
 	
 		/** Different ending character **/
 		if( last_original_char != last_translated_char ){
-			/** Additional end space **/
+			/** Additional end space **/			
 			if( last_translated_char == ' '){
 				error_message = '<li>Additional end space</li>';
 				switch( wpgpt_settings['end_space']['state'] ){
@@ -302,6 +305,7 @@ function wpgpt_run_checks( original, translated ){
 			/** Missing end space **/
 			if( 
 				warnings['end_char'] == '' &&
+				notices['end_char'] == '' &&
 				last_original_char == ' '
 			){
 				error_message = '<li>Missing end space</li>';
@@ -323,6 +327,7 @@ function wpgpt_run_checks( original, translated ){
 				not_character_period_swap = true;
 			if( 
 				warnings['end_char'] == '' &&
+				notices['end_char'] == '' &&
 				last_original_char == '.' &&
 				last_translated_char != wpgpt_period &&
 				last_translated_char != '.'
@@ -375,6 +380,7 @@ function wpgpt_run_checks( original, translated ){
 				not_period_character_swap = true;
 			if( 
 				warnings['end_char'] == '' &&
+				notices['end_char'] == '' &&
 				last_original_char != '.' &&
 				( last_translated_char == wpgpt_period ||
 				  last_translated_char == '.' )
@@ -412,6 +418,7 @@ function wpgpt_run_checks( original, translated ){
 			/** Missing end : **/
 			if( 
 				warnings['end_char'] == '' &&
+				notices['end_char'] == '' &&
 				last_original_char == ':'
 			){
 				error_message = '<li>Missing end :</li>';
@@ -424,6 +431,7 @@ function wpgpt_run_checks( original, translated ){
 			/** Additional end : **/
 			if( 
 				warnings['end_char'] == '' &&
+				notices['end_char'] == '' &&
 				last_translated_char == ':'
 			){
 				error_message = '<li>Additional end :</li>';
@@ -436,6 +444,7 @@ function wpgpt_run_checks( original, translated ){
 			/** Missing end ? **/
 			if( 
 				warnings['end_char'] == '' &&
+				notices['end_char'] == '' &&
 				last_original_char == '?'
 			){
 				error_message = '<li>Missing end question mark ?</li>';
