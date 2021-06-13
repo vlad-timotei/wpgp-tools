@@ -3,7 +3,7 @@
 <img align="right" src="https://user-images.githubusercontent.com/65488419/118821977-6a34aa00-b8c0-11eb-9e1e-9304db38c434.png">
 
 
-This is a Chrome/Edge extension to help you translate faster. 
+This is a Chrome/Edge/UserScript extension to help you translate faster. 
 
 
 You can find the **Settings** for this extension in the top blue navigation menu *Tools Settings*
@@ -64,9 +64,9 @@ Checks can be set as:
 <br>
 
 - To bypass a *Warning & prevent save* check, click Save / approve with warnings
-- Show only strings with failed checks using icons above pagination
+- Show only strings with failed checks using filters
 
-![image](https://user-images.githubusercontent.com/65488419/120995562-2da4f180-c78e-11eb-90aa-db4fa72ce3c3.png)
+![image](https://user-images.githubusercontent.com/65488419/121800720-26715e00-cc3c-11eb-8b29-6e63f5db5b13.png)
 
 
 ## #3 Locale specific Checks
@@ -114,53 +114,19 @@ If this somehow fails, you can: manually copy the URL and install it in the Util
 
 
 ### Known issues
-- It's an unpacked extension
-- The repo doesn't use workflows to build the release additional zip
 - Tooltips overlap for the Quick Links section (should be fixed upstream)
 - GoogleTranslate link doesn't work for locales that use a different abreviation than GT uses (future release will fix this)
-- Recognizes url encoded characters as additional placeholders [example](https://translate.wordpress.org/projects/wp/dev/ru/default/?filters%5Bstatus%5D=either&filters%5Boriginal_id%5D=8431315&filters%5Btranslation_id%5D=77461139) (future release will fix this)
-- Hypothesis: RTL combined with LTR placeholders results in a false(?) positive warning?
+- Recognizes url encoded characters as additional placeholders ([example](https://translate.wordpress.org/projects/wp/dev/ru/default/?filters%5Bstatus%5D=either&filters%5Boriginal_id%5D=8431315&filters%5Btranslation_id%5D=77461139) - future release will fix this)
+- It's an unpacked extension and the repo doesn't use workflows to build the release additional zip
 
 ### Future version features
 
 - Personal translation notes & project status snippets
 - ~~Personal glossary~~ (this is included in [WPTranslationFiller extension](https://github.com/vibgyj/WPTranslationFiller/) and [GlotDict](https://github.com/Mte90/GlotDict) and I don't plan to overlap features!)
+- Gradually, some WPGPT features will be implemented in GlotDict, as part of a cross-project initiative. That said, WPGPT will continue to exist for those interested
 
 
 ### Contributing
 Contributions are welcome, bugreports, suggestions and even pull requests! No limitations, shoot for the stars!
 
-### Changelog
-##### v.1.0
-  * Search in projects
-  * Quick links
-  * Google Translate
-  * Consistency suggestions
-  * General checks
-  * Romanian checks
-  * Custom Shortcuts
-
-##### v.1.1
-- Consistency data fetching performance 
-
-##### v.1.2
-- Don't promt to "update" to an older version
-
-##### v.1.3
-- Adds user custom period check
-- Adds end question mark check 
-- Adds extension settings page
-- Adds new shortcut - Alt + P (Firefox users need it)
-- Adds a prompt for unsaved strings when leaving the page
-- Improves last character checks ([see comment](https://github.com/vlad-timotei/wpgp-tools/issues/1#issuecomment-843997677))
-- Improves checks performance
-- Improves ro_RO quotes regex
-- Improves ro_Ro ampersand regex
-- Improves settings update flow to allow new settings
-- Improves placeholders check messages
-- Improves checks performance by +10-15%
-- Improves filters design to prevent page style break
-- Fixes additional `/` in QuickLinks
-- Obsoletes different ending check (now redundant)
-- Obsoletes glossary idea (to prevent tools overlap)
-- New logo
+### [Changelog](/CHANGELOG.md)
