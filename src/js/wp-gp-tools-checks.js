@@ -211,7 +211,7 @@ function wpgpt_run_checks( original, translated ){
 	var error_message = '';
 			
 	/** Wrong Placeholders **/
-	let placeholder_pattern =  /(?:%[a-z]|%\d[$][a-z])/ig; 
+	let placeholder_pattern =  /(?:%[bcdefgosuxl]|%\d[$][bcdefgosuxl])/g; 
 	var original_ph = original.match( placeholder_pattern );
 	var translated_ph = translated.match( placeholder_pattern );
 
