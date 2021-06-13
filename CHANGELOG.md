@@ -25,3 +25,4 @@
 * Fixes *Save with warnings* UI inconsistency
 * Fixes false warnings for placeholder-like URL encoded characters
 * Obsoletes fallback different ending result (now redundant)
+* Fixes GoogleTranslate link for locales with a different slug than the one on GP
