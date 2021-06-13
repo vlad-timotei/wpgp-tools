@@ -116,7 +116,6 @@ If this somehow fails, you can: manually copy the URL and install it in the Util
 ### Known issues
 - Tooltips overlap for the Quick Links section (should be fixed upstream)
 - GoogleTranslate link doesn't work for locales that use a different abreviation than GT uses (future release will fix this)
-- Recognizes url encoded characters as additional placeholders ([example](https://translate.wordpress.org/projects/wp/dev/ru/default/?filters%5Bstatus%5D=either&filters%5Boriginal_id%5D=8431315&filters%5Btranslation_id%5D=77461139) - future release will fix this)
 - It's an unpacked extension and the repo doesn't use workflows to build the release additional zip
 
 ### Future version features
