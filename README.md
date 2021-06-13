@@ -29,7 +29,7 @@ You can find the **Settings** for this extension in the top blue navigation menu
 <img align="right" src="https://user-images.githubusercontent.com/65488419/117621284-203e1c80-b17a-11eb-8a86-26c34f17f1b3.png" >
 
 **GoogleTranslate** button 
-- Button or Alt + G opens new tab with current translated string in current locale
+- Button or Alt + G opens new tab with current translated string in current locale, if locale exists on GT. ([List of missing locales in GT](https://gist.github.com/vlad-timotei/3f558547ac2bc0f3120f869fba7d8bec))
 
 <img align="right" src="https://user-images.githubusercontent.com/65488419/117621916-c1c56e00-b17a-11eb-9cab-a593532a8e05.png" >
 
@@ -115,7 +115,6 @@ If this somehow fails, you can: manually copy the URL and install it in the Util
 
 ### Known issues
 - Tooltips overlap for the Quick Links section (should be fixed upstream)
-- GoogleTranslate link doesn't work for locales that use a different abreviation than GT uses (future release will fix this)
 - It's an unpacked extension and the repo doesn't use workflows to build the release additional zip
 
 ### Future version features
