@@ -288,43 +288,39 @@ ul.wpgpt-warnings-list li {
 }
 
 .wpgpt-ignore-warnings label,
-.wpgpt-ignore-warnings input
-{
+.wpgpt-ignore-warnings input{
     cursor:pointer;
 }
 
 .wpgpt-filters{
 	display: inline-block;
-    float: right;
+    float: left;
+    padding-left:10px;
 }
 
-.wpgpt-filter-notices,
-.wpgpt-filter-warnings{
-    display:inline-block;
+.wpgpt-filters a{
+    margin-bottom:-10px;
+    vertical-align: middle;
 }
 
-.wpgpt-filter-notices .filter-icon,
-.wpgpt-filter-warnings .filter-icon{
-    width: 20px;
-    height: 20px;
-    margin: -5px 3px 0 3px;
+.wpgpt-filters img{
+    width:20px;
+    height:20px;
+    vertical-align: middle;
 }
 
-.wpgpt-filter-notices span,
-.wpgpt-filter-warnings span {
-    margin-top: -7px;
-    display: block;
-    text-align: center;
-    font-size: 0.85em;
+.wpgpt-filters a.count-0 img{
+    opacity:0.3;
 }
 
-.wpgpt-filter-notices .filter-icon.count-0,
-.wpgpt-filter-warnings .filter-icon.count-0{
-    opacity:0.4;
+.wpgpt-filters .separator{
+    padding-left:2px;
+    padding-right:2px;
+    font-size:1.1em;
+    vertical-align:middle;
 }
 
 /* Search */
-
 .wpgpt-search {
 	padding: 0 15px 0 15px;
 }
