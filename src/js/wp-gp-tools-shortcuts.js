@@ -22,7 +22,7 @@ if( typeof $gp !== 'undefined' ){
 					 **  warnings_passd = true		false && true = FALSE		false && false = FALSE
 					 **  warnings_passd = false		true && true = TRUE			true && false = FALSE
 					 */
-				if( checks_shortcuts && ( ! wpgpt_check_this_translation( $gp.editor.current.attr( 'id' ) ) ) && next_is_strict ){ 
+				if( wpgpt_checks_shortcuts && ( ! wpgpt_check_this_translation( $gp.editor.current.attr( 'id' ) ) ) && next_is_strict ){ 
 					$gp.notices.error( notification_error_message );
 					return false;	
 					}
@@ -34,7 +34,7 @@ if( typeof $gp !== 'undefined' ){
 			} else if( ( 107 === event.keyCode && event.ctrlKey ) || ( 65 === event.keyCode && event.shiftKey && event.ctrlKey ) ){ // Ctrl-+ or Ctrl-Shift-A = Approve.
 					approve = jQuery( '.editor:visible' ).find( '.approve' );
 					if( approve.length > 0 ){
-						if( checks_shortcuts && ( ! wpgpt_check_this_translation( $gp.editor.current.attr( 'id' ) ) ) && next_is_strict ){ 
+						if( wpgpt_checks_shortcuts && ( ! wpgpt_check_this_translation( $gp.editor.current.attr( 'id' ) ) ) && next_is_strict ){ 
 							$gp.notices.error( notification_error_message );
 							return false;	
 						}
@@ -44,7 +44,7 @@ if( typeof $gp !== 'undefined' ){
 							approve.trigger( 'click' );
 						}
 					}
-			} else if( settings['shortcuts']['state'] == 'enabled' && ( ( 106 === event.keyCode && event.ctrlKey ) || ( 70 === event.keyCode && event.shiftKey && event.ctrlKey ) ) ){ // Ctrl-* (NumPad) or Ctrl-Shift-F = Fuzzy.
+			} else if( wpgpt_settings['shortcuts']['state'] == 'enabled' && ( ( 106 === event.keyCode && event.ctrlKey ) || ( 70 === event.keyCode && event.shiftKey && event.ctrlKey ) ) ){ // Ctrl-* (NumPad) or Ctrl-Shift-F = Fuzzy.
 					reject = jQuery( '.editor:visible' ).find( '.fuzzy' );
 					if( reject.length > 0 ){
 						reject.trigger( 'click' );

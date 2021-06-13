@@ -1,4 +1,4 @@
-var settings = { 
+var wpgpt_settings = {
 	'checks' : {
 		'desc' : 'General Checks',
 		'state' : 'enabled',
@@ -147,33 +147,33 @@ var settings = {
 	},
 };
 
-var update_notif_template = '<span class="wpgpt-update-notice"><b>WPGlotPress Tools new version available</b><br>Update to version <b>%%last_version%%</b> (from  ' +
+var wpgpt_update_template = '<span class="wpgpt-update-notice"><b>WPGlotPress Tools new version available</b><br>Update to version <b>%%last_version%%</b> (from  ' +
 							WPGPT_VERSION + ')<br><a href="https://github.com/vlad-timotei/wpgp-tools/releases/tag/%%last_version%%"><br> Click here</a>' +
 							', download, unzip the files, replace them and click <i>Reload</i> in chrome://extensions/';
 jQuery('#menu-headline-nav').append('<li class="menu-item wpgpt_settings" style="cursor:pointer;"><a>Tools Settings</a></li>');
-jQuery('.wpgpt_settings').click( function() { wpgpt_settings(); } );
+jQuery('.wpgpt_settings').click( function() { wpgpt_settings_page(); } );
 
-var user_settings = {}; 
+var wpgpt_user_settings = {}; 
 if( getLS('wpgpt-user-settings') !== null ){
-	user_settings = JSON.parse( getLS('wpgpt-user-settings') ); 
-	for( const property in settings ){
-		if( settings[property]['type'] != 0 && user_settings[property]!== undefined ){
-			settings[property]['state'] = user_settings[property];
+	wpgpt_user_settings = JSON.parse( getLS('wpgpt-user-settings') ); 
+	for( const property in wpgpt_settings ){
+		if( wpgpt_settings[property]['type'] != 0 && wpgpt_user_settings[property]!== undefined ){
+			wpgpt_settings[property]['state'] = wpgpt_user_settings[property];
 		}
 	}
 }
 
-var settings_parent = '';
-var settings_state = 0;
+var wpgpt_settings_parent = '';
+var wpgpt_settings_state = 0;
 
-function wpgpt_settings(){
-	if( settings_state ){
-		exit_settings();
+function wpgpt_settings_page(){
+	if( wpgpt_settings_state ){
+		wpgpt_exit_settings();
 		return;
 	}
 	else{
 		jQuery('.wpgpt_settings a').html('<b>Close</b> Settings');
-		settings_state = 1;
+		wpgpt_settings_state = 1;
 	}
 	
 	if( jQuery('.wpgpt-snippets-window').length !== 0 ){
@@ -188,49 +188,49 @@ function wpgpt_settings(){
 	var container = '<div class="wpgpt-settings-window"></div>';
 	jQuery('.gp-content').html(container);
 
-	var settings_count = Object.keys( settings ).length;
+	var wpgpt_settings_count = Object.keys( wpgpt_settings ).length;
 	var i = 1;
 	
 	var this_shtml, this_shtml_class;
 	var shtml = ''; 
 	var shtmlo = '';
 	
-	jQuery.each( settings, function( key ) {
-		if( settings[key]['parent'] != 'none' ){
+	jQuery.each( wpgpt_settings, function( key ) {
+		if( wpgpt_settings[key]['parent'] != 'none' ){
 			this_shtml = '';
 			this_shtml_class = '';
 		
-			switch ( settings[key]['type'] ){
+			switch ( wpgpt_settings[key]['type'] ){
 				case 0:
-					this_shtml = 	'<div class="wpgpt-setting-description">' + settings[key]['desc'] + '</div>' + ( ( settings[key]['state'] != undefined ) ? settings[key]['state'] : '');
+					this_shtml = 	'<div class="wpgpt-setting-description">' + wpgpt_settings[key]['desc'] + '</div>' + ( ( wpgpt_settings[key]['state'] != undefined ) ? wpgpt_settings[key]['state'] : '');
 					break;
 				case 2:
-					this_shtml = 	'<div class="wpgpt-setting-description">' + settings[key]['desc'] +'</div>' + 
-									'<div class="wpgpt-setting-type-2"><label><input type="radio" class="wpgpt-update" name="' + key + '" value="enabled" ' + ( ( settings[key]['state'] == 'enabled' ) ? 'checked' : '' ) + '> Enabled</label></div>'+
-									'<div class="wpgpt-setting-type-2"><label><input type="radio" class="wpgpt-update" name="' + key + '" value="disabled" ' + ( ( settings[key]['state'] == 'disabled' ) ? 'checked' : '' ) + '> Disabled</label></div>';
+					this_shtml = 	'<div class="wpgpt-setting-description">' + wpgpt_settings[key]['desc'] +'</div>' + 
+									'<div class="wpgpt-setting-type-2"><label><input type="radio" class="wpgpt-update" name="' + key + '" value="enabled" ' + ( ( wpgpt_settings[key]['state'] == 'enabled' ) ? 'checked' : '' ) + '> Enabled</label></div>'+
+									'<div class="wpgpt-setting-type-2"><label><input type="radio" class="wpgpt-update" name="' + key + '" value="disabled" ' + ( ( wpgpt_settings[key]['state'] == 'disabled' ) ? 'checked' : '' ) + '> Disabled</label></div>';
 					break;
 				case 3:
-					this_shtml = 	'<div class="wpgpt-setting-description">' + settings[key]['desc'] +'</div>' + 
-									'<div class="wpgpt-setting-type-3"><label><input type="radio" class="wpgpt-update" name="' + key + '" value="warning" ' + ( ( settings[key]['state'] == 'warning' ) ? 'checked' : '' ) + '> Warn & prevent save</label></div>'+
-									'<div class="wpgpt-setting-type-3"><label><input type="radio" class="wpgpt-update" name="' + key + '" value="notice" ' + ( ( settings[key]['state'] == 'notice' ) ? 'checked' : '' )  + '> Just notification</label></div>'+
-									'<div class="wpgpt-setting-type-3"><label><input type="radio" class="wpgpt-update" name="' + key + '" value="nothing" ' + ( ( settings[key]['state'] == 'nothing' ) ? 'checked' : '' ) + '> Don\'t check</label></div>';
+					this_shtml = 	'<div class="wpgpt-setting-description">' + wpgpt_settings[key]['desc'] +'</div>' + 
+									'<div class="wpgpt-setting-type-3"><label><input type="radio" class="wpgpt-update" name="' + key + '" value="warning" ' + ( ( wpgpt_settings[key]['state'] == 'warning' ) ? 'checked' : '' ) + '> Warn & prevent save</label></div>'+
+									'<div class="wpgpt-setting-type-3"><label><input type="radio" class="wpgpt-update" name="' + key + '" value="notice" ' + ( ( wpgpt_settings[key]['state'] == 'notice' ) ? 'checked' : '' )  + '> Just notification</label></div>'+
+									'<div class="wpgpt-setting-type-3"><label><input type="radio" class="wpgpt-update" name="' + key + '" value="nothing" ' + ( ( wpgpt_settings[key]['state'] == 'nothing' ) ? 'checked' : '' ) + '> Don\'t check</label></div>';
 					break;
 				case 4:
-					this_shtml = 	'<div class="wpgpt-setting-description">' + settings[key]['desc'] +'</div>' + 
+					this_shtml = 	'<div class="wpgpt-setting-description">' + wpgpt_settings[key]['desc'] +'</div>' + 
 									'<input type="text" id="' + key +'" placeholder="Leave empty to disable. Case sensitive. Separate words by , " value="' + 
-									settings[key]['state'] + '">';
+									wpgpt_settings[key]['state'] + '">';
 					break;
 				case 5:
-					this_shtml = 	'<div class="wpgpt-setting-description">' + settings[key]['desc'] +'</div>' + 
+					this_shtml = 	'<div class="wpgpt-setting-description">' + wpgpt_settings[key]['desc'] +'</div>' + 
 									'<input type="text" id="' + key +'" placeholder="E.g. 。 Leave empty if you use . symbol"value="' + 
-									settings[key]['state'] + '">';
+									wpgpt_settings[key]['state'] + '">';
 			}
 			
-			if( settings[key]['parent'] != 'self' ){
-				if(settings[settings[key]['parent']]['parent'] != 'self'){
-					this_shtml_class += 'wpgpt-sub-sub-setting wpgpt-child-of-' + settings[key]['parent'] +' wpgpt-s-' + key;
+			if( wpgpt_settings[key]['parent'] != 'self' ){
+				if( wpgpt_settings[wpgpt_settings[key]['parent']]['parent'] != 'self' ){
+					this_shtml_class += 'wpgpt-sub-sub-setting wpgpt-child-of-' + wpgpt_settings[key]['parent'] +' wpgpt-s-' + key;
 				} else{
-					this_shtml_class += 'wpgpt-sub-setting wpgpt-child-of-' + settings[key]['parent'] +' wpgpt-s-' + key;
+					this_shtml_class += 'wpgpt-sub-setting wpgpt-child-of-' + wpgpt_settings[key]['parent'] +' wpgpt-s-' + key;
 				}
 			}
 			else{
@@ -240,11 +240,11 @@ function wpgpt_settings(){
 		  shtml += '<div class="' + this_shtml_class + '">' + this_shtml + '</div>';
 		}
 		
-		if( i == settings_count ){
+		if( i == wpgpt_settings_count ){
 			shtml += '<button id="save_settings" >Save all settings</button>'
 			jQuery('.wpgpt-settings-window').append( shtml );
-			jQuery.each(settings, function( key ) {
-				if( settings[key]['state'] == 'disabled' ){
+			jQuery.each( wpgpt_settings, function( key ) {
+				if( wpgpt_settings[key]['state'] == 'disabled' ){
 					jQuery('.wpgpt-child-of-' + key ).hide();
 				}
 			});
@@ -275,7 +275,7 @@ function wpgpt_settings(){
 		
 		var option_name = jQuery(this).attr('name'); 
 		var option_value = jQuery(this).val();
-		update_setting( option_name, option_value );	
+		wpgpt_update_setting( option_name, option_value );	
 		
 		if( option_value == 'disabled' ){
 			jQuery('.wpgpt-child-of-' + option_name ).hide(200);
@@ -285,32 +285,23 @@ function wpgpt_settings(){
 		}			
 	}); 
 	
-	jQuery('#save_settings').click( exit_settings );
+	jQuery('#save_settings').click( wpgpt_exit_settings );
 }
  
-function update_feature( feature_name, feature_status ){
-	if( feature_status == 'nothing' ){
-		jQuery('.wpgpt-settings-' + feature_name ).hide(200);
-	}
-	else{
-		jQuery('.wpgpt-settings-' + feature_name ).show(200);
-	}
-}
- 
-function update_setting( name, val ){
-	settings[name]['state'] = val;
-	for ( const property in settings ){
-		if( settings[property]['type'] != 0 ){
-			user_settings[property]= settings[property]['state'];
+function wpgpt_update_setting( name, val ){
+	wpgpt_settings[name]['state'] = val;
+	for ( const property in wpgpt_settings ){
+		if( wpgpt_settings[property]['type'] != 0 ){
+			wpgpt_user_settings[property] = wpgpt_settings[property]['state'];
 		}
 	}
-    setLS( 'wpgpt-user-settings', JSON.stringify( user_settings ) );
+    setLS( 'wpgpt-user-settings', JSON.stringify( wpgpt_user_settings ) );
 }
 
-function exit_settings(){
-	settings['custom_period']['state'] = jQuery('#custom_period').val();
-	settings['warning_words']['state'] = jQuery('#warning_words').val(); // this instead update_setting to avoid redundancy
-	update_setting('notice_words', jQuery('#notice_words').val());	
+function wpgpt_exit_settings(){
+	wpgpt_settings['custom_period']['state'] = jQuery('#custom_period').val();
+	wpgpt_settings['warning_words']['state'] = jQuery('#warning_words').val(); // this instead update_setting to avoid redundancy
+	wpgpt_update_setting('notice_words', jQuery('#notice_words').val());	
 	location.reload();
 }
 
@@ -333,27 +324,27 @@ if( typeof $gp !== 'undefined' ){
 }
 
 /** Check version */
-function check_version() {
-	if( settings['last_checked']['state'] != 'never' ){
-		if( ( Date.now() - settings['last_checked']['state'] ) < 43200000 ){ // check every 12h
-			display_check_version();
+function wpgpt_check_version() {
+	if( wpgpt_settings['last_checked']['state'] != 'never' ){
+		if( ( Date.now() - wpgpt_settings['last_checked']['state'] ) < 43200000 ){ // check every 12h
+			wpgpt_display_check_version();
 			return;
 		}
 	}
     var req = 'https://wptools.vladtimotei.ro/wpgp-tools/version.php';
-    jQuery.get( req, function( current_version ) {
-        if ( current_version != WPGPT_VERSION ){
-			settings['last_version']['state'] = current_version; // this instead update_setting to avoid redundancy
+    jQuery.get( req, function( wpgpt_last_version ) {
+        if ( wpgpt_last_version != WPGPT_VERSION ){
+			wpgpt_settings['last_version']['state'] = wpgpt_last_version; // this instead update_setting to avoid redundancy
 		}
-		update_setting( 'last_checked', Date.now() );
-		display_check_version();
+		wpgpt_update_setting( 'last_checked', Date.now() );
+		wpgpt_display_check_version();
     });
 }
 	
-function display_check_version(){
-	if( settings['last_version']['state'] > WPGPT_VERSION ){	
-		jQuery('#masthead').after( update_notif_template.replaceAll( '%%last_version%%', settings['last_version']['state'] ) );
+function wpgpt_display_check_version(){
+	if( wpgpt_settings['last_version']['state'] > WPGPT_VERSION ){	
+		jQuery('#masthead').after( wpgpt_update_template.replaceAll( '%%last_version%%', wpgpt_settings['last_version']['state'] ) );
 	}
 }
 
-setTimeout(check_version, 5000); 
+setTimeout(wpgpt_check_version, 5000); 
