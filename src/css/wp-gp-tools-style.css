@@ -1,25 +1,25 @@
 /* ToDo: Remove !important and load stylesheet in the footer */
 /*General*/
 .navigation-main,
-.site-branding{
+.site-branding {
 	max-width: 1050px !important;
 }
 
-@media screen and (max-width: 1000px){
-.navigation-main {
-   margin: 18px 5px 5px !important;
-}}
+@media screen and (max-width: 1000px) {
+	.navigation-main {
+		margin: 18px 5px 5px !important;
+	}
+}
 
 
 /* Settings */
-
-.wpgpt-settings-window  {
+.wpgpt-settings-window {
    min-height: 100vh;
    margin:50px 0 100px 0;
 }
 
 .wpgpt-settings-window label,
-.wpgpt-settings-window input{
+.wpgpt-settings-window input {
     cursor:pointer;
 }
 
@@ -29,25 +29,25 @@
     display:inline-block
 }
 
-.wpgpt-setting-description{
+.wpgpt-setting-description {
     width:35%;
 }
 
-.wpgpt-sub-setting .wpgpt-setting-description{
+.wpgpt-sub-setting .wpgpt-setting-description {
     width: 34.5%;
 }
 
-.wpgpt-sub-sub-setting .wpgpt-setting-description{
+.wpgpt-sub-sub-setting .wpgpt-setting-description {
     width:34.4%;
 }
 
-.wpgpt-main-setting .wpgpt-setting-description{
+.wpgpt-main-setting .wpgpt-setting-description {
     font-size:1.3em;
     color:#036b9c;
     font-weight:600;
 }
 
-.wpgpt-setting-type-2{
+.wpgpt-setting-type-2 {
     width:100px;
 }
 
@@ -59,7 +59,7 @@
    width:25%;
 }
 
-.wpgpt-main-setting{
+.wpgpt-main-setting {
     margin-top:20px;
 	padding:0px 0 10px 0;
 }
@@ -74,14 +74,14 @@
     border-bottom:1px solid #dadada;
     border-left:5px solid #0073aa;
 }
-.wpgpt-sub-sub-setting{
+.wpgpt-sub-sub-setting {
 padding:10px 10px 10px;
     background:#f7f7f7;
     border-bottom:1px solid #dadada;
     border-left:3px solid #aa003a;
 }
 
-.note{
+.note {
 	color: #8e8989;
 }
 
@@ -104,7 +104,7 @@ padding:10px 10px 10px;
     color:#fff;
 }
 
-.gp-shortcuts{
+.gp-shortcuts {
     font-size:1.3em;
 	clear: both;
     padding-top: 30px;
@@ -131,7 +131,7 @@ padding:10px 10px 10px;
     font-weight:600;
 }
 
-.gp-shortcuts h3{
+.gp-shortcuts h3 {
     font-size:1em;
     color:#036b9c
 }
@@ -140,25 +140,25 @@ span.big {
     font-size:1.3em;
 }
 
-span.s{
+span.s {
     color:orange;
     font-weight:700;
 }
 
-span.c{
+span.c {
     color:blue;
     font-weight:700;
 }
 
-span.a{
+span.a {
     color:green;
     font-weight:700;
 }
-span.r{
+span.r {
     color:red;
     font-weight:700;
 }
-span.f{
+span.f {
     color:#6f089a;
     font-weight:700;
 }
@@ -174,11 +174,11 @@ span.right-note {
 
 }
 
-span.right-note.down{
+span.right-note.down {
     margin-top: 12px;
 }
 
-.wpgpt-update-notice{
+.wpgpt-update-notice {
 	width: 600px;
     margin: 25px auto;
     display: block;
@@ -189,7 +189,6 @@ span.right-note.down{
 }
 
 /* Snippets */
-
 .wpgpt-snippets-window .projects .project-status > div {
     width: 33% !important;
 }
@@ -244,7 +243,7 @@ span.right-note.down{
 
 .single-project .project-status-progress span,
 .single-project .project-status-remaining span,
-.single-project .project-status-waiting span{
+.single-project .project-status-waiting span {
     color:#fff;
 }
 
@@ -275,7 +274,6 @@ span.right-note.down{
 }
 
 /* Checks */
-
 ul.wpgpt-warnings-list li {
 	color: red;
 }
@@ -288,32 +286,32 @@ ul.wpgpt-warnings-list li {
 }
 
 .wpgpt-ignore-warnings label,
-.wpgpt-ignore-warnings input{
+.wpgpt-ignore-warnings input {
     cursor:pointer;
 }
 
-.wpgpt-filters{
+.wpgpt-filters {
 	display: inline-block;
     float: left;
     padding-left:10px;
 }
 
-.wpgpt-filters a{
+.wpgpt-filters a {
     margin-bottom:-10px;
     vertical-align: middle;
 }
 
-.wpgpt-filters img{
+.wpgpt-filters img {
     width:20px;
     height:20px;
     vertical-align: middle;
 }
 
-.wpgpt-filters a.count-0 img{
+.wpgpt-filters a.count-0 img {
     opacity:0.3;
 }
 
-.wpgpt-filters .separator{
+.wpgpt-filters .separator {
     padding-left:2px;
     padding-right:2px;
     font-size:1.1em;
@@ -433,19 +431,24 @@ ul.wpgpt-warnings-list li {
  color:#046594;
 }
 
-.wpgpt-actions_plus .separator:before {content:"|";  color:#c3c0c0;}
-.wpgpt-actions_plus .separator {margin:0px 7px 0px 7px;}
+.wpgpt-actions_plus .separator:before {
+	content:"|";
+	color:#c3c0c0;
+}
+
+.wpgpt-actions_plus .separator {
+	margin:0px 7px 0px 7px;
+}
 
 .translation-suggestion__translation .index {
     color: #a0a5aa;
 }
 
 /* Glossary  */
-
 table.my-glossary.glossary tr td {
 	padding: 5px !important;
 }
 
-.my-glossary.glossary{
+.my-glossary.glossary {
 	padding: 10px 15px 15px 15px;
 }
