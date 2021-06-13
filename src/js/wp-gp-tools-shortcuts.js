@@ -18,28 +18,30 @@ if( typeof $gp !== 'undefined' ){
 					$gp.notices.error( 'Translation is empty.' );
 					return false;
 				}	
-					/**								next_is_strict = true		next_is_strict = false
-					 **  warnings_passd = true		false && true = FALSE		false && false = FALSE
-					 **  warnings_passd = false		true && true = TRUE			true && false = FALSE
+					/**								wpgpt_next_is_strict = true		wpgpt_next_is_strict = false
+					 **  warnings_passd = true		false && true = FALSE			false && false = FALSE
+					 **  warnings_passd = false		true && true = TRUE				true && false = FALSE
 					 */
-				if( wpgpt_checks_shortcuts && ( ! wpgpt_check_this_translation( $gp.editor.current.attr( 'id' ) ) ) && next_is_strict ){ 
-					$gp.notices.error( notification_error_message );
+				if( wpgpt_checks_shortcuts && ( ! wpgpt_check_this_translation( $gp.editor.current.attr( 'id' ) ) ) && wpgpt_next_is_strict ){ 
+					$gp.notices.error( wpgpt_error_message );
 					return false;	
-					}
+				}
 				else{
-					next_is_strict = true;
+					wpgpt_next_is_strict = true;
+					jQuery('.wpgpt-ignore-warnings input').prop('checked', false);
 					user_edited = false;
 					$gp.editor.save( $gp.editor.current.find( 'button.translation-actions__save' ) );
 				}
 			} else if( ( 107 === event.keyCode && event.ctrlKey ) || ( 65 === event.keyCode && event.shiftKey && event.ctrlKey ) ){ // Ctrl-+ or Ctrl-Shift-A = Approve.
 					approve = jQuery( '.editor:visible' ).find( '.approve' );
 					if( approve.length > 0 ){
-						if( wpgpt_checks_shortcuts && ( ! wpgpt_check_this_translation( $gp.editor.current.attr( 'id' ) ) ) && next_is_strict ){ 
-							$gp.notices.error( notification_error_message );
+						if( wpgpt_checks_shortcuts && ( ! wpgpt_check_this_translation( $gp.editor.current.attr( 'id' ) ) ) && wpgpt_next_is_strict ){ 
+							$gp.notices.error( wpgpt_error_message );
 							return false;	
 						}
 						else{
-							next_is_strict = true;
+							wpgpt_next_is_strict = true;
+							jQuery('.wpgpt-ignore-warnings input').prop('checked', false);
 							user_edited = false;
 							approve.trigger( 'click' );
 						}
