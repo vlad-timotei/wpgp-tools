@@ -34,6 +34,35 @@ function consistency_tools(){
 		'copy-me' : false
 	}
 	
+	var gp_gt_locales = {
+		'bel' : 'be',
+		'zh-cn' : 'zh-CN',
+		'zh-tw' : 'zh-TW',
+		'hat' : 'ht',
+		'hau' : 'ha',
+		'he' : 'iw',
+		'ibo' : 'ig',
+		'jv' : 'jw',
+		'kin' : 'rw',
+		'kmr' : 'ku',
+		'ckb' : 'ku',
+		'kir' : 'ky',
+		'mlt' : 'mt',
+		'mri' : 'mi',
+		'ary' : 'ar',
+		'mya' : 'my',
+		'nb' : 'no',
+		'nn' : 'no',
+		'ory' : 'or',
+		'sna' : 'sn',
+		'snd' : 'sd',
+		'azb' : 'az',
+		'tuk' : 'tk',
+		'xho' : 'xh',
+		'yor' : 'yo',
+		'zul' : 'zu'
+	}
+	
 	var notice_time;
 	
 	const protocol = 'https://';
@@ -43,8 +72,16 @@ function consistency_tools(){
 	var findlocale = pathname.split('/');
 	
 	const current_locale = jQuery( findlocale ).get(-3) + '/' + jQuery( findlocale ).get(-2);
-	const short_locale = jQuery( findlocale ).get(-3);
+	var short_locale = jQuery( findlocale ).get(-3)
 	
+	if( short_locale in gp_gt_locales ){
+		short_locale = gp_gt_locales[short_locale];
+	}
+	else{
+		short_locale = short_locale.split('-');
+		short_locale = short_locale[0];
+	}
+
 	let params = new URLSearchParams( document.location.search.substring( 1 ) );
 	let is_result_page = params.get('resultpage');
 	
