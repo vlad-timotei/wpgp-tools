@@ -274,6 +274,9 @@ span.right-note.down {
 }
 
 /* Checks */
+.wpgpt-checks-list {
+    word-break: break-all;
+}
 ul.wpgpt-warnings-list li {
 	color: red;
 }
