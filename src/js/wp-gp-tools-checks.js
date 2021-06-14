@@ -213,10 +213,9 @@ function wpgpt_run_checks( original, translated ){
 	var error_message = '';
 			
 	/** Wrong Placeholders **/
-	let placeholder_pattern =  /(?:%[bcdefgosuxl]|%\d[$][bcdefgosuxl])/g; 
-	var sanitized_translated = translated.replaceAll( /http[^ "']*/g, "https://w.org/" );
+	let placeholder_pattern =  /(?:%[bcdefgosuxl]|%\d[$][bcdefgosuxl])/g;
 	var original_ph = original.match( placeholder_pattern );
-	var translated_ph = sanitized_translated.match( placeholder_pattern );
+	var translated_ph = translated.match( placeholder_pattern );
 
 	if(
 		original_ph != null ||
