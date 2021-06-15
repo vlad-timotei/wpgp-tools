@@ -29,7 +29,7 @@ if( typeof $gp !== 'undefined' ){
 				else{
 					wpgpt_next_is_strict = true;
 					jQuery('.wpgpt-ignore-warnings input').prop('checked', false);
-					user_edited = false;
+					wpgpt_user_edited = false;
 					$gp.editor.save( $gp.editor.current.find( 'button.translation-actions__save' ) );
 				}
 			} else if( ( 107 === event.keyCode && event.ctrlKey ) || ( 65 === event.keyCode && event.shiftKey && event.ctrlKey ) ){ // Ctrl-+ or Ctrl-Shift-A = Approve.
@@ -42,7 +42,7 @@ if( typeof $gp !== 'undefined' ){
 						else{
 							wpgpt_next_is_strict = true;
 							jQuery('.wpgpt-ignore-warnings input').prop('checked', false);
-							user_edited = false;
+							wpgpt_user_edited = false;
 							approve.trigger( 'click' );
 						}
 					}
