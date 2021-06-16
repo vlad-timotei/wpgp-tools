@@ -200,42 +200,39 @@ function consistency_tools(){
 			jQuery('.wpgpt-search-close-tabs').show();
 			});
 		
-			jQuery(window).on('beforeunload', function(){ close_tabs('all');	});
+			jQuery(window).on('beforeunload', function(){ close_tabs('all'); });
 		}
 	}
-
+	
 	function get_consistency_suggestions( string_id, get_consistency_btn ){
-		var consistency_link = jQuery('#' + string_id + ' .button-menu__dropdown li a').last().attr('href');
+		var url = jQuery('#' + string_id + ' .button-menu__dropdown li a').last().attr('href');
 		jQuery( get_consistency_btn ).html('Loading...');
-		var ifr = document.createElement('iframe');
-		ifr.src = consistency_link;
-		ifr.style.display = 'none';
-		jQuery('body').append( ifr );
 		var list_of_suggestions = '';
 		var current_suggestion;
-	
-		jQuery( ifr ).on('load', () => {
-			var translations = jQuery(ifr).contents().find('.consistency-table tbody th strong');
-			if( translations.length == 0 ){
-				list_of_suggestions = '<li>Nothing found in the consistency.</li>';
-			}
-			else{
-				jQuery.each( translations, function(index){
-					current_suggestion = jQuery(this).html();
-					list_of_suggestions +='<li><div class="translation-suggestion with-tooltip" tabindex="0" role="button" aria-pressed="false" aria-label="Copy translation">' +
-					'<span class="translation-suggestion__translation"><span class="index">' + ( index + 1 ) + ':</span> ' + current_suggestion + '</span>' +
-					'<span aria-hidden="true" class="translation-suggestion__translation-raw">' + current_suggestion + '</span>' +
-					'<button type="button" class="copy-suggestion">Copy</button></div></li>';		
-				});
-			}
-			
-		jQuery( get_consistency_btn ).before(list_of_suggestions);
-		jQuery( get_consistency_btn ).remove();		
-		ifr.remove();
-		});
+		const data = fetch( url, { headers: new Headers( { 'User-agent': 'Mozilla/4.0 Custom User Agent' } ) } )
+			.then( response => response.text() )
+			.then( data => {
+				var consistency_page = jQuery.parseHTML( data );
+				var translations = jQuery( consistency_page ).find('.consistency-table tbody th strong');
+				if( translations.length != 0 ){
+					jQuery.each( translations, function(index){
+						current_suggestion = jQuery( this ).html();
+						list_of_suggestions += '<li><div class="translation-suggestion with-tooltip" tabindex="0" role="button" aria-pressed="false" aria-label="Copy translation">' +
+						'<span class="translation-suggestion__translation"><span class="index">' + ( index + 1 ) + ':</span> ' + current_suggestion + '</span>' +
+						'<span aria-hidden="true" class="translation-suggestion__translation-raw">' + current_suggestion + '</span>' +
+						'<button type="button" class="copy-suggestion">Copy</button></div></li>';		
+					});
+				}
+				else{
+					list_of_suggestions = '<li>Nothing found in the Consistency.</li>';
+				}
+				jQuery( get_consistency_btn ).before(list_of_suggestions);
+				jQuery( get_consistency_btn ).remove();	
+			} )
+			.catch(error => console.error(error));
 	}
 
-	function copyToClipboard( text ) {
+	function copyToClipboard( text ){
 		const elem = document.createElement('textarea');
 		elem.value = text;
 		document.body.appendChild(elem);
