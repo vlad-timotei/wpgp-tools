@@ -174,14 +174,18 @@ span.small {
     font-size:0.7em;
 }
 
-.wpgpt-update-notice {
+.wpgpt-update-notice{
 	width: 600px;
     margin: 25px auto;
     display: block;
     color: #000000;
     font-size: 1.1em;
-    border: 3px solid #046492;
+    border: 3px solid #0073aa;
     padding: 25px;
+}
+
+.wpgpt-update-notice > strong{
+	color:#025f8c;
 }
 
 .gp-header.gp-row .gp-shortcut {
@@ -190,91 +194,6 @@ span.small {
 
 .gp-header.gp-row .gp-shortcut:nth-child(1) {
     color: #0073aa;
-}
-
-/* Snippets */
-.wpgpt-snippets-window .projects .project-status > div {
-    width: 33% !important;
-}
-
-.wpgpt-snippets-window .projects .project {
-	width:30% !important;
-}
-
-.wpgpt-snippets-window .projects .project:nth-child(odd) {
-    clear: none !important;
-}
-
-.wpgpt-snippets-window .projects .project-name {
-    margin-left: 135px !important;
-}
-
-.wpgpt-snippet-date {
-	color: #8a9093;
-	float: right;
-	margin-right: 10px;
-	margin-top: -30px;
-	top: 20px;
-	position: relative;
-	font-size: 15px;
-	margin-bottom: -5px;
-	font-size: 1em;
-}
-
-.single-project .wpgpt-diff.adif {
-    color:yellow;
-}
-
-.wpgpt-remove-all {
-	float: right;
-	position: relative;
-	bottom: -5px;
-}
-
-.single-project .project-status-remaining:before,
-.single-project .project-status-waiting:before {
-   content:"•";
-   padding-right:7px;
-   color:#989898
- }
-
-.single-project .project-status-progress,
-.single-project .project-status-remaining,
-.single-project .project-status-waiting {
-    padding: 0 2px;
-    color:#e2e2e2;
- }
-
-.single-project .project-status-progress span,
-.single-project .project-status-remaining span,
-.single-project .project-status-waiting span {
-    color:#fff;
-}
-
-.wpgpt-diff {
-	color: #8a9093;
-}
- 
-.wpgpt-diff.adif {
-	color: red;
-}
-
- .single-project .wpgpt-snippet-date {
-    color: #d2d2d2;
-	float: none;
-    margin-top: 0px;
-    top: 0px;
-    margin-right: 0px;
-	font-size: 0.9em;
-}
-
-.single-project a.contribute-button {
-	padding: 0 7px;
-    height: 25px;
-    margin: 0 3px;
-    font-size: 0.9em;
-    float:right;
-    line-height: 2;
 }
 
 /* Checks */
