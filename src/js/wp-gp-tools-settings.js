@@ -147,9 +147,9 @@ var wpgpt_settings = {
 	},
 };
 
-var wpgpt_update_template = '<span class="wpgpt-update-notice"><b>WPGlotPress Tools new version available</b><br>Update to version <b>%%last_version%%</b> (from  ' +
-							WPGPT_VERSION + ')<br><a href="https://github.com/vlad-timotei/wpgp-tools/releases/tag/%%last_version%%"><br> Click here</a>' +
-							', download, unzip the files, replace them and click <i>Reload</i> in chrome://extensions/';
+var wpgpt_update_template = '<div class="wpgpt-update-notice"><strong>WPGPTools v.%s has new features!</strong> You\'re using v.' + WPGPT_VERSION + '. Update now! ' +
+							'<br><a href="https://github.com/vlad-timotei/wpgp-tools/releases/tag/%s">Click here to download the latest release</a>' +
+							', unzip the files and replace them. <br> Don\'t forget to click <i>Reload</i> in <code>chrome://extensions/</code></div>';
 jQuery('#menu-headline-nav').append('<li class="menu-item wpgpt_settings" style="cursor:pointer;"><a>Tools Settings</a></li>');
 jQuery('.wpgpt_settings').click( function() { wpgpt_settings_page(); } );
 
@@ -301,7 +301,7 @@ function wpgpt_update_setting( name, val ){
 
 function wpgpt_exit_settings(){
 	wpgpt_settings['custom_period']['state'] = jQuery('#custom_period').val();
-	wpgpt_settings['warning_words']['state'] = jQuery('#warning_words').val(); // this instead update_setting to avoid redundancy
+	wpgpt_settings['warning_words']['state'] = jQuery('#warning_words').val(); // to avoid redundancy
 	wpgpt_update_setting('notice_words', jQuery('#notice_words').val());	
 	location.reload();
 }
@@ -324,28 +324,28 @@ if( typeof $gp !== 'undefined' ){
 	})( $gp.editor.show );
 }
 
-/** Check version */
-function wpgpt_check_version() {
+/** Extension version */
+function wpgpt_version(){
 	if( wpgpt_settings['last_checked']['state'] != 'never' ){
-		if( ( Date.now() - wpgpt_settings['last_checked']['state'] ) < 43200000 ){ // check every 12h
-			wpgpt_display_check_version();
+		if( ( Date.now() - wpgpt_settings['last_checked']['state'] ) < 43200000 ){ // >12h
+			if( wpgpt_settings['last_version']['state'] != WPGPT_VERSION ){	
+				jQuery('#masthead').after( wpgpt_update_template.replaceAll( '%s', wpgpt_settings['last_version']['state'] ) );
+			}
 			return;
 		}
 	}
-    var req = 'https://wptools.vladtimotei.ro/wpgp-tools/version.php';
-    jQuery.get( req, function( wpgpt_last_version ) {
-        if ( wpgpt_last_version != WPGPT_VERSION ){
-			wpgpt_settings['last_version']['state'] = wpgpt_last_version; // this instead update_setting to avoid redundancy
-		}
-		wpgpt_update_setting( 'last_checked', Date.now() );
-		wpgpt_display_check_version();
-    });
-}
-	
-function wpgpt_display_check_version(){
-	if( wpgpt_settings['last_version']['state'] > WPGPT_VERSION ){	
-		jQuery('#masthead').after( wpgpt_update_template.replaceAll( '%%last_version%%', wpgpt_settings['last_version']['state'] ) );
-	}
+	setTimeout(wpgpt_check_version, 5000); 
 }
 
-setTimeout(wpgpt_check_version, 5000); 
+function wpgpt_check_version() {
+    var req = 'https://wptools.vladtimotei.ro/wpgp-tools/';
+    jQuery.get( req, function( wpgpt_last_version ) {
+        wpgpt_settings['last_version']['state'] = wpgpt_last_version; // to avoid redundancy
+		wpgpt_update_setting( 'last_checked', Date.now() );
+		if( wpgpt_settings['last_version']['state'] != WPGPT_VERSION ){	
+			jQuery('#masthead').after( wpgpt_update_template.replaceAll( '%s', wpgpt_settings['last_version']['state'] ) );
+		}
+    });
+}
+
+wpgpt_version();
