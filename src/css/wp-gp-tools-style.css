@@ -18,6 +18,12 @@
    margin:50px 0 100px 0;
 }
 
+@media (max-width:500px){
+    .wpgpt-settings-window {
+        font-size: 0.9em;
+    }
+}
+
 .wpgpt-settings-window label,
 .wpgpt-settings-window input {
     cursor:pointer;
@@ -112,6 +118,7 @@ padding:10px 10px 10px;
 
 .gp-shortcut {
     display: inline-block;
+	vertical-align: middle;
 }
 
 .gp-row .gp-shortcut {
@@ -167,17 +174,6 @@ span.small {
     font-size:0.7em;
 }
 
-span.right-note {
-   float:right;
-   font-size:0.7em;
-   color:grey;
-
-}
-
-span.right-note.down {
-    margin-top: 12px;
-}
-
 .wpgpt-update-notice {
 	width: 600px;
     margin: 25px auto;
@@ -186,6 +182,14 @@ span.right-note.down {
     font-size: 1.1em;
     border: 3px solid #046492;
     padding: 25px;
+}
+
+.gp-header.gp-row .gp-shortcut {
+    color: #868686;
+}
+
+.gp-header.gp-row .gp-shortcut:nth-child(1) {
+    color: #0073aa;
 }
 
 /* Snippets */

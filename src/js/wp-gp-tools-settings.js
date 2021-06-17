@@ -253,21 +253,22 @@ function wpgpt_settings_page(){
 
 	});
 	
-	var shortcuts_html=	'<div class="gp-shortcuts"><h3>Keyboard Shortcuts <span class="small">default & custom, if enabled</span></h3><div class="gp-header gp-row"><div class="gp-shortcut">Action</div><div class="gp-shortcut">Shortcut</div><div class="gp-shortcut">Alternative shortcut</div></div>' +
+	var shortcuts_html=	'<div class="gp-shortcuts"><div class="gp-header gp-row"><div class="gp-shortcut">Default shortcuts</div><div class="gp-shortcut">Key</div><div class="gp-shortcut">Alternative key</div></div>' +
 						'<div class="gp-row"><div class="gp-shortcut">Cancel</div><div class="gp-shortcut">Escape</div><div class="gp-shortcut">Ctrl + Shift + Z</div></div>' +
 						'<div class="gp-row"><div class="gp-shortcut">Previous String Editor</div><div class="gp-shortcut">Page Up</div><div class="gp-shortcut">Ctrl + Up Arrow</div></div>' +
 						'<div class="gp-row"><div class="gp-shortcut">Next String Editor</div><div class="gp-shortcut">Page Down</div><div class="gp-shortcut">Ctrl + Down Arrow</div></div>' +
 						'<div class="gp-row"><div class="gp-shortcut"><span class="s">S</span>ave</div><div class="gp-shortcut"><span class="s">S</span>hift + Enter</div><div class="gp-shortcut"></div></div>' +
 						'<div class="gp-row"><div class="gp-shortcut"><span class="c">C</span>opy original</div><div class="gp-shortcut"><span class="c">C</span>trl + Enter</div><div class="gp-shortcut">Ctrl + Shift + <span class="c">B</span></div></div>' +
-						'<div class="gp-row"><div class="gp-shortcut"><span class="a">A</span>pprove</div><div class="gp-shortcut">Ctrl + <span class="a big">+</span> <span class="small">(numeric keyboard)</span></div><div class="gp-shortcut">Ctrl + Shift + <span class="a">A</span></div></div>' +
-						'<div class="gp-row"><div class="gp-shortcut"><span class="r">R</span>eject</div><div class="gp-shortcut">Ctrl + <span class="r big">-</span> <span class="small">(numeric keyboard)</span></div><div class="gp-shortcut">Ctrl + Shift + <span class="r">R</span></div></div>' +
-						'<div class="gp-row sep"><div class="gp-shortcut"><span class="f">F</span>uzzy</div><div class="gp-shortcut">Ctrl + <span class="f big">~</span></div><div class="gp-shortcut">Ctrl + Shift + <span class="big f">~</span></div><span class="right-note down">default &#8673;</span></div>' ;
-	shortcuts_html +=	'<div class="gp-row"><div class="gp-shortcut"><span class="f">F</span>uzzy</div><div class="gp-shortcut">Ctrl + <span class="f big">*</span><span class="small">(numeric keyboard)</span></div><div class="gp-shortcut">Ctrl + Shift + <span class="f">F</span></div><span class="right-note">custom &#8675;</span></div>' +
+						'<div class="gp-row"><div class="gp-shortcut"><span class="a">A</span>pprove</div><div class="gp-shortcut">Ctrl + <span class="a big">+</span> <span class="small note">(numeric keyboard)</span></div><div class="gp-shortcut">Ctrl + Shift + <span class="a">A</span></div></div>' +
+						'<div class="gp-row"><div class="gp-shortcut"><span class="r">R</span>eject</div><div class="gp-shortcut">Ctrl + <span class="r big">-</span> <span class="small note">(numeric keyboard)</span></div><div class="gp-shortcut">Ctrl + Shift + <span class="r">R</span></div></div>' +
+						'<div class="gp-row"><div class="gp-shortcut"><span class="f">F</span>uzzy</div><div class="gp-shortcut">Ctrl + <span class="f big">~</span></div><div class="gp-shortcut">Ctrl + Shift + <span class="big f">~</span></div></div></div>';
+	shortcuts_html +=	'<div class="gp-shortcuts"><div class="gp-header gp-row"><div class="gp-shortcut">Custom shortcuts</div><div class="gp-shortcut">Key</div><div class="gp-shortcut">Alternative key</div></div>' +
+						'<div class="gp-row"><div class="gp-shortcut"><span class="f">F</span>uzzy</div><div class="gp-shortcut">Ctrl + <span class="f big">*</span><span class="small note">(numeric keyboard)</span></div><div class="gp-shortcut">Ctrl + Shift + <span class="f">F</span></div></div>' +
 						'<div class="gp-row"><div class="gp-shortcut"><span class="r">G</span>oogle Translate*</div><div class="gp-shortcut">Alt + <span class="r">G</span></div></div>' +
 						'<div class="gp-row"><div class="gp-shortcut"><span class="s">C</span>onsistency*</div><div class="gp-shortcut">Alt + <span class="s">C</span></div></div>' +
 						'<div class="gp-row"><div class="gp-shortcut">Copy consistency* <span class="c">#2</span></div><div class="gp-shortcut">Alt + <span class="c">2</span></div><div class="gp-shortcut"><span class="small note">works with #1, #2 and #3</span></div></div>' +
 						'<div class="gp-row"><div class="gp-shortcut">Focus on <span class="a">S</span>earch in <span class="a">P</span>rojects* </div><div class="gp-shortcut">Alt + <span class="a">S</span></div><div class="gp-shortcut">Alt + <span class="a">P</span></div></div>' +
-						'<span class="right-note">* if <i>Consistency Tools</i> enabled<span>' +
+						'<span class="right-note">*if setting is enabled<span>' +
 						'</div>';
 									
 	jQuery('.wpgpt-settings-window').append( shortcuts_html );
