@@ -31,20 +31,17 @@ function wpgpt_early_init_editors(){
 
 function wpgpt_check_all_translations(){
 	jQuery('#translations tbody tr.preview.has-translations').each( function(){
-		var translated = [];
-		var check_results, translations, preview_class; 
+		var original = [], translated = [];
+		var check_results, preview_class; 
 		var preview_html_output = '', editor_html_output = '';
 		var preview_warning = false, preview_notice = false;
-		
-		let original = jQuery(this).find('td.original .original-text').text();
+		jQuery(this).find('td.original .original-text').each( function(){ original.push( jQuery( this ).text() ); } );
 		jQuery(this).find('td.translation .translation-text').each( function(){	translated.push( jQuery( this ).text() ); } );
-		translations = translated.length;
 	
-		for( var i = 0; i < translations; i++ ){
-			check_results = wpgpt_run_checks( original, translated[i] );
-			
+		for( var original_i = 0, translated_i = 0; translated_i < translated.length; translated_i++ ){
+			check_results = wpgpt_run_checks( original[original_i], translated[translated_i] );
 			editor_html_output += '<dl><dt>Warnings' +
-			( (translations > 1) ? (' #'+( i + 1 ) ) : '' ) +
+			( (translated.length > 1) ? (' #'+( translated_i + 1 ) ) : '' ) +
 			':</dt><dd>' +
 			check_results[0] +
 			( (check_results[0] == 'none') ? ' <b>&#10003;</b>' :'') +
@@ -52,7 +49,7 @@ function wpgpt_check_all_translations(){
 			
 			if( check_results[1]!= 'none' ){
 				editor_html_output += '<dl><dt>Notices' +
-				( (translations > 1) ? (' #'+( i + 1 ) ) : '' ) +
+				( (translated.length > 1) ? (' #'+( translated_i + 1 ) ) : '' ) +
 				':</dt><dd>' +
 				check_results[1] +
 				'</dd></dl>';
@@ -61,6 +58,9 @@ function wpgpt_check_all_translations(){
 			
 			if( check_results[0] != 'none' ){
 				preview_warning = true;
+			}
+			if( original.length > 1 ){
+				original_i = 1;
 			}
 		}
 		
@@ -118,29 +118,23 @@ function wpgpt_late_init_editors(){
 }
 
 function wpgpt_check_this_translation( translation_id ){
-	var original = [];
-	var translated = [];
-	var check_results, translations; 
+	var original = [], translated = [];
+	var check_results; 
 	var warnings_passed = true, notices_passed = true;
 	var editor_html_output = '';
 	
 	jQuery('#' + translation_id + ' .source-string.strings div').each( function() { original.push( jQuery(this).find('span.original').text() ); } );
 	jQuery('#' + translation_id + ' .translation-wrapper div.textareas').each(function(){ translated.push( jQuery(this).find('textarea').val() ); } );
-
-	translations = translated.length;
-	if( original.length == 2 && translations == 3 ){
-		original[2] = original[1];
-	}
 	
-	for( var i = 0; i < translations; i++ ){
-		check_results = wpgpt_run_checks( original[i], translated[i] );
+	for( var original_i = 0, translated_i = 0; translated_i < translated.length; translated_i++ ){
+		check_results = wpgpt_run_checks( original[original_i], translated[translated_i] );
 		
 		if( check_results[0] != 'none' ){
 			warnings_passed = false;
 		}
 		
 		editor_html_output += '<dl><dt>Warnings' +
-		( (translations > 1) ? ( ' #'+( i + 1 ) ) : '' ) +
+		( (translated.length > 1) ? ( ' #'+( translated_i + 1 ) ) : '' ) +
 		':</dt><dd>' +
 		check_results[0] +
 		( ( check_results[0] == 'none' ) ? ' <b>&#10003;</b>' :'') +
@@ -150,11 +144,14 @@ function wpgpt_check_this_translation( translation_id ){
 			notices_passed = false;
 
 			editor_html_output += '<dl><dt>Notices' +
-			( ( translations > 1 ) ? (' #'+( i + 1 ) ) : '' ) +
+			( ( translated.length > 1 ) ? (' #'+( translated_i + 1 ) ) : '' ) +
 			':</dt><dd>' +
 			check_results[1] +
 			'</dd></dl>';			
-		}		
+		}
+		if( original.length > 1 ){
+				original_i = 1;
+		}
 	}
 	
 	var check_list = jQuery('#' + translation_id ).find('.meta .wpgpt-checks-list');
