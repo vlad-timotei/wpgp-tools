@@ -322,7 +322,7 @@ function consistency_tools(){
 		var orig_txt, string_id;
 		jQuery('.wpgpt-search').each( function() {
 			string_id = jQuery(this).closest('tr').attr('id');
-			orig_txt = encodeURI(jQuery( '#' + string_id + ' .source-string__singular span.original' ).text());
+			orig_txt = encodeURIComponent(jQuery( '#' + string_id + ' .source-string__singular span.original' ).text());
 			var google_search_url = protocol + 'translate.google.com/?sl=en&tl=' + short_locale + '&text=' + orig_txt + '&op=translate'; 
 			google_search_url = google_search_url.replaceAll('"','&#34;'); 
 			var google_search_output = '<button type="button" class="wpgpt-google-translate" data-gt-string="' + google_search_url + '">Google Translate</button>';
