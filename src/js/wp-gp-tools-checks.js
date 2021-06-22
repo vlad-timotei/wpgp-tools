@@ -67,16 +67,16 @@ function wpgpt_check_all_translations(){
 		editor_html_output = '<div class="wpgpt-checks-list">' + editor_html_output + '</div>';
 
 		if( preview_warning ){
-			preview_html_output = '<div class="wpgpt-warning-preview"> <img title="String has a warning." src="' + warning_icon + '"></div>';
+			preview_html_output = '<img class="wpgpt-warning-preview" title="String has a warning." src="' + warning_icon + '">';
 			jQuery('#' + jQuery(this).attr('id').replace('preview', 'editor')).find('.wpgpt-ignore-warnings').show();	
 			preview_class = 'wpgpt-has-warning';
 		} 
 		else if( preview_notice ){
-			preview_html_output = '<div class="wpgpt-check-preview"><img title="String has a notice." src="' + notice_icon + '"></div>'; 
+			preview_html_output = '<img class="wpgpt-check-preview" title="String has a notice." src="' + notice_icon + '">'; 
 			preview_class = 'wpgpt-has-notice';
 			}
 			else {
-				preview_html_output = '<div class="wpgpt-check-preview"><b title="All checks passed.">&#10003;</b></div>';
+				preview_html_output = '<span class="wpgpt-check-preview passed" title="All checks passed.">&#10003;</span>';
 				preview_class = 'wpgpt-has-nothing';
 			}
 			
@@ -156,7 +156,7 @@ function wpgpt_check_this_translation( translation_id ){
 	
 	var check_list = jQuery('#' + translation_id ).find('.meta .wpgpt-checks-list');
 	if( check_list.length > 0 ){
-		check_list.html(editor_html_output);	
+		check_list.html( editor_html_output );	
 	}
 	else{
 		editor_html_output = '<div class="wpgpt-checks-list">' + editor_html_output + '</div>';
@@ -167,16 +167,16 @@ function wpgpt_check_this_translation( translation_id ){
 		jQuery('#' + translation_id).find('.wpgpt-ignore-warnings').fadeIn().css('display', 'none');
 		var next_preview;
 		if( notices_passed ){
-		next_preview = '<div class="wpgpt-check-preview"><b>&#10003;</b></div>';
+		next_preview = '<span class="wpgpt-check-preview passed">&#10003;</span>';
 		}
 		else{
-			next_preview = '<div class="wpgpt-check-preview"><img class src="' + notice_icon + '"></div>';
+			next_preview = '<img class="wpgpt-check-preview" src="' + notice_icon + '">';
 		}
-		translation_id=translation_id.replace(/(?:(editor-[^- ]*)(?:-[^' ]*))/g,'$1').replace('editor', 'preview'); // Look for original ID prefix only
+		translation_id = translation_id.replace(/(?:(editor-[^- ]*)(?:-[^' ]*))/g,'$1').replace('editor', 'preview'); // Look for original ID prefix only
 		setTimeout( function(){ 
 			var current_preview = jQuery("tr[id^='" + translation_id +"']").find('.wpgpt-check-preview');
 			if( current_preview.length > 0 ){
-				current_preview.html(next_preview);
+				current_preview.replaceWith( next_preview );
 			}
 			else{
 				jQuery("tr[id^='" + translation_id +"']").find('.actions .action.edit').prepend(next_preview);
