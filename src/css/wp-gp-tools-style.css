@@ -243,6 +243,17 @@ ul.wpgpt-warnings-list li {
     font-size:1.1em;
     vertical-align:middle;
 }
+.wpgpt-check-preview.passed {
+    display:block;
+    font-weight:600;
+    font-size:1.2em;
+    line-height:0.9em;
+}
+
+table.translations a.action {
+    text-decoration:none!important;
+    border-bottom:1px solid #545454;
+}
 
 /* Search */
 .wpgpt-search {
