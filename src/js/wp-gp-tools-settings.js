@@ -328,7 +328,7 @@ if( typeof $gp !== 'undefined' ){
 function wpgpt_version(){
 	if( wpgpt_settings['last_checked']['state'] != 'never' ){
 		if( ( Date.now() - wpgpt_settings['last_checked']['state'] ) < 43200000 ){ // >12h
-			if( wpgpt_settings['last_version']['state'] != WPGPT_VERSION ){	
+			if( wpgpt_new_version( wpgpt_settings['last_version']['state'],  WPGPT_VERSION ) ){	
 				jQuery('#masthead').after( wpgpt_update_template.replaceAll( '%s', wpgpt_settings['last_version']['state'] ) );
 			}
 			return;
@@ -342,10 +342,20 @@ function wpgpt_check_version() {
     jQuery.get( req, function( wpgpt_last_version ) {
         wpgpt_settings['last_version']['state'] = wpgpt_last_version; // to avoid redundancy
 		wpgpt_update_setting( 'last_checked', Date.now() );
-		if( wpgpt_settings['last_version']['state'] != WPGPT_VERSION ){	
+		if( wpgpt_new_version( wpgpt_settings['last_version']['state'], WPGPT_VERSION ) ){	
 			jQuery('#masthead').after( wpgpt_update_template.replaceAll( '%s', wpgpt_settings['last_version']['state'] ) );
 		}
     });
+}
+
+function wpgpt_new_version(last, current){
+	last = parseInt( last.replaceAll('.', '') );
+	last = ( ( last < 100 ) ? ( last*10 ) : last );
+	
+	current = parseInt( current.replaceAll('.', '') );
+	current = ( ( current < 100 ) ? ( current*10 ) : current );
+	
+	return ( last > current );
 }
 
 wpgpt_version();
