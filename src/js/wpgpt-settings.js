@@ -129,12 +129,6 @@ var wpgpt_settings = {
 			'type' : 2,
 			'parent' : 'others'
 		},
-	/**	'snippets' : {
-	**		'desc' : 'Snippets & notes',
-	**		'state' : 'disabled',
-	**		'type' : 2,
-	**		'parent' : 'others'
-	**	}, #to-do: future version */
 	'last_checked' :{
 			'state' : 'never',
 			'parent' : 'none',
