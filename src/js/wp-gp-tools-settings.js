@@ -146,10 +146,11 @@ var wpgpt_settings = {
 			'type' : -1
 	},
 };
-
-var wpgpt_update_template = '<div class="wpgpt-update-notice"><strong>WPGPTools v.%s has new features!</strong> You\'re using v.' + WPGPT_VERSION + '. Update now! ' +
-							'<br><a href="https://github.com/vlad-timotei/wpgp-tools/releases/tag/%s">Click here to download the latest release</a>' +
-							', unzip the files and replace them. <br> Don\'t forget to click <i>Reload</i> in <code>chrome://extensions/</code></div>';
+if( typeof wpgpt_update_template !== 'undefined' ){
+	var wpgpt_update_template = '<div class="wpgpt-update-notice"><strong>WPGPTools v.%s has new features!</strong> You\'re using v.' + WPGPT_VERSION + '. Update now! ' +
+								'<br><a href="https://github.com/vlad-timotei/wpgp-tools/releases/tag/%s">Click here to download the latest release</a>' +
+								', unzip the files and replace them. <br> Don\'t forget to click <i>Reload</i> in <code>chrome://extensions/</code></div>';
+}
 jQuery('#menu-headline-nav').append('<li class="menu-item wpgpt_settings" style="cursor:pointer;"><a>Tools Settings</a></li>');
 jQuery('.wpgpt_settings').click( function() { wpgpt_settings_page(); } );
 
