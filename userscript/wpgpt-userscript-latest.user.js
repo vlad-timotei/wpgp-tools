@@ -13,7 +13,6 @@
 // @require      https://raw.githubusercontent.com/vlad-timotei/wpgp-tools/main/src/js/wp-gp-tools-checks.js?v=1.3
 // @require      https://raw.githubusercontent.com/vlad-timotei/wpgp-tools/main/src/js/wp-gp-tools-consistency.js?v=1.3
 // @require      https://raw.githubusercontent.com/vlad-timotei/wpgp-tools/main/src/js/wp-gp-tools-shortcuts.js?v=1.3
-// @require      https://raw.githubusercontent.com/vlad-timotei/wpgp-tools/main/userscript/wpgpt-userscript-end.js?v=1.3
 // ==/UserScript==
 
 (function() {
