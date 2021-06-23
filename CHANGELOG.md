@@ -23,5 +23,6 @@
 * Improves checks performance by **+15%** and improves results messages
 * Fixes additional `/` in QuickLinks
 * Fixes *Save with warnings* UI inconsistency
-* Obsoletes fallback different ending result (now redundant)
+* Fixes GT encodeURIComponent & matches GT locale slug
 * Fixes GoogleTranslate link for locales with a different slug than the one on GP
+* Obsoletes fallback different ending result (now redundant)
