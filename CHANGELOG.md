@@ -1,4 +1,4 @@
-# v.1.0
+# v.1.0 - 11.05.2021
   * Search in projects
   * Quick links
   * Google Translate
@@ -7,13 +7,13 @@
   * Romanian checks
   * Custom Shortcuts
 
-# v.1.1
+# v.1.1 - 12.05.2021
 * Consistency data fetching performance 
 
-# v.1.2
+# v.1.2 - 12.05.2021
 * Don't promt to "update" to an older version
 
-# v.1.3
+# v.1.3 - 23.06.2021
 * Adds end `?` check
 * Adds **custom period** check
 * Adds `Alt + P` shortcut (Firefox users need it)
