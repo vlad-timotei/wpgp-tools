@@ -3,13 +3,13 @@
  ** Scripts are loaded at the end of the head to override some editor keyboard shortcuts*
  */
 
-var wp_gp_tools_scripts = ['functions', 'settings' , 'checks', 'shortcuts' ]; /* ToDo: future version: 'snippets' */
+var wpgpt_scripts = ['functions', 'settings' , 'checks', 'shortcuts' ];
 /** wp-gp-tools-consistency.js must load as content_script to prevent new windows being blocked */
 
-load_script(wp_gp_tools_scripts );
-parse_img();
+wpgpt_load_scripts( wpgpt_scripts );
+wpgpt_load_imgs();
 
-function parse_img(){
+function wpgpt_load_imgs(){
 	var warning_icon = chrome.extension.getURL('img/warning.png');
 	var notice_icon = chrome.extension.getURL('img/notice.png');
 	var img_script = document.createElement('script');
@@ -18,12 +18,12 @@ function parse_img(){
 	document.getElementsByTagName('head')[0].appendChild( img_script );
 }
 
-function load_script( url ){
-  if( Array.isArray( url ) ){
+function wpgpt_load_scripts( resource ){
+  if( Array.isArray( resource ) ){
     var self = this,
       prom = [];
-    url.forEach( function( item ){
-      prom.push( self.load_script( item ) );
+    resource.forEach( function( item ){
+      prom.push( self.wpgpt_load_scripts( item ) );
     });
     return Promise.all( prom );
   } 
@@ -32,7 +32,7 @@ function load_script( url ){
 	t = document.getElementsByTagName('head')[0],
     s = document.createElement('script'); 
     s.type = 'text/javascript';
-    s.src = chrome.extension.getURL('js/wp-gp-tools-' + url + '.js');
+    s.src = chrome.extension.getURL('js/wpgpt-' + resource + '.js');
     s.async = false;
     s.onload = s.onreadystatechange = function() {
       if( !r && (!this.readyState || this.readyState === 'complete') ){

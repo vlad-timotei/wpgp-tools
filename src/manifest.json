@@ -9,10 +9,10 @@
 		"storage"
 	],
 	"web_accessible_resources": [
-		"js/wp-gp-tools-checks.js",
-		"js/wp-gp-tools-settings.js",
-		"js/wp-gp-tools-functions.js",
-		"js/wp-gp-tools-shortcuts.js",
+		"js/wpgpt-checks.js",
+		"js/wpgpt-settings.js",
+		"js/wpgpt-functions.js",
+		"js/wpgpt-shortcuts.js",
 		"img/warning.png",
 		"img/notice.png"
 	],
@@ -24,10 +24,10 @@
 		"js":[
 			"js/init.js",
 			"js/jquery-3.6.0.min.js",
-			"js/wp-gp-tools-consistency.js"
+			"js/wpgpt-consistency.js"
 			],
 		"css":[
-			"css/wp-gp-tools-style.css"
+			"css/wpgpt-style.css"
 		]
 	}],
    	 "options_ui": {
