@@ -255,6 +255,11 @@ table.translations a.action {
     border-bottom:1px solid #545454;
 }
 
+.wpgpt-check-preview{
+    display:block;
+    margin:0 auto;
+}
+
 /* Search */
 .wpgpt-search {
 	padding: 0 15px 0 15px;

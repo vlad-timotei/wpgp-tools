@@ -67,7 +67,7 @@ function wpgpt_check_all_translations(){
 		editor_html_output = '<div class="wpgpt-checks-list">' + editor_html_output + '</div>';
 
 		if( preview_warning ){
-			preview_html_output = '<img class="wpgpt-warning-preview" title="String has a warning." src="' + warning_icon + '">';
+			preview_html_output = '<img class="wpgpt-check-preview" title="String has a warning." src="' + warning_icon + '">';
 			jQuery('#' + jQuery(this).attr('id').replace('preview', 'editor')).find('.wpgpt-ignore-warnings').show();	
 			preview_class = 'wpgpt-has-warning';
 		} 
