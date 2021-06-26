@@ -68,7 +68,6 @@ Checks can be set as:
 
 ![image](https://user-images.githubusercontent.com/65488419/121800720-26715e00-cc3c-11eb-8b29-6e63f5db5b13.png)
 
-
 ## #3 Locale specific Checks
 
 If your locale uses a different symbol other than `.` for period, you can set it here.
@@ -94,10 +93,10 @@ Please open an issue with the checks you'd like implemented for your locale and 
 ### Installation
 Only choose one of these two:
 
-##### Google Chrome & Edge
+##### Google Chrome, Edge & Opera
 
 1. Get the latest release from [here](https://github.com/vlad-timotei/wpgp-tools/releases/latest) and extract to a folder.
-2. Open Chrome extensions `chrome://extensions/` or `edge://extensions/` and enable Developer mode.
+2. Open Chrome extensions `chrome://extensions/` or `edge://extensions/` or `opera://extensions/` and enable Developer mode.
 3. Then use Load Unpacked button and point to the `wpgp-tools\src\` folder
 4. That's it! Go to a translate project to see it in action.
 
