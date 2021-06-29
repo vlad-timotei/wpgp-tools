@@ -81,7 +81,7 @@ function wpgpt_check_all_translations(){
 			}
 			
 		jQuery(this).addClass(preview_class);
-		jQuery('#' + jQuery(this).attr('id').replace('preview', 'editor')).find('.meta .status-actions').after(editor_html_output);
+		jQuery('#' + jQuery(this).attr('id').replace('preview', 'editor')).find('.editor-panel__right .panel-content .meta dl').eq(0).before( editor_html_output );
 		jQuery(this).find('.actions .action.edit').prepend( preview_html_output );
 	});
 }
