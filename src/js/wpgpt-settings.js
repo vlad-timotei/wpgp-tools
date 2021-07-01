@@ -129,6 +129,18 @@ var wpgpt_settings = {
 			'type' : 2,
 			'parent' : 'others'
 		},
+		'string_history' : {
+			'desc' : 'Load string history',
+			'state': 'disabled',
+			'type' : 2,
+			'parent' : 'others'
+		},
+			'string_history_current' : {
+				'desc' : 'Also load current string history',
+				'state' : 'disabled',
+				'type' : 2,
+				'parent' : 'string_history'
+			},
 	'last_checked' :{
 			'state' : 'never',
 			'parent' : 'none',
