@@ -13,6 +13,7 @@
 		"js/wpgpt-settings.js",
 		"js/wpgpt-functions.js",
 		"js/wpgpt-shortcuts.js",
+		"js/wpgpt-history.js",
 		"img/warning.png",
 		"img/notice.png"
 	],

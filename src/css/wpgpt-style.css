@@ -386,11 +386,60 @@ table.translations a.action {
     color: #a0a5aa;
 }
 
-/* Glossary  */
-table.my-glossary.glossary tr td {
-	padding: 5px !important;
+/* History check */
+del {
+	text-decoration: none;
+	color: #b30000;
+	background: #fadad7
 }
 
-.my-glossary.glossary {
-	padding: 10px 15px 15px 15px;
+ins {
+	background: #eaf2c2;
+	color: #406619;
+	text-decoration: none
+}
+
+
+.wpgpt-h-preview span{
+	width:fit-content;
+	clear:both;
+	display:block;
+	margin-top: 5px;
+	background: #f3f4f5;
+	padding: 3px 5px;
+	border-radius: 5px;
+	font-size:12px;
+}
+
+
+.wpgpt-h-preview span.h-current{
+    background:#addcb1;
+}
+
+.wpgpt-h-preview span.h-waiting{
+	background:#ffdd84;
+}
+
+
+.wpgpt-h-editor {
+	background: #f3f4f5;
+	padding: 10px 15px;
+	border-radius: 5px;
+	width:95%;
+	display:block;
+	margin:10px auto;	
+}
+
+.wpgpt-h-editor span{
+	clear:both;
+	display:block;
+	margin-bottom:5px;
+}
+
+.wpgpt-h-editor span:after{
+	content:":";
+}
+
+.wpgpt-h-editor span.h-misc:after{
+	content:"";
 }
