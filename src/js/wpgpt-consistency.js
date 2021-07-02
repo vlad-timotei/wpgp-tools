@@ -134,17 +134,43 @@ function consistency_tools(){
 			jQuery([document.documentElement, document.body]).animate({ scrollTop: jQuery(".breadcrumb").offset().top }, 5);
 			jQuery('.translations-unique').toggle();
 		}
-		else{	
+		else{			
+			/* Search does not show on result pages to prevent too many nested pages */
 			jQuery('.editor-panel .editor-panel__right .panel-content').append( search_html_output );
-			jQuery('.wpgpt-search-option').each(function() { jQuery(this).prop( 'checked', user_search_settings[ jQuery(this).data('search-project') ] ); } );
-			if( user_search_settings['plugin'] ){
-				jQuery('.wpgpt-search-plugin-slug').show();
+			jQuery('.wpgpt-search-option').each( function() { 
+				jQuery(this).prop( 'checked', user_search_settings[ jQuery(this).data('search-project') ] ); 
+			} );
+			if( user_search_settings['plugin'] ){ 
+				jQuery('.wpgpt-search-plugin-slug').show(); 
 			}
 			fill_plugin_slug();
-	
-			jQuery('.editor-panel__right .panel-header').append( actions_html_output );
+			jQuery('.wpgpt-search').submit( submit_form, event );
+			jQuery('.wpgpt-search-close-tabs').click( function(){
+				close_tabs('all');
+			});
+			jQuery('.wpgpt-search-plugin-option').click( function(){
+				jQuery('.wpgpt-search-plugin-slug').toggle(); 
+			} );
+			jQuery('.wpgpt-search-option').click( function() {
+				if( jQuery(this).prop('checked') == true ){
+					user_search_settings[jQuery(this).data('search-project')] = true;	
+				}
+				else {
+					user_search_settings[jQuery(this).data('search-project')] = false;
+				}
+				jQuery('.wpgpt-search-option').each( function() {
+					jQuery(this).prop( 'checked', user_search_settings[ jQuery(this).data( 'search-project' ) ] );
+				} );
+				setLS('wpgpt-search', JSON.stringify( user_search_settings ) );
+			});
+		}
+			
+			/* Consistency*/
 			jQuery('.editor-panel__left .suggestions-wrapper').prepend( consistency_suggestions_output );
-
+			jQuery('.wpgpt-get-consistency').click(function(){ get_consistency_suggestions( jQuery(this).closest('tr').attr('id'), this ); } );	
+			
+			/*Quick Links */
+			jQuery('.editor-panel__right .panel-header').append( actions_html_output );
 			var menu_links;
 			jQuery('.editor').each( function(){
 				menu_links = [];
@@ -153,34 +179,8 @@ function consistency_tools(){
 				jQuery(this).find('.wpgpt-actions_history').data( 'link', 'https://translate.wordpress.org' + menu_links[1] + historypage );
 				jQuery(this).find('.wpgpt-actions_consistency').data( 'link', menu_links[2] + resultpage );
 			});
-	
-			display_google_translate();
-	
-			jQuery('.wpgpt-search').submit( submit_form, event );
-	
-			jQuery('.wpgpt-search-close-tabs').click( function(){close_tabs('all');});
-			jQuery('.wpgpt-search-plugin-option').click( function(){ jQuery('.wpgpt-search-plugin-slug').toggle(); } );
-	
-			jQuery('.wpgpt-search-option').click( function() {
-				if( jQuery(this).prop('checked') == true ){
-					user_search_settings[jQuery(this).data('search-project')] = true;
-				}
-				else{
-					user_search_settings[jQuery(this).data('search-project')] = false;
-				}
-    
-				jQuery('.wpgpt-search-option').each( function() { jQuery(this).prop( 'checked', user_search_settings[ jQuery(this).data( 'search-project' ) ] ); } );
-				setLS('wpgpt-search', JSON.stringify( user_search_settings ) );
-			});
-
-			jQuery('.source-details__references ul li a').click(function(event){
-				event.preventDefault();
-				open_tab('references', jQuery(this).attr('href') );
-			});
-		
-	
+			
 			jQuery('.wpgpt-actions_copy, .wpgpt-actions_plus').click(toggle_copy);
-	
 			jQuery('.wpgpt-actions').click(function(){
 				if( user_search_settings['copy-me'] ){
 					var _this = this;
@@ -194,15 +194,22 @@ function consistency_tools(){
 					jQuery('.wpgpt-search-close-tabs').show();
 				}
 			});
-	
-			jQuery('.wpgpt-get-consistency').click(function(){ get_consistency_suggestions( jQuery(this).closest('tr').attr('id'), this ); } );	
+			
+			/*Google Translate */
+			display_google_translate();
 			jQuery('.wpgpt-google-translate.wpgpt-google-translate').click( function(){ 
-			open_tab('google-translate', jQuery(this).data('gt-string') ); 
-			jQuery('.wpgpt-search-close-tabs').show();
+				open_tab('google-translate', jQuery(this).data('gt-string') ); 
+				jQuery('.wpgpt-search-close-tabs').show();
+			});
+	
+			/* Refference */
+			jQuery('.source-details__references ul li a').click(function(event){
+				event.preventDefault();
+				open_tab('references', jQuery(this).attr('href') );
 			});
 		
+			/* Close tabs */
 			jQuery(window).on('beforeunload', function(){ close_tabs('all'); });
-		}
 	}
 	
 	function get_consistency_suggestions( string_id, get_consistency_btn ){
