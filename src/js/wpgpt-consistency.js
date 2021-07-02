@@ -68,7 +68,9 @@ function consistency_tools(){
 	const protocol = 'https://';
 	const hostname = window.location.hostname;
 	const pathname = window.location.pathname;
-	const resultpage = '&resultpage=yes';
+	const resultpage = '&resultpage';
+	const historypage = '&historypage';
+	
 	var findlocale = pathname.split('/');
 	
 	const current_locale = jQuery( findlocale ).get(-3) + '/' + jQuery( findlocale ).get(-2);
@@ -82,8 +84,7 @@ function consistency_tools(){
 		short_locale = short_locale[0];
 	}
 
-	let params = new URLSearchParams( document.location.search.substring( 1 ) );
-	let is_result_page = params.get('resultpage');
+	let is_result_page = document.location.href.includes('resultpage');
 	
 	if( getLS('wpgpt-search') !== null ){
 		user_search_settings = JSON.parse( getLS('wpgpt-search') ); 
@@ -127,7 +128,7 @@ function consistency_tools(){
 	jQuery(document).ready( elements_init );
   
 	function elements_init(){	
-		if( is_result_page !== null ){
+		if( is_result_page ){
 			jQuery('.filter-toolbar').after( result_page_html_output );
 			jQuery('.consistency-form').before( result_page_html_output );
 			jQuery([document.documentElement, document.body]).animate({ scrollTop: jQuery(".breadcrumb").offset().top }, 5);
@@ -149,8 +150,8 @@ function consistency_tools(){
 				menu_links = [];
 				jQuery(this).find('.button-menu__dropdown li a').each( function(){ menu_links.push( jQuery(this).attr('href') ); } );
 				jQuery(this).find('.wpgpt-actions_permalink').data( 'link', 'https://translate.wordpress.org' + menu_links[0] );
-				jQuery(this).find('.wpgpt-actions_history').data( 'link', 'https://translate.wordpress.org' + menu_links[1] );
-				jQuery(this).find('.wpgpt-actions_consistency').data( 'link', menu_links[2] );
+				jQuery(this).find('.wpgpt-actions_history').data( 'link', 'https://translate.wordpress.org' + menu_links[1] + historypage );
+				jQuery(this).find('.wpgpt-actions_consistency').data( 'link', menu_links[2] + resultpage );
 			});
 	
 			display_google_translate();
@@ -189,7 +190,7 @@ function consistency_tools(){
 					setTimeout( function() { jQuery(_this).attr( 'aria-label', current_aria_label ); }, 2000 );
 				}
 				else{
-					open_tab('panel_links', jQuery(this).data('link') + resultpage );
+					open_tab('panel_links', jQuery(this).data('link') );
 					jQuery('.wpgpt-search-close-tabs').show();
 				}
 			});

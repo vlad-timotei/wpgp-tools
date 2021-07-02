@@ -106,6 +106,29 @@ var wpgpt_settings = {
 				'type' : 3,
 				'parent' : 'ro_checks'
 				},
+	'history' : {
+		'desc' : 'String history',
+		'type' : 0,
+		'parent' : 'self'
+	},
+		'history_main' : {
+				'desc' : 'Load string history',
+				'state': 'disabled',
+				'type' : 2,
+				'parent' : 'history'
+			},
+				'history_current' : {
+					'desc' : 'Also load <b>current</b> string history',
+					'state' : 'disabled',
+					'type' : 2,
+					'parent' : 'history_main'
+				},
+				'history_page' : {
+					'desc' : 'Display history on history pages',
+					'state' : 'disabled',
+					'type' : 2,
+					'parent' : 'history_main'
+				},
 	'others' : {
 		'desc' : 'Other settings',
 		'type' : 0,
@@ -129,18 +152,6 @@ var wpgpt_settings = {
 			'type' : 2,
 			'parent' : 'others'
 		},
-		'string_history' : {
-			'desc' : 'Load string history',
-			'state': 'disabled',
-			'type' : 2,
-			'parent' : 'others'
-		},
-			'string_history_current' : {
-				'desc' : 'Also load current string history',
-				'state' : 'disabled',
-				'type' : 2,
-				'parent' : 'string_history'
-			},
 	'last_checked' :{
 			'state' : 'never',
 			'parent' : 'none',
