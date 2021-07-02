@@ -67,7 +67,7 @@ function wpgpt_load_history_status(){
 }
 
 function wpgpt_display_history_status( data, translation_id, translation_status, url ){
-	var current_translation_row, current_translation, waiting_translation_row, waiting_translation, old_translation_row, diff_state, editor_output = '', preview_output = ''; 
+	var current_translation_row, current_translation, waiting_translation_row, waiting_translation, old_translation_row, rejected_translation_row, diff_state, editor_output = '', preview_output = ''; 
 	var history_page = jQuery.parseHTML( data );
 	if ( ['old', 'waiting', 'rejected'].includes( translation_status ) ){
 		current_translation_row = jQuery( history_page ).find('#translations tbody tr.preview.status-current');
@@ -89,10 +89,13 @@ function wpgpt_display_history_status( data, translation_id, translation_status,
 	}
 	if ( 'current' == translation_status ){
 		waiting_translation_row = jQuery( history_page ).find('#translations tbody tr.preview.status-waiting');
-		old_translation_row = jQuery( history_page ).find('#translations tbody tr.preview.status-old'); 
-		preview_output = ( waiting_translation_row.length ) ? ( waiting_translation_row.length + ' waiting strings') : '';
-		preview_output+= ( waiting_translation_row.length && old_translation_row.length ) ? ' and ' : '';
-		preview_output+= ( old_translation_row.length ) ? ( old_translation_row.length + ' old strings') : '';
+		old_translation_row = jQuery( history_page ).find('#translations tbody tr.preview.status-old');
+		rejected_translation_row = jQuery( history_page ).find('#translations tbody tr.preview.status-rejected'); 	
+		preview_output = ( waiting_translation_row.length ) ? ( waiting_translation_row.length + ' waiting string(s)') : '';
+		preview_output+= ( preview_output !== '' ) ? ' and ' : '';
+		preview_output+= ( old_translation_row.length ) ? ( old_translation_row.length + ' old string(s)') : '';
+		preview_output+= ( preview_output !== '' ) ? ' and ' : '';
+		preview_output+= ( rejected_translation_row.length ) ? ( rejected_translation_row.length + ' old string(s)') : '';
 		preview_output = ( preview_output!= '' ) ? ( '<span class="h-misc"><a href="' + url + '" target="_new">' + preview_output + '</a></span>' ) : '';
 		editor_output = '<div class="wpgpt-h-editor h-misc">' + preview_output + '</div>';
 	}
