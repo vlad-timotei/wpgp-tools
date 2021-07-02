@@ -178,6 +178,9 @@ function consistency_tools(){
 				jQuery(this).find('.wpgpt-actions_permalink').data( 'link', 'https://translate.wordpress.org' + menu_links[0] );
 				jQuery(this).find('.wpgpt-actions_history').data( 'link', 'https://translate.wordpress.org' + menu_links[1] + historypage );
 				jQuery(this).find('.wpgpt-actions_consistency').data( 'link', menu_links[2] + resultpage );
+				if ( user_env_settings['history_page'] == 'disabled' ){
+					jQuery( this ).find('.button-menu__dropdown li a').eq(1).attr('href', 'https://translate.wordpress.org' + menu_links[1] + historypage );
+				}
 			});
 			
 			jQuery('.wpgpt-actions_copy, .wpgpt-actions_plus').click(toggle_copy);
