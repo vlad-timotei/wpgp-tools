@@ -92,10 +92,8 @@ function wpgpt_display_history_status( data, translation_id, translation_status,
 		old_translation_row = jQuery( history_page ).find('#translations tbody tr.preview.status-old');
 		rejected_translation_row = jQuery( history_page ).find('#translations tbody tr.preview.status-rejected'); 	
 		preview_output = ( waiting_translation_row.length ) ? ( waiting_translation_row.length + ' waiting string(s)') : '';
-		preview_output+= ( preview_output !== '' ) ? ' and ' : '';
-		preview_output+= ( old_translation_row.length ) ? ( old_translation_row.length + ' old string(s)') : '';
-		preview_output+= ( preview_output !== '' ) ? ' and ' : '';
-		preview_output+= ( rejected_translation_row.length ) ? ( rejected_translation_row.length + ' rejected string(s)') : '';
+		preview_output+= ( old_translation_row.length ) ? ( ( ( preview_output !== '' ) ? ' and ' : '' ) + old_translation_row.length + ' old string(s)') : '';
+		preview_output+= ( rejected_translation_row.length ) ? ( ( ( preview_output !== '' ) ? ' and ' : '' ) + rejected_translation_row.length + ' rejected string(s)') : '';
 		preview_output = ( preview_output!= '' ) ? ( '<span class="h-misc"><a href="' + url + '&historypage" target="_new">' + preview_output + '</a></span>' ) : '';
 		editor_output = '<div class="wpgpt-h-editor h-misc">' + preview_output + '</div>';
 	}
