@@ -96,7 +96,7 @@ function wpgpt_display_history_status( data, translation_id, translation_status,
 		preview_output+= ( old_translation_row.length ) ? ( old_translation_row.length + ' old string(s)') : '';
 		preview_output+= ( preview_output !== '' ) ? ' and ' : '';
 		preview_output+= ( rejected_translation_row.length ) ? ( rejected_translation_row.length + ' rejected string(s)') : '';
-		preview_output = ( preview_output!= '' ) ? ( '<span class="h-misc"><a href="' + url + '" target="_new">' + preview_output + '</a></span>' ) : '';
+		preview_output = ( preview_output!= '' ) ? ( '<span class="h-misc"><a href="' + url + '&historypage" target="_new">' + preview_output + '</a></span>' ) : '';
 		editor_output = '<div class="wpgpt-h-editor h-misc">' + preview_output + '</div>';
 	}
 	jQuery( '#' + translation_id.replace('editor', 'preview') ).find( ".translation .translation-text" ).append( '<div class="wpgpt-h-preview">' + preview_output + '</div>' );	
