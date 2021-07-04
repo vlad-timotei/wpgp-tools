@@ -399,58 +399,38 @@ ins {
 	text-decoration: none
 }
 
-
-.wpgpt-h-preview span{
+.wpgpt-h-label {
 	width:fit-content;
 	clear:both;
 	display:block;
 	margin-top: 5px;
-	background: #f3f4f5;
+	background: #fff;
 	padding: 3px 5px;
 	border-radius: 5px;
 	font-size:12px;
 }
 
-
-.wpgpt-h-preview span.h-current{
-    background:#addcb1;
+.wpgpt-h-label.editor {
+    background-color:#808286;
+    color:#fff;
+    margin-top:15px;
+	margin-bottom:10px;
+}
+.wpgpt-h-label.editor a{
+	color: #fff !important;
 }
 
-.wpgpt-h-preview span.h-waiting{
-	background:#ffdd84;
+.wpgpt-h-label.editor.details:after {
+   content:' \21A7';
 }
 
-
-.wpgpt-h-editor {
-	background: #f3f4f5;
-	padding: 10px 15px;
-	border-radius: 5px;
-	width:95%;
-	display:block;
-	margin:10px auto;	
+.wpgpt_diff ol,
+.wpgpt_compared_to ol {
+    padding-left:25px;
 }
 
-.wpgpt-h-editor span{
-	
-	display:inline-block;
-	margin-bottom:5px;
-}
-
-.diff-result.multiple,
-.wpgpt_raw_compared_to.multiple ol {
-    padding-left:10px;
-}
-
-.diff-result.single,
-.wpgpt_raw_compared_to.single ol {
-    list-style-type: none; 
-}
-
-.wpgpt-h-comparasion {
-    float:right;
-    font-size:0.95em;
-    color:#555555;    
-}
-.wpgpt-h-editor .h-misc a:after{
-    content:" (click to open History)";
+.wpgpt_diff.single ol,
+.wpgpt_compared_to.single ol {
+    list-style-type: none;
+	padding-left:20px;
 }
