@@ -58,7 +58,7 @@ function wpgpt_load_history_status(){
 				const data = fetch( url, { headers: new Headers( { 'User-agent': 'Mozilla/4.0 Custom User Agent' } ) } )
 					.then( response => response.text() )
 					.then( data => {
-						wpgpt_display_history_status( data, translation_id, translation_status, url);
+						wpgpt_analyse_history_status( data, translation_id, translation_status, url);
 					} )
 					.catch(error => console.error(error));
 			}
@@ -66,42 +66,68 @@ function wpgpt_load_history_status(){
 	}
 }
 
-function wpgpt_display_history_status( data, translation_id, translation_status, url ){
-	var current_translation_row, current_translation, waiting_translation_row, waiting_translation, old_translation_row, rejected_translation_row, diff_state, editor_output = '', preview_output = ''; 
-	var history_page = jQuery.parseHTML( data );
-	if ( ['old', 'waiting', 'rejected'].includes( translation_status ) ){
-		current_translation_row = jQuery( history_page ).find('#translations tbody tr.preview.status-current');
-		if( current_translation_row.length  ){
-			current_translation = jQuery( current_translation_row[0] ).find(".translation-text").text();
-			diff_state = ( ( jQuery( '#' + translation_id ).find('textarea').text() !== current_translation ) ? 'different' : 'identical' );
-			preview_output = '<span class="h-current">Existing <b>' + diff_state + ' current</b> translation</span>';
-			editor_output = '<div class="wpgpt-h-editor h-current">' + preview_output + JsDiff.convertChangesToXML( JsDiff['diffWords']( current_translation, jQuery( '#' + translation_id ).find('textarea').text() ) ); + '</div>';		
-		}
-	}
-	if ( 'fuzzy' == translation_status ){
-		waiting_translation_row = jQuery( history_page ).find('#translations tbody tr.preview.status-waiting');
-		if( waiting_translation_row.length  ){
-			waiting_translation = jQuery( waiting_translation_row[0] ).find(".translation-text").text();
-			diff_state = ( ( jQuery( '#' + translation_id ).find('textarea').text() !== waiting_translation ) ? 'different' : 'identical' );
-			preview_output = '<span class="h-waiting">Existing <b>' + diff_state + ' waiting</b> translation</span>';
-			editor_output = '<div class="wpgpt-h-editor h-waiting">' + preview_output + JsDiff.convertChangesToXML( JsDiff['diffWords']( current_translation, jQuery( '#' + translation_id ).find('textarea').text() ) ); + '</div>';		
-		}
-	}
+/**
+** 			This string status:				
+**			Current						=>	counts Waiting, Old and Rejected
+**			Old, Rejected and Waiting 	=>	compares to Current
+**			Fuzzy 						=> 	compares to Waiting
+**/
+function wpgpt_analyse_history_status( data, translation_id, translation_status, url ){
+	var compare_to = 'current',	compare_to_row = [], compare_to_translation = [], this_translation = [],
+		diff_state = 'identical', diff_output = '', editor_output = '',	preview_output = '', single_multiple, comparasion_type, raw_compare_to,
+		history_page = jQuery.parseHTML( data );
+		
 	if ( 'current' == translation_status ){
-		waiting_translation_row = jQuery( history_page ).find('#translations tbody tr.preview.status-waiting');
-		old_translation_row = jQuery( history_page ).find('#translations tbody tr.preview.status-old');
-		rejected_translation_row = jQuery( history_page ).find('#translations tbody tr.preview.status-rejected'); 	
-		preview_output = ( waiting_translation_row.length ) ? ( waiting_translation_row.length + ' waiting string(s)') : '';
-		preview_output+= ( old_translation_row.length ) ? ( ( ( preview_output !== '' ) ? ' and ' : '' ) + old_translation_row.length + ' old string(s)') : '';
-		preview_output+= ( rejected_translation_row.length ) ? ( ( ( preview_output !== '' ) ? ' and ' : '' ) + rejected_translation_row.length + ' rejected string(s)') : '';
+		compare_to_row[0] = jQuery( history_page ).find('#translations tbody tr.preview.status-waiting');
+		compare_to_row[1] = jQuery( history_page ).find('#translations tbody tr.preview.status-old');
+		compare_to_row[2] = jQuery( history_page ).find('#translations tbody tr.preview.status-rejected'); 	
+		preview_output = ( compare_to_row[0].length ) ? ( compare_to_row[0].length + ' waiting string' + ( ( compare_to_row[0].length > 1 ) ? 's' : '' ) ) : '';
+		preview_output+= ( compare_to_row[1].length ) ? ( ( ( preview_output !== '' ) ? ' and ' : '' ) + compare_to_row[1].length + ' old string' + ( ( compare_to_row[1].length > 1 ) ? 's' : '' ) ) : '';
+		preview_output+= ( compare_to_row[2].length ) ? ( ( ( preview_output !== '' ) ? ' and ' : '' ) + compare_to_row[2].length + ' rejected string' + ( ( compare_to_row[2].length > 1 ) ? 's' : '' ) ) : '';
 		if ( preview_output !== '' ) {
-			preview_output = '<span class="h-misc"><a href="' + url + '&historypage" target="_new">' + preview_output + '</a></span>';
+			preview_output = '<span class="h-misc"><a href="' + url + '&historypage" target="_blank">' + preview_output + '</a></span>';
 			editor_output = '<div class="wpgpt-h-editor h-misc">' + preview_output + '</div>';
 		}
+		wpgpt_display_history_status( translation_id, preview_output, editor_output );
+		return;
+	}		
+						
+	if ( translation_status == 'fuzzy' ){
+		compare_to = 'waiting';	
 	}
-	if ( preview_output !== '' ) {
-		jQuery( '#' + translation_id.replace('editor', 'preview') ).find( ".translation .translation-text" ).append( '<div class="wpgpt-h-preview">' + preview_output + '</div>' );	
-		jQuery( '#' + translation_id ).find( ".editor-panel__left .panel-content" ).prepend( editor_output );
+	compare_to_row = jQuery( history_page ).find('#translations tbody tr.preview.status-' + compare_to );
+	if( compare_to_row.length  ){
+		jQuery( '#' + translation_id.replace('editor', 'preview') ).find( ".translation-text" ).each( function(){ this_translation.push( jQuery( this ).text() ); } );
+		jQuery( compare_to_row[0] ).find(".translation-text").each( function(){ compare_to_translation.push( jQuery( this ).text() ); } );
+		single_multiple = ( this_translation.length > 1 ) ? 'multiple' : 'single'; 
+		raw_compare_to = '<details class="wpgpt_raw_compared_to ' + single_multiple + '"><summary>' + compare_to.charAt(0).toUpperCase() + compare_to.slice(1) + ' string from History</summary><ol>';
+		diff_output = '<ol class="diff-result ' + single_multiple  + '">';
+		for ( var i = 0; i < this_translation.length; i++ ){
+			if( this_translation[ i ] !== compare_to_translation[ i ] ){
+				diff_state = 'different';
+				diff_output += '<li>' + JsDiff.convertChangesToXML( JsDiff['diffWords']( this_translation[ i ], compare_to_translation[ i ] ) ) + '</li>';
+			}
+			else {
+				diff_output += '<li>' + this_translation[ i ] + '</li>';
+			}
+			raw_compare_to += '<li>' + compare_to_translation[ i ] + '</li>'
+		}
+		diff_output += '</ol>';
+		raw_compare_to += '</ol></details';
+
+		view_comparasion = '<span class="wpgpt-h-comparasion">(' + translation_status + ' vs. ' + compare_to + ')</span>'; 
+		preview_output = '<span>Existing <b>' + diff_state + ' ' + compare_to + '</b> translation:</span>';
+		editor_output = '<div class="wpgpt-h-editor">' + preview_output + view_comparasion + diff_output + '</div>';		
 	}
+	jQuery ('#' + translation_id ).find(".source-details").append( raw_compare_to );
+	wpgpt_display_history_status( translation_id, preview_output, editor_output );
 }
+
+function wpgpt_display_history_status ( translation_id, preview_output, editor_output ){
+	if ( preview_output !== '' ) {
+			jQuery( '#' + translation_id.replace('editor', 'preview') ).find( ".foreign-text" ).append( '<div class="wpgpt-h-preview">' + preview_output + '</div>' );	
+			jQuery( '#' + translation_id ).find( ".source-string" ).after( editor_output );
+		}
+}
+
 wpgpt_init_history_status();

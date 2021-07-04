@@ -431,15 +431,26 @@ ins {
 }
 
 .wpgpt-h-editor span{
-	clear:both;
-	display:block;
+	
+	display:inline-block;
 	margin-bottom:5px;
 }
 
-.wpgpt-h-editor span:after{
-	content:":";
+.diff-result.multiple,
+.wpgpt_raw_compared_to.multiple ol {
+    padding-left:10px;
 }
 
-.wpgpt-h-editor span.h-misc:after{
-	content:"";
+.diff-result.single,
+.wpgpt_raw_compared_to.single ol {
+    list-style-type: none; 
+}
+
+.wpgpt-h-comparasion {
+    float:right;
+    font-size:0.95em;
+    color:#555555;    
+}
+.wpgpt-h-editor .h-misc a:after{
+    content:" (click to open History)";
 }
