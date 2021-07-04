@@ -389,14 +389,16 @@ table.translations a.action {
 /* History check */
 del {
 	text-decoration: none;
-	color: #b30000;
-	background: #fadad7
+	color: #000000;
+	background: #ffb2b2;
+	white-space: pre;
 }
 
 ins {
-	background: #eaf2c2;
-	color: #406619;
-	text-decoration: none
+	background: #dae893;
+	color: #000000;
+	text-decoration: none;
+	white-space: pre;
 }
 
 .wpgpt-h-label {

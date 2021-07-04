@@ -35,6 +35,7 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
 IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+
 var JsDiff;
 
 function wpgpt_init_history_status(){
@@ -42,7 +43,198 @@ function wpgpt_init_history_status(){
 		return; 
 	if ( document.location.href.includes('historypage') && wpgpt_settings['history_page']['state'] == 'disabled' )
 		return;
-	JsDiff = function(){function c(e){return{newPos:e.newPos,components:e.components.slice(0)}}function n(e){for(var n=[],t=0;t<e.length;t++)e[t]&&n.push(e[t]);return n}function e(e){this.ignoreWhitespace=e}e.prototype={diff:function(e,n){if(n===e)return[{value:n}];if(!n)return[{value:e,removed:!0}];if(!e)return[{value:n,added:!0}];n=this.tokenize(n),e=this.tokenize(e);var t=n.length,o=e.length,r=t+o,s=[{newPos:-1,components:[]}],i=this.extractCommon(s[0],n,e,0);if(s[0].newPos+1>=t&&o<=i+1)return s[0].components;for(var u=1;u<=r;u++)for(var l=-1*u;l<=u;l+=2){var d,a=s[l-1],p=s[l+1];i=(p?p.newPos:0)-l,a&&(s[l-1]=void 0);var f=a&&a.newPos+1<t,h=p&&0<=i&&i<o;if(f||h){!f||h&&a.newPos<p.newPos?(d=c(p),this.pushComponent(d.components,e[i],void 0,!0)):((d=c(a)).newPos++,this.pushComponent(d.components,n[d.newPos],!0,void 0));i=this.extractCommon(d,n,e,l);if(d.newPos+1>=t&&o<=i+1)return d.components;s[l]=d}else s[l]=void 0}},pushComponent:function(e,n,t,o){var r=e[e.length-1];r&&r.added===t&&r.removed===o?e[e.length-1]={value:this.join(r.value,n),added:t,removed:o}:e.push({value:n,added:t,removed:o})},extractCommon:function(e,n,t,o){for(var r=n.length,s=t.length,i=e.newPos,u=i-o;i+1<r&&u+1<s&&this.equals(n[i+1],t[u+1]);)i++,u++,this.pushComponent(e.components,n[i],void 0,void 0);return e.newPos=i,u},equals:function(e,n){var t=/\S/;return!(!this.ignoreWhitespace||t.test(e)||t.test(n))||e===n},join:function(e,n){return e+n},tokenize:function(e){return e}};var t=new e,o=new e(!0);o.tokenize=function(e){return n(e.split(/(\s+|\b)/))};var r=new e(!0);r.tokenize=function(e){return n(e.split(/([{}:;,]|\s+)/))};var w=new e;return w.tokenize=function(e){return e.split(/^/m)},{Diff:e,diffChars:function(e,n){return t.diff(e,n)},diffWords:function(e,n){return o.diff(e,n)},diffLines:function(e,n){return w.diff(e,n)},diffCss:function(e,n){return r.diff(e,n)},createPatch:function(e,n,t,o,r){var s=[];s.push("Index: "+e),s.push("==================================================================="),s.push("--- "+e+(void 0===o?"":"\t"+o)),s.push("+++ "+e+(void 0===r?"":"\t"+r));var i=w.diff(n,t);function u(e){return e.map(function(e){return" "+e})}function l(e,n,t){var o=i[i.length-2],r=n===i.length-2,o=n===i.length-3&&(t.added!==o.added||t.removed!==o.removed);/\n$/.test(t.value)||!r&&!o||e.push("\\ No newline at end of file")}i[i.length-1].value||i.pop(),i.push({value:"",lines:[]});for(var d=0,a=0,p=[],f=1,h=1,c=0;c<i.length;c++){var v,g=i[c],m=g.lines||g.value.replace(/\n$/,"").split("\n");g.lines=m,g.added||g.removed?(d||(d=f,a=h,(v=i[c-1])&&(d-=(p=u(v.lines.slice(-4))).length,a-=p.length)),p.push.apply(p,m.map(function(e){return(g.added?"+":"-")+e})),l(p,c,g),g.added?h+=m.length:f+=m.length):(d&&(m.length<=8&&c<i.length-2?p.push.apply(p,u(m)):(v=Math.min(m.length,4),s.push("@@ -"+d+","+(f-d+v)+" +"+a+","+(h-a+v)+" @@"),s.push.apply(s,p),s.push.apply(s,u(m.slice(0,v))),m.length<=4&&l(s,c,g),a=d=0,p=[])),f+=m.length,h+=m.length)}return s.join("\n")+"\n"},applyPatch:function(e,n){for(var t,o=n.split("\n"),r=[],s=!1,i=!1,u="I"===o[0][0]?4:0;u<o.length;u++)"@"===o[u][0]?(t=o[u].split(/@@ -(\d+),(\d+) \+(\d+),(\d+) @@/),r.unshift({start:t[3],oldlength:t[2],oldlines:[],newlength:t[4],newlines:[]})):"+"===o[u][0]?r[0].newlines.push(o[u].substr(1)):"-"===o[u][0]?r[0].oldlines.push(o[u].substr(1)):" "===o[u][0]?(r[0].newlines.push(o[u].substr(1)),r[0].oldlines.push(o[u].substr(1))):"\\"===o[u][0]&&("+"===o[u-1][0]?s=!0:"-"===o[u-1][0]&&(i=!0));for(var l=e.split("\n"),u=r.length-1;0<=u;u--){for(var d=r[u],a=0;a<d.oldlength;a++)if(l[d.start-1+a]!==d.oldlines[a])return!1;Array.prototype.splice.apply(l,[d.start-1,+d.oldlength].concat(d.newlines))}if(s)for(;!l[l.length-1];)l.pop();else i&&l.push("");return l.join("\n")},convertChangesToXML:function(e){for(var n=[],t=0;t<e.length;t++){var o=e[t];o.added?n.push("<ins class='diff'>"):o.removed&&n.push("<del class='diff'>"),n.push(o.value.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")),o.added?n.push("</ins>"):o.removed&&n.push("</del>")}return n.join("")},convertChangesToDMP:function(e){for(var n,t=[],o=0;o<e.length;o++)n=e[o],t.push([n.added?1:n.removed?-1:0,n.value]);return t}}}();"undefined"!=typeof module&&(module.exports=JsDiff);
+	
+	JsDiff = (function () {
+		function clonePath(path) {
+			return {
+				newPos: path.newPos,
+				components: path.components.slice(0)
+			};
+		}
+
+		function removeEmpty(array) {
+			var ret = [];
+			for (var i = 0; i < array.length; i++) {
+				if (array[i]) {
+					ret.push(array[i]);
+				}
+			}
+			return ret;
+		}
+
+		function escapeHTML(s) {
+			var n = s;
+			n = n.replace(/&/g, '&amp;');
+			n = n.replace(/</g, '&lt;');
+			n = n.replace(/>/g, '&gt;');
+			n = n.replace(/"/g, '&quot;');
+
+			return n;
+		}
+
+		var Diff = function (ignoreWhitespace) {
+			this.ignoreWhitespace = ignoreWhitespace;
+		};
+		Diff.prototype = {
+			diff: function (oldString, newString) {
+				if (newString === oldString) {
+					return [{
+						value: newString
+					}];
+				}
+				if (!newString) {
+					return [{
+						value: oldString,
+						removed: true
+					}];
+				}
+				if (!oldString) {
+					return [{
+						value: newString,
+						added: true
+					}];
+				}
+
+				newString = this.tokenize(newString);
+				oldString = this.tokenize(oldString);
+
+				var newLen = newString.length,
+					oldLen = oldString.length;
+				var maxEditLength = newLen + oldLen;
+				var bestPath = [{
+					newPos: -1,
+					components: []
+				}];
+
+				var oldPos = this.extractCommon(bestPath[0], newString, oldString, 0);
+				if (bestPath[0].newPos + 1 >= newLen && oldPos + 1 >= oldLen) {
+					return bestPath[0].components;
+				}
+
+				for (var editLength = 1; editLength <= maxEditLength; editLength++) {
+					for (var diagonalPath = -1 * editLength; diagonalPath <= editLength; diagonalPath += 2) {
+						var basePath;
+						var addPath = bestPath[diagonalPath - 1],
+							removePath = bestPath[diagonalPath + 1];
+						oldPos = (removePath ? removePath.newPos : 0) - diagonalPath;
+						if (addPath) {
+							bestPath[diagonalPath - 1] = undefined;
+						}
+
+						var canAdd = addPath && addPath.newPos + 1 < newLen;
+						var canRemove = removePath && 0 <= oldPos && oldPos < oldLen;
+						if (!canAdd && !canRemove) {
+							bestPath[diagonalPath] = undefined;
+							continue;
+						}
+
+						if (!canAdd || (canRemove && addPath.newPos < removePath.newPos)) {
+							basePath = clonePath(removePath);
+							this.pushComponent(basePath.components, oldString[oldPos], undefined, true);
+						} else {
+							basePath = clonePath(addPath);
+							basePath.newPos++;
+							this.pushComponent(basePath.components, newString[basePath.newPos], true, undefined);
+						}
+
+						var oldPos = this.extractCommon(basePath, newString, oldString, diagonalPath);
+
+						if (basePath.newPos + 1 >= newLen && oldPos + 1 >= oldLen) {
+							return basePath.components;
+						} else {
+							bestPath[diagonalPath] = basePath;
+						}
+					}
+				}
+			},
+
+			pushComponent: function (components, value, added, removed) {
+				var last = components[components.length - 1];
+				if (last && last.added === added && last.removed === removed) {
+					components[components.length - 1] = {
+						value: this.join(last.value, value),
+						added: added,
+						removed: removed
+					};
+				} else {
+					components.push({
+						value: value,
+						added: added,
+						removed: removed
+					});
+				}
+			},
+			extractCommon: function (basePath, newString, oldString, diagonalPath) {
+				var newLen = newString.length,
+					oldLen = oldString.length,
+					newPos = basePath.newPos,
+					oldPos = newPos - diagonalPath;
+				while (newPos + 1 < newLen && oldPos + 1 < oldLen && this.equals(newString[newPos + 1], oldString[oldPos + 1])) {
+					newPos++;
+					oldPos++;
+
+					this.pushComponent(basePath.components, newString[newPos], undefined, undefined);
+				}
+				basePath.newPos = newPos;
+				return oldPos;
+			},
+
+			equals: function (left, right) {
+				var reWhitespace = /\S/;
+				if (this.ignoreWhitespace && !reWhitespace.test(left) && !reWhitespace.test(right)) {
+					return true;
+				} else {
+					return left === right;
+				}
+			},
+			join: function (left, right) {
+				return left + right;
+			},
+			tokenize: function (value) {
+				return value;
+			}
+		};
+
+		var CharDiff = new Diff(false); // Don't ignoreWhitespace
+
+		var WordDiff = new Diff(true);
+		WordDiff.tokenize = function (value) {
+			return removeEmpty(value.split(/(\s+|\b)/));
+		};
+
+		return {
+			Diff: Diff,
+
+			diffChars: function (oldStr, newStr) {
+				return CharDiff.diff(oldStr, newStr);
+			},
+			diffWords: function (oldStr, newStr) {
+				return WordDiff.diff(oldStr, newStr);
+			},
+			
+			convertChangesToXML: function (changes) {
+				var ret = [];
+				for (var i = 0; i < changes.length; i++) {
+					var change = changes[i];
+					if (change.added) {
+						ret.push("<ins class='diff'>");
+					} else if (change.removed) {
+						ret.push("<del class='diff'>");
+					}
+
+					ret.push(escapeHTML(change.value));
+
+					if (change.added) {
+						ret.push('</ins>');
+					} else if (change.removed) {
+						ret.push('</del>');
+					}
+				}
+				return ret.join('');
+			}
+		};
+	})();
+
 	wpgpt_load_history_status();
 }
 
@@ -74,7 +266,7 @@ function wpgpt_load_history_status(){
 **/
 function wpgpt_analyse_history_status( data, translation_id, translation_status, url ){
 	var compare_to = 'current',	compare_to_row = [], compare_to_translation = [], this_translation = [],
-		diff_state = 'identical', diff_output = '', preview_label = '', single_multiple, raw_compare_to,
+		diff_state = 'identical', diff_output = '', preview_label = '', single_multiple, raw_compare_to='',
 		history_page = jQuery.parseHTML( data );
 		
 	if ( 'current' == translation_status ){
@@ -107,7 +299,7 @@ function wpgpt_analyse_history_status( data, translation_id, translation_status,
 		for ( var i = 0; i < this_translation.length; i++ ){
 			if( this_translation[ i ] !== compare_to_translation[ i ] ){
 				diff_state = 'different';
-				diff_output += '<li>' + JsDiff.convertChangesToXML( JsDiff['diffWords']( this_translation[ i ], compare_to_translation[ i ] ) ) + '</li>';
+				diff_output += '<li>' + JsDiff.convertChangesToXML( JsDiff['diffChars']( this_translation[ i ], compare_to_translation[ i ] ) ) + '</li>';
 			}
 			else {
 				diff_output += '<li>' + this_translation[ i ] + '</li>';
@@ -118,7 +310,9 @@ function wpgpt_analyse_history_status( data, translation_id, translation_status,
 		raw_compare_to += '</ol></details';
 		preview_label = 'Existing <b>' + diff_state + ' ' + compare_to + '</b> translation';
 	}
-	jQuery ('#' + translation_id ).find(".source-details").append( '<div class="wpgpt-h-label editor details">' + preview_label + '</div>' + diff_output  + raw_compare_to );
-	jQuery( '#' + translation_id.replace('editor', 'preview') ).find( ".original-text" ).append( '<div class="wpgpt-h-label preview">' + preview_label + '</div>' );	
+	if( preview_label !== '' ){
+		jQuery ('#' + translation_id ).find(".source-details").append( '<div class="wpgpt-h-label editor details">' + preview_label + '</div>' + diff_output + raw_compare_to );
+		jQuery( '#' + translation_id.replace('editor', 'preview') ).find( ".original-text" ).append( '<div class="wpgpt-h-label preview">' + preview_label + '</div>' );	
+	}
 }
 wpgpt_init_history_status();
