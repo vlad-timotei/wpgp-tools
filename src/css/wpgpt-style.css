@@ -405,7 +405,7 @@ ins {
 	width:fit-content;
 	clear:both;
 	display:block;
-	margin-top: 5px;
+	margin: 3px;
 	background: #fff;
 	padding: 3px 5px;
 	border-radius: 5px;
@@ -417,7 +417,9 @@ ins {
     color:#fff;
     margin-top:15px;
 	margin-bottom:10px;
+	display:inline-block;
 }
+
 .wpgpt-h-label.editor a{
 	color: #fff !important;
 }
