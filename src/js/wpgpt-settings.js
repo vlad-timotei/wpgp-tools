@@ -107,7 +107,7 @@ var wpgpt_settings = {
 				'parent' : 'ro_checks'
 				},
 	'history' : {
-		'desc' : 'String history',
+		'desc' : 'History Tools',
 		'type' : 0,
 		'parent' : 'self'
 	},
