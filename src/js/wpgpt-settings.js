@@ -112,19 +112,19 @@ var wpgpt_settings = {
 		'parent' : 'self'
 	},
 		'history_main' : {
-				'desc' : 'Load string history',
+				'desc' : 'Show History Compare',
 				'state': 'disabled',
 				'type' : 2,
 				'parent' : 'history'
 			},
-				'history_current' : {
-					'desc' : 'Also load <b>current</b> string history',
+				'history_count' : {
+					'desc' : 'Show History Count',
 					'state' : 'disabled',
 					'type' : 2,
 					'parent' : 'history_main'
 				},
 				'history_page' : {
-					'desc' : 'Display history on history pages',
+					'desc' : 'Enable History Tools on history pages',
 					'state' : 'disabled',
 					'type' : 2,
 					'parent' : 'history_main'
