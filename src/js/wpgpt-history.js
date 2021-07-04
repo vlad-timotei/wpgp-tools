@@ -94,10 +94,14 @@ function wpgpt_display_history_status( data, translation_id, translation_status,
 		preview_output = ( waiting_translation_row.length ) ? ( waiting_translation_row.length + ' waiting string(s)') : '';
 		preview_output+= ( old_translation_row.length ) ? ( ( ( preview_output !== '' ) ? ' and ' : '' ) + old_translation_row.length + ' old string(s)') : '';
 		preview_output+= ( rejected_translation_row.length ) ? ( ( ( preview_output !== '' ) ? ' and ' : '' ) + rejected_translation_row.length + ' rejected string(s)') : '';
-		preview_output = ( preview_output!= '' ) ? ( '<span class="h-misc"><a href="' + url + '&historypage" target="_new">' + preview_output + '</a></span>' ) : '';
-		editor_output = '<div class="wpgpt-h-editor h-misc">' + preview_output + '</div>';
+		if ( preview_output !== '' ) {
+			preview_output = '<span class="h-misc"><a href="' + url + '&historypage" target="_new">' + preview_output + '</a></span>';
+			editor_output = '<div class="wpgpt-h-editor h-misc">' + preview_output + '</div>';
+		}
 	}
-	jQuery( '#' + translation_id.replace('editor', 'preview') ).find( ".translation .translation-text" ).append( '<div class="wpgpt-h-preview">' + preview_output + '</div>' );	
-	jQuery( '#' + translation_id ).find( ".editor-panel__left .panel-content" ).prepend( editor_output );
+	if ( preview_output !== '' ) {
+		jQuery( '#' + translation_id.replace('editor', 'preview') ).find( ".translation .translation-text" ).append( '<div class="wpgpt-h-preview">' + preview_output + '</div>' );	
+		jQuery( '#' + translation_id ).find( ".editor-panel__left .panel-content" ).prepend( editor_output );
+	}
 }
 wpgpt_init_history_status();
