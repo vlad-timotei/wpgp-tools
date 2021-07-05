@@ -1,5 +1,5 @@
 /** 
-**	This script uses jsdiff.js in variable JSDiff;
+**	JSDiff is a minified and simplified version of jsdiff.js
 ** 	Source: https://github.com/kpdecker/jsdiff 
 ** 	As seen on: http://jsfiddle.net/ARTsinn/MQdFw/ 
 */
@@ -37,20 +37,21 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 var JsDiff;
+wpgpt_init_history_status();
 
 function wpgpt_init_history_status(){
-	if ( wpgpt_settings['history_main']['state'] == 'disabled' )
-		return; 
-	if ( document.location.href.includes('historypage') && wpgpt_settings['history_page']['state'] == 'disabled' )
+	if ( 	typeof $gp == 'undefined' ||
+			wpgpt_settings['history_main']['state'] == 'disabled' ||
+			( document.location.href.includes('historypage') && wpgpt_settings['history_page']['state'] == 'disabled' )
+	){
 		return;
+	}
 	
 	JsDiff=function(){function e(e){return{newPos:e.newPos,components:e.components.slice(0)}}var n=function(e){this.ignoreWhitespace=e};n.prototype={diff:function(n,o){if(o===n)return[{value:o}];if(!o)return[{value:n,removed:!0}];if(!n)return[{value:o,added:!0}];o=this.tokenize(o),n=this.tokenize(n);var t=o.length,r=n.length,s=t+r,i=[{newPos:-1,components:[]}],u=this.extractCommon(i[0],o,n,0);if(i[0].newPos+1>=t&&u+1>=r)return i[0].components;for(var f=1;f<=s;f++)for(var a=-1*f;a<=f;a+=2){var d,c=i[a-1],h=i[a+1];u=(h?h.newPos:0)-a,c&&(i[a-1]=void 0);var v=c&&c.newPos+1<t,p=h&&0<=u&&u<r;if(v||p){!v||p&&c.newPos<h.newPos?(d=e(h),this.pushComponent(d.components,n[u],void 0,!0)):((d=e(c)).newPos++,this.pushComponent(d.components,o[d.newPos],!0,void 0));u=this.extractCommon(d,o,n,a);if(d.newPos+1>=t&&u+1>=r)return d.components;i[a]=d}else i[a]=void 0}},pushComponent:function(e,n,o,t){var r=e[e.length-1];r&&r.added===o&&r.removed===t?e[e.length-1]={value:this.join(r.value,n),added:o,removed:t}:e.push({value:n,added:o,removed:t})},extractCommon:function(e,n,o,t){for(var r=n.length,s=o.length,i=e.newPos,u=i-t;i+1<r&&u+1<s&&this.equals(n[i+1],o[u+1]);)i++,u++,this.pushComponent(e.components,n[i],void 0,void 0);return e.newPos=i,u},equals:function(e,n){var o=/\S/;return!(!this.ignoreWhitespace||o.test(e)||o.test(n))||e===n},join:function(e,n){return e+n},tokenize:function(e){return e}};var o=new n(!1),t=new n(!0);return t.tokenize=function(e){return function(e){for(var n=[],o=0;o<e.length;o++)e[o]&&n.push(e[o]);return n}(e.split(/(\s+|\b)/))},{Diff:n,diffChars:function(e,n){return o.diff(e,n)},diffWords:function(e,n){return t.diff(e,n)},convertChangesToXML:function(e){for(var n,o=[],t=0;t<e.length;t++){var r=e[t];r.added?o.push("<ins class='diff'>"):r.removed&&o.push("<del class='diff'>"),o.push((n=r.value,void 0,n.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"))),r.added?o.push("</ins>"):r.removed&&o.push("</del>")}return o.join("")}}}();
-
 	wpgpt_load_history_status();
 }
 
 function wpgpt_load_history_status(){
-	if( typeof $gp !== 'undefined' ){
 		var rows = jQuery('#translations tbody tr.editor');
 		rows.each( function(){
 			var translation_status = jQuery( this ).find('.panel-header__bubble').attr('class').split(/\s+/)[1].replace('panel-header__bubble--','');
@@ -66,14 +67,13 @@ function wpgpt_load_history_status(){
 					.catch(error => console.error(error));
 			}
 		});
-	}
 }
 
-/**
-** 			String status:										Action:
-**			All ( if History Count enabled )				=>	counts Current, Waiting, Fuzzy and Rejected
-**			Old, Rejected and Waiting 					 	=>	compares to Current
-**			Fuzzy 											=> 	compares to Waiting
+/**									Analyze History:
+** 			String status:									Action:
+**		Any ( if History Count enabled )	=>		displays History Count
+**		Old, Rejected and Waiting 		 	=>		compares to Current
+**		Fuzzy 								=> 		compares to Waiting
 **/
 function wpgpt_analyse_history_status( data, translation_id, translation_status, url ){
 	var compare_to = 'current',	compare_to_row = [], compare_to_translation = [], this_translation = [],
@@ -82,17 +82,15 @@ function wpgpt_analyse_history_status( data, translation_id, translation_status,
 		history_page = jQuery.parseHTML( data );
 		
 	if( wpgpt_settings['history_count']['state'] == 'enabled' ){
-		shistory['waiting_r'] = jQuery( history_page ).find('#translations tbody tr.preview.status-waiting');
-		shistory['rejected'] = jQuery( history_page ).find('#translations tbody tr.preview.status-rejected').length; 
-		shistory['current_r'] = jQuery( history_page ).find('#translations tbody tr.preview.status-current'); 
-		shistory['waiting'] = shistory['waiting_r'].length;
-		shistory['current'] = shistory['current_r'].length;
-		shistory[ translation_status ] --;
-		
-		count_label = ( shistory['current'] ) ? ( shistory['current'] + ' Current'): '';
-		count_label+= ( shistory['waiting'] ) ? ( ( ( count_label !== '' ) ? ', ' : '' ) + shistory['waiting'] + ' Waiting' ) : '';
-		count_label+= ( shistory['fuzzy'] ) ? ( ( ( count_label !== '' ) ? ', ' : '' ) + shistory['fuzzy'] + ' Fuzzy' ) : '';
-		count_label+= ( shistory['rejected'] ) ? ( ( ( count_label !== '' ) ? ', ' : '' ) + shistory['rejected'] + ' Rejected' ) : '';
+		[ 'current', 'waiting', 'fuzzy', 'rejected', 'old'].forEach(
+			function( state ){
+				shistory[ state ] = jQuery( history_page ).find('#translations tbody tr.preview.status-' + state ).length;
+				if ( state == translation_status ){
+					shistory[ translation_status ] --;
+				}
+				count_label+= ( shistory[ state ] ) ? ( ( ( count_label !== '' ) ? ', ' : '' ) + shistory[ state ] + ' ' + state ) : '';
+			}
+		);
 	}
 	
 	if ( translation_status == 'fuzzy' ){
@@ -121,24 +119,26 @@ function wpgpt_analyse_history_status( data, translation_id, translation_status,
 			}
 			diff_output += '</ol></details>';
 			raw_compare_to += '</ol></details';
-			diff_label = '<b>' + diff_state + ' ' + compare_to + '</b> translation';
+			diff_label = diff_state + ' ' + compare_to;
 		}
+	}
+			
+	if( diff_label !== '' ){
+		preview_label += '<span class="wpgpt-h-label preview">' + diff_label + '</span>';
+		editor_label += '<div class="wpgpt-h-label editor">' + diff_label + ' &#8615;</div>';
 	}
 	
 	if ( count_label !== '' ) {
-		preview_label += '<a href="' + url + '&historypage" target="_blank">' + count_label + '</a>';
-		editor_label += '<div class="wpgpt-h-label editor">' + count_label + '</div>';	
-		}
-		
+		preview_label += '<span class="wpgpt-h-label preview"><a href="' + url + '&historypage" target="_blank">' + count_label + '</a></span>';
+		editor_label += '<div class="wpgpt-h-label editor">' + '<a href="' + url + '&historypage" target="_blank">' + count_label + '</a>' + '</div>';	
+	}
+	
 	if( diff_label !== '' ){
-		preview_label += ( preview_label !== '' ) ? ' - ' : '';
-		preview_label += diff_label;
-		editor_label += '<div class="wpgpt-h-label editor details">' + diff_label + '</div>' + diff_output + raw_compare_to;
+		editor_label += diff_output + raw_compare_to;
 	}
 	
 	if( preview_label !== '' ){
-		jQuery( '#' + translation_id.replace('editor', 'preview') ).find( ".original-text" ).append( '<div class="wpgpt-h-label preview">' + preview_label + '</div>' );
+		jQuery( '#' + translation_id.replace('editor', 'preview') ).find( ".original-tags" ).append( '' + preview_label + '</span>' );
 		jQuery ('#' + translation_id ).find(".source-details").append( editor_label );
 	}
 }
-wpgpt_init_history_status();
