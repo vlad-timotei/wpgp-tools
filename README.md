@@ -94,7 +94,7 @@ It adds preview and editor label and a diff highlighter in editor.
 
 ![image](https://user-images.githubusercontent.com/65488419/124432727-9aee7700-dd7a-11eb-9cea-7034d36dde46.png)
 
-**II. History Count** counts types of strings in History for the respective string. It doesn't count itself.
+**II. History Count** counts (regardless of string status) types of strings in History for the respective string; doesn't count itself.
 
 ![image](https://user-images.githubusercontent.com/65488419/124433197-25cf7180-dd7b-11eb-8bca-fd3dab15368f.png)
 
