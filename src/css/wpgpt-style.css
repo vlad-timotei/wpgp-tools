@@ -401,31 +401,30 @@ ins {
 	white-space: pre;
 }
 
+
 .wpgpt-h-label {
-	width:fit-content;
-	clear:both;
-	display:block;
-	margin: 3px;
-	background: #fff;
-	padding: 3px 5px;
-	border-radius: 5px;
-	font-size:12px;
+    font-size: 12px;
+    margin-left: 0.2em;
+    padding: 0.1em 5px;
+    background-color: rgba(255,255,255,0.85);
+    border-radius:2px;
+    color:#000;
 }
 
 .wpgpt-h-label.editor {
+	display:inline-block;
     background-color:#808286;
     color:#fff;
     margin-top:15px;
-	margin-bottom:10px;
-	display:inline-block;
+	margin-bottom:10px;	
+}
+
+.wpgpt-h-label.preview a{
+	color: #000 !important;
 }
 
 .wpgpt-h-label.editor a{
 	color: #fff !important;
-}
-
-.wpgpt-h-label.editor.details:after {
-   content:' \21A7';
 }
 
 .wpgpt_diff ol,
