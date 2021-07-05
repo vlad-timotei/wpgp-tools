@@ -1,9 +1,9 @@
 
-# WP GlotPress Tools
+# WPGPTools
 <img align="right" src="https://user-images.githubusercontent.com/65488419/118821977-6a34aa00-b8c0-11eb-9e1e-9304db38c434.png">
 
 
-This is a Chrome/Edge/UserScript extension to help you translate faster. 
+A browser extension to help you translate faster and better. 
 
 
 You can find the **Settings** for this extension in the top blue navigation menu *Tools Settings*
@@ -76,17 +76,41 @@ Please open an issue with the checks you'd like implemented for your locale and 
 
 ![image](https://user-images.githubusercontent.com/65488419/119268770-1a761b80-bbfd-11eb-96ed-037e1c54ba1d.png)
 
-## #4 Custom Keyboard Shortcuts
+## #4 History Tools
+These are **opt-in** tools, so go to Settings > History Tools and enable them if you want to use them. 
+
+<img align="right" src="https://user-images.githubusercontent.com/65488419/124432277-1e5b9880-dd7a-11eb-989f-21bf4fc8e147.png">
+
+**I. History Compare** compares the string with a corresponding string from History:
+
+| String status | Compared with |
+| --- | --- |
+| Old | Current |
+| Rejected | Current |
+| Waiting | Current |
+| Fuzzy | Waiting |
+
+It adds preview and editor label and a diff highlighter in editor.
+
+![image](https://user-images.githubusercontent.com/65488419/124432727-9aee7700-dd7a-11eb-9cea-7034d36dde46.png)
+
+**II. History Count** counts types of strings in History for the respective string. It doesn't count itself.
+
+![image](https://user-images.githubusercontent.com/65488419/124433197-25cf7180-dd7b-11eb-8bca-fd3dab15368f.png)
+
+**III. History Tools in Translation History** enables or disables these tools on the respective pages *opened via a link*.
+ 
+## #5 Custom Keyboard Shortcuts
 
 | Action | Shortcut | Alternative Shortcut |
-| --- | --- | ---|
+| --- | --- | --- |
 | **F**uzzy | Ctrl + \* (numeric keyboard) | Ctrl + Shift + **F** | 
 | **G**oogle Translate | Alt + **G** | 
 | **C**onsistency | Alt + **C** | 
 | Copy consistency #**3** | Alt + **3** | *works for 1-3* |
 | Focus on **S**earch in **P**rojects | Alt + **S** | Alt + **P**|
 
-### Other features
+## #6 Other features
 - Keeps the editor in the middle of the screen when Page Up/Page Down shortcuts are used
 - Prompts for unsaved strings
 
