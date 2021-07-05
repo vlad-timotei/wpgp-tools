@@ -54,7 +54,10 @@ function wpgpt_init_history_status(){
 function wpgpt_load_history_status(){
 		var rows = jQuery('#translations tbody tr.editor');
 		rows.each( function(){
-			var translation_status = jQuery( this ).find('.panel-header__bubble').attr('class').split(/\s+/)[1].replace('panel-header__bubble--','');
+			var translation_status = jQuery( this ).find('.panel-header__bubble').text();
+			if ( translation_status == 'untranslated' ){
+				return;
+			}
 			if( translation_status !== 'current' || wpgpt_settings['history_count']['state'] == 'enabled' ){
 				var translation_id = jQuery( this ).attr('id');
 				var string_id = translation_id.split( '-', 3 )[1];
