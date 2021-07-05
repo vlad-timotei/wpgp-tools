@@ -112,19 +112,19 @@ var wpgpt_settings = {
 		'parent' : 'self'
 	},
 		'history_main' : {
-				'desc' : 'Show History Compare',
+				'desc' : 'History Compare',
 				'state': 'disabled',
 				'type' : 2,
 				'parent' : 'history'
 			},
 				'history_count' : {
-					'desc' : 'Show History Count',
+					'desc' : 'History Count',
 					'state' : 'disabled',
 					'type' : 2,
 					'parent' : 'history_main'
 				},
 				'history_page' : {
-					'desc' : 'Enable History Tools on history pages',
+					'desc' : 'History Tools in history pages',
 					'state' : 'disabled',
 					'type' : 2,
 					'parent' : 'history_main'
