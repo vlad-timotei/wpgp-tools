@@ -124,7 +124,7 @@ var wpgpt_settings = {
 					'parent' : 'history_main'
 				},
 				'history_page' : {
-					'desc' : 'History Tools in history pages',
+					'desc' : 'History Tools in Translation History',
 					'state' : 'disabled',
 					'type' : 2,
 					'parent' : 'history_main'
