@@ -437,3 +437,7 @@ ins {
     list-style-type: none;
 	padding-left:20px;
 }
+
+span.context + span.priority {
+    margin-left: 0.5em !important;
+}
