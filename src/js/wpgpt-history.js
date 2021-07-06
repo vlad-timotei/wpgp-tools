@@ -88,7 +88,7 @@ function wpgpt_analyse_history_status( data, translation_id, translation_status,
 		[ 'current', 'waiting', 'fuzzy', 'rejected', 'old'].forEach(
 			function( state ){
 				shistory[ state ] = jQuery( history_page ).find('#translations tbody tr.preview.status-' + state ).length;
-				if ( state == translation_status ){
+				if ( state == translation_status && shistory[ translation_status ] ){
 					shistory[ translation_status ] --;
 				}
 				count_label+= ( shistory[ state ] ) ? ( ( ( count_label !== '' ) ? ', ' : '' ) + shistory[ state ] + ' ' + state ) : '';
