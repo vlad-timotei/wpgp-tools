@@ -260,6 +260,28 @@ table.translations a.action {
     margin:0 auto;
 }
 
+.wpgpt-warning-labels li,
+.wpgpt-notice-labels li
+ {
+    list-style-type: none;
+    display:inline-block;
+    font-size: 12px;
+    margin-left: 0.2em;
+    padding: 0.1em 5px;
+    border-radius: 2px;
+	color: #000;
+	padding-bottom: 0.1em !important;
+    border-bottom: none !important;
+}
+
+.wpgpt-notice-labels li {
+    background-color: #dedede;
+}
+
+.wpgpt-warning-labels li {
+    background-color: rgb(251 167 167);
+}
+
 /* Search */
 .wpgpt-search {
 	padding: 0 15px 0 15px;

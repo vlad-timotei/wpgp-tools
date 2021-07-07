@@ -31,58 +31,70 @@ function wpgpt_early_init_editors(){
 
 function wpgpt_check_all_translations(){
 	jQuery('#translations tbody tr.preview.has-translations').each( function(){
+		var $translation = jQuery( this );
 		var original = [], translated = [];
 		var check_results, preview_class; 
-		var preview_html_output = '', editor_html_output = '';
-		var preview_warning = false, preview_notice = false;
-		jQuery(this).find('td.original .original-text').each( function(){ original.push( jQuery( this ).text() ); } );
-		jQuery(this).find('td.translation .translation-text').each( function(){	translated.push( jQuery( this ).text() ); } );
+		var prev_check_status = '', edit_check_list = '';
+		var has_warning = false, has_notice = false;
+		var translation_id_p = $translation.attr('id');
+		var translation_id_e = translation_id_p.replace('preview', 'editor');
+		
+		$translation.find('td.original .original-text').each( function(){ original.push( jQuery( this ).text() ); } );
+		$translation.find('td.translation .translation-text').each( function(){	translated.push( jQuery( this ).text() ); } );
+	
 	
 		for( var original_i = 0, translated_i = 0; translated_i < translated.length; translated_i++ ){
 			check_results = wpgpt_run_checks( original[original_i], translated[translated_i] );
-			editor_html_output += '<dl><dt>Warnings' +
-			( (translated.length > 1) ? (' #'+( translated_i + 1 ) ) : '' ) +
-			':</dt><dd>' +
-			check_results[0] +
-			( (check_results[0] == 'none') ? ' <b>&#10003;</b>' :'') +
-			'</dd></dl>';
-			
-			if( check_results[1]!= 'none' ){
-				editor_html_output += '<dl><dt>Notices' +
+			edit_check_list += '<dl><dt>Warnings';
+			edit_check_list += ( (translated.length > 1) ? (' #'+( translated_i + 1 ) ) : '' );
+			edit_check_list += ':</dt><dd>';
+			edit_check_list += ( check_results['warnings'] != 'none' ) ? 
+									( '<ul class="wpgpt-warnings-list">' + check_results['warnings'] + '</ul>' ) :
+									' <b>&#10003;</b>';
+			edit_check_list += '</dd></dl>';
+						
+			if( check_results['notices']!= 'none' ){
+				edit_check_list += '<dl><dt>Notices' +
 				( (translated.length > 1) ? (' #'+( translated_i + 1 ) ) : '' ) +
 				':</dt><dd>' +
-				check_results[1] +
+				'<ul class="wpgpt-notices-list">' + check_results['notices'] + '</ul>' +
 				'</dd></dl>';
-				preview_notice = true;
+				has_notice = true;
+				if( wpgpt_settings['checks_labels']['state'] == 'enabled' ){
+					$translation.find('.translation-text').eq( translated_i ).after( '<div class="wpgpt-notice-labels">' + check_results['notices'] + '</div>');
+				}
 			}
 			
-			if( check_results[0] != 'none' ){
-				preview_warning = true;
+			if( check_results['warnings'] != 'none' ){
+				has_warning = true;
+				if( wpgpt_settings['checks_labels']['state'] == 'enabled' ){
+					$translation.find('.translation-text').eq( translated_i ).after( '<div class="wpgpt-warning-labels">' + check_results['warnings'] + '</div>');
+				}
 			}
 			if( original.length > 1 ){
 				original_i = 1;
 			}
 		}
-		
-		editor_html_output = '<div class="wpgpt-checks-list">' + editor_html_output + '</div>';
 
-		if( preview_warning ){
-			preview_html_output = '<img class="wpgpt-check-preview" title="String has a warning." src="' + warning_icon + '">';
-			jQuery('#' + jQuery(this).attr('id').replace('preview', 'editor')).find('.wpgpt-ignore-warnings').show();	
+		edit_check_list = '<div class="wpgpt-checks-list">' + edit_check_list + '</div>';
+
+		if( has_warning ){
+			prev_check_status = '<img class="wpgpt-check-preview" title="String has a warning." src="' + warning_icon + '">';
+			jQuery('#' + translation_id_e ).find('.wpgpt-ignore-warnings').show();	
 			preview_class = 'wpgpt-has-warning';
 		} 
-		else if( preview_notice ){
-			preview_html_output = '<img class="wpgpt-check-preview" title="String has a notice." src="' + notice_icon + '">'; 
+		else if( has_notice ){
+			prev_check_status = '<img class="wpgpt-check-preview" title="String has a notice." src="' + notice_icon + '">'; 
 			preview_class = 'wpgpt-has-notice';
 			}
 			else {
-				preview_html_output = '<span class="wpgpt-check-preview passed" title="All checks passed.">&#10003;</span>';
+				prev_check_status = '<span class="wpgpt-check-preview passed" title="All checks passed.">&#10003;</span>';
 				preview_class = 'wpgpt-has-nothing';
 			}
 			
-		jQuery(this).addClass(preview_class);
-		jQuery('#' + jQuery(this).attr('id').replace('preview', 'editor')).find('.editor-panel__right .panel-content .meta dl').eq(0).before( editor_html_output );
-		jQuery(this).find('.actions .action.edit').prepend( preview_html_output );
+		$translation.addClass( preview_class );
+		jQuery('#' + translation_id_e ).find('.editor-panel__right .panel-content .meta dl').eq(0).before( edit_check_list );
+		$translation.find('.actions .action.edit').prepend( prev_check_status );
 	});
 }
 
@@ -117,76 +129,112 @@ function wpgpt_late_init_editors(){
    });
 }
 
-function wpgpt_check_this_translation( translation_id ){
+function wpgpt_check_this_translation( translation_id_e ){
+	translation_id_e = '#' + translation_id_e;
+	var translation_id_p = translation_id_e.replace('editor', 'preview');
 	var original = [], translated = [];
-	var check_results; 
-	var warnings_passed = true, notices_passed = true;
-	var editor_html_output = '';
+	var check_results, preview_class, save_warnings_state;
+	var prev_check_status = '', edit_check_list = '';
+	var has_warning = false, has_notice = false;
+	var when_to_do = 0;
+	var this_labels = [];
 	
-	jQuery('#' + translation_id + ' .source-string.strings div').each( function() { original.push( jQuery(this).find('span.original').text() ); } );
-	jQuery('#' + translation_id + ' .translation-wrapper div.textareas').each(function(){ translated.push( jQuery(this).find('textarea').val() ); } );
+	jQuery( translation_id_e + ' .source-string.strings div').each( function() { original.push( jQuery(this).find('span.original').text() ); } );
+	jQuery( translation_id_e + ' .translation-wrapper div.textareas').each(function(){ translated.push( jQuery(this).find('textarea').val() ); } );
 	
 	for( var original_i = 0, translated_i = 0; translated_i < translated.length; translated_i++ ){
 		check_results = wpgpt_run_checks( original[original_i], translated[translated_i] );
-		
-		if( check_results[0] != 'none' ){
-			warnings_passed = false;
-		}
-		
-		editor_html_output += '<dl><dt>Warnings' +
+		edit_check_list += '<dl><dt>Warnings' +
 		( (translated.length > 1) ? ( ' #'+( translated_i + 1 ) ) : '' ) +
 		':</dt><dd>' +
-		check_results[0] +
-		( ( check_results[0] == 'none' ) ? ' <b>&#10003;</b>' :'') +
+		( 
+				( check_results['warnings'] != 'none' ) ? 
+					( '<ul class="wpgpt-warnings-list">' + check_results['warnings'] + '</ul>' ) :
+					' <b>&#10003;</b>'
+		) +
 		'</dd></dl>';
 		
-		if( check_results[1]!= 'none' ){
-			notices_passed = false;
-
-			editor_html_output += '<dl><dt>Notices' +
+		this_labels[ translated_i ] = { 'notices': '', 'warnings': '' };
+		
+		if( check_results['notices']!= 'none' ){
+			edit_check_list += '<dl><dt>Notices' +
 			( ( translated.length > 1 ) ? (' #'+( translated_i + 1 ) ) : '' ) +
 			':</dt><dd>' +
-			check_results[1] +
-			'</dd></dl>';			
+			'<ul class="wpgpt-notices-list">' + check_results['notices'] + '</ul>' +
+			'</dd></dl>';
+			has_notice = true;
+			this_labels[ translated_i ]['notices'] = '<div class="wpgpt-notice-labels">' + check_results['notices'] + '</div>';
+		}
+		
+		if( check_results['warnings'] != 'none' ){
+			has_warning = true;
+			this_labels[ translated_i ]['warnings'] = '<div class="wpgpt-warning-labels">' + check_results['warnings'] + '</div>';
 		}
 		if( original.length > 1 ){
 				original_i = 1;
 		}
 	}
 	
-	var check_list = jQuery('#' + translation_id ).find('.meta .wpgpt-checks-list');
-	if( check_list.length > 0 ){
-		check_list.html( editor_html_output );	
+	
+	edit_check_list = '<div class="wpgpt-checks-list">' + edit_check_list + '</div>';
+	
+	if ( has_warning ){
+		save_warnings_state = 'block';
+		preview_class = 'wpgpt-has-warning';
+		prev_check_status = '<img class="wpgpt-check-preview" src="' + warning_icon + '">';
 	}
-	else{
-		editor_html_output = '<div class="wpgpt-checks-list">' + editor_html_output + '</div>';
-		jQuery('#' + translation_id ).find('.meta dl').first().before( editor_html_output ); 
+	else if ( has_notice ) {
+			save_warnings_state = 'none';
+			preview_class = 'wpgpt-has-notice';
+			prev_check_status = '<img class="wpgpt-check-preview" src="' + notice_icon + '">';
+		}
+		else {
+				save_warnings_state = 'none';
+				preview_class = 'wpgpt-has-nothing';
+				prev_check_status = '<span class="wpgpt-check-preview passed">&#10003;</span>';;
+		}
+	
+	var saved = false;
+	if( ! ( has_warning && wpgpt_next_is_strict ) ) {
+		when_to_do = 1000;
+		saved = true;
+		translation_id_e = 'tr[id^="' + translation_id_e.replace(/(?:(editor-[^- ]*)(?:-[^' ]*))/g,'$1').replace('#','') +'"]';
+		translation_id_p = translation_id_e.replace('editor', 'preview');
 	}
-		
-	if( warnings_passed ){
-		jQuery('#' + translation_id).find('.wpgpt-ignore-warnings').fadeIn().css('display', 'none');
-		var next_preview;
-		if( notices_passed ){
-		next_preview = '<span class="wpgpt-check-preview passed">&#10003;</span>';
+	
+	setTimeout( function(){
+		jQuery( translation_id_e ).find('.wpgpt-ignore-warnings').fadeIn().css('display', save_warnings_state );
+			
+		var current_edit_check_list = jQuery( translation_id_e ).find('.meta .wpgpt-checks-list');
+		if( current_edit_check_list.length > 0 ){
+			current_edit_check_list.replaceWith( edit_check_list );	
 		}
 		else{
-			next_preview = '<img class="wpgpt-check-preview" src="' + notice_icon + '">';
+			jQuery( translation_id_e ).find('.meta dl').first().before( edit_check_list ); 
 		}
-		translation_id = translation_id.replace(/(?:(editor-[^- ]*)(?:-[^' ]*))/g,'$1').replace('editor', 'preview'); // Look for original ID prefix only
-		setTimeout( function(){ 
-			var current_preview = jQuery("tr[id^='" + translation_id +"']").find('.wpgpt-check-preview');
+		if ( saved ){
+			jQuery( translation_id_p ).removeClass('wpgpt-has-warning wpgpt-has-notice wpgpt-has-nothing').addClass( preview_class );
+			
+			var current_preview = jQuery( translation_id_p ).find('.wpgpt-check-preview');
 			if( current_preview.length > 0 ){
-				current_preview.replaceWith( next_preview );
+				current_preview.replaceWith( prev_check_status );
 			}
 			else{
-				jQuery("tr[id^='" + translation_id +"']").find('.actions .action.edit').prepend(next_preview);
+				jQuery( translation_id_p ).find('.actions .action.edit').prepend( prev_check_status );
 			}
-		},1000); // Waits for the new translation to load before display preview warning state
-    }
-	else{
-		jQuery('#' + translation_id).find('.wpgpt-ignore-warnings').fadeIn().css('display', 'block');
-	}
-	return warnings_passed;
+			if( wpgpt_settings['checks_labels']['state'] == 'enabled' ){
+				jQuery( translation_id_p ).find('.wpgpt-warning-labels, .wpgpt-notices-labels').remove();
+				for( var i = 0; i < this_labels.length; i++ ){
+					if ( this_labels[i]['warnings'] != '' || this_labels[i]['notices'] != '' ){
+						jQuery( translation_id_p ).find('.translation-text').eq( i ).after( '<div class="wpgpt-warning-labels">' + this_labels[i]['warnings'] + '</div><div class="wpgpt-notices-labels">' + this_labels[i]['notices'] + '</div>');
+					}
+				}
+			}
+		}
+		
+	}, when_to_do );
+		
+	return ! has_warning;
 }
 
 function wpgpt_run_checks( original, translated ){
@@ -222,21 +270,21 @@ function wpgpt_run_checks( original, translated ){
 			original_ph != null &&
 			translated_ph == null
 		){
-			warnings['placeholders'] = '<li>Missing or broken placeholder(s): ' + original_ph.toString() + '</li>';
+			warnings['placeholders'] = '<li>Missing/broken placeholder'  +  ( ( original_ph.length > 1 ) ? 's' : '' ) +  ': <b>' + original_ph.toString() + '</b></li>';
 		}
 		else{
 			if(
 				original_ph == null &&
 				translated_ph != null
 			){
-				warnings['placeholders'] = '<li>Additional placeholder(s) found: ' + translated_ph.toString() + '</li>';
+				warnings['placeholders'] = '<li>Additional placeholder'  +  ( ( translated_ph.length > 1 ) ? 's' : '' ) +  ': <b>' + translated_ph.toString() + '</b></li>';
 			}
 			else{
 				if ( original_ph.length < translated_ph.length ){
-					warnings['placeholders'] = '<li>Additional placeholder(s) found: ' + arr_diff( translated_ph, original_ph ) + '</li>';
+					warnings['placeholders'] = '<li>Additional placeholder'  +  ( ( ( translated_ph.length - original_ph.length ) > 1 ) ? 's' : '' ) +  ': <b>' + arr_diff( translated_ph, original_ph ) + '</b></li>';
 				}
 				if ( original_ph.length > translated_ph.length ){
-					warnings['placeholders'] = '<li>Missing or broken placeholder(s): ' + arr_diff( original_ph, translated_ph ) + '</li>';
+					warnings['placeholders'] = '<li>Missing/broken placeholder'  +  ( ( ( original_ph.length - translated_ph.length ) > 1 ) ? 's' : '' ) +  ': <b>' + arr_diff( original_ph, translated_ph ) + '</b></li>';
 				}
 				if ( original_ph.length == translated_ph.length ) {
 					original_ph.sort();
@@ -244,10 +292,10 @@ function wpgpt_run_checks( original, translated ){
 					var broken_placeholders = [];
 					for ( var i = 0; i < original_ph.length; i++ )
 						if ( original_ph[i] != translated_ph[i] ){
-							broken_placeholders.push( '<br>' + original_ph[i] + ' might be translated as ' + translated_ph[i] );
+							broken_placeholders.push( translated_ph[i] + ' instead of ' +  original_ph[i] );
 						}
 					if ( broken_placeholders.length ){
-						warnings['placeholders'] = '<li>Possible broken placeholder(s): ' + broken_placeholders.toString() + '</li>';
+						warnings['placeholders'] = '<li>Possible broken: <b>' + broken_placeholders.toString() + '</b></li>';
 					}
 				}
 			}
@@ -356,7 +404,7 @@ function wpgpt_run_checks( original, translated ){
 				}
 			
 				if( not_tag_period_swap && not_translated_as_elipsis && not_character_period_swap ){
-					error_message = '<li>Missing end period: ' + wpgpt_period + ( ( wpgpt_period != '.' ) ? ' or . ' : '' ) + '</li>';
+					error_message = '<li>Missing end period (<b>' + wpgpt_period + ( ( wpgpt_period != '.' ) ? ' or . ' : '' ) + '</b>)</li>';
 					switch( wpgpt_settings['end_period']['state'] ){
 						case 'warning': warnings['end_char'] = error_message; break;
 						case 'notice': notices['end_char'] = error_message; 
@@ -403,7 +451,7 @@ function wpgpt_run_checks( original, translated ){
 				}
 			
 				if(	not_translated_from_elipsis && not_period_character_swap && not_period_tag_swap ){
-					error_message = '<li>Additional end period: ' + wpgpt_period + ( ( wpgpt_period != '.' ) ? ' or . ' : '' ) + '</li>';
+					error_message = '<li>Additional end period (<b>' + wpgpt_period + ( ( wpgpt_period != '.' ) ? ' or . ' : '' ) + '</b>)</li>';
 					switch( wpgpt_settings['end_period']['state'] ){
 						case 'warning': warnings['end_char'] = error_message; break;
 						case 'notice': notices['end_char'] = error_message; 
@@ -417,7 +465,7 @@ function wpgpt_run_checks( original, translated ){
 				notices['end_char'] == '' &&
 				last_original_char == ':'
 			){
-				error_message = '<li>Missing end :</li>';
+				error_message = '<li>Missing end <b>:</b></li>';
 				switch( wpgpt_settings['end_colon']['state'] ){
 					case 'warning': warnings['end_char'] = error_message; break;
 					case 'notice': notices['end_char'] = error_message; 
@@ -430,7 +478,7 @@ function wpgpt_run_checks( original, translated ){
 				notices['end_char'] == '' &&
 				last_translated_char == ':'
 			){
-				error_message = '<li>Additional end :</li>';
+				error_message = '<li>Additional end <b>:</b></li>';
 				switch( wpgpt_settings['end_colon']['state'] ){
 					case 'warning': warnings['end_char'] = error_message; break;
 					case 'notice': notices['end_char'] = error_message; 
@@ -443,7 +491,7 @@ function wpgpt_run_checks( original, translated ){
 				notices['end_char'] == '' &&
 				last_original_char == '?'
 			){
-				error_message = '<li>Missing end question mark ?</li>';
+				error_message = '<li>Missing end <b>?</b></li>';
 				switch( wpgpt_settings['end_question']['state'] ){
 					case 'warning': warnings['end_char'] = error_message; break;
 					case 'notice': notices['end_char'] = error_message; 
@@ -459,14 +507,14 @@ function wpgpt_run_checks( original, translated ){
 		original_double_spaces = (original_double_spaces != null) ? original_double_spaces : [];
 	
 		if( using_double_spaces.length > original_double_spaces.length ){
-			error_message = '<li>' + using_double_spaces.length + ' double space(s) detected </li>'; 
+			error_message = '<li>' + using_double_spaces.length + ' double space' + ( ( using_double_spaces.length > 1 ) ? 's' : '' ) + '</li>'; 
 			switch( wpgpt_settings['double_spaces']['state'] ){
 				case 'warning': warnings['others'] += error_message; break;
 				case 'notice': notices['others'] += error_message; 
 			}
 		} 
 		else if( wpgpt_settings['double_spaces']['state'] !== 'nothing' && ( using_double_spaces.length < original_double_spaces.length ) ){
-				notices['others'] += '<li>' + ( original_double_spaces.length - using_double_spaces.length ) + 'missing double space(s)</li>';	
+				notices['others'] += '<li>' + ( original_double_spaces.length - using_double_spaces.length ) + ' missing double space' + ( ( ( original_double_spaces.length - using_double_spaces.length ) > 1 ) ? 's' : '' ) + '</li>';	
 		}
 		
 		var bad_words_list, bad_word; 
@@ -476,7 +524,7 @@ function wpgpt_run_checks( original, translated ){
 			bad_words_list = wpgpt_settings['warning_words']['state'].split(',');
 			for( bad_word of bad_words_list ) {
 				if( bad_word != '' && bad_word != ' ' && translated.match( bad_word ) !== null){
-					warnings['others'] += '<li>You use "' + bad_word + '"</li>';
+					warnings['others'] += '<li>Using <b>' + bad_word + '</b></li>';
 					break;
 				}
 			}
@@ -487,7 +535,7 @@ function wpgpt_run_checks( original, translated ){
 			bad_words_list = wpgpt_settings['notice_words']['state'].split(',');
 			for( bad_word of bad_words_list) {
 				if( bad_word != '' && bad_word != ' ' && translated.match( bad_word ) !== null ){
-					notices['others'] += '<li>You use "' + bad_word + '"</li>';
+					notices['others'] += '<li>Using <b>' + bad_word + '</b></li>';
 					break;
 				}
 			}
@@ -520,7 +568,7 @@ function wpgpt_run_checks( original, translated ){
 		/** ro diacritics **/
 		var not_using_ro_diacritics = translated.match( not_ro_diacritics );
 		if( not_using_ro_diacritics != null ){
-			error_message = '<li>' + not_using_ro_diacritics.length + ' wrong diacritic(s) found: ' + not_using_ro_diacritics.toString() + '</li>';
+			error_message = '<li>' + not_using_ro_diacritics.length + ' wrong diacritic' + ( ( not_using_ro_diacritics.length > 1 ) ? 's' : '' ) + ': <b>' + not_using_ro_diacritics.toString() + '</b></li>';
 			switch( wpgpt_settings['ro_diacritics']['state'] ){
 				case 'warning': warnings['ro_diacritics'] = error_message; break;
 				case 'notice': notices['ro_diacritics'] = error_message; 
@@ -530,18 +578,17 @@ function wpgpt_run_checks( original, translated ){
 		/** ro quotes **/
 		var not_using_ro_quotes = translated.match( not_ro_quotes );
 		if( not_using_ro_quotes != null ){ 
-			var i;
-			error_message = '<li>' + not_using_ro_quotes.length + ' pair' + ( ( i > 1 ) ? 's' : '' ) + ' of wrong quotes: ' + not_using_ro_quotes.toString() + '<br> Use „ ” instead.</li>';
+			error_message = '<li>' + not_using_ro_quotes.length + ' wrong quotes: <b>' + not_using_ro_quotes.toString() + '</b>. Use „ ”</li>';
 			switch( wpgpt_settings['ro_quotes']['state'] ){
 				case 'warning': warnings['ro_quotes'] = error_message; break;
 				case 'notice': notices['ro_quotes'] = error_message; 
 			}
 		}
 		else{
-			bad_words_list = ['&quot;', '&#34;', '&apos;', '&#39;', '&ldquo;', '&#8220;', '“'];
+			bad_words_list = ["'", '&quot;', '&#34;', '&apos;', '&#39;', '&ldquo;', '&#8220;', '“'];
 			for( bad_word of bad_words_list) {
 				if( translated.match( bad_word ) !== null ){
-					error_message = '<li>At least one wrong quote: ' + bad_word.replace('&', '&amp;') + '</li>';
+					error_message = '<li>Wrong quote: <b>' + bad_word.replace('&', '&amp;') + '</b></li>';
 					switch( wpgpt_settings['ro_quotes']['state'] ){
 						case 'warning': warnings['ro_quotes'] = error_message; break;
 						case 'notice': notices['ro_quotes'] = error_message; 
@@ -554,7 +601,7 @@ function wpgpt_run_checks( original, translated ){
 		/** ro slash spaces **/
 		var not_using_ro_slash_spaces = translated.match( not_ro_slash_spaces );
 		if ( not_using_ro_slash_spaces != null ){
-			error_message =  '<li>' + not_using_ro_slash_spaces.length + ' / space detected </li>';
+			error_message =  '<li>' + not_using_ro_slash_spaces.length + ' <b>/</b> space' + ( ( not_using_ro_slash_spaces.length > 1 ) ? 's' : '' ) +  '</li>';
 			switch( wpgpt_settings['ro_slash']['state'] ){
 					case 'warning': warnings['others'] += error_message; break;
 					case 'notice': notices['others'] += error_message; 
@@ -564,7 +611,7 @@ function wpgpt_run_checks( original, translated ){
 		/** ro ampersand **/
 		var not_using_ro_ampersand = translated.match( not_ro_ampersand );
 		if( not_using_ro_ampersand!= null ){
-			error_message = '<li>' + not_using_ro_ampersand.length + ' & detected</li>';
+			error_message = '<li> Using ' + not_using_ro_ampersand.length + ' <b>&</b></li>';
 			switch( wpgpt_settings['ro_ampersand']['state'] ){
 					case 'warning': warnings['others'] += error_message; break;
 					case 'notice': notices['others'] += error_message; 
@@ -574,7 +621,7 @@ function wpgpt_run_checks( original, translated ){
 		/** ro — dash **/
 		var not_using_ro_dash = translated.match( not_ro_dash );
 		if( not_using_ro_dash!= null ){
-			error_message = '<li>' + not_using_ro_dash.length + ' — detected</li>';
+			error_message = '<li> Using ' + not_using_ro_dash.length + ' <b>—</b></li>';
 			switch( wpgpt_settings['ro_dash']['state'] ){
 					case 'warning': warnings['others'] += error_message; break;
 					case 'notice': notices['others'] += error_message; 
@@ -583,12 +630,12 @@ function wpgpt_run_checks( original, translated ){
 	}
 	   
 	var warnings_results = Object.values(warnings).join('');
-	warnings_results  = ( warnings_results == '' ) ? 'none' : ( '<ul class="wpgpt-warnings-list">' + warnings_results + '</ul>');
+	warnings_results  = ( warnings_results == '' ) ? 'none' : ( warnings_results );
 
 	var notices_results = Object.values(notices).join('');
-	notices_results  =  ( notices_results == '' ) ? 'none' : ( '<ul class="wpgpt-notices-list">' + notices_results + '</ul>');
+	notices_results  =  ( notices_results == '' ) ? 'none' : ( notices_results );
 	
-	var results = [ warnings_results, notices_results ]; 
+	var results = { 'warnings': warnings_results, 'notices': notices_results }; 
 	return results;
 }
 
