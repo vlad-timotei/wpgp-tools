@@ -26,12 +26,12 @@ You can find the **Settings** for this extension in the top blue navigation menu
 - History
 - Consistency
 
-<img align="right" src="https://user-images.githubusercontent.com/65488419/117621284-203e1c80-b17a-11eb-8a86-26c34f17f1b3.png" >
+<img align="right" src="https://user-images.githubusercontent.com/65488419/124735633-e3469a00-df1e-11eb-925c-d99dd656cc7d.png" >
 
 **GoogleTranslate** button 
 - Button or Alt + G opens new tab with current translated string in current locale, if locale exists on GT. ([List of missing locales in GT](https://gist.github.com/vlad-timotei/3f558547ac2bc0f3120f869fba7d8bec))
 
-<img align="right" src="https://user-images.githubusercontent.com/65488419/124735633-e3469a00-df1e-11eb-925c-d99dd656cc7d.png" >
+<img align="right" src="https://user-images.githubusercontent.com/65488419/117621916-c1c56e00-b17a-11eb-9cab-a593532a8e05.png" >
 
 **Suggestions** directly from Consistency
  - Button or Alt + C
