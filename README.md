@@ -4,8 +4,6 @@
 
 
 A browser extension to help you translate faster and better. 
-
-
 You can find the **Settings** for this extension in the top blue navigation menu *Tools Settings*
 
 
@@ -45,13 +43,16 @@ You can find the **Settings** for this extension in the top blue navigation menu
 - Keyboard shortcut works for suggestion 1, 2 and 3
 
 ## #2 General Checks - [view Demo](https://youtu.be/pG92jygfWpY) 
-![image](https://user-images.githubusercontent.com/65488419/119303368-4978a580-bc6e-11eb-8897-271404a6ce53.png)
 
-<img align="right" src="https://user-images.githubusercontent.com/65488419/117624878-14ecf000-b17e-11eb-8b34-c9410e226469.png" >
+![image](https://user-images.githubusercontent.com/65488419/124774531-9080d880-df46-11eb-9ad5-46217a9b9e22.png)
+
+<img align="right" src="https://user-images.githubusercontent.com/65488419/124773950-12243680-df46-11eb-9328-346121fc3ed0.png" >
+
+<br>
 
 Checks run:
 - for all translated strings when page loads
-- before a translation is submitted
+- when a translation is submitted
 
 <br>
 
@@ -64,9 +65,11 @@ Checks can be set as:
 <br>
 
 - To bypass a *Warning & prevent save* check, click Save / approve with warnings
+- Detailed check results labels can be disabled from Settings
 - Show only strings with failed checks using filters
-
 ![image](https://user-images.githubusercontent.com/65488419/121800720-26715e00-cc3c-11eb-8b29-6e63f5db5b13.png)
+
+<br>
 
 ## #3 Locale specific Checks
 
