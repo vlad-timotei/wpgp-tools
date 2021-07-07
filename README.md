@@ -31,7 +31,7 @@ You can find the **Settings** for this extension in the top blue navigation menu
 **GoogleTranslate** button 
 - Button or Alt + G opens new tab with current translated string in current locale, if locale exists on GT. ([List of missing locales in GT](https://gist.github.com/vlad-timotei/3f558547ac2bc0f3120f869fba7d8bec))
 
-<img align="right" src="https://user-images.githubusercontent.com/65488419/117621916-c1c56e00-b17a-11eb-9cab-a593532a8e05.png" >
+<img align="right" src="https://user-images.githubusercontent.com/65488419/124735633-e3469a00-df1e-11eb-925c-d99dd656cc7d.png" >
 
 **Suggestions** directly from Consistency
  - Button or Alt + C
