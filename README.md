@@ -39,7 +39,6 @@ Adjust the **Settings** for this extension in the top blue navigation menu *Tool
 
 <img align="right" src="https://user-images.githubusercontent.com/65488419/124773950-12243680-df46-11eb-9328-346121fc3ed0.png" > <br>
 
-
 Checks run:
 - for all translated strings when page loads
 - when a translation is submitted
@@ -53,7 +52,7 @@ Checks can be set as:
 
 <br>
 
-<img align="right" width="550" src="https://user-images.githubusercontent.com/65488419/117626608-f4be3080-b17f-11eb-91a7-fefd621df320.png" >
+<img align="right" src="https://user-images.githubusercontent.com/65488419/117626608-f4be3080-b17f-11eb-91a7-fefd621df320.png" >
 
 <br>
 
@@ -81,7 +80,7 @@ If your locale uses a different symbol other than `.` for period, you can set it
 These are **opt-in** tools, so go to Settings > History Tools and enable them if you want to use them. 
 
 
-<image align="right" src="https://user-images.githubusercontent.com/65488419/124782454-e8bad900-df4c-11eb-8039-6f2fda079ea3.png">
+<image align="right" width="550" src="https://user-images.githubusercontent.com/65488419/124782454-e8bad900-df4c-11eb-8039-6f2fda079ea3.png">
 
 <br>
 
