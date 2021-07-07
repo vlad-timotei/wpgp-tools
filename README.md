@@ -109,7 +109,7 @@ It adds preview and editor label and a diff highlighter in editor.
 
  <br>
  
- <img align="right" src="https://user-images.githubusercontent.com/65488419/124783181-8c0bee00-df4d-11eb-88d7-9ad0598f4455.png">
+ <img align="right" src="https://user-images.githubusercontent.com/65488419/124786359-53214880-df50-11eb-83dc-fa6b0de8392c.png">
 
  <br>
  
