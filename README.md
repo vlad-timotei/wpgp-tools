@@ -84,6 +84,8 @@ These are **opt-in** tools, so go to Settings > History Tools and enable them if
 
 <br>
 
+<br>
+
 **I. History Compare** compares the string with a corresponding string from History
 
 <br>
@@ -97,7 +99,6 @@ These are **opt-in** tools, so go to Settings > History Tools and enable them if
 
  <br>
  
- <br>
 
  <br>
 
