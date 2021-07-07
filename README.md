@@ -88,7 +88,7 @@ These are **opt-in** tools, so go to Settings > History Tools and enable them if
 
 <br>
 
-| String <br> status | Compared <br> with |
+| String status | Compared with |
 | --- | --- |
 | Old | Current |
 | Rejected | Current |
