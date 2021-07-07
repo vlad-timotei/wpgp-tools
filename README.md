@@ -104,10 +104,6 @@ These are **opt-in** tools, so go to Settings > History Tools and enable them if
 It adds preview and editor label and a diff highlighter in editor.
  
  <br>
-
- <br>
-
- <br>
  
  <img align="right" src="https://user-images.githubusercontent.com/65488419/124783181-8c0bee00-df4d-11eb-88d7-9ad0598f4455.png">
 
