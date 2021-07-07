@@ -39,8 +39,6 @@ Adjust the **Settings** for this extension in the top blue navigation menu *Tool
 
 <img align="right" src="https://user-images.githubusercontent.com/65488419/124773950-12243680-df46-11eb-9328-346121fc3ed0.png" > <br>
 
-<br>
-
 Checks run:
 - for all translated strings when page loads
 - when a translation is submitted
