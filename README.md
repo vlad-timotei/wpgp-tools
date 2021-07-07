@@ -80,9 +80,7 @@ If your locale uses a different symbol other than `.` for period, you can set it
 ## #4 History Tools
 These are **opt-in** tools, so go to Settings > History Tools and enable them if you want to use them. 
 
-<image align="right" src="https://user-images.githubusercontent.com/65488419/124787689-5c5ee500-df51-11eb-97d6-8f89b5fca581.png">
-
-<br>
+<image align="right" src="https://user-images.githubusercontent.com/65488419/124787689-5c5ee500-df51-11eb-97d6-8f89b5fca581.png"><br>
 
 <br>
 
@@ -110,7 +108,7 @@ It adds preview and editor label and a diff highlighter in editor.
 
  <br>
  
- <img align="right" src="https://user-images.githubusercontent.com/65488419/124783181-8c0bee00-df4d-11eb-88d7-9ad0598f4455.png">
+ <img align="right" src="https://user-images.githubusercontent.com/65488419/124783181-8c0bee00-df4d-11eb-88d7-9ad0598f4455.png"><br>
 
  <br>
  
