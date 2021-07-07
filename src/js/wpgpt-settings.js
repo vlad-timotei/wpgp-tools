@@ -53,6 +53,12 @@ var wpgpt_settings = {
 			'type'	: 4,
 			'parent' : 'checks'
 		},
+		'checks_labels' : {
+			'desc'	: 'Detailed check result labels',
+			'state' : 'enabled',
+			'type'	: 2,
+			'parent' : 'checks'
+		},
 		'placeholders' : {
 			'desc' : 'Missing or broken placeholders',
 			'state': '<span class="note">Can\'t be disabled. To bypass, click <i>Save / approve with warnings</i> when prompted.</span>',
