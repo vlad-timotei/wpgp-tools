@@ -1,6 +1,5 @@
 var user_env_settings = { 'search' : 'enabled' }; 
 //	user_env_settings is a known/accepted redundancy for TM script that runs in the same environment
-
 user_env_settings = ( getLS('wpgpt-user-settings' ) !== null ) ? JSON.parse( getLS('wpgpt-user-settings') ) : user_env_settings;
 consistency_tools();
 
@@ -174,13 +173,11 @@ function consistency_tools(){
 			var menu_links;
 			jQuery('.editor').each( function(){
 				menu_links = [];
-				jQuery(this).find('.button-menu__dropdown li a').each( function(){ menu_links.push( jQuery(this).attr('href') ); } );
-				jQuery(this).find('.wpgpt-actions_permalink').data( 'link', 'https://translate.wordpress.org' + menu_links[0] );
-				jQuery(this).find('.wpgpt-actions_history').data( 'link', 'https://translate.wordpress.org' + menu_links[1] + historypage );
-				jQuery(this).find('.wpgpt-actions_consistency').data( 'link', menu_links[2] + resultpage );
-				if ( user_env_settings['history_page'] == 'disabled' ){
-					jQuery( this ).find('.button-menu__dropdown li a').eq(1).attr('href', 'https://translate.wordpress.org' + menu_links[1] + historypage );
-				}
+				jQuery( this ).find('.button-menu__dropdown li a').each( function(){ menu_links.push( jQuery(this).attr('href') ); } );
+				jQuery( this ).find('.wpgpt-actions_permalink').data( 'link', 'https://translate.wordpress.org' + menu_links[0] );
+				jQuery( this ).find('.wpgpt-actions_history').data( 'link', 'https://translate.wordpress.org' + menu_links[1] + historypage );
+				jQuery( this ).find('.wpgpt-actions_consistency').data( 'link', menu_links[2] + resultpage );
+				jQuery( this ).find('.button-menu__dropdown li a').eq(1).attr('href', 'https://translate.wordpress.org' + menu_links[1] + historypage );
 			});
 			
 			jQuery('.wpgpt-actions_copy, .wpgpt-actions_plus').click(toggle_copy);
@@ -200,7 +197,7 @@ function consistency_tools(){
 			
 			/*Google Translate */
 			display_google_translate();
-			jQuery('.wpgpt-google-translate.wpgpt-google-translate').click( function(){ 
+			jQuery('.wpgpt-google-translate').click( function(){ 
 				open_tab('google-translate', jQuery(this).data('gt-string') ); 
 				jQuery('.wpgpt-search-close-tabs').show();
 			});
@@ -336,8 +333,15 @@ function consistency_tools(){
 			orig_txt = encodeURIComponent(jQuery( '#' + string_id + ' .source-string__singular span.original' ).text());
 			var google_search_url = protocol + 'translate.google.com/?sl=en&tl=' + short_locale + '&text=' + orig_txt + '&op=translate'; 
 			google_search_url = google_search_url.replaceAll('"','&#34;'); 
-			var google_search_output = '<button type="button" class="wpgpt-google-translate" data-gt-string="' + google_search_url + '">Google Translate</button>';
-			jQuery('#' + string_id + ' .editor-panel__left .panel-header h3').append( google_search_output ); 	
+			var google_search_output = '' +
+			'<details open="open" class="suggestions__translation-gt">' +
+			'<summary>Suggestion from Google Translate</summary>' +
+			'<ul class="suggestions-list">' +
+			'<button type="button" class="wpgpt-google-translate" data-gt-string="' +
+			google_search_url +
+			'">View Google Translate suggestion</button>' +
+			'</li></ul></details>';
+			jQuery('#' + string_id + ' .editor-panel__left .suggestions-wrapper').append( google_search_output );
 		});
 	}
 
