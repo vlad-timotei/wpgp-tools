@@ -115,7 +115,6 @@ It adds preview and editor label and a diff highlighter in editor.
  
 **II. History Count** counts (regardless of string status) types of strings in History for the respective string; doesn't count itself.
 
-<br>
  
 **III. History Tools in Translation History** enables or disables these tools on History pages opened trough a link.
  
