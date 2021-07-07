@@ -39,6 +39,7 @@ Adjust the **Settings** for this extension in the top blue navigation menu *Tool
 
 <img align="right" src="https://user-images.githubusercontent.com/65488419/124773950-12243680-df46-11eb-9328-346121fc3ed0.png" > <br>
 
+
 Checks run:
 - for all translated strings when page loads
 - when a translation is submitted
@@ -52,7 +53,7 @@ Checks can be set as:
 
 <br>
 
-<img align="right" src="https://user-images.githubusercontent.com/65488419/117626608-f4be3080-b17f-11eb-91a7-fefd621df320.png" >
+<img align="right" width="550" src="https://user-images.githubusercontent.com/65488419/117626608-f4be3080-b17f-11eb-91a7-fefd621df320.png" >
 
 <br>
 
@@ -109,7 +110,7 @@ It adds preview and editor label and a diff highlighter in editor.
 
  <br>
  
- <img align="right" src="https://user-images.githubusercontent.com/65488419/124786359-53214880-df50-11eb-83dc-fa6b0de8392c.png">
+ <img align="right" src="https://user-images.githubusercontent.com/65488419/124783181-8c0bee00-df4d-11eb-88d7-9ad0598f4455.png">
 
  <br>
  
