@@ -36,40 +36,62 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISI
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-var JsDiff;
+var JsDiff, wpgpt_page_rows, wpgpt_cache = '';
 wpgpt_init_history_status();
 
 function wpgpt_init_history_status(){
+	var is_history = document.location.href.includes('historypage');
 	if ( 	typeof $gp == 'undefined' ||
 			wpgpt_settings['history_main']['state'] == 'disabled' ||
-			( document.location.href.includes('historypage') && wpgpt_settings['history_page']['state'] == 'disabled' )
+			( is_history && wpgpt_settings['history_page']['state'] == 'disabled' )
 	){
 		return;
 	}
 	
 	JsDiff=function(){function e(e){return{newPos:e.newPos,components:e.components.slice(0)}}var n=function(e){this.ignoreWhitespace=e};n.prototype={diff:function(n,o){if(o===n)return[{value:o}];if(!o)return[{value:n,removed:!0}];if(!n)return[{value:o,added:!0}];o=this.tokenize(o),n=this.tokenize(n);var t=o.length,r=n.length,s=t+r,i=[{newPos:-1,components:[]}],u=this.extractCommon(i[0],o,n,0);if(i[0].newPos+1>=t&&u+1>=r)return i[0].components;for(var f=1;f<=s;f++)for(var a=-1*f;a<=f;a+=2){var d,c=i[a-1],h=i[a+1];u=(h?h.newPos:0)-a,c&&(i[a-1]=void 0);var v=c&&c.newPos+1<t,p=h&&0<=u&&u<r;if(v||p){!v||p&&c.newPos<h.newPos?(d=e(h),this.pushComponent(d.components,n[u],void 0,!0)):((d=e(c)).newPos++,this.pushComponent(d.components,o[d.newPos],!0,void 0));u=this.extractCommon(d,o,n,a);if(d.newPos+1>=t&&u+1>=r)return d.components;i[a]=d}else i[a]=void 0}},pushComponent:function(e,n,o,t){var r=e[e.length-1];r&&r.added===o&&r.removed===t?e[e.length-1]={value:this.join(r.value,n),added:o,removed:t}:e.push({value:n,added:o,removed:t})},extractCommon:function(e,n,o,t){for(var r=n.length,s=o.length,i=e.newPos,u=i-t;i+1<r&&u+1<s&&this.equals(n[i+1],o[u+1]);)i++,u++,this.pushComponent(e.components,n[i],void 0,void 0);return e.newPos=i,u},equals:function(e,n){var o=/\S/;return!(!this.ignoreWhitespace||o.test(e)||o.test(n))||e===n},join:function(e,n){return e+n},tokenize:function(e){return e}};var o=new n(!1),t=new n(!0);return t.tokenize=function(e){return function(e){for(var n=[],o=0;o<e.length;o++)e[o]&&n.push(e[o]);return n}(e.split(/(\s+|\b)/))},{Diff:n,diffChars:function(e,n){return o.diff(e,n)},diffWords:function(e,n){return t.diff(e,n)},convertChangesToXML:function(e){for(var n,o=[],t=0;t<e.length;t++){var r=e[t];r.added?o.push("<ins class='diff'>"):r.removed&&o.push("<del class='diff'>"),o.push((n=r.value,void 0,n.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"))),r.added?o.push("</ins>"):r.removed&&o.push("</del>")}return o.join("")}}}();
-	wpgpt_load_history_status();
+	wpgpt_page_rows = jQuery('#translations tbody tr.editor');
+	wpgpt_load_history_status( 0, is_history );
 }
 
-function wpgpt_load_history_status(){
-		var rows = jQuery('#translations tbody tr.editor');
-		rows.each( function(){
-			var translation_status = jQuery( this ).find('.panel-header__bubble').text();
-			if ( translation_status == 'untranslated' ){
-				return;
-			}
-			if( translation_status !== 'current' || wpgpt_settings['history_count']['state'] == 'enabled' ){
-				var translation_id = jQuery( this ).attr('id');
-				var string_id = translation_id.split( '-', 3 )[1];
-				var url = 'https://translate.wordpress.org' + window.location.pathname + '?filters%5Bstatus%5D=either&filters%5Boriginal_id%5D=' + string_id + '&sort%5Bby%5D=translation_date_added&sort%5Bhow%5D=desc';
-				const data = fetch( url, { headers: new Headers( { 'User-agent': 'Mozilla/4.0 Custom User Agent' } ) } )
-					.then( response => response.text() )
-					.then( data => {
-						wpgpt_analyse_history_status( data, translation_id, translation_status, url);
-					} )
-					.catch(error => console.error(error));
-			}
-		});
+function wpgpt_load_history_status( row_id, is_history ){
+	if( row_id >= wpgpt_page_rows.length ){
+		return;
+	}
+	
+	var translation_status = jQuery( wpgpt_page_rows[ row_id ] ).find('.panel-header__bubble').text();
+	if ( translation_status == 'untranslated' ){
+		return;
+	}
+
+	if( translation_status !== 'current' || wpgpt_settings['history_count']['state'] == 'enabled' ){
+		var translation_id = jQuery( wpgpt_page_rows[ row_id ] ).attr('id');
+		var string_id = translation_id.split( '-', 3 )[1];
+		var url = 'https://translate.wordpress.org' + window.location.pathname + '?filters%5Bstatus%5D=either&filters%5Boriginal_id%5D=' + string_id + '&sort%5Bby%5D=translation_date_added&sort%5Bhow%5D=desc';
+
+		if ( wpgpt_cache !== '' ){
+			wpgpt_analyse_history_status( wpgpt_cache, translation_id, translation_status, url);
+			wpgpt_load_history_status( row_id + 1, is_history );
+		}
+		else{
+			const data = fetch( url, { headers: new Headers( { 'User-agent': 'Mozilla/4.0 Custom User Agent' } ) } )
+				.then( response => response.text() )
+				.then( data => {
+					wpgpt_analyse_history_status( data, translation_id, translation_status, url);
+					if ( is_history ){
+						wpgpt_cache = data;
+						wpgpt_load_history_status( row_id + 1, is_history );
+					}
+				} )
+				.catch(error => console.error(error));
+		}
+	} else{
+		wpgpt_load_history_status( row_id + 1, is_history );
+		return;
+	}
+
+	if( !is_history ){
+		wpgpt_load_history_status( row_id + 1, is_history );
+	}
 }
 
 /**									Analyze History:
