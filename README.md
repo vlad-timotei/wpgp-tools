@@ -138,12 +138,20 @@ It adds preview and editor label and a diff highlighter in editor.
 ## Installation
 Only choose one of these two:
 
-### Google Chrome, Edge & Opera
+### Google Chrome, Edge
 
 1. Get the latest release from [here](https://github.com/vlad-timotei/wpgp-tools/releases/latest) and extract to a folder.
-2. Open Chrome extensions `chrome://extensions/` or `edge://extensions/` or `opera://extensions/` and enable Developer mode.
+2. Open Chrome extensions `chrome://extensions/` or `edge://extensions/` and enable Developer mode.
 3. Then use Load Unpacked button and point to the `wpgp-tools\src\` folder
 4. That's it! Go to a translate project to see it in action.
+
+###  Opera
+ 
+1. Get the latest release from [here](https://github.com/vlad-timotei/wpgp-tools/releases/latest) and extract to a folder.
+2. If "Install Chrome Extensions" isn't installed yet, install it via: https://addons.opera.com/en/extensions/details/install-chrome-extensions/
+3. Open Chrome extensions `opera://extensions` and enable Developer mode.
+4. Then use Load Unpacked button and point to the `wpgp-tools\src\` folder
+5. That's it! Go to a translate project to see it in action. 
 
 ### Firefox and other browsers via Tampermonkey
 
