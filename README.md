@@ -121,7 +121,8 @@ If this somehow fails, you can: manually copy the URL and install it in the Util
 
 - Personal translation notes & project status snippets
 - ~~Personal glossary~~ (this is included in [WPTranslationFiller extension](https://github.com/vibgyj/WPTranslationFiller/) and [GlotDict](https://github.com/Mte90/GlotDict) and I don't plan to overlap features!)
-- Gradually, some WPGPT features will be implemented in GlotDict, as part of a cross-project initiative. That said, WPGPT will continue to exist for those interested
+- Gradually, some WPGPT features will be implemented in GlotDict, as part of a cross-project initiative. That said, WPGPT will continue to exist for those interested. 
+- When a feature will be included in GlotPress (the long term plan for as many features as possible) it will be excluded from this extension.
 
 
 ### Contributing
