@@ -38,11 +38,11 @@ function wpgpt_check_all_translations(){
 		var has_warning = false, has_notice = false;
 		var translation_id_p = $translation.attr('id');
 		var translation_id_e = translation_id_p.replace('preview', 'editor');
-		var missing_translation = ( $translation.find('td.translation .missing').length ) ? true : false;
 		
 		$translation.find('td.original .original-text').each( function(){ original.push( jQuery( this ).text() ); } );
 		$translation.find('td.translation .translation-text').each( function(){	translated.push( jQuery( this ).text() ); } );
-
+	
+	
 		for( var original_i = 0, translated_i = 0; translated_i < translated.length; translated_i++ ){
 			check_results = wpgpt_run_checks( original[original_i], translated[translated_i] );
 			edit_check_list += '<dl><dt>Warnings';
@@ -74,12 +74,6 @@ function wpgpt_check_all_translations(){
 			if( original.length > 1 ){
 				original_i = 1;
 			}
-		}
-
-		if( missing_translation ) {
-			has_warning = true;
-			edit_check_list += '<dl><dd><ul class="wpgpt-warnings-list empty"><li>Empty translation!</li></ul></dd></dl>';
-			$translation.find('.missing').before( '<div class="wpgpt-warning-labels"><li>Empty translation!</li></div>');			
 		}
 
 		edit_check_list = '<div class="wpgpt-checks-list">' + edit_check_list + '</div>';

@@ -200,15 +200,8 @@ span.small {
 .wpgpt-checks-list {
     word-break: break-all;
 }
-
 ul.wpgpt-warnings-list li {
 	color: red;
-}
-
-ul.wpgpt-warnings-list.empty li {
-	color: red;
-	list-style: none;
-	margin-left: -20px;
 }
 
 .wpgpt-ignore-warnings {
