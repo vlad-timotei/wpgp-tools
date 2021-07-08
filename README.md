@@ -172,4 +172,3 @@ If this somehow fails, you can: manually copy the URL and install it in the Util
 ### [Changelog](/CHANGELOG.md)
 ### Contributions
 Contributions are welcome, bugreports, suggestions and even pull requests! No limitations, shoot for the stars!
-
