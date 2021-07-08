@@ -167,7 +167,6 @@ If this somehow fails, you can: manually copy the URL and install it in the Util
 
 ## Known issues
 - Tooltips overlap for the Quick Links section (should be fixed upstream)
-- After Save/Aprove/Reject/Fuzzy the scripts don't reload for that row
 - It's an unpacked extension and the repo doesn't use workflows to build the release additional zip
 
 ## Future version features
