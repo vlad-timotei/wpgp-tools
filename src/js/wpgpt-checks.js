@@ -520,7 +520,7 @@ function wpgpt_run_checks( original, translated ){
 		original_double_spaces = (original_double_spaces != null) ? original_double_spaces : [];
 	
 		if( using_double_spaces.length > original_double_spaces.length ){
-			error_message = '<li class="has-highlight">' + using_double_spaces.length + ' double space' + ( ( using_double_spaces.length > 1 ) ? 's' : '' ) + '</li>'; 
+			error_message = '<li alt="Remove this double space.">' + using_double_spaces.length + ' double space' + ( ( using_double_spaces.length > 1 ) ? 's' : '' ) + '</li>'; 
 			switch( wpgpt_settings['double_spaces']['state'] ){
 				case 'warning':
 					warnings['others'] += error_message;
@@ -543,7 +543,7 @@ function wpgpt_run_checks( original, translated ){
 			bad_words_list = wpgpt_settings['warning_words']['state'].split(',');
 			for( bad_word of bad_words_list ) {
 				if( bad_word != '' && bad_word != ' ' && translated.match( bad_word ) !== null){
-					warnings['others'] += '<li class="has-highlight">Using <b>' + bad_word + '</b></li>';
+					warnings['others'] += '<li class="has-highlight" alt="Replace in translation this user defined warning word.">Using <b>' + bad_word + '</b></li>';
 					highlight_me = highlight_me.concat( bad_word );
 					break;
 				}
@@ -555,7 +555,7 @@ function wpgpt_run_checks( original, translated ){
 			bad_words_list = wpgpt_settings['notice_words']['state'].split(',');
 			for( bad_word of bad_words_list) {
 				if( bad_word != '' && bad_word != ' ' && translated.match( bad_word ) !== null ){
-					notices['others'] += '<li class="has-highlight">Using <b>' + bad_word + '</b></li>';
+					notices['others'] += '<li class="has-highlight" alt="Replace in translation this user defined notice word.">Using <b>' + bad_word + '</b></li>';
 					highlight_me = highlight_me.concat( bad_word );
 					break;
 				}
@@ -589,7 +589,7 @@ function wpgpt_run_checks( original, translated ){
 		/** ro diacritics **/
 		var not_using_ro_diacritics = translated.match( not_ro_diacritics );
 		if( not_using_ro_diacritics != null ){
-			error_message = '<li class="has-highlight">' + not_using_ro_diacritics.length + ' wrong diacritic' + ( ( not_using_ro_diacritics.length > 1 ) ? 's' : '' ) + ': <b>' + not_using_ro_diacritics.toString() + '</b></li>';
+			error_message = '<li class="has-highlight" alt="Replace this wrong Romanian diacritic.">' + not_using_ro_diacritics.length + ' wrong diacritic' + ( ( not_using_ro_diacritics.length > 1 ) ? 's' : '' ) + ': <b>' + not_using_ro_diacritics.toString() + '</b></li>';
 			switch( wpgpt_settings['ro_diacritics']['state'] ){
 				case 'warning':
 					warnings['ro_diacritics'] = error_message;
@@ -615,7 +615,7 @@ function wpgpt_run_checks( original, translated ){
 			bad_words_list = ["'", '&quot;', '&#34;', '&apos;', '&#39;', '&ldquo;', '&#8220;', '“'];
 			for( bad_word of bad_words_list) {
 				if( translated.match( bad_word ) !== null ){
-					error_message = '<li class="has-highlight">Wrong quote: <b>' + bad_word.replace('&', '&amp;') + '</b></li>';
+					error_message = '<li class="has-highlight" alt="Replace these wrong quotes.">Wrong quote: <b>' + bad_word.replace('&', '&amp;') + '</b></li>';
 					switch( wpgpt_settings['ro_quotes']['state'] ){
 						case 'warning':
 							warnings['ro_quotes'] = error_message;
@@ -634,7 +634,7 @@ function wpgpt_run_checks( original, translated ){
 		/** ro slash spaces **/
 		var not_using_ro_slash_spaces = translated.match( not_ro_slash_spaces );
 		if ( not_using_ro_slash_spaces != null ){
-			error_message =  '<li class="has-highlight">' + not_using_ro_slash_spaces.length + ' <b>/</b> space' + ( ( not_using_ro_slash_spaces.length > 1 ) ? 's' : '' ) +  '</li>';
+			error_message =  '<li class="has-highlight" alt="Remove spaces around slash.">' + not_using_ro_slash_spaces.length + ' <b>/</b> space' + ( ( not_using_ro_slash_spaces.length > 1 ) ? 's' : '' ) +  '</li>';
 			switch( wpgpt_settings['ro_slash']['state'] ){
 					case 'warning':
 						warnings['others'] += error_message;
@@ -660,7 +660,7 @@ function wpgpt_run_checks( original, translated ){
 		/** ro — dash **/
 		var not_using_ro_dash = translated.match( not_ro_dash );
 		if( not_using_ro_dash!= null ){
-			error_message = '<li class="has-highlight"> Using ' + not_using_ro_dash.length + ' <b>—</b></li>';
+			error_message = '<li class="has-highlight" alt="Use simple dash instead."> Using ' + not_using_ro_dash.length + ' <b>—</b></li>';
 			switch( wpgpt_settings['ro_dash']['state'] ){
 					case 'warning':
 						warnings['others'] += error_message;
