@@ -68,7 +68,7 @@ Filter strings based on warnings:
 
 Personalize checkings as you see fit:
 
-![image](https://user-images.githubusercontent.com/65488419/124774531-9080d880-df46-11eb-9ad5-46217a9b9e22.png)
+![image](https://user-images.githubusercontent.com/65488419/125173772-a05c1f00-e1c9-11eb-9434-de0dfcffd58c.png)
 
 
 ## #3 Locale specific Checks
