@@ -267,6 +267,11 @@ table.translations a.action {
     margin:0 auto;
 }
 
+.wpgpt-notice-labels,
+.wpgpt-warning-labels {
+    display:inline-block;
+}
+
 .wpgpt-warning-labels li,
 .wpgpt-notice-labels li
  {
@@ -287,6 +292,32 @@ table.translations a.action {
 
 .wpgpt-warning-labels li {
     background-color: rgb(251 167 167);
+}
+
+.translation-text{
+    display:block;
+}
+
+.translation-text + .wpgpt-warning-labels{
+    margin-top:5px;
+}
+
+.translation-text + .wpgpt-notice-labels{
+    margin-top:5px;
+}
+
+.wpgpt-highlight {
+    background-color: rgb(251, 167, 167);
+    border:1px dashed #fc6969;
+}
+
+.wpgpt-warning-labels .has-highlight,
+.wpgpt-notice-labels .has-highlight{
+	display:none;
+}
+
+.wpgpt-highlight + .wpgpt-highlight{
+	border-left:none;
 }
 
 /* Search */

@@ -54,7 +54,7 @@ var wpgpt_settings = {
 			'parent' : 'checks'
 		},
 		'checks_labels' : {
-			'desc'	: 'Detailed check result labels',
+			'desc'	: 'Warning labels and highlights',
 			'state' : 'enabled',
 			'type'	: 2,
 			'parent' : 'checks'
