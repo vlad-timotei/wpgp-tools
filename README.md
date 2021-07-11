@@ -51,6 +51,10 @@ These checks run for all translated strings when page loads and when a translati
 
 <br>
 
+<br>
+
+<br>
+
 To bypass warnings, click <br> Save / Approve with warnings
 
 <br>
