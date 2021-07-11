@@ -26,3 +26,21 @@
 * Fixes GT encodeURIComponent
 * Fixes GT link for locales with a different slug than the one on GP
 * Obsoletes fallback different ending result (now redundant)
+
+# v.1.4 - 20.07.2021
+* Adds: History Count
+* Adds: Check Results Labels
+* Adds: Count and Match option
+* Adds: String History with Diff
+* Adds: check for missing end `!`
+* Adds: highlights for some warnings
+* Change: GT button in the suggestions area
+* Fixes: show warning for an empty translation
+* Fixes: enables consistency tools on result pages
+* Fixes: enables warnings list to non PTE/GTE users
+* Fixes: reloads the checks after Save/Aprove/Reject
+* Obsoletes: Additional or missing end space (merged)
+* Obsoletes: Notify about these words user option from UI
+* Improves: some regex replaced with a more performant function
+* Improves: features implement more design accesibility standards
+* Performance: similar loading time with considerably increased features
