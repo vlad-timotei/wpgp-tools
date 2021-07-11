@@ -37,39 +37,35 @@ Adjust the **Settings** for this extension in the top blue navigation menu *Tool
 
 ## #2 General Checks - [view Demo](https://youtu.be/pG92jygfWpY) 
 
-<img align="right" src="https://user-images.githubusercontent.com/65488419/124773950-12243680-df46-11eb-9328-346121fc3ed0.png" > <br>
 
+Notice, labels and highlights for user customizable checks. <br> These checks run for all translated strings when page loads and when a translation is submitted. <br> Checks can be set as: Warning & prevent save, Just notification or Don't check.
 
-Checks run:
-- for all translated strings when page loads
-- when a translation is submitted
+![image](https://user-images.githubusercontent.com/65488419/125183339-84369d00-e21e-11eb-9d29-e78be7fe508e.png)
 
-<br>
+If enabled, double spaces and user defined "bad words" will be highlighted. *(eg below: link)*
 
-Checks can be set as:
-- Warning & prevent save
-- Just notification
-- Don't check
-
-<br>
+![image](https://user-images.githubusercontent.com/65488419/125183284-f8bd0c00-e21d-11eb-9e80-f9608f8eaab5.png) <br>
 
 <img align="right" width="550" src="https://user-images.githubusercontent.com/65488419/117626608-f4be3080-b17f-11eb-91a7-fefd621df320.png" >
 
 <br>
 
-To bypass a warning, click Save / Approve with warnings
+To bypass warnings, click Save / Approve with warnings &rarr;
 
 <br>
 
-Filter strings based on warnings:
-![image](https://user-images.githubusercontent.com/65488419/121800720-26715e00-cc3c-11eb-8b29-6e63f5db5b13.png)
+Filter strings based on warnings:<br>
+(count is accurate only on first page load)<br>
+![image](https://user-images.githubusercontent.com/65488419/121800720-26715e00-cc3c-11eb-8b29-6e63f5db5b13.png)<br>
 
 <br>
+
+<br>
+
 
 Personalize checkings as you see fit:
 
-![image](https://user-images.githubusercontent.com/65488419/125173772-a05c1f00-e1c9-11eb-9434-de0dfcffd58c.png)
-
+![image](https://user-images.githubusercontent.com/65488419/125183560-1ab78e00-e220-11eb-94ce-939744409dba.png)
 
 ## #3 Locale specific Checks
 
