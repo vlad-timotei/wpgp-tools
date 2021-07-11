@@ -38,7 +38,6 @@ Adjust the **Settings** for this extension in the top blue navigation menu *Tool
 ## #2 General Checks - [view Demo](https://youtu.be/pG92jygfWpY) 
 These checks run for all translated strings when page loads and when a translation is submitted. <br> Checks can be set as: Warning & prevent save, Just notification or Don't check.
 
-<br>
 
 **Notice and labels** for checks results
 
