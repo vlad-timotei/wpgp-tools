@@ -65,15 +65,17 @@ To bypass warnings, click <br> Save / Approve with warnings
 
 <br>
 
-<br>
 
-Filter strings based on warnings:<br>
-(count is accurate only on first page load)<br>
+Personalize checks as you see fit:
+
+![image](https://user-images.githubusercontent.com/65488419/125194373-b4e7f800-e259-11eb-8432-6bbcbbfefd2c.png)
+
+**Prevent saving these words** is a user defined list of words that if found in a translation will generate a warning. Separated by comma, no space, case insensitive.
+
+**Count and match these** is a user defined list of terms or symbols that will be counted both in original and in translation. If counts don't match, a warning will be generated. Separated by comma, no space, case insensitive.
+
+Filter strings based on warnings (count is accurate only on first page load): <br>
 ![image](https://user-images.githubusercontent.com/65488419/121800720-26715e00-cc3c-11eb-8b29-6e63f5db5b13.png)<br>
-
-Personalize checkings as you see fit:
-
-![image](https://user-images.githubusercontent.com/65488419/125183560-1ab78e00-e220-11eb-94ce-939744409dba.png)
 
 ## #3 Locale specific Checks
 
@@ -174,5 +176,8 @@ If this somehow fails, you can: manually copy the URL and install it in the Util
 
 
 ### [Changelog](/CHANGELOG.md)
+
+### [Documentation](https://github.com/vlad-timotei/wpgp-tools/wiki)
+
 ### Contributions
 Contributions are welcome, bugreports, suggestions and even pull requests! No limitations, shoot for the stars!
