@@ -148,8 +148,8 @@ function wpgpt_analyse_history_status( data, translation_id, translation_status,
 	}
 			
 	if( diff_label !== '' ){
-		preview_label += '<span class="wpgpt-h-label preview">' + diff_label + '</span>';
-		editor_label += '<div class="wpgpt-h-label editor">' + diff_label + ' &#8615;</div>';
+		preview_label += '<span class="wpgpt-h-label preview"><a href="' + url + '&historypage" target="_blank">' + diff_label + '</a></span>';
+		editor_label += '<div class="wpgpt-h-label editor"><a href="' + url + '&historypage" target="_blank">' + diff_label + '</a> &#8615;</div>';
 	}
 	
 	if ( count_label !== '' ) {
