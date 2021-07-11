@@ -260,7 +260,7 @@ function wpgpt_check_this_translation( translation_id_e ){
 function wpgpt_run_checks( original, translated ){
 	var warnings = {
 		'placeholders'		:	'', // A.
-		'start_space' 		:	'', // B. 
+		'start_end_space' 	:	'', // B. 
 		'end_char'			: 	'', // C.
 		'others'			:	'', // D. + E.3, E.4, E.5
 		'ro_diacritics'		:	'', // E.1
@@ -268,7 +268,7 @@ function wpgpt_run_checks( original, translated ){
 	};
 	var notices = {
 		'placeholders'		:	'',
-		'start_space' 		:	'',
+		'start_end_space' 	:	'',
 		'end_char'			: 	'',
 		'others'			:	'',
 		'ro_diacritics'		:	'',
@@ -339,8 +339,8 @@ function wpgpt_run_checks( original, translated ){
 		){  
 			error_message = '<li>Additional start space</li>';
 			switch( wpgpt_settings['start_end_space']['state'] ){
-				case 'warning': warnings['start_space'] = error_message; break;
-				case 'notice': notices['start_space'] = error_message;
+				case 'warning': warnings['start_end_space'] = error_message; break;
+				case 'notice': notices['start_end_space'] = error_message;
 			}
 		}
 	
@@ -350,9 +350,9 @@ function wpgpt_run_checks( original, translated ){
 			first_original_char  == ' '
 		){	
 			error_message = '<li>Missing start space</li>';
-			switch( wpgpt_settings['start_space']['state'] ){
-				case 'warning': warnings['start_space'] = error_message; break;
-				case 'notice': notices['start_space'] = error_message;
+			switch( wpgpt_settings['start_end_space']['state'] ){
+				case 'warning': warnings['start_end_space'] = error_message; break;
+				case 'notice': notices['start_end_space'] = error_message;
 			}
 		}
 	
@@ -374,7 +374,7 @@ function wpgpt_run_checks( original, translated ){
 				last_original_char == ' '
 			){
 				error_message = '<li>Missing end space</li>';
-				switch( wpgpt_settings['end_space']['state'] ){
+				switch( wpgpt_settings['start_end_space']['state'] ){
 					case 'warning': warnings['end_char'] = error_message; break;
 					case 'notice': notices['end_char'] = error_message;
 				}
