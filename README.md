@@ -55,6 +55,10 @@ To bypass warnings, click <br> Save / Approve with warnings
 
 <br>
 
+<br>
+
+<br>
+
 Filter strings based on warnings:<br>
 (count is accurate only on first page load)<br>
 ![image](https://user-images.githubusercontent.com/65488419/121800720-26715e00-cc3c-11eb-8b29-6e63f5db5b13.png)<br>
