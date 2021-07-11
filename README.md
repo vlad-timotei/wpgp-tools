@@ -71,11 +71,6 @@ Filter strings based on warnings:<br>
 (count is accurate only on first page load)<br>
 ![image](https://user-images.githubusercontent.com/65488419/121800720-26715e00-cc3c-11eb-8b29-6e63f5db5b13.png)<br>
 
-<br>
-
-<br>
-
-
 Personalize checkings as you see fit:
 
 ![image](https://user-images.githubusercontent.com/65488419/125183560-1ab78e00-e220-11eb-94ce-939744409dba.png)
