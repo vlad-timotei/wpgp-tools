@@ -43,7 +43,7 @@ These checks run for all translated strings when page loads and when a translati
 
 ![image](https://user-images.githubusercontent.com/65488419/125183339-84369d00-e21e-11eb-9d29-e78be7fe508e.png)
 
-**Highlights** for double spaces and user defined "bad words" *(eg. below: link)*
+**Highlights** double spaces and user defined "bad words" *(eg. below: link)*
 
 ![image](https://user-images.githubusercontent.com/65488419/125183284-f8bd0c00-e21d-11eb-9e80-f9608f8eaab5.png) <br>
 
