@@ -39,7 +39,7 @@ Adjust the **Settings** for this extension in the top blue navigation menu *Tool
 These checks run for all translated strings when page loads and when a translation is submitted. <br> Checks can be set as: Warning & prevent save, Just notification or Don't check.
 
 
-**Notice and labels** for checks results
+**Notices and labels** for checks results
 
 ![image](https://user-images.githubusercontent.com/65488419/125183339-84369d00-e21e-11eb-9d29-e78be7fe508e.png)
 
