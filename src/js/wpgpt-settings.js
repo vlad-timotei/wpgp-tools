@@ -5,20 +5,14 @@ var wpgpt_settings = {
 		'type' : 2,
 		'parent' : 'self'
 		},
-		'start_space' : {
-			'desc' : 'Additional or missing start space',
+		'start_end_space' : {
+			'desc' : 'Additional or missing start or end space',
 			'state' : 'warning',
 			'type' : 3,
 			'parent' : 'checks'
 		},
-		'end_space' : {
-		'desc' : 'Additional or missing end space',
-		'state' : 'warning',
-		'type' : 3,
-		'parent' : 'checks'
-		},
 		'end_period' : {
-			'desc' : 'Additional or missing end period',
+			'desc' : 'Additional or missing end period symbol',
 			'state' : 'warning',
 			'type' : 3,
 			'parent' : 'checks'
@@ -29,8 +23,8 @@ var wpgpt_settings = {
 			'type' : 3,
 			'parent' : 'checks'
 		},
-		'end_question' : {
-			'desc' : 'Missing end question mark (?)',
+		'end_question_exclamation' : {
+			'desc' : 'Missing end <b>?</b> or <b>!</b>',
 			'state' : 'notice',
 			'type' : 3,
 			'parent' : 'checks'

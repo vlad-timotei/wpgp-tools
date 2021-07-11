@@ -259,12 +259,12 @@ function wpgpt_check_this_translation( translation_id_e ){
 
 function wpgpt_run_checks( original, translated ){
 	var warnings = {
-		'placeholders'		:	'',
-		'start_space' 		:	'',
-		'end_char'			: 	'',
-		'others'			:	'',
-		'ro_diacritics'		:	'',
-		'ro_quotes'			:	''
+		'placeholders'		:	'', // A.
+		'start_space' 		:	'', // B. 
+		'end_char'			: 	'', // C.
+		'others'			:	'', // D. + E.3, E.4, E.5
+		'ro_diacritics'		:	'', // E.1
+		'ro_quotes'			:	''  // E.2
 	};
 	var notices = {
 		'placeholders'		:	'',
@@ -278,7 +278,7 @@ function wpgpt_run_checks( original, translated ){
 	var highlight_me = [];
 	var error_message = '';
 			
-	/** Wrong Placeholders **/
+	/** A. Placeholders **/
 	let placeholder_pattern =  /(?:%[bcdefgosuxl]|%\d[$][bcdefgosuxl])/g;
 	var original_ph = original.match( placeholder_pattern );
 	var translated_ph = translated.match( placeholder_pattern );
@@ -323,7 +323,6 @@ function wpgpt_run_checks( original, translated ){
 		}
 	}
 
-	/** General checks */
 	if( wpgpt_settings['checks']['state'] == 'enabled' ){
 		let first_original_char = original.substr( 0, 1 );
 		let first_translated_char = translated.substr( 0, 1 );
@@ -332,19 +331,20 @@ function wpgpt_run_checks( original, translated ){
 		let last_but_one_original_char = original.substr( original.length-2, 1 );
 		let last_but_one_translated_char = translated.substr( translated.length-2, 1 );
 		
-		/** Additional start space **/
+		/** B. Start character */
+		/** B. 1. Additional start space **/
 		if(
 			first_translated_char == ' ' &&
 			first_original_char  != ' '
 		){  
 			error_message = '<li>Additional start space</li>';
-			switch( wpgpt_settings['start_space']['state'] ){
+			switch( wpgpt_settings['start_end_space']['state'] ){
 				case 'warning': warnings['start_space'] = error_message; break;
 				case 'notice': notices['start_space'] = error_message;
 			}
 		}
 	
-		/** Missing start space **/
+		/** B. 2. Missing start space **/
 		if(
 			first_translated_char != ' ' &&
 			first_original_char  == ' '
@@ -356,18 +356,18 @@ function wpgpt_run_checks( original, translated ){
 			}
 		}
 	
-		/** Different ending character **/
+		/** C. Ending character **/
 		if( last_original_char != last_translated_char ){
-			/** Additional end space **/			
+			/** C. 1. Additional end space **/			
 			if( last_translated_char == ' '){
 				error_message = '<li>Additional end space</li>';
-				switch( wpgpt_settings['end_space']['state'] ){
+				switch( wpgpt_settings['start_end_space']['state'] ){
 					case 'warning': warnings['end_char'] = error_message; break;
 					case 'notice': notices['end_char'] = error_message;
 				}
 			}
 		
-			/** Missing end space **/
+			/** C. 2. Missing end space **/
 			if( 
 				warnings['end_char'] == '' &&
 				notices['end_char'] == '' &&
@@ -379,8 +379,60 @@ function wpgpt_run_checks( original, translated ){
 					case 'notice': notices['end_char'] = error_message;
 				}
 			}
+			
+			/** C. 3. Missing end : **/
+			if( 
+				warnings['end_char'] == '' &&
+				notices['end_char'] == '' &&
+				last_original_char == ':'
+			){
+				error_message = '<li>Missing end <b>:</b></li>';
+				switch( wpgpt_settings['end_colon']['state'] ){
+					case 'warning': warnings['end_char'] = error_message; break;
+					case 'notice': notices['end_char'] = error_message;
+				}
+			}
+		
+			/** C. 4. Additional end : **/
+			if( 
+				warnings['end_char'] == '' &&
+				notices['end_char'] == '' &&
+				last_translated_char == ':'
+			){
+				error_message = '<li>Additional end <b>:</b></li>';
+				switch( wpgpt_settings['end_colon']['state'] ){
+					case 'warning': warnings['end_char'] = error_message; break;
+					case 'notice': notices['end_char'] = error_message;
+				}
+			}
+		
+			/** C. 5. Missing end ? **/
+			if( 
+				warnings['end_char'] == '' &&
+				notices['end_char'] == '' &&
+				last_original_char == '?'
+			){
+				error_message = '<li>Missing end <b>?</b></li>';
+				switch( wpgpt_settings['end_question_exclamation']['state'] ){
+					case 'warning': warnings['end_char'] = error_message; break;
+					case 'notice': notices['end_char'] = error_message;
+				}
+			}
+			
+			/** C. 6. Missing end ! **/
+			if( 
+				warnings['end_char'] == '' &&
+				notices['end_char'] == '' &&
+				last_original_char == '!'
+			){
+				error_message = '<li>Missing end <b>!</b></li>';
+				switch( wpgpt_settings['end_question_exclamation']['state'] ){
+					case 'warning': warnings['end_char'] = error_message; break;
+					case 'notice': notices['end_char'] = error_message;
+				}
+			}
 	
-			/** Missing end period symbol; 
+			/** C. 7. Missing end period symbol; 
 			** Ignore if:
 			**	a. original ends with . and translation ends with a period symbol
 			**	b. char - period swap( char should not be a letter or number ); Ideal examples: ". => ." or ). => .) 
@@ -433,7 +485,7 @@ function wpgpt_run_checks( original, translated ){
 				}
 			}
 		
-			/** Additional end period; 
+			/** C. 8. Additional end period; 
 			** Ignore if:
 			**	a. original doesn't end with . and translation doesn't end with period symbol
 			**	b. period - char swap ( char should not be a letter or number )
@@ -479,48 +531,9 @@ function wpgpt_run_checks( original, translated ){
 					}
 				}
 			}
-		
-			/** Missing end : **/
-			if( 
-				warnings['end_char'] == '' &&
-				notices['end_char'] == '' &&
-				last_original_char == ':'
-			){
-				error_message = '<li>Missing end <b>:</b></li>';
-				switch( wpgpt_settings['end_colon']['state'] ){
-					case 'warning': warnings['end_char'] = error_message; break;
-					case 'notice': notices['end_char'] = error_message;
-				}
-			}
-		
-			/** Additional end : **/
-			if( 
-				warnings['end_char'] == '' &&
-				notices['end_char'] == '' &&
-				last_translated_char == ':'
-			){
-				error_message = '<li>Additional end <b>:</b></li>';
-				switch( wpgpt_settings['end_colon']['state'] ){
-					case 'warning': warnings['end_char'] = error_message; break;
-					case 'notice': notices['end_char'] = error_message;
-				}
-			}
-		
-			/** Missing end ? **/
-			if( 
-				warnings['end_char'] == '' &&
-				notices['end_char'] == '' &&
-				last_original_char == '?'
-			){
-				error_message = '<li>Missing end <b>?</b></li>';
-				switch( wpgpt_settings['end_question']['state'] ){
-					case 'warning': warnings['end_char'] = error_message; break;
-					case 'notice': notices['end_char'] = error_message;
-				}
-			}
 		}
-	
-		/**Double spaces **/
+		/** D. Others **/
+		/** D. 1. Double spaces **/
 		let double_spaces = /  /g;
 		var using_double_spaces = translated.match(double_spaces);
 		var original_double_spaces = original.match(double_spaces);
@@ -546,7 +559,7 @@ function wpgpt_run_checks( original, translated ){
 		
 		var bad_words_list, bad_word; 
 	
-		/** Warning words **/
+		/** D. 2. Warning words **/
 		if( wpgpt_settings['warning_words']['state'] != '' ){
 			bad_words_list = wpgpt_settings['warning_words']['state'].split(',');
 			for( bad_word of bad_words_list ) {
@@ -558,7 +571,7 @@ function wpgpt_run_checks( original, translated ){
 			}
 		}
 	
-		/** Notice words */
+		/** D. 3. Notice words */
 		if( wpgpt_settings['notice_words']['state'] != '' ){
 			bad_words_list = wpgpt_settings['notice_words']['state'].split(',');
 			for( bad_word of bad_words_list) {
@@ -571,7 +584,7 @@ function wpgpt_run_checks( original, translated ){
 		}
 	}
 
-	/** Romanian checks **/
+	/** E. Romanian checks **/
 	if( wpgpt_settings['ro_checks']['state'] == 'enabled' ){
 		let not_ro_diacritics =  /[ÃãŞşŢţ]/ig;  
 		let not_ro_quotes = /(?<!=)"(?:[^"<=]*)"/g; 
@@ -594,7 +607,7 @@ function wpgpt_run_checks( original, translated ){
 		** not_ro_dash = /[—]/g;						Find globally strings with —
 		**/ 
 	
-		/** ro diacritics **/
+		/** E. 1. ro diacritics **/
 		var not_using_ro_diacritics = translated.match( not_ro_diacritics );
 		if( not_using_ro_diacritics != null ){
 			error_message = '<li class="has-highlight" alt="Replace this wrong Romanian diacritic.">' + not_using_ro_diacritics.length + ' wrong diacritic' + ( ( not_using_ro_diacritics.length > 1 ) ? 's' : '' ) + ': <b>' + not_using_ro_diacritics.toString() + '</b></li>';
@@ -610,7 +623,7 @@ function wpgpt_run_checks( original, translated ){
 			}
 		}
 		
-		/** ro quotes **/
+		/** E. 2. ro quotes **/
 		var not_using_ro_quotes = translated.match( not_ro_quotes );
 		if( not_using_ro_quotes != null ){ 
 			error_message = '<li>' + not_using_ro_quotes.length + ' wrong quotes: <b>' + not_using_ro_quotes.toString() + '</b>. Use „ ”</li>';
@@ -639,7 +652,7 @@ function wpgpt_run_checks( original, translated ){
 			}
 		}
 
-		/** ro slash spaces **/
+		/** E. 3. ro slash spaces **/
 		var not_using_ro_slash_spaces = translated.match( not_ro_slash_spaces );
 		if ( not_using_ro_slash_spaces != null ){
 			error_message =  '<li class="has-highlight" alt="Remove spaces around slash.">' + not_using_ro_slash_spaces.length + ' <b>/</b> space' + ( ( not_using_ro_slash_spaces.length > 1 ) ? 's' : '' ) +  '</li>';
@@ -655,7 +668,7 @@ function wpgpt_run_checks( original, translated ){
 			}
 		}
 	
-		/** ro ampersand **/
+		/** E. 4. ro ampersand **/
 		var not_using_ro_ampersand = translated.match( not_ro_ampersand );
 		if( not_using_ro_ampersand!= null ){
 			error_message = '<li> Using ' + not_using_ro_ampersand.length + ' <b>&</b></li>';
@@ -665,7 +678,7 @@ function wpgpt_run_checks( original, translated ){
 			}
 		}
 	
-		/** ro — dash **/
+		/** E. 5. ro — dash **/
 		var not_using_ro_dash = translated.match( not_ro_dash );
 		if( not_using_ro_dash!= null ){
 			error_message = '<li class="has-highlight" alt="Use simple dash instead."> Using ' + not_using_ro_dash.length + ' <b>—</b></li>';
