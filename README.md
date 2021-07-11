@@ -50,7 +50,7 @@ If enabled, double spaces and user defined "bad words" will be highlighted. *(eg
 
 <br>
 
-To bypass warnings, click Save / Approve with warnings &rarr;
+To bypass warnings, click Save / Approve with warnings
 
 <br>
 
