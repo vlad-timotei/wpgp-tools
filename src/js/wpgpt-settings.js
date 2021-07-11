@@ -36,13 +36,13 @@ var wpgpt_settings = {
 			'parent' : 'checks'
 		},
 		'warning_words' : { 
-			'desc' : 'Prevent saving these words',
+			'desc' : 'Prevent saving these words:',
 			'state': '',
 			'type'	: 4,
 			'parent' : 'checks'
 		},
-		'notice_words' : {
-			'desc'	: 'Notify about these words',
+		'match_words' : {
+			'desc'	: 'Count and match these:',
 			'state' : '',
 			'type'	: 4,
 			'parent' : 'checks'
@@ -235,7 +235,7 @@ function wpgpt_settings_page(){
 					break;
 				case 4:
 					this_shtml = 	'<div class="wpgpt-setting-description">' + wpgpt_settings[key]['desc'] +'</div>' + 
-									'<input type="text" id="' + key +'" placeholder="Leave empty to disable. Case sensitive. Separate words by , " value="' + 
+									'<input type="text" id="' + key +'" placeholder="Leave empty to disable. Case insensitive. Separate by comma (,) with no spaces" value="' + 
 									wpgpt_settings[key]['state'] + '">';
 					break;
 				case 5:
@@ -320,7 +320,7 @@ function wpgpt_update_setting( name, val ){
 function wpgpt_exit_settings(){
 	wpgpt_settings['custom_period']['state'] = jQuery('#custom_period').val();
 	wpgpt_settings['warning_words']['state'] = jQuery('#warning_words').val(); // to avoid redundancy
-	wpgpt_update_setting('notice_words', jQuery('#notice_words').val());	
+	wpgpt_update_setting('match_words', jQuery('#match_words').val());	
 	location.reload();
 }
 
