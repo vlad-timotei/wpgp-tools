@@ -92,7 +92,7 @@ padding:10px 10px 10px;
 }
 
 #warning_words,
-#notice_words,
+#match_words,
 #custom_period {
 	width:62%;
 	cursor: text;

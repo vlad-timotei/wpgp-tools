@@ -46,7 +46,7 @@ function wpgpt_check_all_translations(){
 		for( var original_i = 0, translated_i = 0; translated_i < translated.length; translated_i++ ){
 			check_results = wpgpt_run_checks( original[original_i], translated[translated_i] );
 			edit_check_list += '<dl><dt>Warnings';
-			edit_check_list += ( (translated.length > 1) ? (' #'+( translated_i + 1 ) ) : '' );
+			edit_check_list += ( ( translated.length > 1 ) ? (' #'+( translated_i + 1 ) ) : '' );
 			edit_check_list += ':</dt><dd>';
 			edit_check_list += ( check_results['warnings'] != 'none' ) ? 
 									( '<ul class="wpgpt-warnings-list">' + check_results['warnings'] + '</ul>' ) :
@@ -158,7 +158,7 @@ function wpgpt_check_this_translation( translation_id_e ){
 	for( var original_i = 0, translated_i = 0; translated_i < translated.length; translated_i++ ){
 		check_results = wpgpt_run_checks( original[original_i], translated[translated_i] );
 		edit_check_list += '<dl><dt>Warnings' +
-		( (translated.length > 1) ? ( ' #'+( translated_i + 1 ) ) : '' ) +
+		( ( translated.length > 1 ) ? ( ' #'+( translated_i + 1 ) ) : '' ) +
 		':</dt><dd>' +
 		( 
 				( check_results['warnings'] != 'none' ) ? 
@@ -328,8 +328,8 @@ function wpgpt_run_checks( original, translated ){
 		let first_translated_char = translated.substr( 0, 1 );
 		let last_original_char = original.substr( original.length - 1 );
 		let last_translated_char = translated.substr( translated.length - 1 );
-		let last_but_one_original_char = original.substr( original.length-2, 1 );
-		let last_but_one_translated_char = translated.substr( translated.length-2, 1 );
+		let last_but_one_original_char = original.substr( original.length - 2, 1 );
+		let last_but_one_translated_char = translated.substr( translated.length - 2, 1 );
 		
 		/** B. Start character */
 		/** B. 1. Additional start space **/
@@ -534,14 +534,11 @@ function wpgpt_run_checks( original, translated ){
 		}
 		/** D. Others **/
 		/** D. 1. Double spaces **/
-		let double_spaces = /  /g;
-		var using_double_spaces = translated.match(double_spaces);
-		var original_double_spaces = original.match(double_spaces);
-		using_double_spaces = (using_double_spaces != null) ? using_double_spaces : [];
-		original_double_spaces = (original_double_spaces != null) ? original_double_spaces : [];
-	
-		if( using_double_spaces.length > original_double_spaces.length ){
-			error_message = '<li alt="Remove this double space.">' + using_double_spaces.length + ' double space' + ( ( using_double_spaces.length > 1 ) ? 's' : '' ) + '</li>'; 
+		var translated_double_spaces = occurrences( translated, '  ' );
+		var original_double_spaces = occurrences( original, '  ' );
+
+		if( translated_double_spaces > original_double_spaces ){
+			error_message = '<li alt="Remove this double space.">' + ( translated_double_spaces - original_double_spaces ) + ' double space' + ( ( ( translated_double_spaces - original_double_spaces ) > 1 ) ? 's' : '' ) + '</li>'; 
 			switch( wpgpt_settings['double_spaces']['state'] ){
 				case 'warning':
 					warnings['others'] += error_message;
@@ -549,36 +546,42 @@ function wpgpt_run_checks( original, translated ){
 					break;
 				case 'notice':
 					notices['others'] += error_message;
-					highlight_me.push( '  ');
+					highlight_me.push( '  ' );
 					break;
 			}
 		} 
-		else if( wpgpt_settings['double_spaces']['state'] !== 'nothing' && ( using_double_spaces.length < original_double_spaces.length ) ){
-				notices['others'] += '<li>' + ( original_double_spaces.length - using_double_spaces.length ) + ' missing double space' + ( ( ( original_double_spaces.length - using_double_spaces.length ) > 1 ) ? 's' : '' ) + '</li>';	
+		else if( wpgpt_settings['double_spaces']['state'] !== 'nothing' && ( translated_double_spaces < original_double_spaces ) ){
+				notices['others'] += '<li>' + ( original_double_spaces - translated_double_spaces ) + ' missing double space' + ( ( ( original_double_spaces - translated_double_spaces ) > 1 ) ? 's' : '' ) + '</li>';	
 		}
 		
-		var bad_words_list, bad_word; 
-	
+		var findW_list, findW;
+
 		/** D. 2. Warning words **/
 		if( wpgpt_settings['warning_words']['state'] != '' ){
-			bad_words_list = wpgpt_settings['warning_words']['state'].split(',');
-			for( bad_word of bad_words_list ) {
-				if( bad_word != '' && bad_word != ' ' && translated.match( bad_word ) !== null){
-					warnings['others'] += '<li class="has-highlight" alt="Replace in translation this user defined warning word.">Using <b>' + bad_word + '</b></li>';
-					highlight_me = highlight_me.concat( bad_word );
-					break;
+			findW_list = wpgpt_settings['warning_words']['state'].split(',');
+			for( findW of findW_list ) {
+				if( findW != '' && findW != ' ' ){
+					var findW_transl_count = occurrences( translated, findW );
+					if( findW_transl_count ){
+						warnings['others'] += '<li class="has-highlight" alt="Replace in translation this user defined warning word.">Using <b>' + findW + '</b></li>';
+						highlight_me.push( findW );
+					}
 				}
 			}
 		}
-	
-		/** D. 3. Notice words */
-		if( wpgpt_settings['notice_words']['state'] != '' ){
-			bad_words_list = wpgpt_settings['notice_words']['state'].split(',');
-			for( bad_word of bad_words_list) {
-				if( bad_word != '' && bad_word != ' ' && translated.match( bad_word ) !== null ){
-					notices['others'] += '<li class="has-highlight" alt="Replace in translation this user defined notice word.">Using <b>' + bad_word + '</b></li>';
-					highlight_me = highlight_me.concat( bad_word );
-					break;
+		
+		/** D. 3. Match words */
+		if( wpgpt_settings['match_words']['state'] != '' ){
+			findW_list = wpgpt_settings['match_words']['state'].split(',');
+			for( findW of findW_list) {
+				if( findW != '' && findW != ' ' ){
+					var findW_transl_count = occurrences( translated, findW );
+					var findW_orig_count = occurrences( original, findW );
+					if ( findW_transl_count > findW_orig_count ){
+						warnings['others'] += '<li alt="Remove this additional user defined symbol.">Additional <b>' + findW + '</b></li>';
+					} else if ( findW_transl_count < findW_orig_count ){
+						warnings['others'] += '<li alt="Add this missing user defined symbol.">Missing <b>' + findW + '</b></li>';
+					}
 				}
 			}
 		}
@@ -586,26 +589,9 @@ function wpgpt_run_checks( original, translated ){
 
 	/** E. Romanian checks **/
 	if( wpgpt_settings['ro_checks']['state'] == 'enabled' ){
-		let not_ro_diacritics =  /[ÃãŞşŢţ]/ig;  
+		let not_ro_diacritics =  /[ãşţ]/ig;  
 		let not_ro_quotes = /(?<!=)"(?:[^"<=]*)"/g; 
-		let not_ro_slash_spaces = / [/] /g;
 		let not_ro_ampersand = /[&](?!.{1,7}?[;=])/g;
-		let not_ro_dash = /[—]/g;
-
-		/** RegEx explications
-		**	not_ro_diacritics =  /[ÃãŞşŢţ]/ig; 			Find globally, case insensitive any of the chars inside []
-		**	not_ro_quotes = /(?<!=)"(?:[^"<=]*)"/g; 	Find globally strings, using a non-capturing group
-		**												- doesn't start with = 
-		**												- next, have "
-		**												- next, don't have ", = nor < in any of the following characters
-		**												- ends with "
-		** not_ro_slash_spaces = / [/] /g;				Find globally strings that have space/space
-		** not_ro_ampersand = /[&](?!.{1,7}?[;=])/g;	Find globally strings, using negative lookahead and lazy matching
-		**												- starts with &
-		**												- doesn't have ; nor = after 1 to 7 characters
-		**												- ; is for HTML entities AND = is for URL parameters
-		** not_ro_dash = /[—]/g;						Find globally strings with —
-		**/ 
 	
 		/** E. 1. ro diacritics **/
 		var not_using_ro_diacritics = translated.match( not_ro_diacritics );
@@ -618,7 +604,7 @@ function wpgpt_run_checks( original, translated ){
 					break;
 				case 'notice':
 					notices['ro_diacritics'] = error_message;
-					highlight_me.concat( not_using_ro_diacritics );
+					highlight_me = highlight_me.concat( not_using_ro_diacritics );
 					break;
 			}
 		}
@@ -633,18 +619,18 @@ function wpgpt_run_checks( original, translated ){
 			}
 		}
 		else{
-			bad_words_list = ["'", '&quot;', '&#34;', '&apos;', '&#39;', '&ldquo;', '&#8220;', '“'];
-			for( bad_word of bad_words_list) {
-				if( translated.match( bad_word ) !== null ){
-					error_message = '<li class="has-highlight" alt="Replace these wrong quotes.">Wrong quote: <b>' + bad_word.replace('&', '&amp;') + '</b></li>';
+			findW_list = ["'", '&quot;', '&#34;', '&apos;', '&#39;', '&ldquo;', '&#8220;', '“'];
+			for( findW of findW_list) {
+				if( occurrences( translated, findW ) ){
+					error_message = '<li class="has-highlight" alt="Replace these wrong quotes.">Wrong quote: <b>' + findW.replace('&', '&amp;') + '</b></li>';
 					switch( wpgpt_settings['ro_quotes']['state'] ){
 						case 'warning':
 							warnings['ro_quotes'] = error_message;
-							highlight_me = highlight_me.concat( bad_word );
+							highlight_me.push( findW );
 							break;
 						case 'notice':
 							notices['ro_quotes'] = error_message;
-							highlight_me = highlight_me.concat( bad_word );
+							highlight_me.push( findW );
 							break;
 					}
 				break;
@@ -653,9 +639,9 @@ function wpgpt_run_checks( original, translated ){
 		}
 
 		/** E. 3. ro slash spaces **/
-		var not_using_ro_slash_spaces = translated.match( not_ro_slash_spaces );
-		if ( not_using_ro_slash_spaces != null ){
-			error_message =  '<li class="has-highlight" alt="Remove spaces around slash.">' + not_using_ro_slash_spaces.length + ' <b>/</b> space' + ( ( not_using_ro_slash_spaces.length > 1 ) ? 's' : '' ) +  '</li>';
+		var not_using_ro_slash_spaces = occurrences( translated, ' / ');
+		if ( not_using_ro_slash_spaces ){
+			error_message =  '<li class="has-highlight" alt="Remove spaces around slash.">' + not_using_ro_slash_spaces + ' <b>/</b> space' + ( ( not_using_ro_slash_spaces > 1 ) ? 's' : '' ) +  '</li>';
 			switch( wpgpt_settings['ro_slash']['state'] ){
 					case 'warning':
 						warnings['others'] += error_message;
@@ -679,17 +665,17 @@ function wpgpt_run_checks( original, translated ){
 		}
 	
 		/** E. 5. ro — dash **/
-		var not_using_ro_dash = translated.match( not_ro_dash );
-		if( not_using_ro_dash!= null ){
-			error_message = '<li class="has-highlight" alt="Use simple dash instead."> Using ' + not_using_ro_dash.length + ' <b>—</b></li>';
+		var not_using_ro_dash = occurrences( translated, '—' );
+		if( not_using_ro_dash ){
+			error_message = '<li class="has-highlight" alt="Use simple dash instead."> Using ' + not_using_ro_dash + ' <b>—</b></li>';
 			switch( wpgpt_settings['ro_dash']['state'] ){
 					case 'warning':
 						warnings['others'] += error_message;
-						highlight_me = highlight_me.concat( not_using_ro_dash );
+						highlight_me.push( '—' );
 						break;
 					case 'notice':
 						notices['others'] += error_message;
-						highlight_me = highlight_me.concat( not_using_ro_dash );
+						highlight_me.push( '—' );
 						break;
 					
 			}
@@ -780,4 +766,17 @@ function arr_diff( a, b ){
 			return false;
 		}
 	}).toString();
+}
+
+// Count occurrences by Vitim.us at https://gist.github.com/victornpb/7736865
+function occurrences( string, subString ) {
+    string = '' + string.toLowerCase();
+    subString = '' + subString.toLowerCase();
+    if ( subString.length <= 0 ) return ( string.length + 1 );
+    var n = 0, pos = 0, step = subString.length;
+    while ( true ) {
+        pos = string.indexOf( subString, pos );
+        if ( pos >= 0 ) { ++n; pos += step; } else break;
+    }
+    return n;
 }
