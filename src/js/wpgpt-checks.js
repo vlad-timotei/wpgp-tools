@@ -64,7 +64,7 @@ function wpgpt_check_all_translations(){
 					$translation.find('.translation-text').eq( translated_i ).after( '<div class="wpgpt-notice-labels">' + check_results['notices'] + '</div>');
 				}
 			}
-			
+
 			if( check_results['warnings'] != 'none' ){
 				has_warning = true;
 				if( wpgpt_settings['checks_labels']['state'] == 'enabled' ){
@@ -184,7 +184,7 @@ function wpgpt_check_this_translation( translation_id_e ){
 			this_labels[ translated_i ]['warnings'] = '<div class="wpgpt-warning-labels">' + check_results['warnings'] + '</div>';
 		}
 		
-		if( check_results['highlight_me'].length ){
+		if( wpgpt_settings['checks_labels']['state'] == 'enabled' && check_results['highlight_me'].length ){
 			this_highlights[ translated_i ] = wpgpt_highlight( translated[translated_i] , check_results['highlight_me'] );
 		}
 		
@@ -246,7 +246,9 @@ function wpgpt_check_this_translation( translation_id_e ){
 					if ( this_labels[i]['warnings'] != '' || this_labels[i]['notices'] != '' ){
 						var $this_translation_p = jQuery( translation_id_p ).find('.translation-text').eq( i );
 						$this_translation_p.after( '<div class="wpgpt-warning-labels">' + this_labels[i]['warnings'] + '</div><div class="wpgpt-notices-labels">' + this_labels[i]['notices'] + '</div>');
-						$this_translation_p.html( this_highlights[ i ] );
+						if ( this_highlights.length ){
+							$this_translation_p.html( this_highlights[ i ] );
+						}
 					}
 				}
 			}
@@ -712,9 +714,11 @@ function is_locale_alternative( original, translated ){
 
 //Highlight errors
 function wpgpt_highlight( string, lookfor ){
+	var search_pattern;
 	string = string.replaceAll( '<', '&lt;' ).replaceAll( '>', '&gt;' )
 	for ( var i = 0; i < lookfor.length; i++ ){
-		string = string.replaceAll( lookfor[i], '<span class="wpgpt-highlight">' + lookfor[i] + '</span>' );
+		search_pattern = new RegExp( '(' + lookfor[i] + ')', 'ig');
+		string = string.replaceAll( search_pattern, '<span class="wpgpt-highlight">$1</span>' );
 	}
 	return string;
 }
