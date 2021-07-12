@@ -103,8 +103,8 @@ function wpgpt_analyse_history_status( data, translation_id, translation_status,
 	var compare_to = 'current',	compare_to_row = [], compare_to_translation = [], this_translation = [],
 		diff_state = 'Identical', diff_output = '', diff_label = '', single_multiple, raw_compare_to='',
 		shistory = [], count_label = '', preview_label = '', editor_label = '',
-		history_page = jQuery.parseHTML( data );
-		
+		history_page = parseHTML( data );
+
 	if( wpgpt_settings['history_count']['state'] == 'enabled' ){
 		[ 'current', 'waiting', 'fuzzy', 'rejected', 'old'].forEach(
 			function( state ){
@@ -166,3 +166,9 @@ function wpgpt_analyse_history_status( data, translation_id, translation_status,
 		jQuery ('#' + translation_id ).find(".source-details").append( editor_label );
 	}
 }
+
+function parseHTML( str ) {
+	var tmp = document.implementation.createHTMLDocument();
+	tmp.body.innerHTML = str;
+	return tmp.body.children;
+};
