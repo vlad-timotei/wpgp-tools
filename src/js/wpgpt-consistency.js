@@ -220,7 +220,7 @@ function consistency_tools(){
 		const data = fetch( url, { headers: new Headers( { 'User-agent': 'Mozilla/4.0 Custom User Agent' } ) } )
 			.then( response => response.text() )
 			.then( data => {
-				var consistency_page = jQuery.parseHTML( data );
+				var consistency_page = parseHTML( data );
 				var translations = jQuery( consistency_page ).find('.consistency-table tbody th strong');
 				if( translations.length != 0 ){
 					jQuery.each( translations, function(index){
@@ -402,6 +402,12 @@ function deparam( query ){
     }
     return map;
 }
+
+function parseHTML( str ) {
+	var tmp = document.implementation.createHTMLDocument();
+	tmp.body.innerHTML = str;
+	return tmp.body.children;
+};
 
 function setLS( name, value ){
   localStorage.setItem( name, value );
