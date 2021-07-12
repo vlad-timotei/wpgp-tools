@@ -61,14 +61,14 @@ function wpgpt_check_all_translations(){
 				'</dd></dl>';
 				has_notice = true;
 				if( wpgpt_settings['checks_labels']['state'] == 'enabled' ){
-					$translation.find('.translation-text').eq( translated_i ).after( '<div class="wpgpt-notice-labels">' + check_results['notices'] + '</div>');
+					$translation.find('.translation-text').eq( translated_i ).after( '<ul class="wpgpt-notice-labels">' + check_results['notices'] + '</ul>');
 				}
 			}
 
 			if( check_results['warnings'] != 'none' ){
 				has_warning = true;
 				if( wpgpt_settings['checks_labels']['state'] == 'enabled' ){
-					$translation.find('.translation-text').eq( translated_i ).after( '<div class="wpgpt-warning-labels">' + check_results['warnings'] + '</div>');
+					$translation.find('.translation-text').eq( translated_i ).after( '<ul class="wpgpt-warning-labels">' + check_results['warnings'] + '</ul>');
 				}
 			}
 			
@@ -176,12 +176,12 @@ function wpgpt_check_this_translation( translation_id_e ){
 			'<ul class="wpgpt-notices-list">' + check_results['notices'] + '</ul>' +
 			'</dd></dl>';
 			has_notice = true;
-			this_labels[ translated_i ]['notices'] = '<div class="wpgpt-notice-labels">' + check_results['notices'] + '</div>';
+			this_labels[ translated_i ]['notices'] = '<ul class="wpgpt-notice-labels">' + check_results['notices'] + '</ul>';
 		}
 		
 		if( check_results['warnings'] != 'none' ){
 			has_warning = true;
-			this_labels[ translated_i ]['warnings'] = '<div class="wpgpt-warning-labels">' + check_results['warnings'] + '</div>';
+			this_labels[ translated_i ]['warnings'] = '<ul class="wpgpt-warning-labels">' + check_results['warnings'] + '</ul>';
 		}
 		
 		if( wpgpt_settings['checks_labels']['state'] == 'enabled' && check_results['highlight_me'].length ){
