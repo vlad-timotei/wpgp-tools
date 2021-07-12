@@ -35,8 +35,8 @@
 * Adds: check for missing end `!`
 * Adds: highlights for some warnings
 * Change: GT button in the suggestions area
+* Fixes: enables Quick Links on result pages
 * Fixes: show warning for an empty translation
-* Fixes: enables consistency tools on result pages
 * Fixes: enables warnings list to non PTE/GTE users
 * Fixes: reloads the checks after Save/Aprove/Reject
 * Obsoletes: Additional or missing end space (merged)
