@@ -139,7 +139,7 @@ function wpgpt_analyse_history_status( data, translation_id, translation_status,
 				else {
 					diff_output += '<li>' + this_translation[ i ] + '</li>';
 				}
-				raw_compare_to += '<li>' + compare_to_translation[ i ].replaceAll( '<', '&lt;' ).replaceAll( '>', '&gt;' ) + '</li>';
+				raw_compare_to += '<li>' + compare_to_translation[ i ].replaceAll( '<', '&lt;' ).replaceAll( '>', '&gt;' ).replaceAll( '&', '&amp;' ) + '</li>';
 			}
 			diff_output += '</ol></details>';
 			raw_compare_to += '</ol></details';
