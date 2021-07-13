@@ -121,7 +121,7 @@ function consistency_tools(){
 	'<details open="open" class="suggestions__translation-consistency">' +
 	'<summary>Suggestions from Consistency</summary>' +
 	'<ul class="suggestions-list">' +
-	'<button type="button" class="wpgpt-get-consistency">Get Consistency Suggestions</button>' +
+	'<button type="button" class="wpgpt-get-consistency">View Consistency suggestions</button>' +
 	'</li></ul></details>';
 	
 	jQuery(document).ready( elements_init );
