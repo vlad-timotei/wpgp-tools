@@ -24,7 +24,6 @@
 		],
 		"js":[
 			"js/init.js",
-			"js/jquery-3.6.0.min.js",
 			"js/wpgpt-consistency.js"
 			],
 		"css":[

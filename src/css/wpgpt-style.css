@@ -345,7 +345,7 @@ table.translations a.action {
 	margin-left: 5px;
 }
 
-.wpgpt-search-plugin-slug {
+.hidden {
 	display: none;
 }
 
@@ -398,10 +398,10 @@ table.translations a.action {
 	user-select: none;
 }
 
-.wpgpt-google-translate {
+.wpgpt-google-translate,
+.wpgpt-get-consistency {
 	margin-left: 10px !important;
 	margin-top: 2px !important;
-	height: 26px !important;
 }
 
 .editor-panel__right .panel-header button {
@@ -417,12 +417,17 @@ table.translations a.action {
 }
 
 .wpgpt-actions_plus {
- margin: 0 10px;
- color:#0073aa;
+	 margin: 0 10px;
+	 color:#0073aa;
 }
 
-.wpgpt-actions_plus.dashicons-plus{
+.wpgpt-actions_plus.dashicons-plus {
 	cursor:pointer;
+	vertical-align: middle;
+}
+
+.wpgpt-actions_plus .separator {
+	vertical-align: middle;
 }
 
 .wpgpt-actions_copy.active {
