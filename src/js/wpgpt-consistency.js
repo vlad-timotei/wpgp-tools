@@ -359,10 +359,12 @@ function consistency_tools(){
 	}
 
 	function display_google_translate(){
-		var orig_txt, string_id, editor_id, gt_html, gt_url, new_element;
+		var orig_txt, string_id, suggestion_wrapper, gt_html, gt_url, new_element;
 		var editor_el = document.querySelectorAll( '.editor' );
 		for( var i = 0; i < editor_el.length; i++ ){
-			editor_id = editor_el[ i ].id;
+	        suggestion_wrapper = editor_el[ i ].querySelector( '.editor-panel__left .suggestions-wrapper' );
+			if( suggestion_wrapper == null )
+				return;
 			orig_txt =  editor_el[ i ].querySelector( '.source-string__singular span.original' ).textContent;
 			orig_txt = encodeURIComponent( orig_txt );
 			gt_url = protocol + 'translate.google.com/?sl=en&tl=' + short_locale + '&text=' + orig_txt + '&op=translate'; 
@@ -376,7 +378,7 @@ function consistency_tools(){
 			'</li></ul></details>';
 			new_element = document.createElement( 'span' );
 			new_element.innerHTML = gt_html;
-			editor_el[ i ].querySelector( '.editor-panel__left .suggestions-wrapper' ).insertAdjacentElement( 'beforeend' , new_element );
+			suggestion_wrapper.insertAdjacentElement( 'beforeend' , new_element );
 		}
 	}
 
