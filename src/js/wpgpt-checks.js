@@ -580,9 +580,9 @@ function wpgpt_run_checks( original, translated ){
 					var findW_transl_count = occurrences( translated, findW );
 					var findW_orig_count = occurrences( original, findW );
 					if ( findW_transl_count > findW_orig_count ){
-						warnings['others'] += '<li alt="Remove this additional user defined symbol.">Additional <b>' + findW + '</b></li>';
+						warnings['others'] += '<li alt="Remove this additional user defined symbol.">Additional ' + ( findW_transl_count - findW_orig_count ) + ' <b>' + findW + '</b></li>';
 					} else if ( findW_transl_count < findW_orig_count ){
-						warnings['others'] += '<li alt="Add this missing user defined symbol.">Missing <b>' + findW + '</b></li>';
+						warnings['others'] += '<li alt="Add this missing user defined symbol.">Missing ' + ( findW_orig_count - findW_transl_count ) + ' <b>' + findW + '</b></li>';
 					}
 				}
 			}
