@@ -404,11 +404,6 @@ table.translations a.action {
 	margin-top: 2px !important;
 }
 
-.translation-suggestion__translation small {
-	color:#808286;
-	font-size:12px;
-}
-
 .editor-panel__right .panel-header button {
     background: none;
     border: none;
