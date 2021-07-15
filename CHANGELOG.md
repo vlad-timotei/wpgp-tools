@@ -29,18 +29,20 @@
 
 # v.1.4 - 20.07.2021
 * Adds: History Count
+* Adds: Consistency count
 * Adds: Check Results Labels
 * Adds: Count and Match option
 * Adds: String History with Diff
-* Adds: check for missing end `!`
-* Adds: highlights for some warnings
+* Adds: Check for missing end `!`
+* Adds: Highlights for some warnings
 * Change: GT button in the suggestions area
-* Fixes: enables Quick Links on result pages
-* Fixes: show warning for an empty translation
-* Fixes: enables warnings list to non PTE/GTE users
-* Fixes: reloads the checks after Save/Aprove/Reject
+* Fixes: Enables Quick Links on result pages
+* Fixes: Shows warning for an empty translation
+* Fixes: Enables warnings list to non PTE/GTE users
+* Fixes: Reloads the checks after Save/Aprove/Reject
 * Obsoletes: Additional or missing end space (merged)
 * Obsoletes: Notify about these words user option from UI
-* Improves: some regex replaced with a more performant function
-* Improves: features implement more design accesibility standards
-* Performance: similar loading time with considerably increased features
+* Improves: Some regex replaced with a more performant function
+* Improves: Features implement more design accesibility standards
+* Performance: Removes duplicate jQuery library from content_scripts
+* Performance: Similar loading time with considerably increased features
