@@ -32,7 +32,7 @@ Adjust the **Settings** for this extension in the top blue navigation menu *Tool
  - Keyboard shortcut works for suggestion 1, 2 and 3
 
 **GoogleTranslate** button 
-- Button or Alt + G opens new tab with current translated string in current locale, if locale exists on GT. ([List of missing locales in GT](https://gist.github.com/vlad-timotei/3f558547ac2bc0f3120f869fba7d8bec)
+- Button or Alt + G opens new tab with current translated string in current locale, if locale exists on GT. ([missing locales in GT](https://gist.github.com/vlad-timotei/3f558547ac2bc0f3120f869fba7d8bec))
 
 ## #2 General Checks - [view Demo](https://youtu.be/pG92jygfWpY) 
 These checks run for all translated strings when page loads and when a translation is submitted. <br> Checks can be set as: Warning & prevent save, Just notification or Don't check.
