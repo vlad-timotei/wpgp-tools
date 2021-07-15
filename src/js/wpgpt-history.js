@@ -57,7 +57,7 @@ function wpgpt_load_history_status( row_id, is_history ){
 		return;
 	}
 	
-	var translation_status = jQuery( wpgpt_page_rows[ row_id ] ).find('.panel-header__bubble').text();
+	var translation_status = jQuery( wpgpt_page_rows[ row_id ] ).find('.panel-header__bubble').eq(0).text();
 
 	if( ( translation_status !== 'current' && translation_status !== 'untranslated' ) || wpgpt_settings['history_count']['state'] == 'enabled' ){
 
