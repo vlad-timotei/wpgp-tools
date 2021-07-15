@@ -22,8 +22,7 @@ Adjust the **Settings** for this extension in the top blue navigation menu *Tool
 - consistency tool, current locale
 - a plugin of your choice
 
-<img align="right" src="https://user-images.githubusercontent.com/65488419/124778407-a3e17300-df49-11eb-9028-a090f2b669e8.png">
-
+<img align="right" src="https://user-images.githubusercontent.com/65488419/125750657-bf694aa2-f816-41ef-bebe-a8fd78715b74.png">
 
 **Suggestions** directly from Consistency
  - Button or Alt + C
