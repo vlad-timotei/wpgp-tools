@@ -161,7 +161,7 @@ function consistency_tools(){
 				for ( var j = 0; j < menu_el.length; j++ ){
 					menu_links[ j ] = menu_el[ j ].href;
 				}
-				menu_el[1].href = 'https://translate.wordpress.org' + menu_links[1] + historypage;
+				menu_el[1].href = menu_links[1] + historypage;
 				editor_el[ i ].querySelector( '.wpgpt-actions_permalink' ).dataset.quicklink = menu_links[0];
 				editor_el[ i ].querySelector( '.wpgpt-actions_history' ).dataset.quicklink =  menu_links[1] + historypage;
 				editor_el[ i ].querySelector( '.wpgpt-actions_consistency' ).dataset.quicklink = menu_links[2] + resultpage;
