@@ -481,6 +481,10 @@ ins {
     color:#000;
 }
 
+.preview.untranslated .wpgpt-h-label {
+    background-color: #dddddd;
+}
+
 .wpgpt-h-label.editor {
 	display:inline-block;
     background-color:#808286;
