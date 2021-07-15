@@ -197,11 +197,17 @@ function consistency_tools(){
 			.then( data => {
 				var consistency_page = document.implementation.createHTMLDocument();
 	            consistency_page.body.innerHTML = data;
-				var translations = consistency_page.querySelectorAll('.consistency-table tbody th strong');
+				var translations_count = consistency_page.querySelectorAll( '.translations-unique small' ), unique_translation_count;
+				if( ! translations_count.length ){
+					unique_translation_count = consistency_page.querySelectorAll( 'tr' ).length - 2;
+					unique_translation_count = '('+ unique_translation_count + ' time' + ( ( unique_translation_count > 1 ) ? 's' : '' ) + ')';
+				}
+				var translations = consistency_page.querySelectorAll( '.consistency-table tbody th strong' );
 				if ( translations.length ){
 					for( var i = 0; i < translations.length; i++ ){
 						list_of_suggestions += '<li><div class="translation-suggestion with-tooltip" tabindex="0" role="button" aria-pressed="false" aria-label="Copy translation">' +
-						'<span class="translation-suggestion__translation"><span class="index">' + ( i + 1 ) + ':</span> ' + translations[ i ].innerHTML + '</span>' +
+						'<span class="translation-suggestion__translation"><span class="index">' + ( i + 1 ) + ':</span> ' + translations[ i ].innerHTML +
+						' <small>' + ( ( translations_count.length ) ? translations_count[i].innerHTML : unique_translation_count ) + '</small></span>' +
 						'<span aria-hidden="true" class="translation-suggestion__translation-raw">' + translations[ i ].innerHTML + '</span>' +
 						'<button type="button" class="copy-suggestion">Copy</button></div></li>';
 					}
