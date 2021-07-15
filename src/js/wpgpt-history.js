@@ -58,11 +58,9 @@ function wpgpt_load_history_status( row_id, is_history ){
 	}
 	
 	var translation_status = jQuery( wpgpt_page_rows[ row_id ] ).find('.panel-header__bubble').text();
-	if ( translation_status == 'untranslated' ){
-		return;
-	}
 
-	if( translation_status !== 'current' || wpgpt_settings['history_count']['state'] == 'enabled' ){
+	if( ( translation_status !== 'current' && translation_status !== 'untranslated' ) || wpgpt_settings['history_count']['state'] == 'enabled' ){
+
 		var translation_id = jQuery( wpgpt_page_rows[ row_id ] ).attr('id');
 		var string_id = translation_id.split( '-', 3 )[1];
 		var url = 'https://translate.wordpress.org' + window.location.pathname + '?filters%5Bstatus%5D=either&filters%5Boriginal_id%5D=' + string_id + '&sort%5Bby%5D=translation_date_added&sort%5Bhow%5D=desc';
@@ -121,7 +119,7 @@ function wpgpt_analyse_history_status( data, translation_id, translation_status,
 		compare_to = 'waiting';	
 	}
 	
-	if ( translation_status != 'current' ){
+	if ( translation_status != 'current' && translation_status != 'untranslated' ){
 		compare_to_row = jQuery( history_page ).find('#translations tbody tr.preview.status-' + compare_to );
 		if( compare_to_row.length  ){
 			jQuery( '#' + translation_id.replace('editor', 'preview') ).find( ".translation-text" ).each( function(){ this_translation.push( jQuery( this ).text() ); } );
