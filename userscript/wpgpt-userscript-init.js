@@ -1,5 +1,5 @@
 /* UserScript Initialization */
-const WPGPT_VERSION = '1.3'; 
+const WPGPT_VERSION = '1.4'; 
 
 var warning_icon = 'https://github.com/vlad-timotei/wpgp-tools/raw/main/src/img/warning.png';
 var notice_icon = 'https://github.com/vlad-timotei/wpgp-tools/raw/main/src/img/notice.png';
@@ -12,6 +12,6 @@ var wpgpt_update_template = '<div class="wpgpt-update-notice"><strong>WPGPTools 
 							' and Tampermonkey will prompt to reinstall the userscript. If that somehow fails, please manually copy the url and install it.';
 
 /*
-** Other scripts loaded from the trunk: Settings, Checks, Consistency & Shortcuts
+** Other scripts loaded from the trunk: Settings, Checks, Consistency, History & Shortcuts
 ** No need for LS functions, as they are included in wp-gp-tools-consistency.js
 */
