@@ -71,7 +71,7 @@ function wpgpt_check_all_translations() {
 			}
 
 			if ( wpgpt_settings.checks_labels.state == 'enabled' && check_results.highlight_me.length ) {
-				translated[ translated_i ] = wpgpt_highlight( translated[translated_i] , check_results.highlight_me );
+				translated[ translated_i ] = wpgpt_highlight( translated[ translated_i ] , check_results.highlight_me );
 				$translation.find( '.translation-text' ).eq( translated_i ).html( translated[ translated_i ] );
 			}
 
@@ -213,7 +213,7 @@ function wpgpt_check_this_translation( translation_id_e ) {
 	if ( ! ( has_warning && wpgpt_next_is_strict ) ) {
 		when_to_do = 1000;
 		saved = true;
-		translation_id_e = 'tr[id^="' + translation_id_e.replace(/(?:(editor-[^- ]*)(?:-[^' ]*))/g,'$1' ).replace( '#','' ) +'"]';
+		translation_id_e = 'tr[id^="' + translation_id_e.replace( /(?:(editor-[^- ]*)(?:-[^' ]*))/g, '$1' ).replace( '#','' ) +'"]';
 		translation_id_p = translation_id_e.replace( 'editor', 'preview' );
 	}
 
@@ -711,7 +711,7 @@ function wpgpt_highlight( string, lookfor ) {
 	var search_pattern;
 	string = string.replaceAll( '<', '&lt;' ).replaceAll( '>', '&gt;' );
 	for ( var i = 0; i < lookfor.length; i++ ) {
-		search_pattern = new RegExp( '( ' + lookfor[ i ] + ' )', 'ig' );
+		search_pattern = new RegExp( '(' + lookfor[ i ] + ')', 'ig' );
 		string = string.replaceAll( search_pattern, '<span class="wpgpt-highlight">$1</span>' );
 	}
 	return string;
