@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         WPGPTools
 // @namespace    https://vladtimotei.ro
-// @description  Tools for a faster translation flow
-// @version      1.3
+// @description  Enhanced Translation Tools for translate.w.org
+// @version      1.4
 // @author       Vlad T
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
@@ -12,6 +12,7 @@
 // @require      https://raw.githubusercontent.com/vlad-timotei/wpgp-tools/main/src/js/wpgpt-settings.js?v=1.3
 // @require      https://raw.githubusercontent.com/vlad-timotei/wpgp-tools/main/src/js/wpgpt-checks.js?v=1.3
 // @require      https://raw.githubusercontent.com/vlad-timotei/wpgp-tools/main/src/js/wpgpt-consistency.js?v=1.3
+// @require      https://raw.githubusercontent.com/vlad-timotei/wpgp-tools/main/src/js/wpgpt-history.js?v=1.3
 // @require      https://raw.githubusercontent.com/vlad-timotei/wpgp-tools/main/src/js/wpgpt-shortcuts.js?v=1.3
 // ==/UserScript==
 
