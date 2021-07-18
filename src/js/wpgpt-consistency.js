@@ -152,23 +152,25 @@ function consistency_tools(){
 		}
 			
 			/*Quick Links */
-			add_el( 'multiple', '.editor-panel__right .panel-header', 'beforeend', 'span', '', actions_html_output );
-			var menu_links, menu_el;
-			editor_el = document.querySelectorAll( '.editor' );
-			for( var i = 0; i < editor_el.length; i++ ){
-				menu_links = [];
-				menu_el = editor_el[ i ].querySelectorAll('.button-menu__dropdown li a');
-				for ( var j = 0; j < menu_el.length; j++ ){
-					menu_links[ j ] = menu_el[ j ].href;
+			if ( document.querySelector('.gd_quicklink') == null ) { // GlotDict will add QuickLinks feature in a future version.
+				add_el( 'multiple', '.editor-panel__right .panel-header', 'beforeend', 'span', '', actions_html_output );
+				var menu_links, menu_el;
+				editor_el = document.querySelectorAll( '.editor' );
+				for( var i = 0; i < editor_el.length; i++ ){
+					menu_links = [];
+					menu_el = editor_el[ i ].querySelectorAll('.button-menu__dropdown li a');
+					for ( var j = 0; j < menu_el.length; j++ ){
+						menu_links[ j ] = menu_el[ j ].href;
+					}
+					menu_el[1].href = menu_links[1] + historypage;
+					editor_el[ i ].querySelector( '.wpgpt-actions_permalink' ).dataset.quicklink = menu_links[0];
+					editor_el[ i ].querySelector( '.wpgpt-actions_history' ).dataset.quicklink =  menu_links[1] + historypage;
+					editor_el[ i ].querySelector( '.wpgpt-actions_consistency' ).dataset.quicklink = menu_links[2] + resultpage;
 				}
-				menu_el[1].href = menu_links[1] + historypage;
-				editor_el[ i ].querySelector( '.wpgpt-actions_permalink' ).dataset.quicklink = menu_links[0];
-				editor_el[ i ].querySelector( '.wpgpt-actions_history' ).dataset.quicklink =  menu_links[1] + historypage;
-				editor_el[ i ].querySelector( '.wpgpt-actions_consistency' ).dataset.quicklink = menu_links[2] + resultpage;
-			}
 
-			add_click_evt( '.wpgpt-actions_copy, .wpgpt-actions_plus', toggle_copy );
-			add_evt_listener( 'click', '.wpgpt-actions', do_quick_links );	
+				add_click_evt( '.wpgpt-actions_copy, .wpgpt-actions_plus', toggle_copy );
+				add_evt_listener( 'click', '.wpgpt-actions', do_quick_links );
+			}
 				
 			/*Google Translate */
 			display_google_translate();
@@ -181,8 +183,10 @@ function consistency_tools(){
 			window.onbeforeunload = function() { close_tabs('all'); }
 			
 			/* Consistency*/
-			add_el( 'multiple', '.editor-panel__left .suggestions-wrapper', 'beforeend', 'span', '', consistency_suggestions_output );
-			add_evt_listener( 'click', '.wpgpt-get-consistency', get_consistency_suggestions );			
+			if ( document.querySelector('.gd-get-consistency') == null ) { // GlotDict will add Get Consistency feature in a future version.
+				add_el( 'multiple', '.editor-panel__left .suggestions-wrapper', 'beforeend', 'span', '', consistency_suggestions_output );
+				add_evt_listener( 'click', '.wpgpt-get-consistency', get_consistency_suggestions );
+			}
 	}
 	
 	function get_consistency_suggestions( event ){
