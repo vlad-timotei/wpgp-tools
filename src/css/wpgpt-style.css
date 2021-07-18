@@ -15,8 +15,15 @@
 /* Settings */
 .wpgpt-settings-window {
    min-height: 100vh;
-   margin:50px 0 100px 0;
+   margin:10px 0 50px 0;
 }
+
+.wpgpt-info {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+}
+
 
 @media ( max-width:500px ) {
     .wpgpt-settings-window {

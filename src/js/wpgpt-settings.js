@@ -170,7 +170,7 @@ if ( typeof wpgpt_update_template == 'undefined' ) {
 }
 jQuery( '#menu-headline-nav' ).append( '<li class="menu-item wpgpt_settings" style="cursor:pointer;"><a>Tools Settings</a></li>' );
 jQuery( '.wpgpt_settings' ).click( function() { wpgpt_settings_page(); } );
-
+var wpgpt_info = '<div class="wpgpt-info"><strong>WPGPT version ' + WPGPT_VERSION + '</strong> | <a href="https://github.com/vlad-timotei/wpgp-tools/blob/main/README.md">Documentation</a> | <a href="https://github.com/vlad-timotei/wpgp-tools/issues/new?assignees=&labels=&template=bug_report.md&title=">Report a bug</a> | <a href="https://github.com/vlad-timotei/wpgp-tools/issues/new?assignees=&labels=&template=feature_request.md&title=">Request a feature</a> | Happy translating!</div>';
 var wpgpt_user_settings = {};
 if ( getLS( 'wpgpt-user-settings' ) !== null ) {
 	wpgpt_user_settings = JSON.parse( getLS( 'wpgpt-user-settings' ) );
@@ -201,7 +201,7 @@ function wpgpt_settings_page() {
 		return;
 	}
 
-	var container = '<div class="wpgpt-settings-window"></div>';
+	var container = '<div class="wpgpt-settings-window">' +  wpgpt_info + '</div>';
 	jQuery( '.gp-content' ).html( container );
 
 	var wpgpt_settings_count = Object.keys( wpgpt_settings ).length;
@@ -283,9 +283,9 @@ function wpgpt_settings_page() {
 						'<div class="gp-row"><div class="gp-shortcut">Copy consistency* <span class="c">#2</span></div><div class="gp-shortcut">Alt + <span class="c">2</span></div><div class="gp-shortcut"><span class="small note">works with #1, #2 and #3</span></div></div>' +
 						'<div class="gp-row"><div class="gp-shortcut">Focus on <span class="a">S</span>earch in <span class="a">P</span>rojects* </div><div class="gp-shortcut">Alt + <span class="a">S</span></div><div class="gp-shortcut">Alt + <span class="a">P</span></div></div>' +
 						'<span class="right-note">*if setting is enabled<span>' +
-						'</div>';
+						'</div><br><br>';
 
-	jQuery( '.wpgpt-settings-window' ).append( shortcuts_html );
+	jQuery( '.wpgpt-settings-window' ).append( shortcuts_html + wpgpt_info );
 	jQuery( '.wpgpt-update' ).click( function() {
 
 		var option_name = jQuery( this ).attr( 'name' );
