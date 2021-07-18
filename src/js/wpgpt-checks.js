@@ -731,8 +731,8 @@ function wpgpt_filters() {
 	var warnings_count = jQuery( '.wpgpt-has-warning' ).length;
 	var filters = '';
 	filters +='<div class="wpgpt-filters">';
-    filters += '<a href="#" title="Click to view strings with notice only - ' + notices_count + ' strings" class="wpgpt-filter-notices count-' + notices_count + '"><img src="' + notice_icon + '"> Notices ( ' + notices_count + ' )</a><span class="separator">•</span>';
-    filters += '<a href="#" title="Click to view strings with warning only - ' + warnings_count + ' strings" class="wpgpt-filter-warnings count-' + warnings_count + '"><img src="' + warning_icon + '"> Warnings ( ' + warnings_count + ' )</a><span class="separator">•</span>';
+    filters += '<a href="#" title="Click to view strings with notice only - ' + notices_count + ' strings" class="wpgpt-filter-notices count-' + notices_count + '"><img src="' + notice_icon + '"> Notices (' + notices_count + ')</a><span class="separator">•</span>';
+    filters += '<a href="#" title="Click to view strings with warning only - ' + warnings_count + ' strings" class="wpgpt-filter-warnings count-' + warnings_count + '"><img src="' + warning_icon + '"> Warnings (' + warnings_count + ')</a><span class="separator">•</span>';
 	filters += '<a href="#" title="Click to view all strings" class="wpgpt-filter-all">All</a>';
 	filters += '</div>';
 	jQuery( '.paging' ).first().before( filters );
