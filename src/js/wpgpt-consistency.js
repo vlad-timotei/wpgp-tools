@@ -152,7 +152,7 @@ function consistency_tools() {
 		}
 		// QuickLinks
 		if ( document.querySelector( '.gd_quicklink' ) == null ) { // GlotDict will add QuickLinks feature in a future version.
-			add_el( 'multiple', '.editor-panel__right .panel-header', 'beforeend', 'span', '', actions_html_output );
+			add_el( 'multiple', '.editor-panel__right .panel-header', 'beforeend', 'span', 'wpgpt-quicklinks', actions_html_output );
 			var menu_links, editor_el, menu_el;
 			editor_el = document.querySelectorAll( '.editor' );
 			for ( var i = 0; i < editor_el.length; i++ ) {
@@ -183,7 +183,7 @@ function consistency_tools() {
 
 		// Consistency.
 		if ( document.querySelector( '.gd-get-consistency' ) == null ) { // GlotDict will add Get Consistency feature in a future version.
-			add_el( 'multiple', '.editor-panel__left .suggestions-wrapper', 'beforeend', 'span', '', consistency_suggestions_html_output );
+			add_el( 'multiple', '.editor-panel__left .suggestions-wrapper', 'beforeend', 'span', 'wpgpt-consistency', consistency_suggestions_html_output );
 			add_evt_listener( 'click', '.wpgpt-get-consistency', get_consistency_suggestions );
 		}
 	}

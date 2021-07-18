@@ -408,6 +408,7 @@ table.translations a.action {
 	font-size:12px;
 }
 
+/*QuickLinks*/
 .editor-panel__right .panel-header button {
     background: none;
     border: none;
@@ -513,4 +514,9 @@ ins {
 
 span.context + span.priority {
     margin-left: 0.5em !important;
+}
+/* GD fall-back compatibility*/
+span.wpgpt-consistency + span.gd-consistency,
+span.wpgpt-quicklinks + span.gd-quicklinks {
+	display:none;
 }
