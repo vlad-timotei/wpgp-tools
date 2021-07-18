@@ -4,7 +4,7 @@ user_env_settings = ( getLS('wpgpt-user-settings' ) !== null ) ? JSON.parse( get
 consistency_tools();
 
 function consistency_tools() {
-	if ( user_env_settings.search != 'enabled' ) {
+	if ( document.querySelector( '#translations' ) == null || user_env_settings.search != 'enabled' ) {
 		return;
 	}
 
@@ -151,7 +151,7 @@ function consistency_tools() {
 			add_evt_listener( 'click', '.wpgpt-search-option', change_search_options );
 		}
 		// QuickLinks
-		if ( document.querySelector('.gd_quicklink') == null ) { // GlotDict will add QuickLinks feature in a future version.
+		if ( document.querySelector( '.gd_quicklink' ) == null ) { // GlotDict will add QuickLinks feature in a future version.
 			add_el( 'multiple', '.editor-panel__right .panel-header', 'beforeend', 'span', '', actions_html_output );
 			var menu_links, editor_el, menu_el;
 			editor_el = document.querySelectorAll( '.editor' );
@@ -182,7 +182,7 @@ function consistency_tools() {
 		window.onbeforeunload = function() { close_tabs('all'); };
 
 		// Consistency.
-		if ( document.querySelector('.gd-get-consistency') == null ) { // GlotDict will add Get Consistency feature in a future version.
+		if ( document.querySelector( '.gd-get-consistency' ) == null ) { // GlotDict will add Get Consistency feature in a future version.
 			add_el( 'multiple', '.editor-panel__left .suggestions-wrapper', 'beforeend', 'span', '', consistency_suggestions_html_output );
 			add_evt_listener( 'click', '.wpgpt-get-consistency', get_consistency_suggestions );
 		}
