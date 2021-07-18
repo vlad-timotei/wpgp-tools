@@ -4,7 +4,7 @@ user_env_settings = ( getLS('wpgpt-user-settings' ) !== null ) ? JSON.parse( get
 consistency_tools();
 
 function consistency_tools() {
-	if ( document.querySelector( '#translations' ) == null || user_env_settings.search != 'enabled' ) {
+	if ( user_env_settings.search != 'enabled' ) {
 		return;
 	}
 
@@ -132,7 +132,9 @@ function consistency_tools() {
 			toggle_el( '.translations-unique', 'hidden' );
 		}
 		else {
-			// Search does not show on result pages to prevent too many nested pages.
+			if ( document.querySelector( '#translations' ) == null )
+				return;
+
 			add_el( 'multiple', '.editor-panel .editor-panel__right .panel-content', 'beforeend', 'div', '', search_html_output );
 
 			var search_option_el = document.querySelectorAll( '.wpgpt-search-option' );
