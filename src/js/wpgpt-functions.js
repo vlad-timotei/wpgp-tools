@@ -1,4 +1,4 @@
-const WPGPT_VERSION = '1.3.1'; 
+const WPGPT_VERSION = '1.4';
 
 function setLS( name, value ){
   localStorage.setItem( name, value );
