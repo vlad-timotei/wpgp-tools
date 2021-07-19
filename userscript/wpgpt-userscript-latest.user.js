@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         WPGPTools
+// @name         WPGP Tools
 // @namespace    https://vladtimotei.ro
 // @description  Enhanced Translation Tools for translate.w.org
 // @version      1.4
