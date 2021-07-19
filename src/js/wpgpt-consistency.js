@@ -275,6 +275,8 @@ function consistency_tools() {
 	}
 
 	function fill_plugin_slug() {
+		if ( user_search_settings.plugin_slug == undefined )
+			return;
 		var el = document.querySelectorAll( '.wpgpt-search-plugin-slug' );
 		for ( var i = 0; i < el.length; i++ ) {
 			el[ i ].value = user_search_settings.plugin_slug;
