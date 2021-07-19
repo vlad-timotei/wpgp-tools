@@ -115,12 +115,7 @@ function consistency_tools() {
 
     const result_page_html_output = '<p class="wpgpt-results-notice">When you\'re done on these result pages click <span>Close all</span> in the main tab to close them all.';
 
-	let consistency_suggestions_html_output = '' +
-	'<details open="open" class="suggestions__translation-consistency">' +
-	'<summary>Suggestions from Consistency</summary>' +
-	'<span class="suggestions-list">' +
-	'<button type="button" class="wpgpt-get-consistency">View Consistency suggestions</button>' +
-	'</span></details>';
+	let consistency_suggestions_html_output = '<summary>Suggestions from Consistency</summary><span class="suggestions-list"><button type="button" class="wpgpt-get-consistency">View Consistency suggestions</button></span>';
 
 	elements_init();
 
@@ -172,6 +167,19 @@ function consistency_tools() {
 			add_click_evt( '.wpgpt_quicklink_copy, .wpgpt_quicklink_plus', toggle_copy );
 			add_evt_listener( 'click', '.wpgpt_quicklink', do_quick_links );
 		}
+		
+		// Consistency.
+		if ( document.querySelector( '.gd-get-consistency' ) == null ) { // GlotDict will add Get Consistency feature in a future version.
+			var wrapper_el = document.querySelectorAll( '.editor-panel__left .suggestions-wrapper' ), consist_element;
+			for ( var i = 0; i < wrapper_el.length; i++ ) {
+				consist_element = document.createElement( 'details' );
+				consist_element.setAttribute( 'open', 'open' );
+				consist_element.className = 'wpgpt-consistency suggestions__translation-consistency';
+				consist_element.innerHTML = consistency_suggestions_html_output;
+				wrapper_el[ i ].insertAdjacentElement( 'beforeend' , consist_element );
+			}
+			add_evt_listener( 'click', '.wpgpt-get-consistency', get_consistency_suggestions );
+		}
 
 		// Google Translate.
 		display_gt();
@@ -182,12 +190,6 @@ function consistency_tools() {
 
 		// Close tabs.
 		window.onbeforeunload = function() { close_tabs( 'all' ); };
-
-		// Consistency.
-		if ( document.querySelector( '.gd-get-consistency' ) == null ) { // GlotDict will add Get Consistency feature in a future version.
-			add_el( 'multiple', '.editor-panel__left .suggestions-wrapper', 'beforeend', 'span', 'wpgpt-consistency', consistency_suggestions_html_output );
-			add_evt_listener( 'click', '.wpgpt-get-consistency', get_consistency_suggestions );
-		}
 	}
 
 	function get_consistency_suggestions( event ) {
@@ -373,14 +375,11 @@ function consistency_tools() {
 			orig_txt = encodeURIComponent( orig_txt );
 			gt_url = protocol + 'translate.google.com/?sl=en&tl=' + short_locale + '&text=' + orig_txt + '&op=translate';
 			gt_url = gt_url.replaceAll( '"','&#34;' );
-			gt_html = '<details open="open" class="suggestions__translation-gt">' +
-			'<summary>Suggestion from Google Translate</summary>' +
-			'<ul class="suggestions-list">' +
-			'<button type="button" class="wpgpt-gt" data-gtstring="' +
-			gt_url +
-			'">View Google Translate suggestion</button>' +
-			'</li></ul></details>';
-			new_element = document.createElement( 'span' );
+			gt_html = 	'<summary>Suggestion from Google Translate</summary><span class="suggestions-list"><button type="button" class="wpgpt-gt" data-gtstring="' +
+						gt_url + '">View Google Translate suggestion</button></span>';
+			new_element = document.createElement( 'details' );
+			new_element.className = 'suggestions__translation-gt';
+			new_element.setAttribute( 'open', 'open' );
 			new_element.innerHTML = gt_html;
 			suggestion_wrapper.insertAdjacentElement( 'beforeend' , new_element );
 		}
@@ -460,7 +459,7 @@ function add_el( times, target_selector, el_position, el_type, el_class, el_html
 			if ( el_class !== '' ) {
 				new_element.className = el_class;
 			}
-			el[i].insertAdjacentElement( el_position , new_element );
+			el[ i ].insertAdjacentElement( el_position , new_element );
 		}
 	}
 	else {
