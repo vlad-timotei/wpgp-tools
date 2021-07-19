@@ -428,6 +428,10 @@ table.translations a.action {
     border-radius: 0;
 }
 
+.editor-panel__right .panel-header button:hover {
+    background: #fafafa;
+}
+
 .wpgpt_quicklink_plus {
 	 margin: 0 10px;
 	 color:#0073aa;
