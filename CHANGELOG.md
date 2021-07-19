@@ -28,21 +28,21 @@
 * Obsoletes fallback different ending result (now redundant)
 
 # v.1.4 - 20.07.2021
-* Adds: History Count
-* Adds: Consistency count
-* Adds: Check Results Labels
-* Adds: Count and Match option
-* Adds: String History with Diff
-* Adds: Check for missing end `!`
-* Adds: Highlights for some warnings
-* Change: GT button in the suggestions area
-* Fixes: Enables Quick Links on result pages
-* Fixes: Shows warning for an empty translation
-* Fixes: Enables warnings list to non PTE/GTE users
-* Fixes: Reloads the checks after Save/Aprove/Reject
-* Obsoletes: Additional or missing end space (merged)
-* Obsoletes: Notify about these words user option from UI
-* Improves: Some regex replaced with a more performant function
-* Improves: Features implement more design accesibility standards
-* Performance: Removes duplicate jQuery library from content_scripts
-* Performance: Similar loading time with considerably increased features
+- Adds: History Count
+- Adds: Consistency count
+- Adds: Check Results Labels
+- Adds: Count and Match option
+- Adds: String History with Diff
+- Adds: Check for missing end !
+- Adds: Highlights for some warnings
+- Change: GT button in suggestions area
+- Fixes: Enables Quick Links on result pages
+- Fixes: Shows warning for an empty translation
+- Fixes: Enables warnings list to non PTE/GTE users
+- Fixes: Reloads the checks after Save/Approve/Reject
+- Obsoletes: Additional or missing end space (merged)
+- Obsoletes: Notify about these words user option from UI
+- Improves: Some regex replaced with a more performant function
+- Improves: Features implement more design accessibility standards
+- Performance: Removes duplicate jQuery library from content_scripts
+- Performance: Similar loading time with considerably increased features
