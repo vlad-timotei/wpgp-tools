@@ -4,7 +4,7 @@ const WPGPT_VERSION = '1.4';
 var warning_icon = 'https://github.com/vlad-timotei/wpgp-tools/raw/main/src/img/warning.png';
 var notice_icon = 'https://github.com/vlad-timotei/wpgp-tools/raw/main/src/img/notice.png';
 
-var cssTxt = GM_getResourceText('wpgpt-style');
+var cssTxt = GM_getResourceText( 'wpgpt-style' );
 GM_addStyle( cssTxt );
 
 var wpgpt_update_template = '<div class="wpgpt-update-notice"><strong>WPGPTools v.%s has new features!</strong> You\'re using v.' + WPGPT_VERSION + '. Update now! ' +
