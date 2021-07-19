@@ -113,6 +113,8 @@ function wpgpt_analyse_history_status( data, translation_id, translation_status,
 				count_label+= ( shistory[ state ] ) ? ( ( ( count_label !== '' ) ? ', ' : '' ) + shistory[ state ] + ' ' + state ) : '';
 			}
 		);
+		if ( ! jQuery( history_page ).find( '.next.disabled' ).length )
+			count_label = 'More than ' + count_label + ' | Click to view';
 	}
 
 	if ( translation_status == 'fuzzy' ) {
