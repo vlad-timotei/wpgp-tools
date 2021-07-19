@@ -6,7 +6,7 @@
 Adjust the **Settings** for this extension in the top blue navigation menu *Tools Settings*
 
 ## #1 Consistency Tools 
-<!--- [view Demo](https://youtu.be/Ve9DSOfFBeA) --->
+[See here a video demo for Consistency Tool features.](https://youtu.be/k686EedCSSs)
 
 <img align="right" src="https://user-images.githubusercontent.com/65488419/117620318-11a33580-b179-11eb-9968-f1148d58686c.png">
 
@@ -36,7 +36,8 @@ Adjust the **Settings** for this extension in the top blue navigation menu *Tool
 - Button or Alt + G opens new tab with current translated string in current locale, if locale exists on GT. ([missing locales in GT](https://gist.github.com/vlad-timotei/3f558547ac2bc0f3120f869fba7d8bec))
 
 ## #2 General Checks 
- <!---  [view Demo](https://youtu.be/pG92jygfWpY) --->
+[See here a video demo for Checks feature.](https://youtu.be/R4M_TBSRWSE)
+
 These checks run for all translated strings when page loads and when a translation is submitted. <br> Checks can be set as: Warning & prevent save, Just notification or Don't check.
 
 
@@ -85,6 +86,8 @@ If your locale uses a different symbol other than `.` for period, you can set it
 ![image](https://user-images.githubusercontent.com/65488419/119268770-1a761b80-bbfd-11eb-96ed-037e1c54ba1d.png)
 
 ## #4 History Tools
+[See here a video demo for Checks feature.](https://youtu.be/ZKfqKD-ZIYE)
+
 These are **opt-in** tools, so go to Settings > History Tools and enable them if you want to use them. 
 
 <image align="right" src="https://user-images.githubusercontent.com/65488419/124787689-5c5ee500-df51-11eb-97d6-8f89b5fca581.png">
