@@ -1,5 +1,5 @@
 
-# WPGPTools - translate faster and better
+# WPGPTools - Translate faster and better
 
 <img align="right" src="https://user-images.githubusercontent.com/65488419/124776835-6defbf00-df48-11eb-9594-c538fe220dbd.png">
 
