@@ -1,5 +1,5 @@
 /* UserScript Initialization */
-const WPGPT_VERSION = '1.4'; 
+const WPGPT_VERSION = '1.4';
 
 var warning_icon = 'https://github.com/vlad-timotei/wpgp-tools/raw/main/src/img/warning.png';
 var notice_icon = 'https://github.com/vlad-timotei/wpgp-tools/raw/main/src/img/notice.png';

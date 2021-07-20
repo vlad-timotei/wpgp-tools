@@ -333,7 +333,7 @@ function wpgpt_run_checks( original, translated ) {
 		if (
 			first_translated_char == ' ' &&
 			first_original_char  != ' '
-		) { 
+		) {
 			error_message = '<li>Additional start space</li>';
 			switch ( wpgpt_settings.start_end_space.state ) {
 				case 'warning': warnings.start_end_space = error_message; break;
@@ -691,7 +691,7 @@ function wpgpt_run_checks( original, translated ) {
 /*
 *	Fix for ro_RO case where original ends with << "WordPress." >> and translation ends with << „WordPress”. >>
 *	Others alternatives can be added for other locales.
-*/ 
+*/
 function is_locale_alternative( original, translated ) {
 	if ( wpgpt_settings.ro_checks.state == 'enabled' ) {
 		var en_end_characters = [ '"' ];
