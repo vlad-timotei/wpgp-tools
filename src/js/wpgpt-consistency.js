@@ -167,7 +167,7 @@ function consistency_tools() {
 			add_click_evt( '.wpgpt_quicklink_copy, .wpgpt_quicklink_plus', toggle_copy );
 			add_evt_listener( 'click', '.wpgpt_quicklink', do_quick_links );
 		}
-		
+
 		// Consistency.
 		if ( document.querySelector( '.gd-get-consistency' ) == null ) { // GlotDict will add Get Consistency feature in a future version.
 			var wrapper_el = document.querySelectorAll( '.editor-panel__left .suggestions-wrapper' ), consist_element;
@@ -302,10 +302,10 @@ function consistency_tools() {
 		var quicklink = event.currentTarget.dataset.quicklink;
 		if ( user_search_settings.copy_me ) {
 			const btn_target = event.currentTarget;
-			const current_aria_label = btn_target.ariaLabel;
+			const current_aria_label = btn_target.getAttribute( 'aria-label' );
 			copyToClipboard( quicklink );
-			btn_target.ariaLabel = 'Copied!';
-			setTimeout( function() { btn_target.ariaLabel = current_aria_label; }, 2000 );
+			btn_target.setAttribute( 'aria-label', 'Copied!' );
+			setTimeout( function() { btn_target.setAttribute( 'aria-label', current_aria_label ); }, 2000 );
 		}
 		else {
 			open_tab( 'panel_links', quicklink );
