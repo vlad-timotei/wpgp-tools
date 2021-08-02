@@ -162,14 +162,14 @@ var wpgpt_settings = {
 		'parent_setting' : 'none',
 		'setting_type' : -1
 	},
+	'current_version' :{
+		'state' : WPGPT_VERSION,
+		'parent_setting' : 'none',
+		'setting_type' : -1
+	},
 };
-if ( typeof wpgpt_update_template == 'undefined' ) {
-	var wpgpt_update_template = '<div class="wpgpt-update-notice"><strong>WPGPTools v.%s has new features!</strong> You\'re using v.' + WPGPT_VERSION + '. Update now! ' +
-								'<br><a href="https://github.com/vlad-timotei/wpgp-tools/releases/tag/%s">Click here to download the latest release</a>' +
-								', unzip the files and replace them. <br> Don\'t forget to click <i>Reload</i> in <code>chrome://extensions/</code></div>';
-}
-jQuery( '#menu-headline-nav' ).append( '<li class="menu-item wpgpt_settings" style="cursor:pointer;"><a>Tools Settings</a></li>' );
-jQuery( '.wpgpt_settings' ).click( function() { wpgpt_settings_page(); } );
+jQuery( '#menu-headline-nav' ).append( '<li class="menu-item wpgpt_settings_menu" style="cursor:pointer;"><a>Tools Settings</a></li>' );
+jQuery( '.wpgpt_settings_menu' ).click( function() { wpgpt_settings_page(); } );
 var wpgpt_info = '<div class="wpgpt-info"><strong>WPGPT version ' + WPGPT_VERSION + '</strong> | <a href="https://github.com/vlad-timotei/wpgp-tools/blob/main/README.md">Documentation</a> | <a href="https://github.com/vlad-timotei/wpgp-tools/issues/new?assignees=&amp;labels=&amp;template=bug_report.md">Report a bug</a> or <a href="https://github.com/vlad-timotei/wpgp-tools/issues/new?assignees=&amp;labels=&amp;template=feature_request.md">request a feature</a> | <a href="#" class="wpgpt-backup" title="Drag and drop to Bookmarks bar to backup your settings.">Backup WPGPT settings</a> | Happy translating!</div>';
 var wpgpt_user_settings = {};
 if ( getLS( 'wpgpt-user-settings' ) !== null ) {
@@ -201,7 +201,7 @@ function wpgpt_settings_page() {
 		return;
 	}
 
-	var container = '<div class="wpgpt-settings-window">' +  wpgpt_info + '</div>';
+	var container = '<div class="wpgpt-settings-window"></div>';
 	jQuery( '.gp-content' ).html( container );
 
 	var wpgpt_settings_count = Object.keys( wpgpt_settings ).length;
@@ -285,7 +285,11 @@ function wpgpt_settings_page() {
 						'<span class="small note">*if setting is enabled<span>' +
 						'</div><br><br>';
 
-	jQuery( '.wpgpt-settings-window' ).append( shortcuts_html + wpgpt_info );
+	jQuery( '.wpgpt-settings-window' )
+		.prepend( wpgpt_info )
+		.append( shortcuts_html, wpgpt_info );
+
+
 	jQuery( '.wpgpt-update' ).click( function() {
 
 		var option_name = jQuery( this ).attr( 'name' );
@@ -371,7 +375,7 @@ function wpgpt_version() {
 	if ( wpgpt_settings[ 'last_checked' ][ 'state' ] != 'never' ) {
 		if ( ( Date.now() - wpgpt_settings[ 'last_checked' ][ 'state' ] ) < 43200000 ) { // >12h
 			if ( wpgpt_new_version( wpgpt_settings[ 'last_version' ][ 'state' ],  WPGPT_VERSION ) ) {
-				jQuery( '#masthead' ).after( wpgpt_update_template.replaceAll( '%s', wpgpt_settings[ 'last_version' ][ 'state' ] ) );
+				wpgpt_display_notice();	
 			}
 			return;
 		}
@@ -385,9 +389,35 @@ function wpgpt_check_version() {
         wpgpt_settings[ 'last_version' ][ 'state' ] = wpgpt_last_version; // to avoid redundancy
 		wpgpt_update_setting( 'last_checked', Date.now() );
 		if ( wpgpt_new_version( wpgpt_settings[ 'last_version' ][ 'state' ], WPGPT_VERSION ) ) {
-			jQuery( '#masthead' ).after( wpgpt_update_template.replaceAll( '%s', wpgpt_settings[ 'last_version' ][ 'state' ] ) );
+			wpgpt_display_notice();			
 		}
     });
+}
+
+function wpgpt_display_notice() {
+	var wpgpt_update_output = $createElement( 'div', { 'class': 'wpgpt-update-notice' } );
+	var wpgpt_update_new_version = $createElement( 'strong', {}, 'WPGPTools version ' + wpgpt_settings.last_version.state + ' is available! ' );
+	var wpgpt_update_current_version = document.createTextNode( 'You are using version ' + WPGPT_VERSION + '. Update now!' );
+	var wpgpt_update_br = $createElement( 'br' );
+	var wpgpt_update_link, wpgpt_update_instruction;
+	if ( typeof wpgpt_is_userscript == 'undefined' ) {
+		wpgpt_update_link = 'https://github.com/vlad-timotei/wpgp-tools/releases/tag/' + wpgpt_settings.last_version.state;
+		wpgpt_update_instruction = ' to download the latest release, unzip the files and replace them. Then click Reload in chrome://extensions/';
+	} else {
+		wpgpt_update_link = 'https://github.com/vlad-timotei/wpgp-tools/raw/main/userscript/wpgpt-userscript-latest.user.js';
+		wpgpt_update_instruction = ' and Tampermonkey will prompt to reinstall the userscript. If that somehow fails, please manually copy the url and install it.';
+	}
+	wpgpt_update_link = $createElement( 'a', { 'href': wpgpt_update_link }, 'Click here' );
+	wpgpt_update_instruction = document.createTextNode( wpgpt_update_instruction );
+	wpgpt_update_output.append(
+		wpgpt_update_new_version,
+		wpgpt_update_current_version,
+		wpgpt_update_br.cloneNode(),
+		wpgpt_update_br,
+		wpgpt_update_link,
+		wpgpt_update_instruction
+	);
+	$addElement( '#masthead', 'afterend', wpgpt_update_output );
 }
 
 function wpgpt_new_version( last, current ) {
