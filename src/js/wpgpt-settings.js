@@ -153,14 +153,14 @@ var wpgpt_settings = {
 			'parent_setting' : 'others'
 		},
 	'last_checked' :{
-			'state' : 'never',
-			'parent_setting' : 'none',
-			'setting_type'	: -1
+		'state' : 'never',
+		'parent_setting' : 'none',
+		'setting_type'	: -1
 	},
 	'last_version' :{
-			'state' : WPGPT_VERSION,
-			'parent_setting' : 'none',
-			'setting_type' : -1
+		'state' : WPGPT_VERSION,
+		'parent_setting' : 'none',
+		'setting_type' : -1
 	},
 };
 if ( typeof wpgpt_update_template == 'undefined' ) {
@@ -170,7 +170,7 @@ if ( typeof wpgpt_update_template == 'undefined' ) {
 }
 jQuery( '#menu-headline-nav' ).append( '<li class="menu-item wpgpt_settings" style="cursor:pointer;"><a>Tools Settings</a></li>' );
 jQuery( '.wpgpt_settings' ).click( function() { wpgpt_settings_page(); } );
-var wpgpt_info = '<div class="wpgpt-info"><strong>WPGPT version ' + WPGPT_VERSION + '</strong> | <a href="https://github.com/vlad-timotei/wpgp-tools/blob/main/README.md">Documentation</a> | <a href="https://github.com/vlad-timotei/wpgp-tools/issues/new?assignees=&labels=&template=bug_report.md&title=">Report a bug</a> | <a href="https://github.com/vlad-timotei/wpgp-tools/issues/new?assignees=&labels=&template=feature_request.md&title=">Request a feature</a> | Happy translating!</div>';
+var wpgpt_info = '<div class="wpgpt-info"><strong>WPGPT version ' + WPGPT_VERSION + '</strong> | <a href="https://github.com/vlad-timotei/wpgp-tools/blob/main/README.md">Documentation</a> | <a href="https://github.com/vlad-timotei/wpgp-tools/issues/new?assignees=&amp;labels=&amp;template=bug_report.md">Report a bug</a> or <a href="https://github.com/vlad-timotei/wpgp-tools/issues/new?assignees=&amp;labels=&amp;template=feature_request.md">request a feature</a> | <a href="#" class="wpgpt-backup" title="Drag and drop to Bookmarks bar to backup your settings.">Backup WPGPT settings</a> | Happy translating!</div>';
 var wpgpt_user_settings = {};
 if ( getLS( 'wpgpt-user-settings' ) !== null ) {
 	wpgpt_user_settings = JSON.parse( getLS( 'wpgpt-user-settings' ) );
@@ -301,6 +301,32 @@ function wpgpt_settings_page() {
 	});
 
 	jQuery( '#save_settings' ).click( wpgpt_exit_settings );
+
+	jQuery( '.wpgpt-backup' ).on( 'mousedown', function(){
+		wpgpt_exit_settings( false );
+		var backup_user_settings = getLS( 'wpgpt-user-settings');
+		var backup_date = new Date().toLocaleDateString() + ' at ' + new Date().toLocaleTimeString();
+		var backup_script = `javascript: 
+		if ( document.location.hostname == 'translate.wordpress.org') {
+			var backup_version = '${WPGPT_VERSION}';
+			var backup_date = '${backup_date}';
+			var current_settings = JSON.parse( localStorage.getItem( 'wpgpt-user-settings') );
+			var confirm_message; 
+			if ( backup_version == current_settings.current_version ) { 
+				confirm_message = 'Backup from ' + backup_date + ' of WPGPT version ' + backup_version + '.\\n\\nRestore old settings?';
+			} else {
+				confirm_message = 'Backup from ' + backup_date + ' of WPGPT version ' + backup_version + '. \\n\\nNew settings from WPGPT ' + current_settings.current_version + ' will be lost. \\nRestore old settings?';
+			}
+			if ( confirm( confirm_message ) ) {
+				localStorage.setItem( 'wpgpt-user-settings', '${backup_user_settings}' );
+				alert( 'Settings restored from backup!' );
+				location.reload(); 
+			}
+		} else { 
+			alert( 'To restore settings, click this bookmark while being on a translate.w.org page.' ); 
+		}`;
+		jQuery( this ).attr( 'href', backup_script );
+	} );
 }
 
 function wpgpt_update_setting( name, val ) {
@@ -313,11 +339,13 @@ function wpgpt_update_setting( name, val ) {
     setLS( 'wpgpt-user-settings', JSON.stringify( wpgpt_user_settings ) );
 }
 
-function wpgpt_exit_settings() {
+function wpgpt_exit_settings( reload = true ) {
 	wpgpt_settings[ 'custom_period' ][ 'state' ] = jQuery( '#custom_period' ).val();
 	wpgpt_settings[ 'warning_words' ][ 'state' ] = jQuery( '#warning_words' ).val(); // to avoid redundancy
 	wpgpt_update_setting( 'match_words', jQuery( '#match_words' ).val());
-	location.reload();
+	if ( reload ) {
+		location.reload();
+	}
 }
 
 /*
