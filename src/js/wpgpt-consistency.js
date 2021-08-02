@@ -140,7 +140,11 @@ function consistency_tools() {
 		if ( wpgpt_search_settings.plugin ) {
 		wpgpt_search_settings.plugin_slug = also_searching_in_plugin;
 		setLS( 'wpgpt-search', JSON.stringify( wpgpt_search_settings ) );
-		fill_plugin_slug();
+		if ( wpgpt_search_settings.plugin_slug !== 'undefined' ){
+			document.querySelectorAll( '.wpgpt-search-plugin-slug' ).forEach( function( el ) {
+				el.value = wpgpt_search_settings.plugin_slug;
+			} );
+		}
 		search_url.plugin = encodeURI( 'https://' + hostname + '/projects/wp-plugins/' + also_searching_in_plugin + '/dev/' + current_locale + filters + '&resultpage' );
 		}
 
