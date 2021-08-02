@@ -527,7 +527,7 @@ span.context + span.priority {
     margin-left: 0.5em !important;
 }
 /* GD fall-back compatibility*/
-span.wpgpt-consistency + span.gd-consistency,
-span.wpgpt-quicklinks + span.gd-quicklinks {
+.gd_consistency,
+.gd_quicklinks {
 	display:none;
 }
