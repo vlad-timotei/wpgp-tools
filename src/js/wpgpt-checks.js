@@ -4,7 +4,7 @@ var wpgpt_user_edited = false;
 
 var wpgpt_period = ( wpgpt_settings.custom_period.state != '' ) ? wpgpt_settings.custom_period.state : '.';
 
-if ( wpgpt_settings.checks.state == 'enabled' || wpgpt_settings.ro_checks.state == 'enabled' ) {
+if ( typeof $gp !== 'undefined' && ( wpgpt_settings.checks.state == 'enabled' || wpgpt_settings.ro_checks.state == 'enabled' ) ) {
 	jQuery( document ).ready( wpgpt_checks );
 	wpgpt_checks_shortcuts = true;
 }
@@ -13,12 +13,10 @@ var wpgpt_next_is_strict = true;
 var wpgpt_error_message = '<b>Fix warnings first!</b><br><br>Alternatively, check <br><i>Save / Approve with warnings!</i><br><br>';
 
 function wpgpt_checks() {
-	if ( typeof $gp !== 'undefined' ) {
-		wpgpt_early_init_editors();
-		wpgpt_check_all_translations();
-		wpgpt_late_init_editors();
-		wpgpt_filters();
-	}
+	wpgpt_early_init_editors();
+	wpgpt_check_all_translations();
+	wpgpt_late_init_editors();
+	wpgpt_filters();
 }
 
 function wpgpt_early_init_editors() {
