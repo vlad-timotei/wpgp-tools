@@ -1,5 +1,5 @@
 /* ToDo: Remove !important and load stylesheet in the footer */
-/*General*/
+/* Navigation menu */
 .navigation-main,
 .site-branding {
 	max-width: 1050px !important;
@@ -11,8 +11,12 @@
 	}
 }
 
-
 /* Settings */
+.wpgpt_settings_menu {
+    color:#fff;
+    cursor:pointer;
+}
+
 .wpgpt-settings-window {
    min-height: 100vh;
    margin:10px 0 50px 0;
@@ -23,7 +27,6 @@
     margin: 0 auto;
     text-align: center;
 }
-
 
 @media ( max-width:500px ) {
     .wpgpt-settings-window {
@@ -181,16 +184,6 @@ span.small {
     font-size:0.7em;
 }
 
-.wpgpt-update-notice {
-	width: 60%;
-    margin: 25px auto;
-    display: block;
-    color: #000000;
-    font-size: 1.1em;
-    border: 3px solid #0073aa;
-    padding: 25px;
-}
-
 .wpgpt-update-notice > strong {
 	color:#025f8c;
 }
@@ -201,6 +194,17 @@ span.small {
 
 .gp-header.gp-row .gp-shortcut:nth-child( 1 ) {
     color: #0073aa;
+}
+
+/* Update notice */
+.wpgpt-update-notice {
+	width: 60%;
+    margin: 25px auto;
+    display: block;
+    color: #000000;
+    font-size: 1.1em;
+    border: 3px solid #0073aa;
+    padding: 25px;
 }
 
 /* Checks */
@@ -231,7 +235,6 @@ ul.wpgpt-warnings-list.empty li {
 }
 
 .wpgpt-filters {
-	display: inline-block;
     float: left;
     padding-left:10px;
 }
@@ -327,6 +330,27 @@ table.translations a.action {
 }
 
 /* Search */
+
+.wpgpt-search label,
+.wpgpt-backup {
+    -webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.wpgpt-search label{
+   display: block;
+}
+
+label.wpgpt-search-plugin-label,
+.wpgpt-search-plugin-slug {
+    display: inline-block;
+    margin-right:5px;
+}
+
 .wpgpt-search {
 	padding: 0 15px 0 15px;
 }
@@ -395,26 +419,6 @@ table.translations a.action {
 	font-weight: 500;
 }
 
-.noselect {
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-}
-
-.wpgpt-gt,
-.wpgpt-get-consistency {
-	margin-left: 10px !important;
-	margin-top: 2px !important;
-}
-
-.translation-suggestion__translation small {
-	color:#808286;
-	font-size:12px;
-}
-
 /*QuickLinks*/
 .editor-panel__right .panel-header button {
     background: none;
@@ -432,39 +436,50 @@ table.translations a.action {
     background: #fafafa;
 }
 
-.wpgpt_quicklink_plus {
-	 margin: 0 10px;
-	 color:#0073aa;
+.wpgpt_quicklinks_copy.active {
+    color: #0073aa;
 }
 
-.wpgpt_quicklink_plus.dashicons-plus {
-	cursor:pointer;
-	vertical-align: middle;
+.wpgpt_quicklinks_copy.active:hover, 
+.wpgpt_quicklinks_copy.active:focus {
+    color: #046594;
 }
 
-.wpgpt_quicklink_plus .separator {
-	vertical-align: middle;
+.wpgpt_quicklinks_plus.dashicons-plus {
+	margin: 0 10px;
+    vertical-align: middle;
+    color: #0073aa;
+    cursor: pointer;
 }
 
-.wpgpt_quicklink_copy.active {
- color:#0073aa;
-}
-.wpgpt_quicklink_copy.active:hover, 
-.wpgpt_quicklink_copy.active:focus {
- color:#046594;
+.wpgpt_quicklinks_plus.separator {
+	margin: 0 10px;
+    vertical-align: middle;
 }
 
-.wpgpt_quicklink_plus .separator:before {
-	content:"|";
-	color:#c3c0c0;
+.wpgpt_quicklinks_plus.separator:before {
+    content: "|";
+    color: #c3c0c0;
 }
 
-.wpgpt_quicklink_plus .separator {
-	margin:0px 7px 0px 7px;
+/* Consistency Suggestions */
+.wpgpt_get_consistency {
+	margin-left: 10px !important;
 }
 
-.translation-suggestion__translation .index {
-    color: #a0a5aa;
+.translation-suggestion__translation.index,
+.consistency-count {
+	padding: 0 4px;
+	color: #666;
+}
+
+.consistency-count {
+	font-size: 0.8em;
+}
+
+/* GT Suggestions */
+.wpgpt_get_gt {
+	margin-left: 10px !important;
 }
 
 /* History check */
@@ -481,7 +496,6 @@ ins {
 	text-decoration: none;
 	white-space: pre;
 }
-
 
 .wpgpt-h-label {
     font-size: 12px;
@@ -526,6 +540,17 @@ ins {
 span.context + span.priority {
     margin-left: 0.5em !important;
 }
+
+#wpgpt_search_anonymous {
+    margin-right: 5px;
+}
+
+.identical-history {
+    color: #666;
+    font-size: 0.9em;
+    font-style: italic;
+}
+
 /* GD fall-back compatibility*/
 .gd_consistency,
 .gd_quicklinks {
