@@ -711,6 +711,7 @@ function wpgpt_highlight( string, lookfor ) {
 	var search_pattern;
 	string = string.replaceAll( '<', '&lt;' ).replaceAll( '>', '&gt;' );
 	for ( var i = 0; i < lookfor.length; i++ ) {
+		lookfor[ i ] = lookfor[ i ].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 		search_pattern = new RegExp( '(' + lookfor[ i ] + ')', 'ig' );
 		string = string.replaceAll( search_pattern, '<span class="wpgpt-highlight">$1</span>' );
 	}
