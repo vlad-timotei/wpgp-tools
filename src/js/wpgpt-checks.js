@@ -86,12 +86,12 @@ function wpgpt_check_all_translations() {
 		edit_check_list = '<div class="wpgpt-checks-list">' + edit_check_list + '</div>';
 
 		if ( has_warning ) {
-			prev_check_status = '<img class="wpgpt-check-preview" title="String has a warning." src="' + warning_icon + '">';
+			prev_check_status = '<img class="wpgpt-check-preview" title="String has a warning." src="' + wpgpt_warning_icon + '">';
 			jQuery( '#' + translation_id_e ).find( '.wpgpt-ignore-warnings' ).show();
 			preview_class = 'wpgpt-has-warning';
 		}
 		else if ( has_notice ) {
-			prev_check_status = '<img class="wpgpt-check-preview" title="String has a notice." src="' + notice_icon + '">';
+			prev_check_status = '<img class="wpgpt-check-preview" title="String has a notice." src="' + wpgpt_notice_icon + '">';
 			preview_class = 'wpgpt-has-notice';
 			}
 			else {
@@ -193,12 +193,12 @@ function wpgpt_check_this_translation( translation_id_e ) {
 	if ( has_warning ) {
 		save_warnings_state = 'block';
 		preview_class = 'wpgpt-has-warning';
-		prev_check_status = '<img class="wpgpt-check-preview" src="' + warning_icon + '">';
+		prev_check_status = '<img class="wpgpt-check-preview" src="' + wpgpt_warning_icon + '">';
 	}
 	else if ( has_notice ) {
 			save_warnings_state = 'none';
 			preview_class = 'wpgpt-has-notice';
-			prev_check_status = '<img class="wpgpt-check-preview" src="' + notice_icon + '">';
+			prev_check_status = '<img class="wpgpt-check-preview" src="' + wpgpt_notice_icon + '">';
 		}
 		else {
 				save_warnings_state = 'none';
@@ -729,8 +729,8 @@ function wpgpt_filters() {
 	var warnings_count = jQuery( '.wpgpt-has-warning' ).length;
 	var filters = '';
 	filters +='<div class="wpgpt-filters">';
-    filters += '<a href="#" title="Click to view strings with notice only - ' + notices_count + ' strings" class="wpgpt-filter-notices count-' + notices_count + '"><img src="' + notice_icon + '"> Notices (' + notices_count + ')</a><span class="separator">•</span>';
-    filters += '<a href="#" title="Click to view strings with warning only - ' + warnings_count + ' strings" class="wpgpt-filter-warnings count-' + warnings_count + '"><img src="' + warning_icon + '"> Warnings (' + warnings_count + ')</a><span class="separator">•</span>';
+    filters += '<a href="#" title="Click to view strings with notice only - ' + notices_count + ' strings" class="wpgpt-filter-notices count-' + notices_count + '"><img src="' + wpgpt_notice_icon + '"> Notices (' + notices_count + ')</a><span class="separator">•</span>';
+    filters += '<a href="#" title="Click to view strings with warning only - ' + warnings_count + ' strings" class="wpgpt-filter-warnings count-' + warnings_count + '"><img src="' + wpgpt_warning_icon + '"> Warnings (' + warnings_count + ')</a><span class="separator">•</span>';
 	filters += '<a href="#" title="Click to view all strings" class="wpgpt-filter-all">All</a>';
 	filters += '</div>';
 	jQuery( '.paging' ).first().before( filters );

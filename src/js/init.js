@@ -14,7 +14,7 @@ function wpgpt_load_imgs(){
 	var notice_icon = chrome.extension.getURL('img/notice.png');
 	var img_script = document.createElement('script');
 	img_script.type = 'text/javascript';
-	img_script.innerHTML = ' var warning_icon = "' + warning_icon + '"; var notice_icon = "' + notice_icon + '";';
+	img_script.textContent = 'var wpgpt_warning_icon = \'' + warning_icon + '\'; var wpgpt_notice_icon = \'' + notice_icon + '\';';
 	document.getElementsByTagName('head')[0].appendChild( img_script );
 }
 
