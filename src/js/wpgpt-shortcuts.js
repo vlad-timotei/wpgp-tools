@@ -39,10 +39,10 @@ if ( typeof $gp !== 'undefined' ) {
 							return false;
 						}
 						else {
-							wpgpt_next_is_strict = true;
+							approve.trigger( 'click' );
 							jQuery( '.wpgpt-ignore-warnings input' ).prop( 'checked', false );
 							wpgpt_user_edited = false;
-							approve.trigger( 'click' );
+							wpgpt_next_is_strict = true;
 						}
 					}
 			} else if ( wpgpt_settings.shortcuts.state == 'enabled' && ( ( 106 === event.keyCode && event.ctrlKey ) || ( 70 === event.keyCode && event.shiftKey && event.ctrlKey ) ) ) { // Ctrl-* (NumPad) or Ctrl-Shift-F = Fuzzy.
