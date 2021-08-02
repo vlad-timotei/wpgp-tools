@@ -69,8 +69,7 @@ function wpgpt_check_all_translations() {
 			}
 
 			if ( wpgpt_settings.checks_labels.state == 'enabled' && check_results.highlight_me.length ) {
-				translated[ translated_i ] = wpgpt_highlight( translated[ translated_i ] , check_results.highlight_me );
-				$translation.find( '.translation-text' ).eq( translated_i ).html( translated[ translated_i ] );
+				$translation.find( '.translation-text' ).eq( translated_i ).html( wpgpt_highlight( translated[ translated_i ] , check_results.highlight_me ) );
 			}
 
 			if ( original.length > 1 ) {
