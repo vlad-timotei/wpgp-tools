@@ -144,16 +144,21 @@ It adds preview and editor label and a diff highlighter in editor.
 ## #6 Other features
 - Keeps the editor in the middle of the screen when Page Up/Page Down shortcuts are used
 - Prompts for unsaved strings
+- Adds an Anonymous author checkbox for user filter 
+
+![anonymous_user](https://user-images.githubusercontent.com/65488419/127504757-2547f47b-d8fb-47f7-b362-47eb6037597b.gif)
+
 
 ## Installation
 Only choose one of these two:
 
-### Google Chrome, Edge & Opera
+### Chrome, Edge, Opera & Brave
 
 1. Get the latest release from [here](https://github.com/vlad-timotei/wpgp-tools/releases/latest) and extract to a folder.
-2. Open Chrome extensions `chrome://extensions/` or `edge://extensions/` or `opera://extensions/` and enable Developer mode.
-3. Then use Load Unpacked button and point to the `wpgp-tools\src\` folder
-4. That's it! Go to a translate project to see it in action.
+2. Open extensions at `chrome://extensions/`, `edge://extensions/`, `opera://extensions/` or `brave://extensions/`
+4. Enable **Developer mode** toggle
+3. Click **Load Unpacked** button and point to the `wpgp-tools\src\` folder
+4. That's it! Go to a translate.w.org project to see it in action and customize its settings.
 
 ### Firefox and other browsers via Tampermonkey
 
@@ -166,7 +171,17 @@ If this somehow fails, you can: manually copy the URL and install it in the Util
 - The first time you use Search in multiple projects feature, the browser will prevent opening multiple tabs. 
 - Click on Options > Allow pop-ups for translate.wordpress.org and this will work properly in the future.
 
+## Backup & Restore Settings
+ 
+ <img align="right" src="https://user-images.githubusercontent.com/65488419/127438701-bcbe13e4-7698-461d-a6d3-c2d4659304f7.gif">
 
+Your settings are saved **locally** using LocalStorage so they will remain saved in that browser untill you clear your browser data.
+To backup and restore WPGPT settings:
+
+ - Go to Settings.
+ - Drag and drop **Backup WPGPT Settings** to your Bookmarks bar.
+ - Restore your settings by clicking that bookmark.
+ 
 ## Known issues
 - Tooltips overlap for the Quick Links section (should be fixed upstream)
 - It's an unpacked extension and the repo doesn't use workflows to build the release additional zip
