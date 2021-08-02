@@ -31,7 +31,7 @@ function consistency_tools() {
 		'copy_me' : false
 	};
 	wpgpt_search_settings = ( getLS( 'wpgpt-search' ) !== null ) ? JSON.parse( getLS( 'wpgpt-search' ) ) : wpgpt_search_settings;
-	
+
 	var notice_time;
 
 	const hostname = window.location.hostname;
@@ -56,7 +56,7 @@ function consistency_tools() {
 	wpgpt_anonymous();
 	wpgpt_gt();
 	wpgpt_events();
-	
+
 	function wpgpt_page( page_type ) {
 		$scrollTo( '.breadcrumb', 'smooth', 'start' );
 		var wpgpt_page_notice = $createElement( 'p', { 'class': 'wpgpt-results-notice' }, 'When you\'re done on these result pages click ' );
@@ -117,9 +117,9 @@ function consistency_tools() {
 			} );
 		}
 
-		$addEvtListener( 
-			'submit', 
-			'.wpgpt-search', 
+		$addEvtListener(
+			'submit',
+			'.wpgpt-search',
 			function( event ) {
 				event.preventDefault();
 				wpgpt_do_search( event.target.elements.wpgpt_search_word.value, event.target.elements.wpgpt_search_plugin_slug.value );
@@ -201,7 +201,7 @@ function consistency_tools() {
 	}
 
 	function wpgpt_consistency(){
-		if ( document.querySelector( '.gd-get-consistency' ) !== null ) { 
+		if ( document.querySelector( '.gd-get-consistency' ) !== null ) {
 			return;
 		}
 		var wpgpt_consistency_output = $createElement( 'details', { 'class': 'wpgpt_consistency suggestions__translation-consistency', 'open': 'open' } );
@@ -209,7 +209,7 @@ function consistency_tools() {
 		var wpgpt_consistency_button = $createElement( 'button', { 'class': 'wpgpt_get_consistency' }, 'View Consistency suggestions' );
 
 		wpgpt_consistency_output.append( wpgpt_consistency_summary, wpgpt_consistency_button );
-	  
+
 		$addElements( '.editor-panel__left .suggestions-wrapper', 'beforeend', wpgpt_consistency_output );
 		$addEvtListener( 'click', '.wpgpt_get_consistency', wpgpt_do_consistency );
 	}
@@ -217,7 +217,7 @@ function consistency_tools() {
 	function wpgpt_do_consistency( event ) {
 		event.target.textContent = 'Loading...';
 		var consistency_url = event.target.closest( '.editor-panel' ).querySelectorAll( '.button-menu__dropdown li a' )[ 2 ].href;
-	  
+
 		fetch( consistency_url, { headers: new Headers( { 'User-agent': 'Mozilla/4.0 Custom User Agent' } ) } )
 		  .then( consistency_response => consistency_response.text() )
 		  .then( consistency_response => {
@@ -225,16 +225,16 @@ function consistency_tools() {
 			var consistency_page = consistency_parser.parseFromString( consistency_response , 'text/html' );
 			var consistency_translations = consistency_page.querySelectorAll( '.consistency-table tbody th strong' );
 			var translations_count, unique_translation_count;
-	  
+
 			if ( consistency_translations.length == 1 ) {
 			  unique_translation_count = consistency_page.querySelectorAll( 'tr' ).length - 2;
 			  unique_translation_count = ' ('+ unique_translation_count + ' time' + ( ( unique_translation_count > 1 ) ? 's' : '' ) + ')';
 			} else {
 				translations_count = consistency_page.querySelectorAll( '.translations-unique small' );
 			}
-	  
+
 			var wpgpt_consistency_suggestions;
-	  
+
 			if ( consistency_translations.length ) {
 			  var wpgpt_consistency_item,
 			  wpgpt_consistency_item_div,
@@ -243,9 +243,9 @@ function consistency_tools() {
 			  wpgpt_consistency_item_count,
 			  wpgpt_consistency_item_raw,
 			  wpgpt_consistency_item_button;
-	  
+
 			  wpgpt_consistency_suggestions = $createElement( 'ul', { class: 'suggestions-list' } );
-	  
+
 			  for ( var i = 0; i < consistency_translations.length; i++ ) {
 				wpgpt_consistency_item = document.createElement( 'li' );
 				wpgpt_consistency_item_div = $createElement( 'div', { 'class': 'translation-suggestion with-tooltip', 'role': 'button', 'aria-pressed': 'false', 'aria-label': 'Copy translation', 'tabindex': '0' } );
@@ -288,31 +288,31 @@ function consistency_tools() {
 		  $createElement ( 'span', { 'class': 'screen-reader-text' } ),
 		  $createElement ( 'span', { 'class': 'dashicons dashicons-clipboard', 'aria-hidden': 'true' } ),
 		);
-	  
+
 		var wpgpt_quicklinks_separator_atributes = {
 		  'class': 'wpgpt_quicklinks_plus dashicons' + ( ( wpgpt_search_settings.copy_me ) ? ' dashicons-plus' : ' separator' ),
 		  'aria-hidden': 'true',
 		};
 		var wpgpt_quicklinks_separator = $createElement( 'span', wpgpt_quicklinks_separator_atributes );
-	  
+
 		var wpgpt_quicklinks_permalink = $createElement( 'button', { 'class': 'wpgpt_quicklinks_item wpgpt_quicklinks_permalink with-tooltip', 'aria-label': 'Permalink to translation' } );
 		wpgpt_quicklinks_permalink.append(
 		  $createElement ( 'span', { 'class': 'screen-reader-text' }, 'Permalink to translation' ),
 		  $createElement ( 'span', { 'class': 'dashicons dashicons-admin-links', 'aria-hidden': 'true' } ),
 		);
-	  
+
 		var wpgpt_quicklinks_history = $createElement( 'button', { 'class': 'wpgpt_quicklinks_item wpgpt_quicklinks_history with-tooltip', 'aria-label': 'Translation History' } );
 		wpgpt_quicklinks_history.append(
 		  $createElement ( 'span', { 'class': 'screen-reader-text' }, 'Translation History' ),
 		  $createElement ( 'span', { 'class': 'dashicons dashicons-backup', 'aria-hidden': 'true' } ),
 		);
-	  
+
 		var wpgpt_quicklinks_consistency = $createElement( 'button', { 'class': 'wpgpt_quicklinks_item wpgpt_quicklinks_consistency with-tooltip', 'aria-label': 'View original in consistency tool' } );
 		wpgpt_quicklinks_consistency.append(
 		  $createElement ( 'span', { 'class': 'screen-reader-text' }, 'View original in consistency tool' ),
 		  $createElement ( 'span', { 'class': 'dashicons dashicons-list-view', 'aria-hidden': 'true' } ),
 		);
-	  
+
 		wpgpt_quicklinks_output.append(
 		  wpgpt_quicklinks_copy,
 		  wpgpt_quicklinks_separator,
@@ -320,21 +320,21 @@ function consistency_tools() {
 		  wpgpt_quicklinks_history,
 		  wpgpt_quicklinks_consistency,
 		);
-	  
+
 		$addElements( '.editor-panel__right .panel-header', 'beforeend', wpgpt_quicklinks_output );
-	  
+
 		document.querySelectorAll( '.editor' ).forEach( function( editor ){
-			var editor_menu = editor.querySelectorAll( '.button-menu__dropdown li a' ); 
+			var editor_menu = editor.querySelectorAll( '.button-menu__dropdown li a' );
 			editor.querySelector( '.wpgpt_quicklinks_permalink' ).dataset.quicklink = editor_menu[ 0 ].href;
 			editor_menu[ 1 ].href += '&historypage';
 			editor.querySelector( '.wpgpt_quicklinks_history' ).dataset.quicklink =  editor_menu[ 1 ].href;
-			editor.querySelector( '.wpgpt_quicklinks_consistency' ).dataset.quicklink = editor_menu[ 2 ].href + '&consistencypage';  
+			editor.querySelector( '.wpgpt_quicklinks_consistency' ).dataset.quicklink = editor_menu[ 2 ].href + '&consistencypage';
 		} );
-	
+
 		$addEvtListener( 'click', '.wpgpt_quicklinks_copy, .wpgpt_quicklinks_plus', wpgpt_toggle_quicklinks_copy );
 		$addEvtListener( 'click', '.wpgpt_quicklinks_item', wpgpt_do_quicklinks );
 	}
-	  
+
 	function wpgpt_do_quicklinks( event ) {
 		if ( wpgpt_search_settings.copy_me ) {
 		  var btn_target = event.currentTarget;
@@ -361,7 +361,7 @@ function consistency_tools() {
 		wpgpt_search_settings.copy_me = ! wpgpt_search_settings.copy_me;
 		setLS( 'wpgpt-search', JSON.stringify( wpgpt_search_settings ) );
 	}
-	  
+	// Adds checkbox to set user field value to 'anonymous' - author submitted translations.
 	function wpgpt_anonymous(){
 		var user_filter_el = document.getElementById( 'filters[user_login]' );
 		if ( ! user_filter_el ){
@@ -427,7 +427,7 @@ function consistency_tools() {
 			'yor' : 'yo',
 			'zul' : 'zu'
 		};
-	
+
 		if ( short_locale in gp_gt_locales ) {
 			short_locale = gp_gt_locales[ short_locale ];
 		}
@@ -435,21 +435,21 @@ function consistency_tools() {
 			short_locale = short_locale.split( '-' );
 			short_locale = short_locale[ 0 ];
 		}
-		
+
 		document.querySelectorAll( '.editor' ).forEach( function( editor_el ){
 			var suggestion_wrapper = editor_el.querySelector( '.editor-panel__left .suggestions-wrapper' );
 			if ( suggestion_wrapper == null ){
 				return;
 			}
-			
+
 			var wpgpt_gt_string = encodeURIComponent( editor_el.querySelector( '.source-string__singular span.original' ).textContent );
 			var wpgpt_gt_url = 'https://translate.google.com/?sl=en&tl=' + short_locale + '&text=' + wpgpt_gt_string + '&op=translate';
 			wpgpt_gt_url = wpgpt_gt_url.replaceAll( '"','&#34;' );
-			
+
 			var wpgpt_gt_output = $createElement( 'details', { 'class': 'wpgpt_gt suggestions__translation-gt', 'open': 'open' } );
 			var wpgpt_gt_summary = $createElement( 'summary', { }, 'Suggestion from Google Translate' );
 			var wpgpt_gt_button = $createElement( 'button', { 'class': 'wpgpt_get_gt', 'data-wpgpt_gt_string': wpgpt_gt_url }, 'View Google Translate suggestions' );
-			
+
 			wpgpt_gt_output.append( wpgpt_gt_summary,  wpgpt_gt_button );
 			suggestion_wrapper.insertAdjacentElement( 'beforeend' , wpgpt_gt_output );
 
@@ -559,13 +559,13 @@ function $toggleEl( target_selector, el_class ) {
 function $showEl( target_selector ) {
 	document.querySelectorAll( target_selector ).forEach( function( el ){
 		el.style.display = 'inline-block';
-	} );	
+	} );
 }
 
 function $hideEl( target_selector ) {
 	document.querySelectorAll( target_selector ).forEach( function( el ){
 		el.style.display = 'none';
-	} );		
+	} );
 }
 
 function $setTextContent( target_selector, new_txt ) {
