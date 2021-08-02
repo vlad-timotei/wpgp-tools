@@ -1,13 +1,135 @@
 const WPGPT_VERSION = '1.4';
 
+/**
+ * Sets LocalStorage value.
+ * 
+ * @param {String} name
+ * @param {String} value
+ */
 function setLS( name, value ){
   localStorage.setItem( name, value );
 }
 
+/**
+ * Gets LocalStorage value.
+ * 
+ * @param {String} name
+ * @returns {String}
+ */
 function getLS( name ){
   return localStorage.getItem( name );
 }
 
+/**
+ * Deletes LocalStorage item.
+ * 
+ * @param {String} name
+ */
 function delLS( name ){
   localStorage.removeItem( name );
+}
+
+/**
+ * Creates HTML Element.
+ *
+ * @param {String} tagName This must be a valid HTML tag name.
+ * @param {Object} attributes
+ * @param {String} textContent
+ * @returns {Element}
+ */
+ function $createElement( tagName = 'div', attributes = {}, textContent = '' ) {
+	var element = document.createElement( tagName );
+	for ( var attribute in attributes ) {
+	  if ( attributes.hasOwnProperty( attribute ) ) {
+		element.setAttribute( attribute, attributes[ attribute ] );
+	  }
+	}
+	element.textContent = textContent;
+	return element;
+}
+
+/**
+ * Inserts adjacent element to firs found target selector.
+ *
+ * @param {String} target_selector This must be valid CSS syntax.
+ * @param {('beforebegin' | 'afterbegin' | 'beforeend' | 'afterend')} el_position
+ * @param {Element} new_element
+ */
+function $addElement( target_selector, el_position, new_element ){
+	var el = document.querySelector( target_selector );
+	if ( el !== null ) {
+		el.insertAdjacentElement( el_position , new_element );
+	}
+}
+
+/**
+ * Inserts adjacent elements to all target selectors.
+ *
+ * @param {String} target_selector This must be valid CSS syntax.
+ * @param {('beforebegin' | 'afterbegin' | 'beforeend' | 'afterend')} el_position
+ * @param {Element} new_element
+ */
+function $addElements( target_selector, el_position, new_element ) {
+	document.querySelectorAll( target_selector ).forEach( function( el ){
+	  el.insertAdjacentElement( el_position , new_element.cloneNode( true ) );
+	} );
+}
+
+/**
+ * Adds event listeners for all target selectors.
+ *
+ * @param {Event} event_name
+ * @param {String} target_selector This must be valid CSS syntax.
+ * @param {Function} function_to_call
+ */
+ function $addEvtListener( event_name, target_selector, function_to_call ) {
+	document.querySelectorAll( target_selector ).forEach( function ( el ){
+		el.addEventListener( event_name, function_to_call );
+	} );
+}
+
+/**
+ * Toggles class for all target selectors.
+ * 
+ * @param {String} target_selector This must be valid CSS syntax.
+ * @param {String} el_class
+ */
+function $toggleEl( target_selector, el_class ) {
+	document.querySelectorAll( target_selector ).forEach( function( el ){
+		el.classList.toggle( el_class );
+	} );
+}
+
+/**
+ * Shows all target selctors.
+ * 
+ * @param {String} target_selector This must be valid CSS syntax.
+ */
+function $showEl( target_selector ) {
+	document.querySelectorAll( target_selector ).forEach( function( el ){
+		el.style.display = 'inline-block';
+	} );	
+}
+
+/**
+ * Hides all target selectors.
+ * 
+ * @param {String} target_selector This must be valid CSS syntax.
+ */
+function $hideEl( target_selector ) {
+	document.querySelectorAll( target_selector ).forEach( function( el ){
+		el.style.display = 'none';
+	} );		
+}
+
+/**
+ * Sets textContent for all target selectors.
+ * 
+ * @param {String} target_selector This must be valid CSS syntax.
+ * @param {String} new_txt 
+ */
+function $setTextContent( target_selector, new_txt ) {
+	document.querySelectorAll( target_selector ).forEach( function( el ) {
+		el.textContent = new_txt;
+	} );
 }
