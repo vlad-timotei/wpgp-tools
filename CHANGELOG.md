@@ -46,3 +46,11 @@
 - Improves: Features implement more design accessibility standards
 - Performance: Removes duplicate jQuery library from content_scripts
 - Performance: Similar loading time with considerably increased features
+
+# v.1.5
+- Feature: Anonymous user
+- Feature: Backup settings
+- Fix: Use symbols in match
+- Fix: Approve with warnings using kb
+- Fix: Prevent error when GP is missing
+- Enhancement: Refactoring code for performance
