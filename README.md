@@ -172,8 +172,8 @@ If this somehow fails, you can: manually copy the URL and install it in the Util
 - Click on Options > Allow pop-ups for translate.wordpress.org and this will work properly in the future.
 
 ## Backup & Restore Settings
- 
- <img align="right" src="https://user-images.githubusercontent.com/65488419/127438701-bcbe13e4-7698-461d-a6d3-c2d4659304f7.gif">
+
+ <img align="right" src="https://user-images.githubusercontent.com/65488419/127963637-fde72b20-c931-43db-a187-3c3aa9a08044.gif">
 
 Your settings are saved **locally** using LocalStorage so they will remain saved in that browser untill you clear your browser data.
 To backup and restore WPGPT settings:
