@@ -56,6 +56,7 @@ function consistency_tools() {
 	wpgpt_anonymous();
 	wpgpt_gt();
 	wpgpt_events();
+	wpgpt_localdate();
 
 	function wpgpt_page( page_type ) {
 		$scrollTo( '.breadcrumb', 'smooth', 'start' );
@@ -361,6 +362,7 @@ function consistency_tools() {
 		wpgpt_search_settings.copy_me = ! wpgpt_search_settings.copy_me;
 		setLS( 'wpgpt-search', JSON.stringify( wpgpt_search_settings ) );
 	}
+	
 	// Adds checkbox to set user field value to 'anonymous' - author submitted translations.
 	function wpgpt_anonymous(){
 		var user_filter_el = document.getElementById( 'filters[user_login]' );
@@ -379,20 +381,6 @@ function consistency_tools() {
 				document.getElementById( 'filters[user_login]' ).value = '';
 			}
 		} );
-	}
-
-	function wpgpt_copyClipboard( text ) {
-		const elem = document.createElement( 'textarea' );
-		elem.value = text;
-		document.body.appendChild( elem );
-		elem.select();
-		document.execCommand( 'copy' );
-		document.body.removeChild( elem );
-	}
-
-	function do_refferences( event ) {
-		event.preventDefault();
-		wpgpt_open_tab( 'references', event.currentTarget.href );
 	}
 
 	function wpgpt_gt() {
@@ -509,6 +497,33 @@ function consistency_tools() {
 			}
 		}
 	}
+
+	function wpgpt_copyClipboard( text ) {
+		const elem = document.createElement( 'textarea' );
+		elem.value = text;
+		document.body.appendChild( elem );
+		elem.select();
+		document.execCommand( 'copy' );
+		document.body.removeChild( elem );
+	}
+	
+	function do_refferences( event ) {
+		event.preventDefault();
+		wpgpt_open_tab( 'references', event.currentTarget.href );
+	}
+
+	function wpgpt_localdate(){
+		var local_time = new Date();
+		var timezone_offset = local_time.getTimezoneOffset() / 60 * -1;
+		timezone_offset = 'UTC' + ( ( timezone_offset > 0 ) ? '+' : '' ) + timezone_offset;
+		document.querySelectorAll( '.editor-panel__right .meta > dl > dd' ).forEach( function( el ){
+			if ( el.textContent.includes( 'UTC' ) ){
+				var new_date = new Date( el.textContent );
+				el.innerHTML= new_date.toLocaleDateString() + ' ' + new_date.toLocaleTimeString() + ' <small>' + timezone_offset +'</small>';
+			}
+		} );
+	}
+
 }
 
 function setLS( name, value ) {
