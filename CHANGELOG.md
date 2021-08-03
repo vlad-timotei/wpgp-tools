@@ -50,6 +50,7 @@
 # v.1.5
 - Feature: Anonymous user
 - Feature: Backup settings
+- Feature: Local date/time
 - Fix: Use symbols in match
 - Fix: Approve with warnings using kb
 - Fix: Prevent error when GP is missing
