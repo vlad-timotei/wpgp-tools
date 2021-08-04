@@ -556,3 +556,43 @@ span.context + span.priority {
 .gd_quicklinks {
 	display:none;
 }
+
+/* Consistency Page*/
+button:disabled,
+button[disabled],
+button:disabled:hover,
+button[disabled]:hover {
+    border: 1px solid #9999997a !important;
+    background-color: #ffffff59 !important;
+    color: #6666668a !important;
+    cursor:not-allowed !important;
+}
+.fire_magic_reject_close_div {
+    float: right;
+}
+button.fire_magic_reject_close {
+    margin:0 5px 0 5px !important;
+    background-color:#b31616 !important;
+    color:white !important;
+    font-size:0.9em;
+}
+button.fire_magic_save_close {
+    background-color:#ffc440 !important;
+    height:35px !important;
+    font-weight:700;
+    font-size:1em !important;
+}
+ul.translations-unique li {
+    padding: 5px;
+}
+#translations-overview ol {
+    margin-left:25px;
+    margin-bottom:25px;
+}
+#bulk-instructions {
+    color: #565656;
+    font-size: 0.9em;
+}
+.wpgpt-bulk-buttons {
+    padding-bottom: 5px;
+}
