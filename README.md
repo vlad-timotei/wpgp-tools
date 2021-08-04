@@ -143,7 +143,7 @@ It adds preview and editor label and a diff highlighter in editor.
 
 ## #6 Other features
 - Keeps the editor in the middle of the screen when Page Up/Page Down shortcuts are used
-- *Added* and *Last modified* in browser's local date format and time zone.
+- *Added* and *Last modified* in browser's local date format and time zone. This works correctly if the device language and time are set to your country language and timezone.
 - Prompts for unsaved strings
 - Adds an Anonymous author checkbox for user filter 
 
