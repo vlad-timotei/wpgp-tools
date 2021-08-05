@@ -140,6 +140,16 @@ function wpgpt_consistency_replace(){
         return;
     }
 
+    /*
+        Draft for plural
+        jQuery( '.translation-wrapper textarea' ).eq(0).text( 'Regret, dar nu ai permisiunile necesare pentru a instala modulul %s. Contactează administratorul acestui site pentru ajutor la instalarea modulului.' );
+        jQuery( '.translation-wrapper textarea' ).eq(1).text( 'Regret, dar nu ai permisiunile necesare pentru a instala modulele %s. Contactează administratorul acestui site pentru ajutor la instalarea modulelor.' );
+        jQuery( '.translation-wrapper textarea' ).eq(2).text( 'Regret, dar nu ai permisiunile necesare pentru a instala modulele %s. Contactează administratorul acestui site pentru ajutor la instalarea modulelor.' );
+        $gp.editor.save( $gp.editor.current.find( 'button.translation-actions__save' ) );
+        setTimeout( function(){ window.close(); }, 3000 );
+
+    */
+
     function wpgpt_download( filename, text) {
         var element = document.createElement( 'a' );
         element.setAttribute( 'href', 'data:text/plain;charset=utf-8,' + encodeURIComponent( text ) );
