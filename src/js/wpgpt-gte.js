@@ -72,7 +72,7 @@ function wpgpt_consistency_replace(){
                 });
                 var original_string = jQuery('#original').val();
                 var current_date = new Date();
-                wpgpt_download( '[WPGPT Log][' + current_date.toLocaleDateString() + '][' + replace_strings_length + ' replacements]', 'Date: ' + current_date.toLocaleDateString() + ' at ' + current_date.toLocaleTimeString() + '\nOriginal: ' + original_string + '\nReplaced with: `' + main_s + '`\n' + replace_strings_length + ' replaced translations:\n' + replace_strings_urls );
+                wpgpt_download( '[' + current_date.toLocaleString( [], { month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit' } ) + '][WPGPT Log][' + replace_strings_length + ' replacements]', 'Date: ' + current_date.toLocaleDateString() + ' at ' + current_date.toLocaleTimeString() + '\nOriginal: ' + original_string + '\nReplaced with: `' + main_s + '`\n' + replace_strings_length + ' replaced translations:\n' + replace_strings_urls );
             } else { alert( 'Phew! Ok!' ); }
         });
 
@@ -95,8 +95,7 @@ function wpgpt_consistency_replace(){
                 });
             var original_string = jQuery('#original').val();
             var current_date = new Date();
-            wpgpt_download( '[WPGPT Log][' + current_date.toLocaleDateString() + '][' + reject_strings_length + ' rejections]', 'Date: ' + current_date.toLocaleDateString() + ' at ' + current_date.toLocaleTimeString() + '\nOriginal: ' + original_string + '\n' + reject_strings_length + ' rejected translations:\n' + reject_strings_urls );
-
+            wpgpt_download( '[' + current_date.toLocaleString( [], { month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit' } ) + '][WPGPT Log][' + reject_strings_length + ' rejections]', 'Date: ' + current_date.toLocaleDateString() + ' at ' + current_date.toLocaleTimeString() + '\nOriginal: ' + original_string + '\n' + reject_strings_length + ' rejected translations:\n' + reject_strings_urls );
         } else { alert( 'Phew! I thought so!' ); }
         });
         return;
