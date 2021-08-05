@@ -577,10 +577,11 @@ button.fire_magic_reject_close {
     font-size:0.9em;
 }
 button.fire_magic_save_close {
-    background-color:#ffc440 !important;
     height:35px !important;
-    font-weight:700;
     font-size:1em !important;
+    background-color: #0085ba !important;
+    color: #fff !important;
+    font-weight: 500;
 }
 ul.translations-unique li {
     padding: 5px;
