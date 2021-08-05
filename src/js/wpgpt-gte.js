@@ -61,7 +61,6 @@ function wpgpt_consistency_replace(){
 				var replace_strings_urls = '', wpgpt_safe_limit_index = 1;
                 replace_strings.each( function(){
                     if ( wpgpt_safe_limit_index > wpgpt_safe_limit ){
-                        console.log( wpgpt_safe_limit_index, wpgpt_safe_limit );
                         return false;
                     }
                     wpgpt_safe_limit_index++;
@@ -86,7 +85,6 @@ function wpgpt_consistency_replace(){
                 var reject_strings_urls = '', wpgpt_safe_limit_index = 1;
 				reject_strings.each( function(){
                     if ( wpgpt_safe_limit_index > wpgpt_safe_limit ){
-                        console.log( wpgpt_safe_limit_index, wpgpt_safe_limit );
                         return false;
                     }
                     wpgpt_safe_limit_index++;
@@ -120,7 +118,6 @@ function wpgpt_consistency_replace(){
                 return;
             }
         }
-        //console.log( 'I will save and close' );
         $gp.editor.save( $gp.editor.current.find( 'button.translation-actions__save' ) );
         setTimeout( function(){ window.close(); }, 3000 );
         return;
@@ -131,13 +128,8 @@ function wpgpt_consistency_replace(){
             window.close();
             return;
         }
-		//$gp.editor.set_status( $gp.editor.current.find( 'button.reject' ), 'rejected');
-        console.log( 'I will reject and close' );
-        //jQuery( '.translation-wrapper textarea' ).eq(0).text( 'Regret, dar nu ai permisiunile necesare pentru a instala modulul %s. Contactează administratorul acestui site pentru ajutor la instalarea modulului.' );
-        //jQuery( '.translation-wrapper textarea' ).eq(1).text( 'Regret, dar nu ai permisiunile necesare pentru a instala modulele %s. Contactează administratorul acestui site pentru ajutor la instalarea modulelor.' );
-        //jQuery( '.translation-wrapper textarea' ).eq(2).text( 'Regret, dar nu ai permisiunile necesare pentru a instala modulele %s. Contactează administratorul acestui site pentru ajutor la instalarea modulelor.' );
-        //$gp.editor.save( $gp.editor.current.find( 'button.translation-actions__save' ) );
-        //setTimeout( function(){ window.close(); }, 3000 );
+		$gp.editor.set_status( $gp.editor.current.find( 'button.reject' ), 'rejected');
+        setTimeout( function(){ window.close(); }, 3000 );
         return;
     }
 
