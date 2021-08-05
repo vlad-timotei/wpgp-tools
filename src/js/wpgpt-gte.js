@@ -109,7 +109,14 @@ function wpgpt_consistency_replace(){
 		var replacement = localStorage.getItem( 'wpgpte_main_string' );
 		if ( replacement == null || replacement == 'undefined' )
 			return;
-		jQuery( '.translation-wrapper textarea' ).eq(0).text( replacement );
+        var this_textareas = jQuery( '.translation-wrapper textarea' );
+		this_textareas.eq(0).text( replacement );
+
+        if ( this_textareas.length > 1 ){
+            jQuery( '.translation-wrapper' ).before( '<br><div style="padding-left: 10px;"><strong >Currently, WPGPT doesn\'t replace plural strings.</strong><br>Please manually replace plurals and then Save.</div>' );
+            return;
+        }
+
         var comment_el = document.querySelector( '.source-details__comment p' );
         if ( comment_el !== null ){
             var comment = comment_el.textContent;
