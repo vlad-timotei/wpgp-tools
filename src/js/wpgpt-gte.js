@@ -10,7 +10,7 @@ function wpgpt_consistency_replace(){
         }
         localStorage.removeItem( 'wpgpte_main_string' );
 
-        var strings_ids = []; var index = 0; var btns; var main_string;
+        var strings_ids = [], index = 0, btns, main_string;
 
         jQuery( '.translations-unique li a.anchor-jumper' ).each( function(){
             strings_ids.push( jQuery( this ).attr( 'href' ).replace( '#', '' ) );
@@ -40,25 +40,27 @@ function wpgpt_consistency_replace(){
                 .before( '<b>This translation will be used to replace all others.</b>' )
                 .remove();
             jQuery( '.consistency-table' ).prepend( '<thead><tr><th colspan="2">These are the transations that will be replaced:</th></tr></thead>' );
+
             localStorage.setItem( 'wpgpte_main_string', main_string );
+
             var id = jQuery( this ).attr( 'id' ).replace( 'choose', '' );
             jQuery( '.delete-consistency-strings' ).prop( 'disabled', false );
-			jQuery( '.fire_magic_save_close' ).show();
+            jQuery( '.fire_magic_save_close' ).show();
             jQuery( '#delete' + id ).click();
             jQuery( '.choose-consistency-string' ).prop( 'disabled', true );
         });
 
         jQuery( '#translations-overview' ).after( '<button style="display:none;" class="fire_magic_save_close">Bulk replace & Save</button>' );
 
-		jQuery( '.fire_magic_save_close' ).click( function(){
-			var main_s= localStorage.getItem( 'wpgpte_main_string' );
-            var replace_strings =  jQuery( '.consistency-table tr td:odd() .meta a' );
+        jQuery( '.fire_magic_save_close' ).click( function(){
+            var main_s = localStorage.getItem( 'wpgpte_main_string' );
+            var replace_strings = jQuery( '.consistency-table tr td:odd() .meta a' );
             var replace_strings_length = ( replace_strings.length > wpgpt_safe_limit ) ? wpgpt_safe_limit : replace_strings.length;
             var confirm_msg = replace_strings_length + ' selected strings will be REPLACED with:\n\n' + main_s + '\n\n';
             confirm_msg += ( ( replace_strings.length > wpgpt_safe_limit ) ? ( 'For safety, only ' + replace_strings_length + ' out of ' + replace_strings.length + ' can be replaced in one go.\n' ) : '' );
             confirm_msg += 'A log of replaced translations will be downloaded. \nAre you sure?';
-			if ( main_s !== 'undefined' && main_s !== null && confirm( confirm_msg) ) {
-				var replace_strings_urls = '', wpgpt_safe_limit_index = 1;
+            if ( main_s !== 'undefined' && main_s !== null && confirm( confirm_msg ) ) {
+                var replace_strings_urls = '', wpgpt_safe_limit_index = 1;
                 replace_strings.each( function(){
                     if ( wpgpt_safe_limit_index > wpgpt_safe_limit ){
                         return false;
@@ -66,39 +68,37 @@ function wpgpt_consistency_replace(){
                     wpgpt_safe_limit_index++;
                     var this_url = jQuery( this ).attr( 'href' );
                     replace_strings_urls +='https://translate.w.org' + this_url + '\n';
-					window.open( this_url + '#magicsaveclose_T_WPORG' );
-				});
+                    window.open( this_url + '#magicsaveclose_T_WPORG' );
+                });
                 var original_string = jQuery('#original').val();
                 var current_date = new Date();
                 wpgpt_download( '[WPGPT Log][' + current_date.toLocaleDateString() + '][' + replace_strings_length + ' replacements]', 'Date: ' + current_date.toLocaleDateString() + ' at ' + current_date.toLocaleTimeString() + '\nOriginal: ' + original_string + '\nReplaced with: `' + main_s + '`\n' + replace_strings_length + ' replaced translations:\n' + replace_strings_urls );
-			
-			} else { alert( 'Phew! Ok!' ); }
-		});
+            } else { alert( 'Phew! Ok!' ); }
+        });
 
-		jQuery( '.fire_magic_reject_close' ).click( function(){
+        jQuery( '.fire_magic_reject_close' ).click( function(){
             var reject_strings =  jQuery( '.consistency-table tr td:odd() .meta a' );
             var reject_strings_length = ( reject_strings.length > wpgpt_safe_limit ) ? wpgpt_safe_limit : reject_strings.length;
             var confirm_msg = reject_strings_length + ' strings will be REJECTED! \n\n';
             confirm_msg += ( (  reject_strings.length > wpgpt_safe_limit ) ? ( 'For safety, only ' + reject_strings_length + ' out of ' + reject_strings.length + ' strings can be rejected in one go.\n' ) : '' );
             confirm_msg += 'A log of rejected translations will be downloaded. \nAre you sure?';
-			if ( confirm( confirm_msg ) ) {
+            if ( confirm( confirm_msg ) ) {
                 var reject_strings_urls = '', wpgpt_safe_limit_index = 1;
-				reject_strings.each( function(){
+                reject_strings.each( function(){
                     if ( wpgpt_safe_limit_index > wpgpt_safe_limit ){
                         return false;
                     }
                     wpgpt_safe_limit_index++;
                     var this_url = jQuery( this ).attr( 'href' );
                     reject_strings_urls +='https://translate.w.org' + this_url + '\n';
-					window.open(  this_url + '#magicrejectclose_T_WPORG' );
-				});
+                    window.open(  this_url + '#magicrejectclose_T_WPORG' );
+                });
             var original_string = jQuery('#original').val();
             var current_date = new Date();
             wpgpt_download( '[WPGPT Log][' + current_date.toLocaleDateString() + '][' + reject_strings_length + ' rejections]', 'Date: ' + current_date.toLocaleDateString() + ' at ' + current_date.toLocaleTimeString() + '\nOriginal: ' + original_string + '\n' + reject_strings_length + ' rejected translations:\n' + reject_strings_urls );
-			
 
         } else { alert( 'Phew! I thought so!' ); }
-		});
+        });
         return;
     }
     if( window.location.href.includes( '#magicsaveclose_T_WPORG' ) ) {
@@ -106,11 +106,12 @@ function wpgpt_consistency_replace(){
             window.close();
             return;
         }
-		var replacement = localStorage.getItem( 'wpgpte_main_string' );
-		if ( replacement == null || replacement == 'undefined' )
-			return;
+        var replacement = localStorage.getItem( 'wpgpte_main_string' );
+        if ( replacement == null || replacement == 'undefined' ) {
+            return;
+        }
         var this_textareas = jQuery( '.translation-wrapper textarea' );
-		this_textareas.eq(0).text( replacement );
+        this_textareas.eq(0).text( replacement );
 
         if ( this_textareas.length > 1 ){
             jQuery( '.translation-wrapper' ).before( '<br><div style="padding-left: 10px;"><strong >Currently, WPGPT doesn\'t replace plural strings.</strong><br>Please manually replace plurals and then Save.</div>' );
@@ -130,12 +131,12 @@ function wpgpt_consistency_replace(){
         return;
     }
 
-	if( window.location.href.includes( '#magicrejectclose_T_WPORG' ) ) {
+    if( window.location.href.includes( '#magicrejectclose_T_WPORG' ) ) {
         if ( $gp_editor_options.can_approve !== '1' ){
             window.close();
             return;
         }
-		$gp.editor.set_status( $gp.editor.current.find( 'button.reject' ), 'rejected');
+        $gp.editor.set_status( $gp.editor.current.find( 'button.reject' ), 'rejected');
         setTimeout( function(){ window.close(); }, 3000 );
         return;
     }
