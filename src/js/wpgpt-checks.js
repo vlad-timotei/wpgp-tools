@@ -528,24 +528,24 @@ function wpgpt_run_checks( original, translated ) {
 		}
 		/* D. Others
 			D. 1. Double spaces */
-		var translated_double_spaces = occurrences( translated, '  ' );
-		var original_double_spaces = occurrences( original, '  ' );
+		var translated_double_spaces = translated.match( /[^ ]* {2,7}[^ ]*/gm ) || [];
+		var original_double_spaces = original.match( /[^ ]* {2,7}[^ ]*/gm ) || [];
 
-		if ( translated_double_spaces > original_double_spaces ) {
-			error_message = '<li alt="Remove this double space.">' + ( translated_double_spaces - original_double_spaces ) + ' double space' + ( ( ( translated_double_spaces - original_double_spaces ) > 1 ) ? 's' : '' ) + '</li>';
+		if ( translated_double_spaces.length > original_double_spaces.length ) {
+			error_message = '<li alt="Remove this double space.">' + ( translated_double_spaces.length - original_double_spaces.length ) + ' double space' + ( ( ( translated_double_spaces.length - original_double_spaces.length ) > 1 ) ? 's' : '' ) + ': ' + '"' + translated_double_spaces.join( '", "' ).replaceAll( ' ', '&nbsp;' ) + '"' + '</li>';
 			switch ( wpgpt_settings.double_spaces.state ) {
 				case 'warning':
 					warnings.others += error_message;
-					highlight_me.push( '  ' );
+					highlight_me = highlight_me.concat( translated_double_spaces );
 					break;
 				case 'notice':
 					notices.others += error_message;
-					highlight_me.push( '  ' );
+					highlight_me = highlight_me.concat( translated_double_spaces );
 					break;
 			}
 		}
-		else if ( wpgpt_settings.double_spaces.state !== 'nothing' && ( translated_double_spaces < original_double_spaces ) ) {
-				notices.others += '<li>' + ( original_double_spaces - translated_double_spaces ) + ' missing double space' + ( ( ( original_double_spaces - translated_double_spaces ) > 1 ) ? 's' : '' ) + '</li>';
+		else if ( wpgpt_settings.double_spaces.state !== 'nothing' && ( translated_double_spaces.length < original_double_spaces.length ) ) {
+				notices.others += '<li>' + ( original_double_spaces.length - translated_double_spaces.length ) + ' missing double space' + ( ( ( original_double_spaces.length - translated_double_spaces.length ) > 1 ) ? 's' : '' ) + '</li>';
 		}
 
 		var findW_list, findW, findW_transl_count;
