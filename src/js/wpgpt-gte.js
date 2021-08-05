@@ -48,7 +48,7 @@ function wpgpt_consistency_replace(){
             jQuery( '.choose-consistency-string' ).prop( 'disabled', true );
         });
 
-        jQuery( '#translations-overview' ).after( '<button style="display:none;" class="fire_magic_save_close">Bulk Replace and Save</button>' );
+        jQuery( '#translations-overview' ).after( '<button style="display:none;" class="fire_magic_save_close">Bulk replace & Save</button>' );
 
 		jQuery( '.fire_magic_save_close' ).click( function(){
 			var main_s= localStorage.getItem( 'wpgpte_main_string' );
@@ -114,7 +114,7 @@ function wpgpt_consistency_replace(){
         if ( comment_el !== null ){
             var comment = comment_el.textContent;
             if ( occurrences( comment, 'name' ) && ( occurrences( comment, 'plugin' ) || occurrences( comment, 'theme' ) ||  occurrences( comment, 'author' ) ) ) {
-            comment_el.innerHTML = comment + '<br><strong style="color:red;">This might be the name of a plugin, theme or author.</strong>';
+                comment_el.innerHTML = comment + '<br><br><strong style="color:red;">This might be the name of a plugin, theme or author.</strong><br> If not, please click Save!';
                 return;
             }
         }
