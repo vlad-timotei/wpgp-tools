@@ -76,7 +76,7 @@ Personalize checks as you see fit:
 
 **Count and match these** is a user defined list of terms or symbols that will be counted both in original and in translation. If counts don't match, a warning will be generated. Separated by comma, no space, case insensitive.
 
-Filter strings based on warnings (count is accurate only on first page load): <br>
+Filter strings based on warnings: <br>
 ![image](https://user-images.githubusercontent.com/65488419/121800720-26715e00-cc3c-11eb-8b29-6e63f5db5b13.png)<br>
 
 ## #3 Locale specific Checks
