@@ -152,17 +152,17 @@ var wpgpt_settings = {
 			'setting_type' : 2,
 			'parent_setting' : 'others'
 		},
-	'last_checked' :{
+	'last_checked' : {
 		'state' : 'never',
 		'parent_setting' : 'none',
 		'setting_type'	: -1
 	},
-	'last_version' :{
+	'last_version' : {
 		'state' : WPGPT_VERSION,
 		'parent_setting' : 'none',
 		'setting_type' : -1
 	},
-	'current_version' :{
+	'current_version' : {
 		'state' : WPGPT_VERSION,
 		'parent_setting' : 'none',
 		'setting_type' : -1
@@ -386,7 +386,8 @@ function wpgpt_version() {
 function wpgpt_check_version() {
     var req = 'https://wptools.vladtimotei.ro/wpgp-tools/';
     jQuery.get( req, function( wpgpt_last_version ) {
-        wpgpt_settings[ 'last_version' ][ 'state' ] = wpgpt_last_version; // to avoid redundancy
+        wpgpt_settings[ 'last_version' ][ 'state' ] = wpgpt_last_version;
+		wpgpt_settings[ 'current_version' ][ 'state' ] = WPGPT_VERSION; // to avoid redundancy
 		wpgpt_update_setting( 'last_checked', Date.now() );
 		if ( wpgpt_new_version( wpgpt_settings[ 'last_version' ][ 'state' ], WPGPT_VERSION ) ) {
 			wpgpt_display_notice();			
