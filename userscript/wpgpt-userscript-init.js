@@ -1,5 +1,5 @@
 /* UserScript Initialization */
-const WPGPT_VERSION = '1.4';
+const WPGPT_VERSION = '1.5';
 
 var wpgpt_warning_icon = 'https://github.com/vlad-timotei/wpgp-tools/raw/main/src/img/warning.png';
 var wpgpt_notice_icon = 'https://github.com/vlad-timotei/wpgp-tools/raw/main/src/img/notice.png';
