@@ -1,4 +1,4 @@
-const WPGPT_VERSION = '1.4';
+const WPGPT_VERSION = '1.5';
 
 /**
  * Sets LocalStorage value.
