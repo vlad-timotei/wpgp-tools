@@ -47,7 +47,7 @@
 - Performance: Removes duplicate jQuery library from content_scripts
 - Performance: Similar loading time with considerably increased features
 
-# v.1.5
+# v.1.5 - 18.08.2021
 - Feature: Anonymous user
 - Feature: Backup settings
 - Feature: Local date/time
@@ -55,3 +55,4 @@
 - Fix: Approve with warnings using kb
 - Fix: Prevent error when GP is missing
 - Enhancement: Refactoring code for performance
+- Compatibility with GlotDict 1.7.0
