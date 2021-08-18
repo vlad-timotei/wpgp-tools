@@ -1,33 +1,16 @@
-# v.1.0 - 11.05.2021
-  * Search in projects
-  * Quick links
-  * Google Translate
-  * Consistency suggestions
-  * General checks
-  * Romanian checks
-  * Custom Shortcuts
+# 1.5
+18.08.2021
+- Feature: Anonymous user
+- Feature: Backup settings
+- Feature: Local date/time
+- Fix: Use symbols in match
+- Fix: Approve with warnings using kb
+- Fix: Prevent error when GP is missing
+- Enhancement: Refactoring code for performance
+- Compatibility with GlotDict 1.7.0
 
-# v.1.1 - 12.05.2021
-* Consistency data fetching performance 
-
-# v.1.2 - 12.05.2021
-* Don't promt to "update" to an older version
-
-# v.1.3 - 23.06.2021
-* Adds end `?` check
-* Adds **custom period** check
-* Adds `Alt + P` shortcut (Firefox users need it)
-* Adds prompt for unsaved strings when leaving the page
-* Improves last character check ([see issue](https://github.com/vlad-timotei/wpgp-tools/issues/1#issuecomment-843997677))
-* Improves design: filters, icons, logo, extension settings page 
-* Improves checks performance by **+15%** and improves results messages
-* Fixes additional `/` in QuickLinks
-* Fixes *Save with warnings* UI inconsistency
-* Fixes GT encodeURIComponent
-* Fixes GT link for locales with a different slug than the one on GP
-* Obsoletes fallback different ending result (now redundant)
-
-# v.1.4 - 20.07.2021
+# 1.4
+20.07.2021
 - Adds: History Count
 - Adds: Consistency count
 - Adds: Check Results Labels
@@ -47,12 +30,35 @@
 - Performance: Removes duplicate jQuery library from content_scripts
 - Performance: Similar loading time with considerably increased features
 
-# v.1.5 - 18.08.2021
-- Feature: Anonymous user
-- Feature: Backup settings
-- Feature: Local date/time
-- Fix: Use symbols in match
-- Fix: Approve with warnings using kb
-- Fix: Prevent error when GP is missing
-- Enhancement: Refactoring code for performance
-- Compatibility with GlotDict 1.7.0
+# 1.3
+23.06.2021
+* Adds end `?` check
+* Adds **custom period** check
+* Adds `Alt + P` shortcut (Firefox users need it)
+* Adds prompt for unsaved strings when leaving the page
+* Improves last character check ([see issue](https://github.com/vlad-timotei/wpgp-tools/issues/1#issuecomment-843997677))
+* Improves design: filters, icons, logo, extension settings page 
+* Improves checks performance by **+15%** and improves results messages
+* Fixes additional `/` in QuickLinks
+* Fixes *Save with warnings* UI inconsistency
+* Fixes GT encodeURIComponent
+* Fixes GT link for locales with a different slug than the one on GP
+* Obsoletes fallback different ending result (now redundant)
+
+# 1.2
+12.05.2021
+* Don't promt to "update" to an older version
+
+# 1.1
+12.05.2021
+* Consistency data fetching performance 
+
+# 1.0
+11.05.2021
+  * Search in projects
+  * Quick links
+  * Google Translate
+  * Consistency suggestions
+  * General checks
+  * Romanian checks
+  * Custom Shortcuts
