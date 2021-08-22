@@ -468,13 +468,29 @@ label.wpgpt-search-plugin-label,
 }
 
 .translation-suggestion__translation.index,
-.consistency-count {
+.consistency_count {
 	padding: 0 4px;
 	color: #666;
+    font-size: 0.9em;
 }
 
-.consistency-count {
+.consistency_count {
 	font-size: 0.8em;
+}
+
+li.consistency_index {
+    font-size: 0.9em;
+    color: grey;
+    border-bottom: 1px dashed #cabfbf;
+}
+
+.consistency_index .copy-full-alternative,
+.consistency_index .consistency_count {
+    float: right;
+}
+
+.consistency_index .copy-full-alternative {
+    box-shadow: none !important;
 }
 
 /* GT Suggestions */
