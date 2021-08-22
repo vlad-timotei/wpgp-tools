@@ -11,11 +11,11 @@ function wpgpt_consistency_replace(){
         var view_unique = document.querySelector( '.translations-unique' );
         if ( view_unique ) {
             view_unique.classList.remove( 'hidden' );
-		}
+        }
 
-        if( jQuery('.consistency-table' ).length ){
+        if( jQuery( '.consistency-table' ).length ){
             jQuery( '#translations-overview p' ).prepend( '<div id="bulk-instructions">To bulk replace translations: <ol><li>Set a translation to replace the others with.</li><li>Choose translations that you don\'t want to be replaced.</li><li>Click "Bulk replace & Save".</li>Note: You need to Allow pop-ups for translate.wordpress.org</ol></div>' );
-            jQuery( '.notice' ).prepend('<div class="fire_magic_reject_close_div">Danger zone: <button class="fire_magic_reject_close">Reject all translations</button></div>');
+            jQuery( '.notice' ).prepend( '<div class="fire_magic_reject_close_div">Danger zone: <button class="fire_magic_reject_close">Reject all translations</button></div>' );
             jQuery( '#translations-overview' ).after( '<button style="display:none;" class="fire_magic_save_close">Bulk replace & Save</button>' );
         }
 
@@ -53,7 +53,7 @@ function wpgpt_consistency_replace(){
             jQuery( '.consistency-table' ).prepend( '<thead><tr><th colspan="2">These are the transations that will be replaced:</th></tr></thead>' );
         });
 
-        jQuery( '.delete-consistency-strings').click( function(){
+        jQuery( '.delete-consistency-strings' ).click( function(){
             jQuery( '.alternative-' + jQuery( this ).attr( 'id' ).replace( 'delete-', '' ) ).remove();
             jQuery( this )
                  .before( 'These strings will not be replaced.' )
@@ -91,7 +91,7 @@ function wpgpt_consistency_replace(){
                     replace_strings_urls +='https://translate.w.org' + this_url + '\n';
                     window.open( this_url + '#magicsaveclose_T_WPORG' );
                 });
-                var original_string = jQuery('#original').val();
+                var original_string = jQuery( '#original' ).val();
                 var current_date = new Date();
                 wpgpt_download( '[' + current_date.toLocaleString( [], { month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit' } ) + '][WPGPT Log][' + replace_strings_length + ' replacements]', 'Date: ' + current_date.toLocaleDateString() + ' at ' + current_date.toLocaleTimeString() + '\nOriginal: ' + original_string + '\nReplaced with: `' + chosen_alternative + '`\n' + replace_strings_length + ' replaced translations:\n' + replace_strings_urls );
             } else { alert( 'Phew! Ok!' ); }
@@ -114,7 +114,7 @@ function wpgpt_consistency_replace(){
                     reject_strings_urls +='https://translate.w.org' + this_url + '\n';
                     window.open(  this_url + '#magicrejectclose_T_WPORG' );
                 });
-            var original_string = jQuery('#original').val();
+            var original_string = jQuery( '#original' ).val();
             var current_date = new Date();
             wpgpt_download( '[' + current_date.toLocaleString( [], { month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit' } ) + '][WPGPT Log][' + reject_strings_length + ' rejections]', 'Date: ' + current_date.toLocaleDateString() + ' at ' + current_date.toLocaleTimeString() + '\nOriginal: ' + original_string + '\n' + reject_strings_length + ' rejected translations:\n' + reject_strings_urls );
         } else { alert( 'Phew! I thought so!' ); }
@@ -155,7 +155,7 @@ function wpgpt_consistency_replace(){
                 return;
             }
         }
-        
+
        $gp.editor.save( $gp.editor.current.find( 'button.translation-actions__save' ) );
        setTimeout( function(){ window.close(); }, 3000 );
        return;
@@ -166,7 +166,7 @@ function wpgpt_consistency_replace(){
             window.close();
             return;
         }
-        $gp.editor.set_status( $gp.editor.current.find( 'button.reject' ), 'rejected');
+        $gp.editor.set_status( $gp.editor.current.find( 'button.reject' ), 'rejected' );
         setTimeout( function(){ window.close(); }, 3000 );
         return;
     }
@@ -179,17 +179,17 @@ function wpgpt_consistency_replace(){
             var alternative_page = alternative_parser.parseFromString( alternative_response , 'text/html' );
             var textareas = jQuery( alternative_page ).find( '.translation-wrapper .textareas' );
             alternatives_forms = [];
-            jQuery( alternative_page ).find( '.translation-form-list .translation-form-list__tab').each( function(){ alternatives_forms.push( jQuery( this ).text().trim() ); } );
+            jQuery( alternative_page ).find( '.translation-form-list .translation-form-list__tab' ).each( function(){ alternatives_forms.push( jQuery( this ).text().trim() ); } );
             var this_alternative = [];
             textareas.each( function() {
-                 this_alternative [ parseInt( jQuery ( this ).data( 'plural-index' ) ) ] =  jQuery( this ).find('textarea').val();
+                 this_alternative [ parseInt( jQuery ( this ).data( 'plural-index' ) ) ] =  jQuery( this ).find( 'textarea' ).val();
             });
             alternatives_data[ alternative_id ] = this_alternative;
             var plurals = '';
             for ( var i = 1; i < this_alternative.length; i++ ){
                plurals += '<div><span class="plural_form">' + alternatives_forms[ i ] + ':</span> ' + this_alternative[ i ].replaceAll( '&', '&amp;' ).replaceAll( '<', '&lt;' ).replaceAll( '>', '&gt;' ) + '</div>';
             }
-           
+
             if ( this_alternative.length !== 1 ){
                 jQuery( alternative_element ).closest( 'li' ).prepend( '<span class="plural_form">' + alternatives_forms[ 0 ] + ':</span> ' );
                 jQuery( alternative_element ).after( plurals );
@@ -197,7 +197,7 @@ function wpgpt_consistency_replace(){
 
             if ( is_last ) {
                jQuery( '.wpgpt_loading' ).hide( 100 );
-               jQuery( '.choose-consistency-string, .delete-consistency-strings ').show( 100 );
+               jQuery( '.choose-consistency-string, .delete-consistency-strings ' ).show( 100 );
             }
           } )
           .catch( error => console.log( error ) );
