@@ -29,6 +29,7 @@ Adjust the **Settings** for this extension in the top blue navigation menu *Tool
  - Button or Alt + C
  - Translation Memory sometimes has bad translations (see [#meta5340](https://meta.trac.wordpress.org/ticket/5340))
  - This shows Consistency translations directly in the editor panel
+ - Also displays plural forms
  - Button or Alt + 2 to copy 2nd suggestion, 
  - Keyboard shortcut works for suggestion 1, 2 and 3
 
@@ -145,7 +146,8 @@ It adds preview and editor label and a diff highlighter in editor.
 - Keeps the editor in the middle of the screen when Page Up/Page Down shortcuts are used
 - *Added* and *Last modified* in browser's local date format and time zone. This works correctly if the device language and time are set to your country language and timezone.
 - Prompts for unsaved strings
-- Adds an Anonymous author checkbox for user filter 
+- Adds an Anonymous author checkbox for user filter
+- Consistency Bulk replacement for GTEs (disabled by default)
 
 ![anonymous_user](https://user-images.githubusercontent.com/65488419/127504757-2547f47b-d8fb-47f7-b362-47eb6037597b.gif)
 
