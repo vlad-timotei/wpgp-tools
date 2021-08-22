@@ -613,3 +613,16 @@ ul.translations-unique li {
 .wpgpt-bulk-buttons {
     padding-bottom: 5px;
 }
+.plural_form {
+    display: inline-block;
+    text-align: right;
+    font-size: 0.75em;
+    color: #8a8a8a;
+    width: 6%;
+    min-width: fit-content;
+}
+.anchor-jumper,
+.translations-unique small {
+    float: right;
+    color:grey;
+}
