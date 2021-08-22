@@ -8,7 +8,11 @@ function wpgpt_consistency_replace(){
         var wpgpt_safe_limit = 5;
         localStorage.removeItem( 'wpgpt_chosen_alternative' );
 
-        document.querySelector( '.translations-unique' ).classList.remove( 'hidden' );
+        var view_unique = document.querySelector( '.translations-unique' );
+        if ( view_unique ) {
+            view_unique.classList.remove( 'hidden' );
+		}
+
         if( jQuery('.consistency-table' ).length ){
             jQuery( '#translations-overview p' ).prepend( '<div id="bulk-instructions">To bulk replace translations: <ol><li>Set a translation to replace the others with.</li><li>Choose translations that you don\'t want to be replaced.</li><li>Click "Bulk replace & Save".</li></ol></div>' );
             jQuery( '.notice' ).prepend('<div class="fire_magic_reject_close_div">Danger zone: <button class="fire_magic_reject_close">Reject all translations</button></div>');
