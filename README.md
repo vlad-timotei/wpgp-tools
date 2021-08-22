@@ -29,9 +29,8 @@ Adjust the **Settings** for this extension in the top blue navigation menu *Tool
  - Button or Alt + C
  - Translation Memory sometimes has bad translations (see [#meta5340](https://meta.trac.wordpress.org/ticket/5340))
  - This shows Consistency translations directly in the editor panel
- - Also displays plural forms
- - Button or Alt + 2 to copy 2nd suggestion, 
- - Keyboard shortcut works for suggestion 1, 2 and 3
+ - Button or Alt + the number of the suggestion to replace it in the textarea
+- Also displays plural forms
 
 **GoogleTranslate** button 
 - Button or Alt + G opens new tab with current translated string in current locale, if locale exists on GT. ([missing locales in GT](https://gist.github.com/vlad-timotei/3f558547ac2bc0f3120f869fba7d8bec))
@@ -138,7 +137,7 @@ It adds preview and editor label and a diff highlighter in editor.
 | --- | --- | --- |
 | **F**uzzy | Ctrl + \* (numeric keyboard) | Ctrl + Shift + **F**  | 
 | **C**onsistency | Alt + **C** | 
-| Copy consistency #**3** | Alt + **3** | *works for 1-3* |
+| Copy consistency #**3** | Alt + **3** | *works for 1-9* |
 | **G**oogle Translate | Alt + **G** | 
 | Focus on **S**earch in **P**rojects  |   Alt + **S**  |  Alt + **P** |
 

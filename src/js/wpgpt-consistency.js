@@ -301,7 +301,7 @@ function consistency_tools() {
 		event.target.parentNode.removeChild( event.target );
 		if ( translations_forms > 1 ) {
 			$addEvtListener( 'click', '.copy-full-alternative', wpgpt_copy_full_alternative );
-			this_panel_content.querySelectorAll( '.wpgpt_consistency .copy-suggestion' ).forEach( function( el ) { el.style.display = 'none'; } );
+			this_panel_content.querySelectorAll( '.wpgpt_consistency .copy-suggestion' ).forEach( function( el ) { el.parentNode.removeChild( el ) } );
 			this_panel_content.querySelectorAll( '.wpgpt_consistency .translation-suggestion' ).forEach( function( el ) { el.classList.remove( 'translation-suggestion' ); } );
 			this_panel_content.querySelectorAll( '.wpgpt_consistency .with-tooltip' ).forEach( function( el ) { el.classList.remove( 'with-tooltip' ); } );
 		}
@@ -511,42 +511,41 @@ function consistency_tools() {
 		window.onbeforeunload = function() { wpgpt_close_tabs( 'all' ); };
 		document.addEventListener( 'keydown', ( event ) => {
 			if ( event.altKey ) {
-				switch( event.which ) {
-					case 67: wpgpt_do_shortcut( '.wpgpt_get_consistency' ); // Alt + C  - Show consistency suggestions
-					break;
+				if ( ! isNaN( parseInt( event.key ) ) ) {
+					wpgpt_do_shortcut( '.suggestions__translation-consistency .copy-suggestion', parseInt( event.key ), true,  '.suggestions__translation-consistency .copy-full-alternative' ); // Alt + number - Copy consistency suggestion
+				} else {
+					switch( event.key.toLowerCase() ) {
+						case 'c': wpgpt_do_shortcut( '.wpgpt_get_consistency' ); // Alt + C  - Show consistency suggestions
+						break;
 
-					case 49: wpgpt_do_shortcut( '.suggestions__translation-consistency .copy-suggestion', 0 ); // Alt + 1 - Copy first consistency suggestion
-					break;
+						case 'g': wpgpt_do_shortcut( '.wpgpt_get_gt' ); // Alt + G - Google Translate string
+						break;
 
-					case 50: wpgpt_do_shortcut( '.suggestions__translation-consistency .copy-suggestion', 1 ); // Alt + 2 - Copy second consistency suggestion
-					break;
-
-					case 51: wpgpt_do_shortcut( '.suggestions__translation-consistency .copy-suggestion', 2 ); // Alt + 3 - Copy third consistency suggestion
-					break;
-
-					case 71: wpgpt_do_shortcut( '.wpgpt_get_gt' ); // Alt + G - Google Translate string
-					break;
-
-					case 80: wpgpt_do_shortcut( '.wpgpt-search-word', 0, false ); // Alt + P - Focus on Search ( since 1.3 for Firefox users )
-					break;
-
-					case 83: wpgpt_do_shortcut( '.wpgpt-search-word', 0, false ); // Alt + S - Focus on Search
-					break;
+						case 'p':
+						case 'f':
+							wpgpt_do_shortcut( '.wpgpt-search-word', 0, false ); // Alt + P OR Alt + S - Focus on Search
+						break;
+					}
 				}
 			}
 		}, false );
 	}
 
-	function wpgpt_do_shortcut( target_selector, target_eq = 0, click_evt = true ) {
+	function wpgpt_do_shortcut( target_selector, target_eq = 1, click_evt = true, alternative_target_selector = false ) {
 		var el = document.querySelectorAll( '.editor' );
 		for ( var i = 0; i < el.length; i++ ) {
 			if ( el[ i ].style.display == 'table-row' ) {
-				if ( click_evt ) {
-					el[ i ].querySelectorAll( target_selector )[ target_eq ].click();
-					return;
-				}
-				else {
-					el[ i ].querySelectorAll( target_selector )[ target_eq ].focus();
+				var target_element = el[ i ].querySelectorAll( target_selector )[ target_eq - 1 ];
+				if ( target_element ) {
+					if ( click_evt ) {
+						target_element.click();
+						return;
+					} else {
+						target_element.focus();
+						return;
+					}
+				} else if ( alternative_target_selector ) {
+					wpgpt_do_shortcut( alternative_target_selector, target_eq, click_evt );
 					return;
 				}
 			}
