@@ -5,7 +5,7 @@ if ( wpgpt_settings.bulk_consistency.state == 'enabled' ) {
 }
 function wpgpt_consistency_replace(){
     if ( window.location.href.includes( 'wordpress.org/consistency' ) ) {
-        var wpgpt_safe_limit = 5;
+        var wpgpt_safe_limit = 25;
         localStorage.removeItem( 'wpgpt_chosen_alternative' );
 
         var view_unique = document.querySelector( '.translations-unique' );
@@ -14,7 +14,7 @@ function wpgpt_consistency_replace(){
 		}
 
         if( jQuery('.consistency-table' ).length ){
-            jQuery( '#translations-overview p' ).prepend( '<div id="bulk-instructions">To bulk replace translations: <ol><li>Set a translation to replace the others with.</li><li>Choose translations that you don\'t want to be replaced.</li><li>Click "Bulk replace & Save".</li></ol></div>' );
+            jQuery( '#translations-overview p' ).prepend( '<div id="bulk-instructions">To bulk replace translations: <ol><li>Set a translation to replace the others with.</li><li>Choose translations that you don\'t want to be replaced.</li><li>Click "Bulk replace & Save".</li>Note: You need to Allow pop-ups for translate.wordpress.org</ol></div>' );
             jQuery( '.notice' ).prepend('<div class="fire_magic_reject_close_div">Danger zone: <button class="fire_magic_reject_close">Reject all translations</button></div>');
             jQuery( '#translations-overview' ).after( '<button style="display:none;" class="fire_magic_save_close">Bulk replace & Save</button>' );
         }
@@ -156,8 +156,8 @@ function wpgpt_consistency_replace(){
             }
         }
         
-       //$gp.editor.save( $gp.editor.current.find( 'button.translation-actions__save' ) );
-       //setTimeout( function(){ window.close(); }, 3000 );
+       $gp.editor.save( $gp.editor.current.find( 'button.translation-actions__save' ) );
+       setTimeout( function(){ window.close(); }, 3000 );
        return;
     }
 
@@ -166,8 +166,8 @@ function wpgpt_consistency_replace(){
             window.close();
             return;
         }
-        //$gp.editor.set_status( $gp.editor.current.find( 'button.reject' ), 'rejected');
-        //setTimeout( function(){ window.close(); }, 3000 );
+        $gp.editor.set_status( $gp.editor.current.find( 'button.reject' ), 'rejected');
+        setTimeout( function(){ window.close(); }, 3000 );
         return;
     }
 
