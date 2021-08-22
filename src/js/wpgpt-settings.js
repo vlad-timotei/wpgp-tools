@@ -286,7 +286,7 @@ function wpgpt_settings_page() {
 						'<div class="gp-row"><div class="gp-shortcut"><span class="f">F</span>uzzy</div><div class="gp-shortcut">Ctrl + <span class="f big">*</span><span class="small note">(numeric keyboard)</span></div><div class="gp-shortcut">Ctrl + Shift + <span class="f">F</span></div></div>' +
 						'<div class="gp-row"><div class="gp-shortcut"><span class="r">G</span>oogle Translate<span class="note">*</span></div><div class="gp-shortcut">Alt + <span class="r">G</span></div></div>' +
 						'<div class="gp-row"><div class="gp-shortcut"><span class="s">C</span>onsistency<span class="note">*</span></div><div class="gp-shortcut">Alt + <span class="s">C</span></div></div>' +
-						'<div class="gp-row"><div class="gp-shortcut">Copy consistency* <span class="c">#2</span></div><div class="gp-shortcut">Alt + <span class="c">2</span></div><div class="gp-shortcut"><span class="small note">works with #1, #2 and #3</span></div></div>' +
+						'<div class="gp-row"><div class="gp-shortcut">Copy consistency* <span class="c">#2</span></div><div class="gp-shortcut">Alt + <span class="c">2</span></div><div class="gp-shortcut"><span class="small note">works for suggestions #1 to #9</span></div></div>' +
 						'<div class="gp-row"><div class="gp-shortcut">Focus on <span class="a">S</span>earch in <span class="a">P</span>rojects<span class="note">*</span></div><div class="gp-shortcut">Alt + <span class="a">S</span></div><div class="gp-shortcut">Alt + <span class="a">P</span></div></div>' +
 						'<span class="small note">*if setting is enabled<span>' +
 						'</div><br><br>';
