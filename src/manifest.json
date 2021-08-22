@@ -14,7 +14,7 @@
 		"js/wpgpt-functions.js",
 		"js/wpgpt-shortcuts.js",
 		"js/wpgpt-history.js",
-		"js/wpgpt-gte.js",
+		"js/wpgpt-bulk-consistency.js",
 		"img/warning.png",
 		"img/notice.png"
 	],

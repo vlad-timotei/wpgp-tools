@@ -152,6 +152,12 @@ var wpgpt_settings = {
 			'setting_type' : 2,
 			'parent_setting' : 'others'
 		},
+		'bulk_consistency' : {
+			'desc' : 'Bulk Consistency replacement <br><small>(only works for GTEs)</small>',
+			'state' : 'disabled',
+			'setting_type' : 2,
+			'parent_setting' : 'others'
+		},
 	'last_checked' : {
 		'state' : 'never',
 		'parent_setting' : 'none',

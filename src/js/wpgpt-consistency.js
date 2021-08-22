@@ -67,7 +67,7 @@ function consistency_tools() {
 			$addElement( '.filter-toolbar', 'beforebegin', wpgpt_page_notice );
 		} else {
 			$addElement( '.consistency-form', 'beforebegin', wpgpt_page_notice );
-			//$toggleEl( '.translations-unique', 'hidden' );
+			document.querySelector( '.translations-unique' ).classList.remove( 'hidden' );
 		}
 	}
 
