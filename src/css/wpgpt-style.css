@@ -583,15 +583,18 @@ button[disabled]:hover {
     color: #6666668a !important;
     cursor:not-allowed !important;
 }
+
 .fire_magic_reject_close_div {
     float: right;
 }
+
 button.fire_magic_reject_close {
     margin:0 5px 0 5px !important;
     background-color:#b31616 !important;
     color:white !important;
     font-size:0.9em;
 }
+
 button.fire_magic_save_close {
     height:35px !important;
     font-size:1em !important;
@@ -599,20 +602,38 @@ button.fire_magic_save_close {
     color: #fff !important;
     font-weight: 500;
 }
-ul.translations-unique li {
-    padding: 5px;
+
+button.choose-consistency-string {
+    margin-right: 5px !important;
 }
+
+.translations-unique {
+    list-style: none;
+}
+
+.translations-unique li {
+    padding: 5px;
+    border-bottom: 1px dashed #c7c7c7;
+}
+
+.translations-unique li:last-child {
+    border-bottom: none;
+}
+
 #translations-overview ol {
     margin-left:25px;
-    margin-bottom:25px;
+    margin-bottom:20px;
 }
+
 #bulk-instructions {
     color: #565656;
     font-size: 0.9em;
 }
+
 .wpgpt-bulk-buttons {
     padding-bottom: 5px;
 }
+
 .plural_form {
     display: inline-block;
     text-align: right;
@@ -622,6 +643,7 @@ ul.translations-unique li {
     min-width: fit-content;
     margin-right: 5px;
 }
+
 .anchor-jumper,
 .translations-unique small {
     float: right;
