@@ -32,7 +32,7 @@ function wpgpt_do_bulk_consistency(){
         if ( comment_el !== null ) {
             var comment = comment_el.textContent;
             if ( occurrences( comment, 'name' ) && ( occurrences( comment, 'plugin' ) || occurrences( comment, 'theme' ) ||  occurrences( comment, 'author' ) ) ) {
-                comment_el.innerHTML = comment + '<br><br><strong style="color:red;">This might be the name of a plugin, theme or author.</strong><br> If not, please click Save!';
+                jQuery( comment_el ).after( '<br><strong style="color:red;">This might be the name of a plugin, theme or author.</strong><br> If not, please click Save!' );
                 return;
             }
         }
