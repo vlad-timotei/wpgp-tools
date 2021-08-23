@@ -617,7 +617,7 @@ function wpgpt_run_checks( original, translated ) {
 			findW_list = [ "'", '&quot;', '&#34;', '&apos;', '&#39;', '&ldquo;', '&#8220;', '“' ];
 			for ( findW of findW_list) {
 				if ( occurrences( translated, findW ) ) {
-					error_message = '<li class="has-highlight" alt="Replace these wrong quotes.">Wrong quote: <b>' + findW.replace( '&', '&amp;' ) + '</b></li>';
+					error_message = '<li class="has-highlight" alt="Replace these wrong quotes.">Wrong quote: <b>' + findW.replaceAll( '&', '&amp;' ) + '</b></li>';
 					switch ( wpgpt_settings.ro_quotes.state ) {
 						case 'warning':
 							warnings.ro_quotes = error_message;
