@@ -658,7 +658,7 @@ function wpgpt_bulk_consistency(){
         }
         var replace_strings = [], all_a = document.querySelectorAll( '.consistency-table tr td' );
         for ( var i = 0; i < all_a.length; i++ ){
-            if ( i % 2 ) {
+            if ( i % 2 ) { // Odd selector
                 replace_strings.push( all_a[ i ].querySelector( '.meta a ') );
             }
         }
