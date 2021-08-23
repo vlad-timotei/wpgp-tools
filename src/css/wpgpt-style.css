@@ -620,6 +620,7 @@ ul.translations-unique li {
     color: #8a8a8a;
     width: 6%;
     min-width: fit-content;
+    margin-right: 5px;
 }
 .anchor-jumper,
 .translations-unique small {
