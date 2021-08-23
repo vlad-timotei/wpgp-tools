@@ -493,6 +493,12 @@ li.consistency_index {
     box-shadow: none !important;
 }
 
+.wpgpt_consistency .space {
+    background: #cbcdce;
+    white-space: pre-wrap;
+    opacity: .4;
+}
+
 /* GT Suggestions */
 .wpgpt_get_gt {
 	margin-left: 10px !important;
