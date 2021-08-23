@@ -275,12 +275,20 @@ function consistency_tools() {
 					wpgpt_consistency_suggestions.append( wpgpt_consistency_item_header );
 				}
 
-				var meta_info;
+				var meta_info, raw_alternative;
+				var space_span = $createElement( 'span', { 'class': 'space' }, ' ' );
+
 				for ( var consistency_form_i = 0; consistency_form_i < this_translation_text.length; consistency_form_i++ ) {
 					wpgpt_consistency_item = document.createElement( 'li' );
 					wpgpt_consistency_item_div = $createElement( 'div', { 'class': 'translation-suggestion with-tooltip', 'role': 'button', 'aria-pressed': 'false', 'aria-label': 'Copy translation', 'tabindex': '0' } );
-					wpgpt_consistency_item_translation = $createElement( 'span', { 'class': 'translation-suggestion__translation' }, this_translation_text[ consistency_form_i ] );
-					
+					wpgpt_consistency_item_translation = $createElement( 'span', { 'class': 'translation-suggestion__translation' } );
+					raw_alternative = this_translation_text[ consistency_form_i ].split( ' ' );
+					for ( var j = 0; j < raw_alternative.length; j++ ) {
+						wpgpt_consistency_item_translation.appendChild( document.createTextNode( raw_alternative[ j ]	) );
+							if ( j < raw_alternative.length - 1 ) {
+								wpgpt_consistency_item_translation.append( space_span.cloneNode( true ) );
+							}
+					}
 					meta_info = ( translations_forms > 1 ) ? `${ this_translation_forms[ consistency_form_i ] }: ` : `${ consistency_alternatives_i + 1 }: `;
 					wpgpt_consistency_item_meta = $createElement( 'span', { 'class': 'translation-suggestion__translation index' }, meta_info );
 					
@@ -726,7 +734,7 @@ function wpgpt_bulk_consistency(){
 
             for ( var i = 1; i < this_alternative.length; i++ ) {
 				var plurals_item = document.createElement( 'div' );
-				var raw_alternative = this_alternative[ i ].replaceAll( '&', '&amp;' ).replaceAll( '<', '&lt;' ).replaceAll( '>', '&gt;' ).split( ' ' );
+				var raw_alternative = this_alternative[ i ].split( ' ' );
 				for ( var j = 0; j < raw_alternative.length; j++ ) {
 					plurals_item.appendChild( document.createTextNode( raw_alternative[ j ]	) );
 					if ( j < raw_alternative.length - 1 ) {
