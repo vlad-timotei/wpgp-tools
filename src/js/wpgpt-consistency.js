@@ -573,8 +573,10 @@ function wpgpt_bulk_consistency(){
 		return; 
 	}
 	var translations_overview = document.getElementById( 'translations-overview');
-	translations_overview.classList.add( 'wporg-notice-notice' );
-	translations_overview.classList.remove( 'wporg-notice-warning' );
+	if ( translations_overview ) { 
+		translations_overview.classList.add( 'wporg-notice-notice' );
+		translations_overview.classList.remove( 'wporg-notice-warning' );
+	}
 
     var wpgpt_safe_limit = 25;
     localStorage.removeItem( 'wpgpt_chosen_alternative' );
