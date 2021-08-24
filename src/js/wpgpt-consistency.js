@@ -106,7 +106,7 @@ function consistency_tools() {
 			wpgpt_search_label_plugin,
 			$createElement( 'input', { 'class': 'wpgpt-search-plugin-slug hidden', 'name': 'wpgpt_search_plugin_slug', 'placeholder': ' enter slug', 'type': 'text', 'size': '15' } ),
 			wpgpt_search_label_consistency,
-			$createElement( 'button', { 'class': 'wpgpt-search-close-tabs', 'style': 'display:none;' }, 'Close all tabs' )
+			$createElement( 'button', { 'class': 'wpgpt-search-close-tabs', 'style': 'display:none;', 'type': 'button' }, 'Close all tabs' )
 		);
 
 		$addElements( '.editor-panel .editor-panel__right .panel-content', 'beforeend', wpgpt_search_output );
@@ -131,7 +131,8 @@ function consistency_tools() {
 			function( event ) {
 				event.preventDefault();
 				wpgpt_do_search( event.target.elements.wpgpt_search_word.value, event.target.elements.wpgpt_search_plugin_slug.value );
-			} );
+			}
+		);
 		$addClickEvt( '.wpgpt-search-close-tabs', wpgpt_close_tabs, [ 'all' ] );
 		$addClickEvt( '.wpgpt-search-plugin-option', $toggleEl, [ '.wpgpt-search-plugin-slug', 'hidden' ] );
 		$addEvtListener( 'click', '.wpgpt-search-option', wpgpt_do_search_options );
