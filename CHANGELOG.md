@@ -1,3 +1,11 @@
+# 1.6
+Date to be determined
+- Feature: Plurals in Consistency Suggestions
+- Feature: Highlight spaces in Consistency Suggestions
+- Feature: Bulk Consistency Tools for GTEs
+- Fix: Close all tabs button behaviour
+- Enhancement: Security Improvements
+
 # 1.5
 18.08.2021
 - Feature: Anonymous user
