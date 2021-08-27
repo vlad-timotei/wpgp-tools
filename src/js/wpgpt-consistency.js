@@ -556,17 +556,20 @@ function consistency_tools() {
 		var local_time = new Date();
 		var timezone_offset = local_time.getTimezoneOffset() / 60 * -1;
 		timezone_offset = 'UTC' + ( ( timezone_offset !== 0 ) ? ( ( ( timezone_offset > 0 ) ? '+' : '' ) + timezone_offset ) : '' );
-		document.querySelectorAll( '.editor-panel__right .meta > dl > dd' ).forEach( function( el ){
-			if ( el.textContent.includes( 'UTC' ) ){
-				var date_data = el.textContent.split( ' ', 3 );
-				var date_date = date_data[ 0 ].split( '-', 3 );
-				var date_time = date_data[ 1 ].split( ':', 3 );
-				var new_date =  new Date( Date.UTC( date_date[ 0 ], date_date[ 1 ] - 1, date_date[ 2 ], date_time[ 0 ], date_time[ 1 ], date_time[ 2 ] ) );				
-				el.innerHTML = new_date.toLocaleDateString() + ' ' + new_date.toLocaleTimeString() + ' <small>' + timezone_offset +'</small>';
-			}
+		var localized_date = $createElement( 'span', { 'class': 'localized_date' } );
+		localized_date.append( $createElement( 'span', { 'class': 'timezone' }, timezone_offset ) );
+		document.querySelectorAll( '.editor-panel__right .meta' ).forEach( function( meta_panel ){
+			var el = meta_panel.querySelectorAll( 'dd' )[ 1 ];
+			var date_data = el.textContent.split( ' ', 3 );
+			var date_date = date_data[ 0 ].split( '-', 3 );
+			var date_time = date_data[ 1 ].split( ':', 3 );
+			var new_date =  new Date( Date.UTC( date_date[ 0 ], date_date[ 1 ] - 1, date_date[ 2 ], date_time[ 0 ], date_time[ 1 ], date_time[ 2 ] ) );	
+			var this_localized_date = localized_date.cloneNode( true );
+			this_localized_date.prepend( new_date.toLocaleDateString() + ' ' + new_date.toLocaleTimeString() );
+			el.insertAdjacentElement( 'afterend', this_localized_date );
+			el.style.display = 'none';
 		} );
 	}
-
 }
 
 function wpgpt_bulk_consistency(){

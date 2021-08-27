@@ -41,20 +41,16 @@ function wpgpt_check_all_translations() {
 
 		for ( var original_i = 0, translated_i = 0; translated_i < translated.length; translated_i++ ) {
 			check_results = wpgpt_run_checks( original[original_i], translated[translated_i] );
-			edit_check_list += '<dl><dt>Warnings';
+			edit_check_list += '<div class="wpgpt-warnings-list"> Warnings';
 			edit_check_list += ( ( translated.length > 1 ) ? ( ' #'+( translated_i + 1 ) ) : '' );
-			edit_check_list += ':</dt><dd>';
+			edit_check_list += ':';
 			edit_check_list += ( check_results.warnings != 'none' ) ?
-									( '<ul class="wpgpt-warnings-list">' + check_results.warnings + '</ul>' ) :
+									( '<ul>' + check_results.warnings + '</ul>' ) :
 									' <b>&#10003;</b>';
-			edit_check_list += '</dd></dl>';
+			edit_check_list += '</div>';
 
 			if ( check_results.notices!= 'none' ) {
-				edit_check_list += '<dl><dt>Notices' +
-				( ( translated.length > 1 ) ? ( ' #'+( translated_i + 1 ) ) : '' ) +
-				':</dt><dd>' +
-				'<ul class="wpgpt-notices-list">' + check_results.notices + '</ul>' +
-				'</dd></dl>';
+				edit_check_list += '<div class="wpgpt-notices-list"> Notices' + ( ( translated.length > 1 ) ? ( ' #'+( translated_i + 1 ) ) : '' ) +': <ul>' + check_results.notices + '</ul></div>';
 				has_notice = true;
 				if ( wpgpt_settings.checks_labels.state == 'enabled' ) {
 					$translation.find( '.translation-text' ).eq( translated_i ).after( '<ul class="wpgpt-notice-labels">' + check_results.notices + '</ul>' );
@@ -79,7 +75,7 @@ function wpgpt_check_all_translations() {
 
 		if ( missing_translation ) {
 			has_warning = true;
-			edit_check_list += '<dl><dd><ul class="wpgpt-warnings-list empty"><li>Empty translation!</li></ul></dd></dl>';
+			edit_check_list += '<div class="wpgpt-warnings-list empty"><ul><li>Empty translation!</li></ul></div>';
 			$translation.find( '.missing' ).before( '<div class="wpgpt-warning-labels"><li>Empty translation!</li></div>' );
 		}
 
@@ -152,24 +148,21 @@ function wpgpt_check_this_translation( translation_id_e ) {
 
 	for ( var original_i = 0, translated_i = 0; translated_i < translated.length; translated_i++ ) {
 		check_results = wpgpt_run_checks( original[ original_i ], translated[ translated_i ] );
-		edit_check_list += '<dl><dt>Warnings' +
+		edit_check_list += '<div class="wpgpt-warnings-list">Warnings' +
 		( ( translated.length > 1 ) ? ( ' #'+( translated_i + 1 ) ) : '' ) +
-		':</dt><dd>' +
 		(
 				( check_results.warnings != 'none' ) ?
-					( '<ul class="wpgpt-warnings-list">' + check_results.warnings + '</ul>' ) :
+					( '<ul>' + check_results.warnings + '</ul>' ) :
 					' <b>&#10003;</b>'
 		) +
-		'</dd></dl>';
+		'</div>';
 
 		this_labels[ translated_i ] = { 'notices': '', 'warnings': '' };
 
 		if ( check_results.notices!= 'none' ) {
-			edit_check_list += '<dl><dt>Notices' +
+			edit_check_list += '<div class="wpgpt-notices-list"> Notices' +
 			( ( translated.length > 1 ) ? ( ' #' + ( translated_i + 1 ) ) : '' ) +
-			':</dt><dd>' +
-			'<ul class="wpgpt-notices-list">' + check_results.notices + '</ul>' +
-			'</dd></dl>';
+			': <ul>' + check_results.notices + '</ul></div>';
 			has_notice = true;
 			this_labels[ translated_i ].notices = '<ul class="wpgpt-notice-labels">' + check_results.notices + '</ul>';
 		}
