@@ -207,19 +207,39 @@ span.small {
     padding: 25px;
 }
 
+/* Meta */
+.localized_date {
+    font-weight: 700;
+}
+
+.localized_date .timezone {
+    padding-left: 3px;
+    font-size: 0.8em;
+}
+
 /* Checks */
 .wpgpt-checks-list {
     word-break: break-all;
+    font-size: 14px;
 }
 
-ul.wpgpt-warnings-list li {
+.wpgpt-warnings-list ul li {
 	color: red;
+    font-weight: 700;
 }
 
-ul.wpgpt-warnings-list.empty li {
+.wpgpt-warnings-list.empty ul li {
 	color: red;
 	list-style: none;
 	margin-left: -20px;
+}
+
+.wpgpt-notices-list ul li {
+    font-weight: 700;
+}
+
+.wpgpt-warnings-list + .wpgpt-notices-list {
+    margin-top:5px;
 }
 
 .wpgpt-ignore-warnings {
