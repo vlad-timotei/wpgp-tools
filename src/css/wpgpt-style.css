@@ -217,6 +217,31 @@ span.small {
     font-size: 0.8em;
 }
 
+/* Notranslate */
+.wpgpt_notranslate {
+    margin-bottom: 15px;
+    color: #666666;
+}
+
+.wpgpt_notranslate div span {
+    font-size: 0.85em;
+}
+
+.wpgpt_notranslate a {
+    display: inline-block;
+    padding: 1px 6px;
+    border: 1px solid #b4b4b4;
+    margin: 5px 3px 0;
+    cursor: pointer;
+    color: #5d5c5c !important;
+    text-decoration: none;
+    background-color: #ebf5fd;
+}
+
+.wpgpt_notranslate a.used {
+    opacity: 0.5;
+}
+
 /* Checks */
 .wpgpt-checks-list {
     word-break: break-all;

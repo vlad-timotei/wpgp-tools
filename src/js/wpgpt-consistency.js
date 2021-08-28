@@ -61,6 +61,7 @@ function consistency_tools() {
 	wpgpt_gt();
 	wpgpt_events();
 	wpgpt_localdate();
+	wpgpt_notranslate();
 
 	function wpgpt_page( page_type ) {
 		$scrollTo( '.breadcrumb', 'smooth', 'start' );
@@ -568,6 +569,65 @@ function consistency_tools() {
 			this_localized_date.prepend( new_date.toLocaleDateString() + ' ' + new_date.toLocaleTimeString() );
 			el.insertAdjacentElement( 'afterend', this_localized_date );
 			el.style.display = 'none';
+		} );
+	}
+
+	function wpgpt_notranslate() {
+		const notranslate_header = document.createElement( 'div' );
+		notranslate_header.innerHTML = '<span>&#9654;</span> Non-translatable:';
+		document.querySelectorAll( '.preview .original' ).forEach( ( original ) => {
+			let has_notranslate = false;
+			const editor = original.parentNode.nextElementSibling;
+			const notranslate = $createElement( 'div', { 'class': 'wpgpt_notranslate' } );
+			const notranslate_fragment = document.createDocumentFragment();
+			original.querySelector( '.original-text' ).parentNode.querySelectorAll( '.original-text > .notranslate' ).forEach(
+				( item ) => {
+					const notranslate_item = document.createElement( 'a' );
+					notranslate_item.setAttribute( 'title', 'Click to add this item to textarea' );
+					notranslate_item.textContent = item.textContent;
+					notranslate_fragment.appendChild( notranslate_item );
+					has_notranslate = true;
+				}
+			);
+			if ( has_notranslate ) {
+				notranslate.prepend( notranslate_header.cloneNode( true ) );
+				notranslate.append( notranslate_fragment );
+				editor.querySelector( '.suggestions-wrapper' ).prepend( notranslate );
+			}
+		} );
+	
+		$addEvtListener( 'click', '.translation-form-list li button', ( ev ) => {
+			const textareas = ev.currentTarget.closest( '.translation-wrapper' ).querySelectorAll( '.textareas' )[ ev.currentTarget.dataset.pluralIndex ];
+			textareas.classList.add( 'active' );
+			textareas.querySelector( 'textarea' ).focus();
+		} );
+	
+		$addEvtListener( 'focus', '.editor textarea', wpgpt_update_notranslate );
+		$addEvtListener( 'keyup', '.editor textarea', wpgpt_update_notranslate );
+		$addEvtListener( 'click', '.wpgpt_notranslate a', ( ev ) => {
+			const editor_panel = ev.currentTarget.closest( '.editor-panel__left' );
+			const current_textarea = editor_panel.querySelector( '.textareas.active textarea' );
+			current_textarea.value += ev.currentTarget.textContent;
+			current_textarea.focus();
+		} );
+	
+		const unique_editor = document.querySelector( '.editor[style*="display: table-row;"] textarea' );
+		if ( unique_editor ) {
+			unique_editor.blur();
+			unique_editor.focus();
+		}
+	}
+	
+	function wpgpt_update_notranslate( ev ) {
+		let textarea_content = ev.currentTarget.value;
+		ev.currentTarget.closest( '.editor-panel__left' ).querySelectorAll( '.wpgpt_notranslate a' ).forEach( ( notranslate_item ) => {
+			const notranslate_text = notranslate_item.textContent;
+			if ( textarea_content.indexOf( notranslate_text ) > -1 ) {
+				notranslate_item.classList.add( 'used' );
+				textarea_content = textarea_content.replace( notranslate_text, '' );
+			} else {
+				notranslate_item.classList.remove( 'used' );
+			}
 		} );
 	}
 }
