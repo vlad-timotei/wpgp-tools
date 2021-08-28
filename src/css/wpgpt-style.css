@@ -242,6 +242,10 @@ span.small {
     opacity: 0.5;
 }
 
+.editor .notranslate {
+    background-color: #ebf5fd;
+}
+
 /* Checks */
 .wpgpt-checks-list {
     word-break: break-all;
