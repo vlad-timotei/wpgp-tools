@@ -795,11 +795,12 @@ function wpgpt_bulk_consistency(){
             });
             alternatives_data[ alternative_id ] = this_alternative;
 
-            var plurals = $createElement( 'div' ), plurals_item;
+			var plurals = document.createDocumentFragment();
+			var plurals_item;
 			var space_span = $createElement( 'span', { 'class': 'space' }, ' ' );
 
             for ( var i = 1; i < this_alternative.length; i++ ) {
-				var plurals_item = document.createElement( 'div' );
+				var plurals_item = document.createDocumentFragment();
 				var raw_alternative = this_alternative[ i ].split( ' ' );
 				for ( var j = 0; j < raw_alternative.length; j++ ) {
 					plurals_item.appendChild( document.createTextNode( raw_alternative[ j ]	) );
