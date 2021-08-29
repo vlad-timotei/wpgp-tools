@@ -708,3 +708,9 @@ button.choose-consistency-string {
     float: right;
     color:grey;
 }
+
+.wpgpt-bulk-warning {
+    padding: 10px 15px;
+    color: red;
+    font-weight: 600;
+}

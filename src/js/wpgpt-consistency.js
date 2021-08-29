@@ -736,7 +736,7 @@ function wpgpt_bulk_consistency(){
         var chosen_alternative = '';
         if ( chosen_alternative_data.length > 1 ) {
 			chosen_alternative_data.forEach( ( alternative, alternative_i ) => {
-                chosen_alternative += alternative_forms[ alternative_i ] + ': ' + alternative + '\n';
+                chosen_alternative += alternative_forms_name[ alternative_i ] + ': ' + alternative + '\n';
             } );
         } else {
             chosen_alternative = chosen_alternative_data[ 0 ];

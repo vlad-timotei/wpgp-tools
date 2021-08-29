@@ -3,36 +3,44 @@ if ( wpgpt_settings.bulk_consistency.state == 'enabled' ) {
 }
 function wpgpt_do_bulk_consistency(){
     if ( window.location.href.includes( '#magicsaveclose_T_WPORG' ) ) {
+        var wpgpt_bulk_warning = $createElement( 'div', { 'class': 'wpgpt-bulk-warning' } );
         if ( $gp_editor_options.can_approve !== '1' ) {
-            jQuery( '.translation-wrapper' ).before( '<br><div style="padding-left: 10px; color:red;">WPGPT: You don\'t have the required permissions for this project!</div>' );
+            wpgpt_bulk_warning.textContent = 'WPGPT: You don\'t have the required permissions for this project!';
+            $addElement( '.translation-wrapper', 'beforebegin', wpgpt_bulk_warning );
             setTimeout( function(){ window.close(); }, 5000 );
             return;
         }
         var replacement_alternative = localStorage.getItem( 'wpgpt_chosen_alternative' );
         if ( replacement_alternative == null || replacement_alternative == 'undefined' ) {
-            jQuery( '.translation-wrapper' ).before( '<br><div style="padding-left: 10px; color:red;">WPGPT: Empty alternative! Please try again!</div>' );
+            wpgpt_bulk_warning.textContent = 'WPGPT: Empty alternative! Please try again!';
+            $addElement( '.translation-wrapper', 'beforebegin', wpgpt_bulk_warning );
             return;
         }
         replacement_alternative = JSON.parse( replacement_alternative );
-        var this_textareas = jQuery( '.translation-wrapper textarea' );
-        if ( this_textareas.length !== replacement_alternative.length ) {
-            jQuery( '.translation-wrapper' ).before( '<br><div style="padding-left: 10px; color:red;">WPGPT: The number of plural forms doesn\'t match. Please try again.</div>' );
+
+        var translation_forms = document.querySelectorAll( '.translation-wrapper textarea' );
+        if ( translation_forms.length !== replacement_alternative.length ) {
+            wpgpt_bulk_warning.textContent = 'WPGPT: The number of plural forms doesn\'t match. Please try again.';
+            $addElement( '.translation-wrapper', 'beforebegin', wpgpt_bulk_warning );
             return;
         }
 
-        for ( var i = 0; i < this_textareas.length; i++ ) {
-            if ( replacement_alternative[ i ] === '' ) {
-                jQuery( '.translation-wrapper' ).before( '<br><div style="padding-left: 10px; color:red;">WPGPT: One or more translations are empty. Please try again.</div>' );
+        translation_forms.forEach( ( form, form_i ) => {
+            if ( replacement_alternative[ form_i ] === '' ) {
+                wpgpt_bulk_warning.textContent = 'WPGPT: One or more translations are empty. Please try again.';
+                $addElement( '.translation-wrapper', 'beforebegin', wpgpt_bulk_warning );
                 return;
             }
-            jQuery( this_textareas[ i ] ).text( replacement_alternative [ i ] );
-        }
+            form.value = replacement_alternative [ form_i ];
+        } );
 
-        var comment_el = document.querySelector( '.source-details__comment p' );
+        var comment_el = document.querySelector( '.source-details__comment' );
         if ( comment_el !== null ) {
             var comment = comment_el.textContent;
             if ( occurrences( comment, 'name' ) && ( occurrences( comment, 'plugin' ) || occurrences( comment, 'theme' ) ||  occurrences( comment, 'author' ) ) ) {
-                jQuery( comment_el ).after( '<br><strong style="color:red;">This might be the name of a plugin, theme or author.</strong><br> If not, please click Save!' );
+                wpgpt_bulk_warning.innerHTML = 'WPGPT: This might be the name of a plugin, theme or author. <br>If not, please click Save!';
+                $addElement( '.translation-wrapper', 'beforebegin', wpgpt_bulk_warning );
+                comment_el.open = true;      
                 return;
             }
         }
