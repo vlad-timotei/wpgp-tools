@@ -606,10 +606,15 @@ function consistency_tools() {
 		$addEvtListener( 'focus', '.editor textarea', wpgpt_update_notranslate );
 		$addEvtListener( 'keyup', '.editor textarea', wpgpt_update_notranslate );
 		$addEvtListener( 'click', '.wpgpt_notranslate a', ( ev ) => {
-			const editor_panel = ev.currentTarget.closest( '.editor-panel__left' );
-			const current_textarea = editor_panel.querySelector( '.textareas.active textarea' );
-			current_textarea.value += ev.currentTarget.textContent;
+			const current_textarea = ev.currentTarget.closest( '.editor-panel__left' ).querySelector( '.textareas.active textarea' );
+			const selection = {
+				start:		current_textarea.selectionStart,
+				end:	 	current_textarea.selectionEnd,
+			};
+			const new_position = selection.start + ev.currentTarget.textContent.length;
+			current_textarea.value = current_textarea.value.slice( 0, selection.start ) + ev.currentTarget.textContent + current_textarea.value.slice( selection.end );
 			current_textarea.focus();
+			current_textarea.setSelectionRange( new_position, new_position );
 		} );
 	
 		const unique_editor = document.querySelector( '.editor[style*="display: table-row;"] textarea' );
