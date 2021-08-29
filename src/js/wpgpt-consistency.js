@@ -198,9 +198,9 @@ function consistency_tools() {
 
 	function wpgpt_do_search_options( event ) {
 		wpgpt_search_settings[ event.target.dataset.searchproject ] = event.target.checked;
-		var el = document.querySelectorAll( '.wpgpt-search-option' );
-		for ( var i = 0; i < el.length; i++ )
-			el[ i ].checked = wpgpt_search_settings[ el[ i ].dataset.searchproject ];
+		document.querySelectorAll( '.wpgpt-search-option' ).forEach( ( el, i ) => {
+			el.checked = wpgpt_search_settings[ el.dataset.searchproject ];
+		} );
 		setLS( 'wpgpt-search', JSON.stringify( wpgpt_search_settings ) );
 	}
 
@@ -330,13 +330,12 @@ function consistency_tools() {
 		}
 	}
 
-	function wpgpt_copy_full_alternative( event ){
+	function wpgpt_copy_full_alternative( event ) {
 		var panel_content = event.target.closest( '.panel-content' );
-		var translations_textareas = panel_content.querySelectorAll( '.translation-wrapper textarea' );
 		var alternative_id = event.currentTarget.dataset.alternative_id;
-		for ( var i = 0; i < translations_textareas.length; i++ ) {
-			translations_textareas[ i ].value = panel_content.querySelector( `.consistency_alternative__${ alternative_id }_${ i }` ).textContent;
-		}
+		panel_content.querySelectorAll( 'textarea' ).forEach( ( textarea, i ) => {
+			textarea.value = panel_content.querySelector( `.consistency_alternative__${ alternative_id }_${ i }` ).textContent;
+		} );
 		panel_content.querySelector( ' .textareas.active textarea' ).focus();
 	}
 
