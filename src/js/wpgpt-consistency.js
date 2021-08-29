@@ -500,21 +500,21 @@ function consistency_tools() {
 		document.addEventListener( 'keydown', ( event ) => {
 			if ( event.altKey ) {
 				if ( ! isNaN( parseInt( event.key ) ) ) {
-					wpgpt_do_shortcut( '.suggestions__translation-consistency .copy-suggestion', parseInt( event.key ), true,  '.suggestions__translation-consistency .copy-full-alternative' ); // Alt + number - Copy consistency suggestion
+					wpgpt_do_event( '.suggestions__translation-consistency .copy-suggestion', parseInt( event.key ), 'click', '.suggestions__translation-consistency .copy-full-alternative' ); // Alt + number - Copy consistency suggestion
 				} else {
 					switch( event.key.toLowerCase() ) {
-						case 'c': wpgpt_do_shortcut( '.wpgpt_get_consistency' ); // Alt + C  - Show consistency suggestions
+						case 'c': wpgpt_do_event( '.wpgpt_get_consistency' ); // Alt + C  - Show consistency suggestions
 						break;
 
-						case 'g': wpgpt_do_shortcut( '.wpgpt_get_gt' ); // Alt + G - Google Translate string
+						case 'g': wpgpt_do_event( '.wpgpt_get_gt' ); // Alt + G - Google Translate string
 						break;
 
-						case 'n':  wpgpt_do_shortcut( '.wpgpt_notranslate_copy_all' ) // Alt + N - Copy all non-translatable strings
+						case 'n':  wpgpt_do_event( '.wpgpt_notranslate_copy_all' ) // Alt + N - Copy all non-translatable strings
 						break; 
 
 						case 'p':
 						case 's':
-							wpgpt_do_shortcut( '.wpgpt-search-word', 1, false ); // Alt + P OR Alt + S - Focus on Search
+							wpgpt_do_event( '.wpgpt-search-word', 1, 'focus' ); // Alt + P OR Alt + S - Focus on Search
 						break;
 					}
 				}
@@ -522,24 +522,22 @@ function consistency_tools() {
 		}, false );
 	}
 
-	function wpgpt_do_shortcut( target_selector, target_eq = 1, click_evt = true, alternative_target_selector = false ) {
-		var el = document.querySelectorAll( '.editor' );
-		for ( var i = 0; i < el.length; i++ ) {
-			if ( el[ i ].style.display == 'table-row' ) {
-				var target_element = el[ i ].querySelectorAll( target_selector )[ target_eq - 1 ];
-				if ( target_element ) {
-					if ( click_evt ) {
-						target_element.click();
-						return;
-					} else {
-						target_element.focus();
-						return;
-					}
-				} else if ( alternative_target_selector ) {
-					wpgpt_do_shortcut( alternative_target_selector, target_eq, click_evt );
-					return;
-				}
+	function wpgpt_do_event( target_selector, target_index = 1, event_type = 'click', alternative_target_selector = false ) {
+		const open_editor = document.querySelector( '.editor[style*="display: table-row;"]' );
+		if ( ! open_editor ) {
+			return;
+		}
+		const target_element = open_editor.querySelectorAll( target_selector )[ target_index - 1 ];
+		if ( target_element ) {
+			if ( event_type === 'click' ) {
+				target_element.click();
+			} else {
+				target_element.focus();
 			}
+			return;
+		}
+		if ( alternative_target_selector ) {
+			wpgpt_do_event( alternative_target_selector, target_index, event_type );
 		}
 	}
 
