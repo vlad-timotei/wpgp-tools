@@ -140,6 +140,7 @@ It adds preview and editor label and a diff highlighter in editor.
 | Copy consistency #**3** | Alt + **3** | *works for 1-9* |
 | **G**oogle Translate | Alt + **G** | 
 | Focus on **S**earch in **P**rojects  |   Alt + **S**  |  Alt + **P** |
+| Insert all **N**on-translatables | Alt + **N** | 
 
 ## #6 Other features
 - Keeps the editor in the middle of the screen when Page Up/Page Down shortcuts are used
