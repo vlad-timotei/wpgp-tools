@@ -160,13 +160,14 @@ function consistency_tools() {
 
 		if ( searching_for != '' && ( also_searching_in_plugin != '' || !wpgpt_search_settings.plugin ) ) {
 			wpgpt_close_tabs( 'searching' );
-			for ( const [ s_key, s_value ] of Object.entries( search_url ) ) {
-				if ( wpgpt_search_settings[ s_key ] ) {
-					tabs[ s_key ] = window.open( s_value, '_blank' );
-					tabs_state[ s_key ] = 'opened';
+			Object.entries( search_url ).forEach( ( url ) => {
+				const [ key, value ] = url;
+				if ( wpgpt_search_settings[ key ] ) {
+					tabs[ key ] = window.open( value, '_blank' );
+					tabs_state[ key ] = 'opened';
 					any_tab = 1;
 				}
-			}
+			} );
 			if ( any_tab ) {
 				$showEl( '.wpgpt-search-close-tabs' );
 			}
@@ -187,12 +188,13 @@ function consistency_tools() {
 	}
 
 	function wpgpt_close_tabs( tabs_group ) {
-		for ( const [ tab_key ] of Object.entries( tabs_state ) ) {
-			if ( ( tabs_state[ tab_key ] === 'opened' ) && ( tabs_group == 'all' || ( tab_key !== 'gt' && tab_key !== 'references' && tab_key !== 'panel_links'  ) ) ) {
+		Object.entries( tabs_state ).forEach( ( tab ) => {
+			const [ tab_key, tab_value ] = tab;
+			if ( ( tab_value === 'opened' ) && ( tabs_group == 'all' || ( tab_key !== 'gt' && tab_key !== 'references' && tab_key !== 'panel_links'  ) ) ) {
 				tabs[ tab_key ].close();
 				tabs_state[ tab_key ] = 'closed';
 			}
-		}
+		} );
 		$hideEl( '.wpgpt-search-close-tabs' );
 	}
 
@@ -280,21 +282,21 @@ function consistency_tools() {
 				var meta_info, alternative_as_words;
 				var space_span = $createElement( 'span', { 'class': 'space' }, ' ' );
 
-				for ( var consistency_form_i = 0; consistency_form_i < this_translation_text.length; consistency_form_i++ ) {
+				this_translation_text.forEach( ( form_text, form_text_i ) => {
 					wpgpt_consistency_item = document.createElement( 'li' );
 					wpgpt_consistency_item_div = $createElement( 'div', { 'class': 'translation-suggestion with-tooltip', 'role': 'button', 'aria-pressed': 'false', 'aria-label': 'Copy translation', 'tabindex': '0' } );
 					wpgpt_consistency_item_translation = $createElement( 'span', { 'class': 'translation-suggestion__translation' } );
-					alternative_as_words = this_translation_text[ consistency_form_i ].split( ' ' );
+					alternative_as_words = form_text.split( ' ' );
 					alternative_as_words.forEach( ( word, word_i ) => {
 						wpgpt_consistency_item_translation.appendChild( document.createTextNode( word ) );
 							if ( word_i < alternative_as_words.length - 1 ) {
 								wpgpt_consistency_item_translation.append( space_span.cloneNode( true ) );
 							}
 					} );
-					meta_info = ( translations_forms > 1 ) ? `${ this_translation_forms[ consistency_form_i ] }: ` : `${ consistency_alternatives_i + 1 }: `;
+					meta_info = ( translations_forms > 1 ) ? `${ this_translation_forms[ form_text_i ] }: ` : `${ consistency_alternatives_i + 1 }: `;
 					wpgpt_consistency_item_meta = $createElement( 'span', { 'class': 'translation-suggestion__translation index' }, meta_info );
 					
-					wpgpt_consistency_item_raw = $createElement( 'span', { 'class': `translation-suggestion__translation-raw consistency_alternative__${ consistency_alternatives_i }_${ consistency_form_i }`, 'aria-hidden': 'true' }, this_translation_text[ consistency_form_i ] );
+					wpgpt_consistency_item_raw = $createElement( 'span', { 'class': `translation-suggestion__translation-raw consistency_alternative__${ consistency_alternatives_i }_${ form_text_i }`, 'aria-hidden': 'true' }, form_text );
 					wpgpt_consistency_item_button = $createElement( 'button', { 'type': 'button', 'class': 'copy-suggestion' }, 'Copy' );
 					wpgpt_consistency_item_translation.prepend( wpgpt_consistency_item_meta );
 					
@@ -306,7 +308,7 @@ function consistency_tools() {
 					wpgpt_consistency_item_div.append( wpgpt_consistency_item_translation, wpgpt_consistency_item_raw, wpgpt_consistency_item_button );
 					wpgpt_consistency_item.append( wpgpt_consistency_item_div );
 					wpgpt_consistency_suggestions.append( wpgpt_consistency_item );
-				}
+				} );
 			}
 		} else {
 			wpgpt_consistency_suggestions = 'No suggestions.';
@@ -685,17 +687,16 @@ function wpgpt_bulk_consistency(){
     } );
 	
 	var unique_translations = document.querySelectorAll( '.translations-unique li a.anchor-jumper' );
-    for ( var i = 0; i < unique_translations.length; i++ ) {
-        var unique_translation_id = unique_translations[ i ].href.split( '#' )[ 1 ];
+	unique_translations.forEach( ( translation, translation_i ) => {
+        var translation_id = translation.href.split( '#' )[ 1 ];
         var bulk_buttons = $createElement( 'div', { 'class': 'wpgpt-bulk-buttons' } );
         bulk_buttons.append(
-            $createElement( 'button', { 'id': `choose-${ unique_translation_id }`, 'class': 'choose-consistency-string', 'type': 'button' }, 'Set this translation as replacement' ),
-            $createElement( 'button', { 'id': `delete-${ unique_translation_id }`, 'class': 'delete-consistency-strings', 'type': 'button', 'disabled': 'disabled' }, 'Do not replace this translation' )
+            $createElement( 'button', { 'id': `choose-${ translation_id }`, 'class': 'choose-consistency-string', 'type': 'button' }, 'Set this translation as replacement' ),
+            $createElement( 'button', { 'id': `delete-${ translation_id }`, 'class': 'delete-consistency-strings', 'type': 'button', 'disabled': 'disabled' }, 'Do not replace this translation' )
         );
-        unique_translations[ i ].insertAdjacentElement( 'afterend', bulk_buttons );
-        var is_last = ( i === ( unique_translations.length - 1 ) ) ? true : false;
-        wpgpt_get_alternative( alternatives_url[ unique_translation_id ], unique_translation_id, unique_translations[ i ], is_last );
-    }
+        translation.insertAdjacentElement( 'afterend', bulk_buttons );
+        wpgpt_get_alternative( alternatives_url[ translation_id ], translation_id, translation, translation_i === ( unique_translations.length - 1 ) );
+    } );
 
     $addEvtListener( 'click', '.choose-consistency-string', wpgpt_choose_alternative );
     function wpgpt_choose_alternative( event ){
@@ -731,15 +732,15 @@ function wpgpt_bulk_consistency(){
         var chosen_alternative_data = JSON.parse( localStorage.getItem( 'wpgpt_chosen_alternative' ) );
         var chosen_alternative = '';
         if ( chosen_alternative_data.length > 1 ) {
-            for ( var i = 0; i < chosen_alternative_data.length; i++ ) {
-                chosen_alternative += alternatives_forms[ i ] + ': ' + chosen_alternative_data[ i ] + '\n';
-            }
+			chosen_alternative_data.forEach( ( alternative, alternative_i ) => {
+                chosen_alternative += alternatives_forms[ alternative_i ] + ': ' + alternative + '\n';
+            } );
         } else {
             chosen_alternative = chosen_alternative_data[ 0 ];
         }
         var replace_strings = [];
-		document.querySelectorAll( '.consistency-table tr td' ).forEach( ( td, i ) => {
-            if ( i % 2 ) { // Odd selector
+		document.querySelectorAll( '.consistency-table tr td' ).forEach( ( td, td_i ) => {
+            if ( td_i % 2 ) {
                 replace_strings.push( td.querySelector( '.meta a ') );
             }
         } );
@@ -769,12 +770,12 @@ function wpgpt_bulk_consistency(){
 
     $addEvtListener( 'click', '.fire_magic_reject_close', wpgpt_fire_reject_close );
     function wpgpt_fire_reject_close( event ){
-        var reject_strings = [], all_a = document.querySelectorAll( '.consistency-table tr td' );
-        for ( var i = 0; i < all_a.length; i++ ){
-            if ( i % 2 ) {
-                reject_strings.push( all_a[ i ].querySelector( '.meta a ') );
+        var reject_strings = [];
+		document.querySelectorAll( '.consistency-table tr td' ).forEach( ( td, td_i ) => {
+            if ( td_i % 2 ) {
+                reject_strings.push( td.querySelector( '.meta a ') );
             }
-        }
+        } );
         var reject_strings_length = ( reject_strings.length > wpgpt_safe_limit ) ? wpgpt_safe_limit : reject_strings.length;
         var confirm_msg = reject_strings_length + ' strings will be REJECTED! \n\n';
         confirm_msg += ( (  reject_strings.length > wpgpt_safe_limit ) ? ( 'For safety, only ' + reject_strings_length + ' out of ' + reject_strings.length + ' strings can be rejected in one go.\n' ) : '' );
@@ -811,21 +812,23 @@ function wpgpt_bulk_consistency(){
             alternatives_data[ alternative_id ] = this_alternative;
 
 			var plurals = document.createElement( 'div' );
-			var plurals_item;
 			var space_span = $createElement( 'span', { 'class': 'space' }, ' ' );
 
-            for ( var i = 1; i < this_alternative.length; i++ ) {
+			this_alternative.forEach( ( form, form_i ) => {
+				if ( form_i === 0 ) {
+					return;
+				}
 				var plurals_item = document.createElement( 'div' );
-				var raw_alternative = this_alternative[ i ].split( ' ' );
-				for ( var j = 0; j < raw_alternative.length; j++ ) {
-					plurals_item.appendChild( document.createTextNode( raw_alternative[ j ]	) );
-					if ( j < raw_alternative.length - 1 ) {
+				var alternative_as_words = form.split( ' ' );
+				alternative_as_words.forEach( ( word, word_i ) => {
+					plurals_item.appendChild( document.createTextNode( word	) );
+					if ( word_i < alternative_as_words.length - 1 ) {
 						plurals_item.append( space_span.cloneNode( true ) );
 					}
-				}
-				plurals_item.prepend( $createElement( 'span', { 'class': 'plural_form' }, `${ alternatives_forms[ i ] }:` ) );
+				} );
+				plurals_item.prepend( $createElement( 'span', { 'class': 'plural_form' }, `${ alternatives_forms[ form_i ] }:` ) );
                 plurals.append( plurals_item );
-            }
+            } );
 
             if ( this_alternative.length !== 1 ) {
 				document.querySelector( '.translations-unique' ).classList.add( 'plural-unique' );
