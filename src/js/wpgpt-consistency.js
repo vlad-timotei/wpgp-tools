@@ -513,8 +513,8 @@ function consistency_tools() {
 						break; 
 
 						case 'p':
-						case 'f':
-							wpgpt_do_shortcut( '.wpgpt-search-word', 0, false ); // Alt + P OR Alt + S - Focus on Search
+						case 's':
+							wpgpt_do_shortcut( '.wpgpt-search-word', 1, false ); // Alt + P OR Alt + S - Focus on Search
 						break;
 					}
 				}
