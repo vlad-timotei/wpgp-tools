@@ -337,6 +337,7 @@ function consistency_tools() {
 		for ( var i = 0; i < translations_textareas.length; i++ ) {
 			translations_textareas[ i ].value = panel_content.querySelector( `.consistency_alternative__${ alternative_id }_${ i }` ).textContent;
 		}
+		panel_content.querySelector( ' .textareas.active textarea' ).focus();
 	}
 
 	function wpgpt_quicklinks(){
