@@ -6,7 +6,7 @@ const WPGPT_VERSION = '1.5';
  * @param {String} name
  * @param {String} value
  */
-function setLS( name, value ){
+function wpgpt_setLS( name, value ){
   localStorage.setItem( name, value );
 }
 
@@ -16,7 +16,7 @@ function setLS( name, value ){
  * @param {String} name
  * @returns {String}
  */
-function getLS( name ){
+function wpgpt_getLS( name ){
   return localStorage.getItem( name );
 }
 
@@ -25,7 +25,7 @@ function getLS( name ){
  * 
  * @param {String} name
  */
-function delLS( name ){
+function wpgpt_delLS( name ){
   localStorage.removeItem( name );
 }
 
@@ -37,7 +37,7 @@ function delLS( name ){
  * @param {String} textContent
  * @returns {Element}
  */
- function $createElement( tagName = 'div', attributes = {}, textContent = '' ) {
+ function $wpgpt_createElement( tagName = 'div', attributes = {}, textContent = '' ) {
 	var element = document.createElement( tagName );
 	for ( var attribute in attributes ) {
 	  if ( attributes.hasOwnProperty( attribute ) ) {
@@ -55,7 +55,7 @@ function delLS( name ){
  * @param {('beforebegin' | 'afterbegin' | 'beforeend' | 'afterend')} el_position
  * @param {Element} new_element
  */
-function $addElement( target_selector, el_position, new_element ){
+function $wpgpt_addElement( target_selector, el_position, new_element ){
 	var el = document.querySelector( target_selector );
 	if ( el !== null ) {
 		el.insertAdjacentElement( el_position , new_element );
@@ -69,7 +69,7 @@ function $addElement( target_selector, el_position, new_element ){
  * @param {('beforebegin' | 'afterbegin' | 'beforeend' | 'afterend')} el_position
  * @param {Element} new_element
  */
-function $addElements( target_selector, el_position, new_element ) {
+function $wpgpt_addElements( target_selector, el_position, new_element ) {
 	document.querySelectorAll( target_selector ).forEach( function( el ){
 	  el.insertAdjacentElement( el_position , new_element.cloneNode( true ) );
 	} );
@@ -82,7 +82,7 @@ function $addElements( target_selector, el_position, new_element ) {
  * @param {String} target_selector This must be valid CSS syntax.
  * @param {Function} function_to_call
  */
- function $addEvtListener( event_name, target_selector, function_to_call ) {
+ function $wpgpt_addEvtListener( event_name, target_selector, function_to_call ) {
 	document.querySelectorAll( target_selector ).forEach( function ( el ){
 		el.addEventListener( event_name, function_to_call );
 	} );
@@ -94,7 +94,7 @@ function $addElements( target_selector, el_position, new_element ) {
  * @param {String} target_selector This must be valid CSS syntax.
  * @param {String} el_class
  */
-function $toggleEl( target_selector, el_class ) {
+function $wpgpt_toggleEl( target_selector, el_class ) {
 	document.querySelectorAll( target_selector ).forEach( function( el ){
 		el.classList.toggle( el_class );
 	} );
@@ -105,7 +105,7 @@ function $toggleEl( target_selector, el_class ) {
  * 
  * @param {String} target_selector This must be valid CSS syntax.
  */
-function $showEl( target_selector ) {
+function $wpgpt_showEl( target_selector ) {
 	document.querySelectorAll( target_selector ).forEach( function( el ){
 		el.style.display = 'inline-block';
 	} );	
@@ -116,7 +116,7 @@ function $showEl( target_selector ) {
  * 
  * @param {String} target_selector This must be valid CSS syntax.
  */
-function $hideEl( target_selector ) {
+function $wpgpt_hideEl( target_selector ) {
 	document.querySelectorAll( target_selector ).forEach( function( el ){
 		el.style.display = 'none';
 	} );		
@@ -128,7 +128,7 @@ function $hideEl( target_selector ) {
  * @param {String} target_selector This must be valid CSS syntax.
  * @param {String} new_txt 
  */
-function $setTextContent( target_selector, new_txt ) {
+function $wpgpt_setTextContent( target_selector, new_txt ) {
 	document.querySelectorAll( target_selector ).forEach( function( el ) {
 		el.textContent = new_txt;
 	} );
