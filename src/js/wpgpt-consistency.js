@@ -277,20 +277,20 @@ function consistency_tools() {
 					wpgpt_consistency_suggestions.append( wpgpt_consistency_item_header );
 				}
 
-				var meta_info, raw_alternative;
+				var meta_info, alternative_as_words;
 				var space_span = $createElement( 'span', { 'class': 'space' }, ' ' );
 
 				for ( var consistency_form_i = 0; consistency_form_i < this_translation_text.length; consistency_form_i++ ) {
 					wpgpt_consistency_item = document.createElement( 'li' );
 					wpgpt_consistency_item_div = $createElement( 'div', { 'class': 'translation-suggestion with-tooltip', 'role': 'button', 'aria-pressed': 'false', 'aria-label': 'Copy translation', 'tabindex': '0' } );
 					wpgpt_consistency_item_translation = $createElement( 'span', { 'class': 'translation-suggestion__translation' } );
-					raw_alternative = this_translation_text[ consistency_form_i ].split( ' ' );
-					for ( var j = 0; j < raw_alternative.length; j++ ) {
-						wpgpt_consistency_item_translation.appendChild( document.createTextNode( raw_alternative[ j ]	) );
-							if ( j < raw_alternative.length - 1 ) {
+					alternative_as_words = this_translation_text[ consistency_form_i ].split( ' ' );
+					alternative_as_words.forEach( ( word, word_i ) => {
+						wpgpt_consistency_item_translation.appendChild( document.createTextNode( word ) );
+							if ( word_i < alternative_as_words.length - 1 ) {
 								wpgpt_consistency_item_translation.append( space_span.cloneNode( true ) );
 							}
-					}
+					} );
 					meta_info = ( translations_forms > 1 ) ? `${ this_translation_forms[ consistency_form_i ] }: ` : `${ consistency_alternatives_i + 1 }: `;
 					wpgpt_consistency_item_meta = $createElement( 'span', { 'class': 'translation-suggestion__translation index' }, meta_info );
 					
@@ -673,16 +673,16 @@ function wpgpt_bulk_consistency(){
 	var replace_btn = $createElement( 'button', { 'class': 'fire_magic_save_close', 'style': 'display:none;' }, 'Bulk replace & Save' );
 	$addElement( '#translations-overview', 'afterend', replace_btn );
 
-    var consistency_rows = document.querySelectorAll( '.consistency-table tbody tr' );
-    var alternative_id, alternatives_url = {};
-    for ( var i = 0; i < consistency_rows.length; i++ ) {
-        var row_id =  consistency_rows[ i ].id;
-        if ( row_id ) { // Alternative header
+	var alternative_id, alternatives_url = {};
+	var consistency_rows = document.querySelectorAll( '.consistency-table tbody tr' );
+	consistency_rows.forEach( ( row, row_i ) => {
+        var row_id =  row.id;
+        if ( row_id ) { // Alternative's header
             alternative_id = row_id;
-            alternatives_url[ row_id ] = consistency_rows[ i + 1 ].querySelectorAll( 'td .meta a' )[ 1 ].href;
+            alternatives_url[ row_id ] = consistency_rows[ row_i + 1 ].querySelectorAll( 'td .meta a' )[ 1 ].href;
         }
-        consistency_rows[ i ].classList.add( 'alternative-' + alternative_id );
-    }
+        row.classList.add( 'alternative-' + alternative_id );
+    } );
 	
 	var unique_translations = document.querySelectorAll( '.translations-unique li a.anchor-jumper' );
     for ( var i = 0; i < unique_translations.length; i++ ) {
@@ -737,12 +737,12 @@ function wpgpt_bulk_consistency(){
         } else {
             chosen_alternative = chosen_alternative_data[ 0 ];
         }
-        var replace_strings = [], all_a = document.querySelectorAll( '.consistency-table tr td' );
-        for ( var i = 0; i < all_a.length; i++ ){
+        var replace_strings = [];
+		document.querySelectorAll( '.consistency-table tr td' ).forEach( ( td, i ) => {
             if ( i % 2 ) { // Odd selector
-                replace_strings.push( all_a[ i ].querySelector( '.meta a ') );
+                replace_strings.push( td.querySelector( '.meta a ') );
             }
-        }
+        } );
         var replace_strings_length = ( replace_strings.length > wpgpt_safe_limit ) ? wpgpt_safe_limit : replace_strings.length;
         var confirm_msg = replace_strings_length + ' selected strings will be REPLACED with:\n\n' + chosen_alternative + '\n\n';
         confirm_msg += ( ( replace_strings.length > wpgpt_safe_limit ) ? ( 'For safety, only ' + replace_strings_length + ' out of ' + replace_strings.length + ' can be replaced in one go.\n' ) : '' );
@@ -810,12 +810,12 @@ function wpgpt_bulk_consistency(){
             });
             alternatives_data[ alternative_id ] = this_alternative;
 
-			var plurals = document.createDocumentFragment();
+			var plurals = document.createElement( 'div' );
 			var plurals_item;
 			var space_span = $createElement( 'span', { 'class': 'space' }, ' ' );
 
             for ( var i = 1; i < this_alternative.length; i++ ) {
-				var plurals_item = document.createDocumentFragment();
+				var plurals_item = document.createElement( 'div' );
 				var raw_alternative = this_alternative[ i ].split( ' ' );
 				for ( var j = 0; j < raw_alternative.length; j++ ) {
 					plurals_item.appendChild( document.createTextNode( raw_alternative[ j ]	) );
