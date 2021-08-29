@@ -288,6 +288,7 @@ function wpgpt_settings_page() {
 						'<div class="gp-row"><div class="gp-shortcut"><span class="s">C</span>onsistency<span class="note">*</span></div><div class="gp-shortcut">Alt + <span class="s">C</span></div></div>' +
 						'<div class="gp-row"><div class="gp-shortcut">Copy consistency* <span class="c">#2</span></div><div class="gp-shortcut">Alt + <span class="c">2</span></div><div class="gp-shortcut"><span class="small note">works for suggestions #1 to #9</span></div></div>' +
 						'<div class="gp-row"><div class="gp-shortcut">Focus on <span class="a">S</span>earch in <span class="a">P</span>rojects<span class="note">*</span></div><div class="gp-shortcut">Alt + <span class="a">S</span></div><div class="gp-shortcut">Alt + <span class="a">P</span></div></div>' +
+						'<div class="gp-row"><div class="gp-shortcut">Insert all <span class="f">N</span>on-translatables</div><div class="gp-shortcut">Alt + <span class="f">N</span></div><div class="gp-shortcut"></div></div>' +
 						'<span class="small note">*if setting is enabled<span>' +
 						'</div><br><br>';
 

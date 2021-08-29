@@ -246,6 +246,10 @@ span.small {
     background-color: #ebf5fd;
 }
 
+.wpgpt_notranslate_copy_all {
+    float:right;
+}
+
 /* Checks */
 .wpgpt-checks-list {
     word-break: break-all;
