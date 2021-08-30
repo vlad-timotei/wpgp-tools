@@ -677,8 +677,11 @@ function wpgpt_bulk_consistency() {
 	);
 	$wpgpt_addElement( '.notice', 'afterbegin', reject_div );
 
+	const relax_text = 'Click the button below, sit back, relax and let me do the work for you. It\'s your one minute break and you deserve it!';
+	const relax = $wpgpt_createElement( 'div', { 'class': 'wpgpt-relax' }, relax_text );
+
 	const replace_btn = $wpgpt_createElement( 'button', { 'class': 'fire_magic_save_close', 'style': 'display:none;' }, 'Bulk replace & Save' );
-	$wpgpt_addElement( '#translations-overview', 'afterend', replace_btn );
+	document.querySelector( '#translations-overview' ).after( relax, replace_btn );
 
 	const consistency_alternatives_url = {};
 	let temp_id;
@@ -710,7 +713,7 @@ function wpgpt_bulk_consistency() {
 		document.querySelectorAll( '.delete-consistency-strings' ).forEach( ( el ) => { el.disabled = false; } );
 		document.querySelectorAll( '.choose-consistency-string' ).forEach( ( el ) => { el.disabled = true; } );
 		document.querySelector( `#delete-${alternative_id}` ).click();
-		document.querySelector( '.fire_magic_save_close' ).style.display = 'inline-block';
+		document.querySelectorAll( '.fire_magic_save_close, .wpgpt-relax' ).forEach( ( el ) => { el.style.display = 'block'; } )
 		event.target.insertAdjacentElement( 'beforeBegin', $wpgpt_createElement( 'strong', {}, 'This translation will be used to replace all others. ' ) );
 		event.target.parentNode.removeChild( event.target );
 		const table_head = $wpgpt_createElement( 'thead' );
@@ -879,8 +882,9 @@ function wpgpt_bulk_consistency() {
 					);
 					bulk_instructions.append( bulk_instructions_ol );
 					if ( ! constant_alternative_forms ) {
-						const txt = 'Note: The above translations have both singular and plural forms, but replacement of translations with a different form will be skipped. ';
-						$wpgpt_addElement( '#translations-overview', 'beforeend', $wpgpt_createElement( 'div', {}, txt ) );
+						const note = document.createElement( 'div' );
+						note.innerHTML = 'Note: The above translations have both <strong>singular and plural</strong> forms, but replacement of translations with a different form will be skipped';
+						$wpgpt_addElement( '#translations-overview', 'beforeend', note );
 					}
 					$wpgpt_addElement( '#translations-overview p', 'afterbegin', bulk_instructions );
 					document.querySelector( '#wpgpt_loading' ).style = 'display: none';
