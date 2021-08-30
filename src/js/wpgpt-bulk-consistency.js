@@ -65,13 +65,11 @@ function wpgpt_do_bulk_consistency() {
 		switch ( action_type ) {
 		case 'save':
 			$gp.editor.save( $gp.editor.current.find( 'button.translation-actions__save' ) );
-			console.log( 'I pressed Save button!' );
 			break;
 		case 'reject':
 			$gp.editor.set_status( $gp.editor.current.find( 'button.reject' ), 'rejected' );
-			console.log( 'I pressed Reject button!' );
 			break;
 		}
-		// setTimeout( () => { window.close(); }, 3000 );
+		setTimeout( () => { window.close(); }, 4000 );
 	}
 }
