@@ -140,19 +140,19 @@ function wpgpt_analyse_history_status( history_data, translation_id, translation
 
 			single_multiple = ( this_translation.length > 1 ) ? 'multiple' : 'single';
 
-			diff_output = $createElement( 'details', { 'class': 'wpgpt_diff ' + single_multiple, 'open': 'open' } );
-			var diff_title = $createElement( 'summary', {}, 'Differences between ');
+			diff_output = $wpgpt_createElement( 'details', { 'class': 'wpgpt_diff ' + single_multiple, 'open': 'open' } );
+			var diff_title = $wpgpt_createElement( 'summary', {}, 'Differences between ');
 			diff_title.append(
-				$createElement( 'b', {}, 'this ' + translation_status ),
+				$wpgpt_createElement( 'b', {}, 'this ' + translation_status ),
 				document.createTextNode( ' string and ' ),
-				$createElement( 'b', {}, compare_to_status ),
+				$wpgpt_createElement( 'b', {}, compare_to_status ),
 				document.createTextNode( ' string:' )
 			);
 			var diff_content = document.createElement( 'ol' );
 			
-			raw_compare_to_output = $createElement( 'details', { 'class': 'wpgpt_compared_to ' + single_multiple, 'open': 'open' } );
-			var raw_compare_to_title = $createElement( 'summary', {}, ' string:' );
-			raw_compare_to_title.prepend( $createElement( 'b', {}, compare_to_status.charAt( 0 ).toUpperCase() + compare_to_status.slice( 1 ) )	);
+			raw_compare_to_output = $wpgpt_createElement( 'details', { 'class': 'wpgpt_compared_to ' + single_multiple, 'open': 'open' } );
+			var raw_compare_to_title = $wpgpt_createElement( 'summary', {}, ' string:' );
+			raw_compare_to_title.prepend( $wpgpt_createElement( 'b', {}, compare_to_status.charAt( 0 ).toUpperCase() + compare_to_status.slice( 1 ) )	);
 			var raw_compare_to_content = document.createElement( 'ol' );
 			
 			//diff_output = '<details class="wpgpt_diff ' + single_multiple + '" open="open"><summary>Differences between <b> this ' + translation_status + '</b> string and <b>' + compare_to_status + '</b> string</summary><ol>';
@@ -168,10 +168,10 @@ function wpgpt_analyse_history_status( history_data, translation_id, translation
 				}
 				else {
 					//diff_output += '<li><span class="identical-history" >Identic with ' + compare_to_status + '.</span></li>';
-					diff_content.append( $createElement( 'li', { 'class': 'identical-history' }, 'Identic with ' + compare_to_status ) );
+					diff_content.append( $wpgpt_createElement( 'li', { 'class': 'identical-history' }, 'Identic with ' + compare_to_status ) );
 				}
 				//raw_compare_to += '<li>' + compare_to_translation[ i ].replaceAll( '&', '&amp;' ).replaceAll( '<', '&lt;' ).replaceAll( '>', '&gt;' ) + '</li>';
-				raw_compare_to_content.append( $createElement( 'li', {}, compare_to_translation[ i ] ) );
+				raw_compare_to_content.append( $wpgpt_createElement( 'li', {}, compare_to_translation[ i ] ) );
 			}
 			//diff_output += '</ol></details>';
 			//raw_compare_to += '</ol></details';
