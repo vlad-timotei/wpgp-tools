@@ -660,6 +660,8 @@ button.fire_magic_save_close {
     background-color: #0085ba !important;
     color: #fff !important;
     font-weight: 500;
+    margin: 0 auto !important;
+    display: block;
 }
 
 button.choose-consistency-string {
@@ -713,4 +715,13 @@ button.choose-consistency-string {
     padding: 10px 15px;
     color: red;
     font-weight: 600;
+}
+
+.wpgpt-relax {
+    text-align: center;
+    font-size: 1.1em;
+    color: #197396;
+    font-weight: 700;
+    display: none;
+    margin-bottom: 10px;
 }
