@@ -7,7 +7,8 @@ if ( 'enabled' === _wpgpt_settings.search ) {
 	consistency_tools();
 }
 
-const consistency_alternatives = [], alternative_forms = [];
+const consistency_alternatives = [];
+
 if ( 'enabled' === _wpgpt_settings.bulk_consistency ) {
 	wpgpt_bulk_consistency();
 }
@@ -653,7 +654,7 @@ function consistency_tools() {
 }
 
 function wpgpt_bulk_consistency() {
-	let alternative_forms_name = [];
+	let alternative_forms_name = [], first_alternative_forms = 0, constant_alternative_forms = true, fetched_alternatives = 0;
 	if ( ! ( window.location.href.includes( 'wordpress.org/consistency' ) && document.querySelector( '.consistency-table' ) ) ) {
 		return;
 	}
@@ -692,7 +693,7 @@ function wpgpt_bulk_consistency() {
 	} );
 
 	const header_alternatives = document.querySelectorAll( '.translations-unique li a.anchor-jumper' );
-	header_alternatives.forEach( ( alternative, alternative_i ) => {
+	header_alternatives.forEach( ( alternative ) => {
 		const alternative_id = alternative.href.split( '#' )[ 1 ];
 		const bulk_buttons = $wpgpt_createElement( 'div', { 'class': 'wpgpt-bulk-buttons' } );
 		bulk_buttons.append(
@@ -700,7 +701,7 @@ function wpgpt_bulk_consistency() {
 			$wpgpt_createElement( 'button', { 'id': `delete-${alternative_id}`, 'class': 'delete-consistency-strings', 'type': 'button', 'disabled': 'disabled' }, 'Do not replace this translation' ),
 		);
 		alternative.insertAdjacentElement( 'afterend', bulk_buttons );
-		wpgpt_get_alternative( consistency_alternatives_url[ alternative_id ], alternative_id, alternative, alternative_i === ( header_alternatives.length - 1 ) );
+		wpgpt_get_alternative( consistency_alternatives_url[ alternative_id ], alternative_id, alternative, header_alternatives.length );
 	} );
 
 	$wpgpt_addEvtListener( 'click', '.choose-consistency-string', ( event ) => {
@@ -765,9 +766,10 @@ function wpgpt_bulk_consistency() {
 				window.open( `${r_string.href}#magicsaveclose_T_WPORG` );
 			} );
 			const current_date = new Date();
+			const replacement_notice = ( ! constant_alternative_forms ) ? 'Note: Replacement of translations with a different singular/plural form has been skipped. \n' : '';
 			wpgpt_download(
 				`[${current_date.toLocaleString( [], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' } )}][WPGPT Log][${replace_strings_length} replacements]`,
-				`Date: ${current_date.toLocaleDateString()} at ${current_date.toLocaleTimeString()}\nOriginal: ${document.querySelector( '#original' ).value}\nReplaced with: \`${chosen_alternative}\`\n${replace_strings_length} replaced translations:\n${replace_strings_urls}`,
+				`Date: ${current_date.toLocaleDateString()} at ${current_date.toLocaleTimeString()}\nOriginal: ${document.querySelector( '#original' ).value}\nReplaced with: ${chosen_alternative}\n${replacement_notice}${replace_strings_length} replaced translations:\n${replace_strings_urls}`,
 			);
 
 			const bulk_replace = document.querySelector( '.fire_magic_save_close' );
@@ -812,7 +814,7 @@ function wpgpt_bulk_consistency() {
 		alert( 'Phew! I thought so!' );
 	}
 
-	function wpgpt_get_alternative( alternative_url, alternative_id, alternative_element, is_last ) {
+	function wpgpt_get_alternative( alternative_url, alternative_id, alternative_element, all_alternatives_length ) {
 		fetch( alternative_url, { headers: new Headers( { 'User-agent': 'Mozilla/4.0 Custom User Agent' } ) } )
 			.then( alternative_response => alternative_response.text() )
 			.then( alternative_response => {
@@ -858,7 +860,16 @@ function wpgpt_bulk_consistency() {
 					alternative_element.insertAdjacentElement( 'afterEnd', alternative_plurals );
 				}
 
-				if ( is_last ) {
+				if ( 0 === first_alternative_forms ) {
+					first_alternative_forms = alternative_forms.length;
+				}
+
+				if ( first_alternative_forms !== 0 && first_alternative_forms !== alternative_forms.length ) {
+					constant_alternative_forms = false;
+				}
+				fetched_alternatives++;
+
+				if ( fetched_alternatives === all_alternatives_length ) {
 					const bulk_instructions = $wpgpt_createElement( 'div', { 'class': 'bulk-instructions' }, 'To bulk replace translations: ' );
 					const bulk_instructions_ol = document.createElement( 'ol' );
 					bulk_instructions_ol.append(
@@ -867,8 +878,11 @@ function wpgpt_bulk_consistency() {
 						$wpgpt_createElement( 'li', {}, 'Click "Bulk replace & Save".' ),
 					);
 					bulk_instructions.append( bulk_instructions_ol );
+					if ( ! constant_alternative_forms ) {
+						const txt = 'Note: The above translations have both singular and plural forms, but replacement of translations with a different form will be skipped. ';
+						$wpgpt_addElement( '#translations-overview', 'beforeend', $wpgpt_createElement( 'div', {}, txt ) );
+					}
 					$wpgpt_addElement( '#translations-overview p', 'afterbegin', bulk_instructions );
-
 					document.querySelector( '#wpgpt_loading' ).style = 'display: none';
 					const view_unique = document.querySelector( '.translations-unique' );
 					if ( view_unique ) {
