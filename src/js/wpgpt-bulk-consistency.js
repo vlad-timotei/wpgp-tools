@@ -5,14 +5,14 @@ function wpgpt_do_bulk_consistency() {
 	if ( window.location.href.includes( '#magicsaveclose_T_WPORG' ) ) {
 		const wpgpt_bulk_warning = $wpgpt_createElement( 'div', { 'class': 'wpgpt-bulk-warning' } );
 		if ( $gp_editor_options.can_approve !== '1' ) {
-			wpgpt_bulk_warning.textContent = 'WPGPT: You don\'t have the required permissions for this project!';
+			wpgpt_bulk_warning.textContent = 'You don\'t have the required permissions for this project! This tab will close.';
 			$wpgpt_addElement( '.translation-wrapper', 'beforebegin', wpgpt_bulk_warning );
 			setTimeout( () => { window.close(); }, 5000 );
 			return;
 		}
 		let replacement_alternative = localStorage.getItem( 'wpgpt_chosen_alternative' );
 		if ( null === replacement_alternative || 'undefined' === replacement_alternative ) {
-			wpgpt_bulk_warning.textContent = 'WPGPT: Empty alternative! Please try again!';
+			wpgpt_bulk_warning.textContent = 'Empty alternative! No action taken. You may close this tab.';
 			$wpgpt_addElement( '.translation-wrapper', 'beforebegin', wpgpt_bulk_warning );
 			return;
 		}
@@ -20,14 +20,14 @@ function wpgpt_do_bulk_consistency() {
 
 		const translation_forms = document.querySelectorAll( '.translation-wrapper textarea' );
 		if ( translation_forms.length !== replacement_alternative.length ) {
-			wpgpt_bulk_warning.textContent = 'WPGPT: The number of plural forms doesn\'t match. Please try again.';
+			wpgpt_bulk_warning.textContent = 'The number of plural forms doesn\'t match. No action taken. You may close this tab.';
 			$wpgpt_addElement( '.translation-wrapper', 'beforebegin', wpgpt_bulk_warning );
 			return;
 		}
 
 		translation_forms.forEach( ( form, form_i ) => {
 			if ( '' === replacement_alternative[ form_i ] ) {
-				wpgpt_bulk_warning.textContent = 'WPGPT: One or more translations are empty. Please try again.';
+				wpgpt_bulk_warning.textContent = 'One or more translations are empty. No action taken. You may close this tab.';
 				$wpgpt_addElement( '.translation-wrapper', 'beforebegin', wpgpt_bulk_warning );
 				return;
 			}
@@ -69,6 +69,7 @@ function wpgpt_do_bulk_consistency() {
 			break;
 		case 'reject':
 			$gp.editor.set_status( $gp.editor.current.find( 'button.reject' ), 'rejected' );
+			console.log( 'I pressed Reject button!' );
 			break;
 		}
 		// setTimeout( () => { window.close(); }, 3000 );
