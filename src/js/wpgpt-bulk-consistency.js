@@ -3,7 +3,7 @@ if ( wpgpt_settings.bulk_consistency.state == 'enabled' ) {
 }
 function wpgpt_do_bulk_consistency(){
     if ( window.location.href.includes( '#magicsaveclose_T_WPORG' ) ) {
-        var wpgpt_bulk_warning = $createElement( 'div', { 'class': 'wpgpt-bulk-warning' } );
+        var wpgpt_bulk_warning = $wpgpt_createElement( 'div', { 'class': 'wpgpt-bulk-warning' } );
         if ( $gp_editor_options.can_approve !== '1' ) {
             wpgpt_bulk_warning.textContent = 'WPGPT: You don\'t have the required permissions for this project!';
             $wpgpt_addElement( '.translation-wrapper', 'beforebegin', wpgpt_bulk_warning );
