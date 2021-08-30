@@ -41,7 +41,7 @@ wpgpt_init_history_status();
 
 function wpgpt_init_history_status() {
 	var is_history = document.location.href.includes( 'historypage' );
-	if ( 	typeof $gp == 'undefined' ||
+	if ( 	typeof $gp === 'undefined' ||
 			wpgpt_settings.history_main.state == 'disabled' ||
 			( is_history && wpgpt_settings.history_page.state == 'disabled' )
 	) {
@@ -106,9 +106,17 @@ function wpgpt_load_history_status( row_id, is_history ) {
 *		Fuzzy 									=> 		compares to Waiting
 */
 function wpgpt_analyse_history_status( history_data, translation_id, translation_status, url ) {
-	var compare_to_row = [], compare_to_translation = [], this_translation = [],
-		diff_state = 'Identical', diff_output = '', diff_label = '', single_multiple, raw_compare_to= '',
-		shistory = [], count_label = '', preview_label = '', editor_label = '';
+	var compared_translations_row = [],
+		compared_translation_forms = [],
+		translation_forms = [],
+		diff_state = 'Identical',
+		diff_output = '',
+		diff_label = '',
+		single_multiple,
+		string_history = [],
+		count_label = '',
+		preview_label = '',
+		editor_label = '';
 	
 	var history_parser = new DOMParser();
 	var history_page = history_parser.parseFromString( history_data , 'text/html' );
@@ -116,15 +124,13 @@ function wpgpt_analyse_history_status( history_data, translation_id, translation
 
 	// Histoy Count.
 	if ( wpgpt_settings.history_count.state == 'enabled' && history_length ) {
-		[ 'current', 'waiting', 'fuzzy', 'rejected', 'old'].forEach(
-			function( state ) {
-				shistory[ state ] = jQuery( history_page ).find( '#translations tbody tr.preview.status-' + state ).length;
-				if ( state == translation_status && shistory[ translation_status ] ) {
-					shistory[ translation_status ] --;
+		[ 'current', 'waiting', 'fuzzy', 'rejected', 'old'].forEach( ( state ) => {
+				string_history[ state ] = jQuery( history_page ).find( '#translations tbody tr.preview.status-' + state ).length;
+				if ( state == translation_status && string_history[ translation_status ] ) {
+					string_history[ translation_status ] --;
 				}
-				count_label+= ( shistory[ state ] ) ? ( ( ( count_label !== '' ) ? ', ' : '' ) + shistory[ state ] + ' ' + state ) : '';
-			}
-		);
+				count_label+= ( string_history[ state ] ) ? ( ( ( count_label !== '' ) ? ', ' : '' ) + string_history[ state ] + ' ' + state ) : '';
+		} );
 		if ( ! jQuery( history_page ).find( '.next.disabled' ).length )
 			count_label = 'More than ' + count_label + ' | Click to view';
 	}
@@ -133,12 +139,12 @@ function wpgpt_analyse_history_status( history_data, translation_id, translation
 	var compare_to_status = ( translation_status === 'fuzzy' ) ? 'waiting' : 'current';
 	var diff_output, raw_compare_to_output;
 	if ( translation_status != 'current' && translation_status != 'untranslated' && history_length ) {
-		compare_to_row = jQuery( history_page ).find( '#translations tbody tr.preview.status-' + compare_to_status );
-		if ( compare_to_row.length  ) {
-			jQuery( '#' + translation_id.replace( 'editor', 'preview' ) ).find( '.translation-text' ).each( function() { this_translation.push( jQuery( this ).text() ); } );
-			jQuery( compare_to_row[ 0 ] ).find( '.translation-text' ).each( function() { compare_to_translation.push( jQuery( this ).text() ); } );
+		compared_translations_row = jQuery( history_page ).find( '#translations tbody tr.preview.status-' + compare_to_status );
+		if ( compared_translations_row.length  ) {
+			jQuery( '#' + translation_id.replace( 'editor', 'preview' ) ).find( '.translation-text' ).each( function() { translation_forms.push( jQuery( this ).text() ); } );
+			jQuery( compared_translations_row[ 0 ] ).find( '.translation-text' ).each( function() { compared_translation_forms.push( jQuery( this ).text() ); } );
 
-			single_multiple = ( this_translation.length > 1 ) ? 'multiple' : 'single';
+			single_multiple = ( translation_forms.length > 1 ) ? 'multiple' : 'single';
 
 			diff_output = $wpgpt_createElement( 'details', { 'class': 'wpgpt_diff ' + single_multiple, 'open': 'open' } );
 			var diff_title = $wpgpt_createElement( 'summary', {}, 'Differences between ');
@@ -155,26 +161,19 @@ function wpgpt_analyse_history_status( history_data, translation_id, translation
 			raw_compare_to_title.prepend( $wpgpt_createElement( 'b', {}, compare_to_status.charAt( 0 ).toUpperCase() + compare_to_status.slice( 1 ) )	);
 			var raw_compare_to_content = document.createElement( 'ol' );
 			
-			//diff_output = '<details class="wpgpt_diff ' + single_multiple + '" open="open"><summary>Differences between <b> this ' + translation_status + '</b> string and <b>' + compare_to_status + '</b> string</summary><ol>';
-			//raw_compare_to = '<details class="wpgpt_compared_to ' + single_multiple + '" open="open"><summary><b>' + compare_to_status.charAt( 0 ).toUpperCase() + compare_to_status.slice( 1 ) + '</b> string from History</summary><ol>';
-
-			for ( var i = 0; i < this_translation.length; i++ ) {
-				if ( this_translation[ i ] !== compare_to_translation[ i ] ) {
+			translation_forms.forEach( ( translation_form, form_i ) => {
+				if ( translation_form !== compared_translation_forms[ form_i ] ) {
 					diff_state = 'Different';
-					//diff_output += '<li>' + JsDiff.convertChangesToXML( JsDiff.WPGPT( this_translation[ i ], compare_to_translation[ i ] ) ) + '</li>';
 					var diff_content_item = document.createElement( 'li' );
-					diff_content_item.innerHTML = JsDiff.convertChangesToXML( JsDiff.WPGPT( this_translation[ i ], compare_to_translation[ i ] ) );
+					diff_content_item.innerHTML = JsDiff.convertChangesToXML( JsDiff.WPGPT( translation_form, compared_translation_forms[ form_i ] ) );
 					diff_content.append( diff_content_item );
 				}
 				else {
-					//diff_output += '<li><span class="identical-history" >Identic with ' + compare_to_status + '.</span></li>';
 					diff_content.append( $wpgpt_createElement( 'li', { 'class': 'identical-history' }, 'Identic with ' + compare_to_status ) );
 				}
-				//raw_compare_to += '<li>' + compare_to_translation[ i ].replaceAll( '&', '&amp;' ).replaceAll( '<', '&lt;' ).replaceAll( '>', '&gt;' ) + '</li>';
-				raw_compare_to_content.append( $wpgpt_createElement( 'li', {}, compare_to_translation[ i ] ) );
-			}
-			//diff_output += '</ol></details>';
-			//raw_compare_to += '</ol></details';
+				raw_compare_to_content.append( $wpgpt_createElement( 'li', {}, compared_translation_forms[ form_i ] ) );
+			} );
+
 			diff_output.append( diff_title, diff_content );
 			raw_compare_to_output.append( raw_compare_to_title, raw_compare_to_content );
 			
@@ -192,13 +191,8 @@ function wpgpt_analyse_history_status( history_data, translation_id, translation
 		editor_label += '<div class="wpgpt-h-label editor"><a href="' + url + '&historypage" target="_blank">' + count_label + '</a></div>';
 	}
 
-	/*if ( diff_label !== '' ) {
-	editor_label += diff_output + raw_compare_to;
-	}*/
-
 	if ( preview_label !== '' ) {
 		jQuery( '#' + translation_id.replace( 'editor', 'preview' ) ).find( ".original-tags" ).append( preview_label );
-		//jQuery ( '#' + translation_id ).find(".source-details").append( editor_label );
 		jQuery ( '#' + translation_id ).find(".source-details").append( editor_label, diff_output, raw_compare_to_output );
 	}
 }
