@@ -44,9 +44,7 @@ function wpgpt_do_bulk_consistency() {
 				return;
 			}
 		}
-
-		$gp.editor.save( $gp.editor.current.find( 'button.translation-actions__save' ) );
-		setTimeout( () => { window.close(); }, 3000 );
+		gp_action( 'save' );
 		return;
 	}
 
@@ -55,7 +53,24 @@ function wpgpt_do_bulk_consistency() {
 			window.close();
 			return;
 		}
-		$gp.editor.set_status( $gp.editor.current.find( 'button.reject' ), 'rejected' );
-		setTimeout( () => { window.close(); }, 3000 );
+		gp_action( 'reject' );
+	}
+
+	function gp_action( action_type ) {
+		if ( null === $gp.editor.current || 'undefined' === typeof $gp.editor.current ) {
+			console.log( `$gp.editor.current not available yet. Trying to ${action_type} after 1 second again.` );
+			setTimeout( () => { gp_action( action_type ) }, 1000 );
+			return;
+		}
+		switch ( action_type ) {
+		case 'save':
+			$gp.editor.save( $gp.editor.current.find( 'button.translation-actions__save' ) );
+			console.log( 'I pressed Save button!' );
+			break;
+		case 'reject':
+			$gp.editor.set_status( $gp.editor.current.find( 'button.reject' ), 'rejected' );
+			break;
+		}
+		// setTimeout( () => { window.close(); }, 3000 );
 	}
 }
