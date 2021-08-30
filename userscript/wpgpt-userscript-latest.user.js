@@ -16,10 +16,10 @@
 // @require      https://raw.githubusercontent.com/vlad-timotei/wpgp-tools/main/src/js/wpgpt-shortcuts.js?v=1.5
 // ==/UserScript==
 
-(function() {
+( function() {
 
-    /**
+	/**
     ** Happy translating!
     **/
 
-})();
+} )();
