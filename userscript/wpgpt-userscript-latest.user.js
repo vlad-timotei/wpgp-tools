@@ -12,6 +12,7 @@
 // @require      https://raw.githubusercontent.com/vlad-timotei/wpgp-tools/main/src/js/wpgpt-settings.js?v=1.5
 // @require      https://raw.githubusercontent.com/vlad-timotei/wpgp-tools/main/src/js/wpgpt-checks.js?v=1.5
 // @require      https://raw.githubusercontent.com/vlad-timotei/wpgp-tools/main/src/js/wpgpt-consistency.js?v=1.5
+// @require      https://raw.githubusercontent.com/vlad-timotei/wpgp-tools/main/src/js/wpgpt-bulk-consistency.js?v=1.5
 // @require      https://raw.githubusercontent.com/vlad-timotei/wpgp-tools/main/src/js/wpgpt-history.js?v=1.5
 // @require      https://raw.githubusercontent.com/vlad-timotei/wpgp-tools/main/src/js/wpgpt-shortcuts.js?v=1.5
 // ==/UserScript==

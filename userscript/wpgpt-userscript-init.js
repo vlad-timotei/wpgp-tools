@@ -10,6 +10,6 @@ GM_addStyle( cssTxt );
 const wpgpt_is_userscript = true;
 
 /*
-** Other scripts loaded from the trunk: Settings, Checks, Consistency, History & Shortcuts
-** No need for LS functions, as they are included in wpgpt-consistency.js
+** Scripts loaded below: wpgpt-settings.js, wpgpt-checks.js, wpgpt-consistency.js, wpgpt-bulk-consistency.js, wpgpt-history.js & wpgpt-shortcuts.js
+** No need for wpgpt-functions.js, as they are included in wpgpt-consistency.js
 */
