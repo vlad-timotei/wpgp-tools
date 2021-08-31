@@ -181,7 +181,7 @@ function consistency_tools() {
 
 	function wpgpt_open_tab( tab_key, tab_uri ) {
 		if ( 'opened' === tabs_state[ tab_key ] ) {
-			tabs[ tab_key ].close();
+			tabs[ tab_key ] && tabs[ tab_key ].close();
 		}
 		tabs[ tab_key ] = window.open( tab_uri, '_blank' );
 		tabs_state[ tab_key ] = 'opened';
@@ -191,7 +191,7 @@ function consistency_tools() {
 		Object.entries( tabs_state ).forEach( ( tab ) => {
 			const [ tab_key, tab_value ] = tab;
 			if ( ( 'opened' === tab_value ) && ( 'all' === tabs_group || ( tab_key !== 'gt' && tab_key !== 'references' && tab_key !== 'panel_links' ) ) ) {
-				tabs[ tab_key ].close();
+				tabs[ tab_key ] && tabs[ tab_key ].close();
 				tabs_state[ tab_key ] = 'closed';
 			}
 		} );
