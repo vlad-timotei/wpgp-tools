@@ -333,7 +333,7 @@ function consistency_tools() {
 			const res = await fetch( url, { headers: new Headers( { 'User-agent': 'Mozilla/4.0 Custom User Agent' } ) } );
 			return await res.text();
 		} catch ( error ) {
-			console.log( error );
+			console.log( `A WPGPT Consistency Suggestion URL (${url}) could not be fetched due to a network issue. Consistency suggestions might be incomplete.` );
 		}
 	}
 
@@ -894,7 +894,7 @@ function wpgpt_bulk_consistency() {
 					}
 				}
 			} )
-			.catch( error => console.log( error ) );
+			.catch( () => console.log( `A WPGPT Consistency Alternative URL (${alternative_url}) could not be fetched due to a network issue. Consistency might be incomplete.` ) );
 	}
 
 	function wpgpt_download( filename, text ) {
