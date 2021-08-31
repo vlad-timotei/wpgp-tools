@@ -30,10 +30,18 @@ Adjust the **Settings** for this extension in the top blue navigation menu *Tool
  - Translation Memory sometimes has bad translations (see [#meta5340](https://meta.trac.wordpress.org/ticket/5340))
  - This shows Consistency translations directly in the editor panel
  - Button or Alt + the number of the suggestion to replace it in the textarea
-- Also displays plural forms
+ - Also displays plural forms and highlights spaces
 
 **GoogleTranslate** button 
 - Button or Alt + G opens new tab with current translated string in current locale, if locale exists on GT. ([missing locales in GT](https://gist.github.com/vlad-timotei/3f558547ac2bc0f3120f869fba7d8bec))
+
+**Non-translatable** strings
+- Highlight non-translatable strings in original
+- Display real time usage of non-translatable strings
+- Insert individual or Copy all 
+
+![image](https://user-images.githubusercontent.com/65488419/131460935-083f8073-ad74-43d3-8f1a-46695b60d8fa.png)
+
 
 ## #2 General Checks 
 [Watch a demo video for Checks feature.](https://youtu.be/R4M_TBSRWSE)
@@ -131,7 +139,17 @@ It adds preview and editor label and a diff highlighter in editor.
  
  <br>
  
-## #5 Custom Keyboard Shortcuts
+## #5 Bulk Consistency Tools for GTEs
+ 
+This is an **opt-in** only for GTEs tool. Even if you activate it, it only fully works for GTEs.
+- Replace strings in bulk
+- Reject strings in bulk
+- Limited to 25 strings per action
+
+![image](https://user-images.githubusercontent.com/65488419/131462782-b46f1e2c-5e4f-41e1-aab4-614b3c2cbe0b.png)
+
+ 
+## #6 Custom Keyboard Shortcuts
 
 | Action | Shortcut | Alternative Shortcut |
 | --- | --- | --- |
@@ -142,7 +160,7 @@ It adds preview and editor label and a diff highlighter in editor.
 | Focus on **S**earch in **P**rojects  |   Alt + **S**  |  Alt + **P** |
 | Insert all **N**on-translatables | Alt + **N** | 
 
-## #6 Other features
+## #7 Other features
 - Keeps the editor in the middle of the screen when Page Up/Page Down shortcuts are used
 - *Added* and *Last modified* in browser's local date format and time zone. This works correctly if the device language and time are set to your country language and timezone.
 - Prompts for unsaved strings

@@ -1,10 +1,13 @@
 # 1.6
-Date to be determined
-- Feature: Plurals in Consistency Suggestions
+x.09.2021
+- Feature: Non-translatables: highlight, insert buttons, copy all
 - Feature: Highlight spaces in Consistency Suggestions
+- Feature: Plurals in Consistency Suggestions
 - Feature: Bulk Consistency Tools for GTEs
+- Enhancement: Consistency suggestion shortcuts extended Alt + 1 to 9
+- Performance: Security and coding standards improved
 - Fix: Close all tabs button behaviour
-- Enhancement: Security Improvements
+- Compatibility with GlotDict 1.7.x
 
 # 1.5
 18.08.2021
