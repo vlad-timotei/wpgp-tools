@@ -1,7 +1,7 @@
 {
 	"manifest_version":2,
 	"name":"WPGP Tools",
-	"version":"1.5",
+	"version":"1.6",
 	"description":"Enhanced Translation Tools for translate.w.org",
 	"permissions":[
 		"activeTab",
