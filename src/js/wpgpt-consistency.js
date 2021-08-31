@@ -1,6 +1,6 @@
 let _wpgpt_settings = { 'search': 'enabled', 'bulk_consistency': 'disabled' };
 //	_wpgpt_settings is a known/accepted redundancy for TM script that runs in the same environment.
-_wpgpt_settings = ( getLS( 'wpgpt-user-settings' ) !== null ) ? JSON.parse( getLS( 'wpgpt-user-settings' ) ) : _wpgpt_settings;
+_wpgpt_settings = ( wpgpt_getLS( 'wpgpt-user-settings' ) !== null ) ? JSON.parse( wpgpt_getLS( 'wpgpt-user-settings' ) ) : _wpgpt_settings;
 const wpgpt_safe_limit = 25;
 
 if ( 'enabled' === _wpgpt_settings.search ) {
@@ -35,7 +35,7 @@ function consistency_tools() {
 		'plugin_slug':  '',
 		'copy_me':      false,
 	};
-	wpgpt_search_settings = ( getLS( 'wpgpt-search' ) !== null ) ? JSON.parse( getLS( 'wpgpt-search' ) ) : wpgpt_search_settings;
+	wpgpt_search_settings = ( wpgpt_getLS( 'wpgpt-search' ) !== null ) ? JSON.parse( wpgpt_getLS( 'wpgpt-search' ) ) : wpgpt_search_settings;
 
 	let notice_time;
 
@@ -150,7 +150,7 @@ function consistency_tools() {
 
 		if ( wpgpt_search_settings.plugin ) {
 			wpgpt_search_settings.plugin_slug = also_searching_in_plugin;
-			setLS( 'wpgpt-search', JSON.stringify( wpgpt_search_settings ) );
+			wpgpt_setLS( 'wpgpt-search', JSON.stringify( wpgpt_search_settings ) );
 			if ( wpgpt_search_settings.plugin_slug !== 'undefined' ) {
 				document.querySelectorAll( '.wpgpt-search-plugin-slug' ).forEach( ( el ) => {
 					el.value = wpgpt_search_settings.plugin_slug;
@@ -203,7 +203,7 @@ function consistency_tools() {
 		document.querySelectorAll( '.wpgpt-search-option' ).forEach( ( el ) => {
 			el.checked = wpgpt_search_settings[ el.dataset.searchproject ];
 		} );
-		setLS( 'wpgpt-search', JSON.stringify( wpgpt_search_settings ) );
+		wpgpt_setLS( 'wpgpt-search', JSON.stringify( wpgpt_search_settings ) );
 	}
 
 	function wpgpt_do_search_notice( msg ) {
@@ -438,7 +438,7 @@ function consistency_tools() {
 			el.classList.toggle( 'inactive' );
 		} );
 		wpgpt_search_settings.copy_me = ! wpgpt_search_settings.copy_me;
-		setLS( 'wpgpt-search', JSON.stringify( wpgpt_search_settings ) );
+		wpgpt_setLS( 'wpgpt-search', JSON.stringify( wpgpt_search_settings ) );
 	}
 
 	// Adds checkbox to set user field value to 'anonymous' - author submitted translations.
@@ -908,11 +908,11 @@ function wpgpt_bulk_consistency() {
 	}
 }
 
-function setLS( name, value ) {
+function wpgpt_setLS( name, value ) {
 	localStorage.setItem( name, value );
 }
 
-function getLS( name ) {
+function wpgpt_getLS( name ) {
 	return localStorage.getItem( name );
 }
 
