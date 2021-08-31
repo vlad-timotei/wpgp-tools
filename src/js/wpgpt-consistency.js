@@ -681,7 +681,8 @@ function wpgpt_bulk_consistency() {
 	const relax = $wpgpt_createElement( 'div', { 'class': 'wpgpt-relax' }, relax_text );
 
 	const replace_btn = $wpgpt_createElement( 'button', { 'class': 'fire_magic_save_close', 'style': 'display:none;' }, 'Bulk replace & Save' );
-	document.querySelector( '#translations-overview' ).after( relax, replace_btn );
+	const translation_overview = document.querySelector( '#translations-overview' );
+	translation_overview && translation_overview.after( relax, replace_btn );
 
 	const consistency_alternatives_url = {};
 	let temp_id;
