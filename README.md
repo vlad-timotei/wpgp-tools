@@ -40,8 +40,7 @@ Adjust the **Settings** for this extension in the top blue navigation menu *Tool
 - Display real time usage of non-translatable strings
 - Insert individual or Copy all 
 
-![image](https://user-images.githubusercontent.com/65488419/131460935-083f8073-ad74-43d3-8f1a-46695b60d8fa.png)
-
+![image](https://user-images.githubusercontent.com/65488419/131497503-b4809e96-dbb3-4203-b19a-de48dd2b6921.png)
 
 ## #2 General Checks 
 [Watch a demo video for Checks feature.](https://youtu.be/R4M_TBSRWSE)
