@@ -467,6 +467,10 @@ label.wpgpt-search-plugin-label,
 	color: #6d6d6d;
 }
 
+.wpgpt-results-notice {
+    margin-bottom: 10px;
+}
+
 .wpgpt-results-notice span {
 	color: #d04300;
 	font-weight: 500;
