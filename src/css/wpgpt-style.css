@@ -244,7 +244,14 @@ span.small {
 
 .editor .notranslate {
     background-color: #ebf5fd;
+    cursor: pointer;
 }
+
+.editor .notranslate:hover .notranslate,
+.editor .notranslate:hover {
+    background-color: #c9e3f9;
+}
+
 
 .wpgpt_notranslate_copy_all {
     float:right;

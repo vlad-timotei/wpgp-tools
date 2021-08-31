@@ -610,7 +610,7 @@ function consistency_tools() {
 
 			original_preview_forms[ 0 ].parentNode.querySelectorAll( '.original-text > .notranslate' ).forEach( ( item ) => {
 				const notranslate_item = document.createElement( 'a' );
-				notranslate_item.setAttribute( 'title', 'Click to add this item to textarea' );
+				notranslate_item.setAttribute( 'title', 'Click to insert this item to textarea!' );
 				notranslate_item.textContent = item.textContent;
 				notranslate_fragment.appendChild( notranslate_item );
 				has_notranslate = true;
@@ -630,9 +630,10 @@ function consistency_tools() {
 		} );
 		$wpgpt_addEvtListener( 'focus', '.editor textarea', wpgpt_update_notranslate );
 		$wpgpt_addEvtListener( 'keyup', '.editor textarea', wpgpt_update_notranslate );
-		$wpgpt_addEvtListener( 'click', '.wpgpt_notranslate a', ( ev ) => {
+		$wpgpt_addEvtListener( 'click', '.wpgpt_notranslate a, .editor .notranslate', ( ev ) => {
 			wpgpt_insertText( ev.currentTarget.closest( '.editor-panel__left' ).querySelector( '.textareas.active textarea' ), ev.currentTarget.textContent );
 		} );
+		document.querySelectorAll( '.editor .notranslate' ).forEach( ( el ) => { el.setAttribute( 'title', 'Click to insert this item to textarea!' ); } );
 		$wpgpt_addEvtListener( 'click', '.wpgpt_notranslate_copy_all', ( ev ) => {
 			let all_notranslate = '';
 			const notranslate_div = ev.currentTarget.parentNode.parentNode;
