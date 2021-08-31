@@ -399,6 +399,9 @@ table.translations a.action {
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+	width: -webkit-fit-content;
+	width: -moz-fit-content;
+	width: fit-content;
 }
 
 .wpgpt-search label{
@@ -713,6 +716,8 @@ button.choose-consistency-string {
     color: #8a8a8a;
     width: 6%;
     min-width: fit-content;
+    min-width: -webkit-fit-content;
+    min-width: -moz-fit-content;
     margin-right: 5px;
 }
 
