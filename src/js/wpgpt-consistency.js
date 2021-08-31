@@ -66,8 +66,8 @@ function consistency_tools() {
 
 	function wpgpt_page( page_type ) {
 		$wpgpt_scrollTo( '.breadcrumb', 'smooth', 'start' );
-		const wpgpt_page_notice = $wpgpt_createElement( 'p', { 'class': 'wpgpt-results-notice' }, 'When you\'re done on these result pages click ' );
-		wpgpt_page_notice.append( $wpgpt_createElement( 'span', {}, 'Close all' ), document.createTextNode( ' in the main tab to close them all.' ) );
+		const wpgpt_page_notice = $wpgpt_createElement( 'p', { 'class': 'wpgpt-results-notice' }, 'Search result page | Click ' );
+		wpgpt_page_notice.append( $wpgpt_createElement( 'span', {}, 'Close all tabs' ), document.createTextNode( ' in the main tab to close.' ) );
 
 		if ( 'result' === page_type ) {
 			$wpgpt_addElement( '.filter-toolbar', 'beforebegin', wpgpt_page_notice );
