@@ -86,7 +86,7 @@ function wpgpt_load_history_status( row_id, is_history ) {
 						wpgpt_load_history_status( row_id + 1, is_history );
 					}
 				} )
-				.catch( error => console.error( error ) );
+				.catch( () => console.log( `A WPGPT History URL (${url}) could not be fetched due to a network issue. Histoy count might be incomplete.` ) );
 		}
 	} else {
 		wpgpt_load_history_status( row_id + 1, is_history );
