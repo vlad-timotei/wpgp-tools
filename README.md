@@ -37,6 +37,7 @@ Adjust the **Settings** for this extension in the top blue navigation menu *Tool
 
 **Non-translatable** strings
 - Highlight non-translatable strings in original
+- Click on any non-translatable item in original
 - Display real time usage of non-translatable strings
 - Insert individual or Copy all 
 
