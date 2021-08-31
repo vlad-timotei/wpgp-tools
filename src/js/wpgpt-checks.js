@@ -141,7 +141,7 @@ function wpgpt_check_this_translation( translation_id_e ) {
 	const this_labels = [];
 	const this_highlights = [];
 
-	jQuery( `${translation_id_e} .source-string.strings div` ).each( function() { original_forms.push( jQuery( this ).find( 'span.original' ).text() ); } );
+	jQuery( `${translation_id_e} .source-string.strings div` ).each( function() { original_forms.push( jQuery( this ).find( '.original-raw' ).text() ); } );
 	jQuery( `${translation_id_e} .translation-wrapper div.textareas` ).each( function() { translated_forms.push( jQuery( this ).find( 'textarea' ).val() ); } );
 
 	let original_form_i = 0;
