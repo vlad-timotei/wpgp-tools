@@ -6,7 +6,7 @@
 Adjust the **Settings** for this extension in the top blue navigation menu *Tools Settings*
 
 ## #1 Consistency Tools 
-[Watch a demo video for Consistency Tool features.](https://youtu.be/k686EedCSSs)
+[Watch a demo video for Consistency Tool features.](https://youtu.be/k6oAFmBvIig)
 
 <img align="right" src="https://user-images.githubusercontent.com/65488419/117620318-11a33580-b179-11eb-9968-f1148d58686c.png">
 
@@ -94,7 +94,7 @@ If your locale uses a different symbol other than `.` for period, you can set it
 ![image](https://user-images.githubusercontent.com/65488419/119268770-1a761b80-bbfd-11eb-96ed-037e1c54ba1d.png)
 
 ## #4 History Tools
-[Watch a demo video for Checks feature.](https://youtu.be/ZKfqKD-ZIYE)
+[Watch a demo video for History Tools feature.](https://youtu.be/ZKfqKD-ZIYE)
 
 These are **opt-in** tools, so go to Settings > History Tools and enable them if you want to use them. 
 
@@ -140,7 +140,8 @@ It adds preview and editor label and a diff highlighter in editor.
  <br>
  
 ## #5 Bulk Consistency Tools for GTEs
- 
+[Watch a demo video for Bulk Consistency Tools feature.](https://youtu.be/kvUgUkQUfm0)
+
 This is an **opt-in** only for GTEs tool. Even if you activate it, it only fully works for GTEs.
 - Replace strings in bulk
 - Reject strings in bulk
