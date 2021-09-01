@@ -1,5 +1,5 @@
 # 1.6
-x.09.2021
+01.09.2021
 - Feature: Non-translatables: highlight, click, insert buttons, copy all
 - Feature: Highlight spaces in Consistency Suggestions
 - Feature: Plurals in Consistency Suggestions
