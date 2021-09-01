@@ -271,7 +271,6 @@ function consistency_tools() {
 
 					wpgpt_consistency_item_header = $wpgpt_createElement( 'li', { 'class': 'consistency_index' }, `#${consistency_alternatives_i + 1}` );
 					wpgpt_consistency_item_header.append(
-
 						$wpgpt_createElement( 'button', { 'type': 'button', 'class': 'copy-full-alternative', 'data-alternative_id': consistency_alternatives_i }, 'Copy' ),
 						$wpgpt_createElement( 'span', { 'class': 'consistency_count' }, this_translation_count ),
 					);
@@ -299,7 +298,7 @@ function consistency_tools() {
 					wpgpt_consistency_item_button = $wpgpt_createElement( 'button', { 'type': 'button', 'class': 'copy-suggestion' }, 'Copy' );
 					wpgpt_consistency_item_translation.prepend( wpgpt_consistency_item_meta );
 
-					if ( 1 === translation_forms.length ) {
+					if ( translation_forms.length < 2 ) {
 						wpgpt_consistency_item_count = $wpgpt_createElement( 'span', { 'class': 'consistency_count' }, this_translation_count );
 						wpgpt_consistency_item_translation.append( wpgpt_consistency_item_count );
 					}
