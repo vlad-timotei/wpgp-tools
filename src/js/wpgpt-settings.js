@@ -360,7 +360,7 @@ function wpgpt_exit_settings( reload = true ) {
 * Based on: https://meta.trac.wordpress.org/browser/sites/trunk/wordpress.org/public_html/wp-content/plugins/wporg-gp-customizations/templates/js/editor.js#L143
 */
 
-if ( typeof $gp !== 'undefined' ) {
+if ( typeof $gp_editor_options !== 'undefined' ) {
 	$gp.editor.show = ( function( original ) {
 		return function( element ) {
 			original.apply( $gp.editor, arguments );

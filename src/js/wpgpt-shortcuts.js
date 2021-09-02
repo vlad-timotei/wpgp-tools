@@ -2,7 +2,7 @@
 * Override GP (again) and add some shortcuts
 * Based on: https://meta.trac.wordpress.org/browser/sites/trunk/wordpress.org/public_html/wp-content/plugins/wporg-gp-customizations/templates/js/editor.js#L143
 */
-if ( typeof $gp !== 'undefined' ) {
+if ( typeof $gp_editor_options !== 'undefined' ) {
 	$gp.editor.keydown = ( function( original ) {
 		return function( event ) {
 			if ( 13 === event.keyCode && event.shiftKey ) {			// Shift-Enter = Save.
