@@ -404,10 +404,12 @@ function consistency_tools() {
 
 		document.querySelectorAll( '.editor' ).forEach( ( editor ) => {
 			const editor_menu = editor.querySelectorAll( '.button-menu__dropdown li a' );
-			editor.querySelector( '.wpgpt_quicklinks_permalink' ).dataset.quicklink = editor_menu[ 0 ].href;
-			editor_menu[ 1 ].href += '&historypage';
-			editor.querySelector( '.wpgpt_quicklinks_history' ).dataset.quicklink = editor_menu[ 1 ].href;
-			editor.querySelector( '.wpgpt_quicklinks_consistency' ).dataset.quicklink = `${editor_menu[ 2 ].href}&consistencypage`;
+			if ( editor_menu.length ) {
+				editor.querySelector( '.wpgpt_quicklinks_permalink' ).dataset.quicklink = editor_menu[ 0 ].href;
+				editor_menu[ 1 ].href += '&historypage';
+				editor.querySelector( '.wpgpt_quicklinks_history' ).dataset.quicklink = editor_menu[ 1 ].href;
+				editor.querySelector( '.wpgpt_quicklinks_consistency' ).dataset.quicklink = `${editor_menu[ 2 ].href}&consistencypage`;
+			}
 		} );
 
 		$wpgpt_addEvtListener( 'click', '.wpgpt_quicklinks_copy, .wpgpt_quicklinks_plus', wpgpt_toggle_quicklinks_copy );
