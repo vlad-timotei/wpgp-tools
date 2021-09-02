@@ -41,7 +41,7 @@ wpgpt_init_history_status();
 
 function wpgpt_init_history_status() {
 	const is_history = document.location.href.includes( 'historypage' );
-	if ( 	'undefined' === typeof $gp ||
+	if ( 	'undefined' === typeof $gp_editor_options ||
 			'disabled' === wpgpt_settings.history_main.state ||
 			( is_history && 'disabled' === wpgpt_settings.history_page.state )
 	) {

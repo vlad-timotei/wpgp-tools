@@ -4,7 +4,7 @@ let wpgpt_user_edited = false;
 
 const wpgpt_period = ( wpgpt_settings.custom_period.state !== '' ) ? wpgpt_settings.custom_period.state : '.';
 
-if ( typeof $gp !== 'undefined' && ( 'enabled' === wpgpt_settings.checks.state || 'enabled' === wpgpt_settings.ro_checks.state ) ) {
+if ( typeof $gp_editor_options !== 'undefined' && ( 'enabled' === wpgpt_settings.checks.state || 'enabled' === wpgpt_settings.ro_checks.state ) ) {
 	jQuery( document ).ready( wpgpt_checks );
 	wpgpt_checks_shortcuts = true;
 }
