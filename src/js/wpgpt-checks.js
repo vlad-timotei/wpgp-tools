@@ -561,7 +561,7 @@ function wpgpt_run_checks( original, translated ) {
 	// E. Romanian checks.
 	if ( 'enabled' === wpgpt_settings.ro_checks.state ) {
 		const not_ro_diacritics = /[ãşţ]/ig;
-		const not_ro_quotes = /(?<!=)"(?:[^"<=]*)"/g;
+		const not_ro_quotes = /(?<!=)"(?:[^"<=>]*)"|(?<!=)'(?:[^'<=>]*)'/g;
 		const not_ro_ampersand = /[&](?!.{1,7}?[;=])/g;
 
 		// E. 1. ro diacritics.
@@ -590,7 +590,7 @@ function wpgpt_run_checks( original, translated ) {
 			case 'notice': notices.ro_quotes = error_message;
 			}
 		} else {
-			findW_list = [ "'", '&quot;', '&#34;', '&apos;', '&#39;', '&ldquo;', '&#8220;', '“' ];
+			findW_list = [ '&quot;', '&#34;', '&apos;', '&#39;', '&ldquo;', '&#8220;', '“' ];
 			for ( findW of findW_list ) {
 				if ( wpgpt_occurrences( translated, findW ) ) {
 					error_message = `<li class="has-highlight" alt="Replace these wrong quotes.">Wrong quote: <b>${findW.replaceAll( '&', '&amp;' )}</b></li>`;
