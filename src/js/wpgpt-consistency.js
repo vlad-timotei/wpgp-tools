@@ -620,7 +620,9 @@ function consistency_tools() {
 			if ( has_notranslate ) {
 				notranslate.prepend( notranslate_header.cloneNode( true ) );
 				notranslate.append( notranslate_fragment );
-				editor.querySelector( '.suggestions-wrapper' ).prepend( notranslate );
+				// To prevent errors for not-logged in users. To do: use a global check.
+				const suggestion_wrapper_el = editor.querySelector( '.suggestions-wrapper' );
+				( suggestion_wrapper_el ) && suggestion_wrapper_el.prepend( notranslate );
 			}
 		} );
 
