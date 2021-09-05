@@ -710,7 +710,7 @@ function wpgpt_filters() {
 	if ( current_filters.length ) {
 		current_filters.html( filters );
 	} else {
-		jQuery( '.paging' ).first().before( `<div class="wpgpt-filters">${filters}</div` );
+		jQuery( '.paging' ).first().prepend( `<div class="wpgpt-filters">${filters}</div` );
 	}
 
 	jQuery( '.wpgpt-filter-warnings' ).click( () => {
