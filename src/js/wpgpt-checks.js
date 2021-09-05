@@ -65,7 +65,7 @@ function wpgpt_check_all_translations() {
 			}
 
 			if ( 'enabled' === wpgpt_settings.checks_labels.state && check_results.highlight_me.length ) {
-				$translation.find( '.translation-text' ).eq( translated_form_i ).html( wpgpt_highlight( translated_form, check_results.highlight_me ) );
+				wpgpt_highlights( $translation.find( '.translation-text' ).eq( translated_form_i )[ 0 ], check_results.highlight_me );
 			}
 
 			if ( original_forms.length > 1 ) {
@@ -171,7 +171,7 @@ function wpgpt_check_this_translation( translation_id_e ) {
 		}
 
 		if ( 'enabled' === wpgpt_settings.checks_labels.state && check_results.highlight_me.length ) {
-			this_highlights[ translated_form_i ] = wpgpt_highlight( translated_form, check_results.highlight_me );
+			this_highlights[ translated_form_i ] = check_results.highlight_me;
 		}
 
 		if ( original_forms.length > 1 ) {
@@ -228,7 +228,7 @@ function wpgpt_check_this_translation( translation_id_e ) {
 						const $this_translation_p = jQuery( translation_id_p ).find( '.translation-text' ).eq( form_i );
 						$this_translation_p.after( `<div class="wpgpt-warning-labels">${form_label.warnings}</div><div class="wpgpt-notices-labels">${form_label.notices}</div>` );
 						if ( this_highlights.length ) {
-							$this_translation_p.html( this_highlights[ form_i ] );
+							wpgpt_highlights( $this_translation_p[ 0 ], this_highlights[ form_i ] );
 						}
 					}
 				} );
@@ -680,14 +680,52 @@ function is_locale_alternative( original, translated ) {
 	return false;
 }
 
-// Highlight errors.
-function wpgpt_highlight( string, lookfor ) {
-	string = string.replaceAll( '<', '&lt;' ).replaceAll( '>', '&gt;' );
-	lookfor.forEach( ( el ) => {
-		string = string.replaceAll( new RegExp( `(${el.replace( /[.*+?^${}()|[\]\\]/g, '\\$&' )})`, 'ig' ), '<span class="wpgpt-highlight">$1</span>' );
+// Function adapted from https://stackoverflow.com/a/29798094
+function wpgpt_highlights( looking_for_container, looking_for_arr ) {
+	const highlight_class = 'wpgpt-highlight';
+
+	function span_inserter( n, looking_for ) {
+		let node_val = n.nodeValue, found_index, begin, matched, text_node, span;
+		const parent_node = n.parentNode;
+		while ( true ) {
+			found_index = node_val.toLowerCase().indexOf( looking_for.toLowerCase() );
+			if ( found_index < 0 ) {
+				if ( node_val ) {
+					text_node = document.createTextNode( node_val );
+					parent_node.insertBefore( text_node, n );
+				}
+				parent_node.removeChild( n );
+				break;
+			}
+			begin = node_val.substring( 0, found_index );
+			matched = node_val.substr( found_index, looking_for.length );
+			if ( begin ) {
+				text_node = document.createTextNode( begin );
+				parent_node.insertBefore( text_node, n );
+			}
+			span = document.createElement( 'span' );
+			span.className = highlight_class;
+			span.appendChild( document.createTextNode( matched ) );
+			parent_node.insertBefore( span, n );
+			node_val = node_val.substring( found_index + looking_for.length );
+		}
+	};
+
+	function text_node_iterator( container, looking_for ) {
+		if ( null === container ) { return; }
+		Array.prototype.slice.call( container.childNodes ).forEach( ( n ) => {
+			if ( 3 === n.nodeType ) {
+				span_inserter( n, looking_for );
+			} else if ( 1 === n.nodeType ) {
+				text_node_iterator( n, looking_for );
+			}
+		} );
+	};
+
+	looking_for_arr.forEach( ( looking_for ) => {
+		text_node_iterator( looking_for_container, looking_for );
 	} );
-	return string;
-}
+};
 
 // Prevent leaving without saving.
 jQuery( 'textarea' ).bind( 'input propertychange', () => { wpgpt_user_edited = true; } );
