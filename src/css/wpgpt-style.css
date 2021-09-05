@@ -296,11 +296,14 @@ span.small {
 
 .wpgpt-filters {
     float: left;
-    padding-left:10px;
+    margin-right: 5px;
 }
 
-.wpgpt-filters a {
-    margin-bottom:-10px;
+.wpgpt-filters a,
+.wpgpt-filters span {
+    border: none !important;
+    margin: 5px 2px 0 2px !important;
+    min-width: fit-content !important;
     vertical-align: middle;
 }
 
@@ -320,6 +323,7 @@ span.small {
     font-size:1.1em;
     vertical-align:middle;
 }
+
 .wpgpt-check-preview.passed {
     display:block;
     font-weight:600;
