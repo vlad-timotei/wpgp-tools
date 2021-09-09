@@ -3,11 +3,6 @@
 	"name":"WPGP Tools",
 	"version":"1.6",
 	"description":"Enhanced Translation Tools for translate.w.org",
-	"permissions":[
-		"activeTab",
-		"tabs",
-		"storage"
-	],
 	"web_accessible_resources": [
 		"js/wpgpt-checks.js",
 		"js/wpgpt-settings.js",
