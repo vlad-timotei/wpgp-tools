@@ -392,6 +392,9 @@ table.translations a.action {
 .wpgpt-highlight + .wpgpt-highlight {
 	border-left:none;
 }
+.wpgpt-space {
+    background-color: #b5b5b5;
+}
 
 /* Search */
 

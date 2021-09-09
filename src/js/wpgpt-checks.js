@@ -36,11 +36,20 @@ function wpgpt_check_all_translations() {
 		const translation_id_e = translation_id_p.replace( 'preview', 'editor' );
 		const missing_translation = ( $translation.find( 'td.translation .missing' ).length ) ? true : false;
 
-		$translation.find( 'td.original .original-text' ).each( function() { original_forms.push( jQuery( this ).text() ); } );
-		$translation.find( 'td.translation .translation-text' ).each( function() {	translated_forms.push( jQuery( this ).text() ); } );
+		$translation.find( 'td.original .original-text' ).each(
+			function() {
+				original_forms.push( jQuery( this ).text() );
+			},
+		);
+		$translation.find( 'td.translation .translation-text' ).each(
+			function() {
+				translated_forms.push( jQuery( this ).text() );
+			},
+		);
+
 		let original_form_i = 0;
 		translated_forms.forEach( ( translated_form, translated_form_i ) => {
-			check_results = wpgpt_run_checks( original_forms[ original_form_i ], translated_form );
+			check_results = wpgpt_run_checks( original_forms[ original_form_i ], translated_form, translation_id_e );
 			edit_check_list += '<div class="wpgpt-warnings-list"> Warnings';
 			edit_check_list += ( ( translated_forms.length > 1 ) ? ( ` #${translated_form_i + 1}` ) : '' );
 			edit_check_list += ':';
@@ -65,7 +74,7 @@ function wpgpt_check_all_translations() {
 			}
 
 			if ( 'enabled' === wpgpt_settings.checks_labels.state && check_results.highlight_me.length ) {
-				wpgpt_highlights( $translation.find( '.translation-text' ).eq( translated_form_i )[ 0 ], check_results.highlight_me );
+				wpgpt_highlights( $translation.find( '.translation-text' ).eq( translated_form_i )[ 0 ], check_results.highlight_me, 'wpgpt-highlight' );
 			}
 
 			if ( original_forms.length > 1 ) {
@@ -141,12 +150,20 @@ function wpgpt_check_this_translation( translation_id_e ) {
 	const this_labels = [];
 	const this_highlights = [];
 
-	jQuery( `${translation_id_e} .source-string.strings div` ).each( function() { original_forms.push( jQuery( this ).find( '.original-raw' ).text() ); } );
-	jQuery( `${translation_id_e} .translation-wrapper div.textareas` ).each( function() { translated_forms.push( jQuery( this ).find( 'textarea' ).val() ); } );
+	jQuery( `${translation_id_e} .source-string.strings div` ).each(
+		function() {
+			original_forms.push( jQuery( this ).find( '.original-raw' ).text() );
+		},
+	);
+	jQuery( `${translation_id_e} .translation-wrapper div.textareas` ).each(
+		function() {
+			translated_forms.push( jQuery( this ).find( 'textarea' ).val() );
+		},
+	);
 
 	let original_form_i = 0;
 	translated_forms.forEach( ( translated_form, translated_form_i ) => {
-		check_results = wpgpt_run_checks( original_forms[ original_form_i ], translated_form );
+		check_results = wpgpt_run_checks( original_forms[ original_form_i ], translated_form, translation_id_e );
 		edit_check_list += `<div class="wpgpt-warnings-list">Warnings${
 			( translated_forms.length > 1 ) ? ( ` #${translated_form_i + 1}` ) : ''
 
@@ -228,7 +245,7 @@ function wpgpt_check_this_translation( translation_id_e ) {
 						const $this_translation_p = jQuery( translation_id_p ).find( '.translation-text' ).eq( form_i );
 						$this_translation_p.after( `<div class="wpgpt-warning-labels">${form_label.warnings}</div><div class="wpgpt-notices-labels">${form_label.notices}</div>` );
 						if ( this_highlights.length ) {
-							wpgpt_highlights( $this_translation_p[ 0 ], this_highlights[ form_i ] );
+							wpgpt_highlights( $this_translation_p[ 0 ], this_highlights[ form_i ], 'wpgpt-highlight' );
 						}
 					}
 				} );
@@ -239,7 +256,7 @@ function wpgpt_check_this_translation( translation_id_e ) {
 	return ! has_warning;
 }
 
-function wpgpt_run_checks( original, translated ) {
+function wpgpt_run_checks( original, translated, translation_id_e ) {
 	const warnings = {
 		'placeholders':	   '', // A.
 		'start_end_space':	'', // B.
@@ -509,6 +526,12 @@ function wpgpt_run_checks( original, translated ) {
 		const translated_double_spaces = translated.match( /[^ ]* {2,7}[^ ]*/gm ) || [];
 		const original_double_spaces = original.match( /[^ ]* {2,7}[^ ]*/gm ) || [];
 
+		if ( original_double_spaces.length ) {
+			wpgpt_highlights( document.querySelector( `#${translation_id_e} .original` ), [ '  ' ], 'wpgpt-space' );
+			wpgpt_highlights( document.querySelector( `#${translation_id_e.replaceAll( 'editor', 'preview' )} .original-text` ), [ '  ' ], 'wpgpt-space' );
+			// To do: Highlight the spaces in the new row after Save process.
+		}
+
 		if ( translated_double_spaces.length > original_double_spaces.length ) {
 			error_message = `<li alt="Remove this double space.">${translated_double_spaces.length - original_double_spaces.length} double space${( ( translated_double_spaces.length - original_double_spaces.length ) > 1 ) ? 's' : ''}: ` + `"${translated_double_spaces.join( '", "' ).replaceAll( ' ', '&nbsp;' )}"` + `</li>`;
 			switch ( wpgpt_settings.double_spaces.state ) {
@@ -681,9 +704,7 @@ function is_locale_alternative( original, translated ) {
 }
 
 // Function adapted from https://stackoverflow.com/a/29798094
-function wpgpt_highlights( looking_for_container, looking_for_arr ) {
-	const highlight_class = 'wpgpt-highlight';
-
+function wpgpt_highlights( looking_for_container, looking_for_arr, highlight_class ) {
 	function span_inserter( n, looking_for ) {
 		let node_val = n.nodeValue, found_index, begin, matched, text_node, span;
 		const parent_node = n.parentNode;
