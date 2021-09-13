@@ -1,3 +1,11 @@
+# 1.7
+13.09.2021
+- Enhancement: Highlight spaces in original
+- Enhancement: Romanian single quotes check
+- Enhancement: Better Filters position
+- Event: Chrome Web Store publication
+- Compatibility with GlotDict 2.0
+
 # 1.6
 01.09.2021
 - Feature: Non-translatables: highlight, click, insert buttons, copy all
