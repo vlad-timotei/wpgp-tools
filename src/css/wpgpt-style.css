@@ -184,27 +184,12 @@ span.small {
     font-size:0.7em;
 }
 
-.wpgpt-update-notice > strong {
-	color:#025f8c;
-}
-
 .gp-header.gp-row .gp-shortcut {
     color: #868686;
 }
 
 .gp-header.gp-row .gp-shortcut:nth-child( 1 ) {
     color: #0073aa;
-}
-
-/* Update notice */
-.wpgpt-update-notice {
-	width: 60%;
-    margin: 25px auto;
-    display: block;
-    color: #000000;
-    font-size: 1.1em;
-    border: 3px solid #0073aa;
-    padding: 25px;
 }
 
 /* Meta */
