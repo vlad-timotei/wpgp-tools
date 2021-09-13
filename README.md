@@ -175,13 +175,14 @@ This is an **opt-in** only for GTEs tool. Even if you activate it, it only fully
 Only choose one of these two:
 
 ### Chrome, Edge, Opera & Brave - [Download from Chrome Web Store](https://chrome.google.com/webstore/detail/wpgp-tools/bioidgadpdnajjaddfmoaohflfbmmhcn)
+The unpacked version no longer gets updates notifications, so please use the official extension.
 
 ### Firefox and other browsers via Tampermonkey
 
 1. Install the [Tampermonkey](http://tampermonkey.net/) browser extensions.
 2. Visit [this page](https://github.com/vlad-timotei/wpgp-tools/raw/main/userscript/wpgpt-userscript-latest.user.js). TamperMonkey should take over from there and prompt to install the userscript.
 If this somehow fails, you can: manually copy the URL and install it in the Utilities > Install from URL or manually copy the script, click the + button and install it.
-
+3. Make sure to check *Check for updates* in Tampermonkey settings.
 <img align="right" src="https://user-images.githubusercontent.com/65488419/118153870-0a04ba80-b41f-11eb-9e96-bfb9dc405247.png">
 
 - The first time you use Search in multiple projects feature, the browser will prevent opening multiple tabs. 
