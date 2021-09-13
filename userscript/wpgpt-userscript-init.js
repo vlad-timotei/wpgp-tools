@@ -7,8 +7,6 @@ const wpgpt_notice_icon = 'https://github.com/vlad-timotei/wpgp-tools/raw/main/s
 const cssTxt = GM_getResourceText( 'wpgpt-style' );
 GM_addStyle( cssTxt );
 
-const wpgpt_is_userscript = true;
-
 /*
 ** Scripts loaded below: wpgpt-settings.js, wpgpt-checks.js, wpgpt-consistency.js, wpgpt-bulk-consistency.js, wpgpt-history.js & wpgpt-shortcuts.js
 ** No need for wpgpt-functions.js, as they are included in wpgpt-consistency.js
