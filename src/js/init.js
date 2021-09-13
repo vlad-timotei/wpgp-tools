@@ -4,7 +4,7 @@
 */
 
 const wpgpt_scripts = [ 'functions', 'settings', 'checks', 'shortcuts', 'history', 'bulk-consistency' ];
-// wp-gp-tools-consistency.js must load as content_script to prevent new windows being blocked.
+// wp-gp-tools-consistency.js must load as content_script
 
 wpgpt_load_scripts( wpgpt_scripts );
 wpgpt_load_imgs();
