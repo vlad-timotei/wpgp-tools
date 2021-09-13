@@ -174,13 +174,7 @@ This is an **opt-in** only for GTEs tool. Even if you activate it, it only fully
 ## Installation
 Only choose one of these two:
 
-### Chrome, Edge, Opera & Brave
-
-1. Get the latest release from [here](https://github.com/vlad-timotei/wpgp-tools/releases/latest) and extract to a folder.
-2. Open extensions at `chrome://extensions/`, `edge://extensions/`, `opera://extensions/` or `brave://extensions/`
-4. Enable **Developer mode** toggle
-3. Click **Load Unpacked** button and point to the `wpgp-tools\src\` folder
-4. That's it! Go to a translate.w.org project to see it in action and customize its settings.
+### Chrome, Edge, Opera & Brave - [Download from Chrome Web Store](https://chrome.google.com/webstore/detail/wpgp-tools/bioidgadpdnajjaddfmoaohflfbmmhcn)
 
 ### Firefox and other browsers via Tampermonkey
 
