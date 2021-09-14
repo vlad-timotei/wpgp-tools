@@ -163,7 +163,7 @@ function wpgpt_check_this_translation( translation_id_e ) {
 
 	let original_form_i = 0;
 	translated_forms.forEach( ( translated_form, translated_form_i ) => {
-		check_results = wpgpt_run_checks( original_forms[ original_form_i ], translated_form, translation_id_e );
+		check_results = wpgpt_run_checks( original_forms[ original_form_i ], translated_form );
 		edit_check_list += `<div class="wpgpt-warnings-list">Warnings${
 			( translated_forms.length > 1 ) ? ( ` #${translated_form_i + 1}` ) : ''
 
@@ -256,7 +256,7 @@ function wpgpt_check_this_translation( translation_id_e ) {
 	return ! has_warning;
 }
 
-function wpgpt_run_checks( original, translated, translation_id_e ) {
+function wpgpt_run_checks( original, translated, translation_id_e = false ) {
 	const warnings = {
 		'placeholders':	   '', // A.
 		'start_end_space':	'', // B.
@@ -526,7 +526,7 @@ function wpgpt_run_checks( original, translated, translation_id_e ) {
 		const translated_double_spaces = translated.match( /[^ ]* {2,7}[^ ]*/gm ) || [];
 		const original_double_spaces = original.match( /[^ ]* {2,7}[^ ]*/gm ) || [];
 
-		if ( original_double_spaces.length ) {
+		if ( translation_id_e && original_double_spaces.length ) {
 			wpgpt_highlights( document.querySelector( `#${translation_id_e} .original` ), [ '  ' ], 'wpgpt-space' );
 			wpgpt_highlights( document.querySelector( `#${translation_id_e.replaceAll( 'editor', 'preview' )} .original-text` ), [ '  ' ], 'wpgpt-space' );
 			// To do: Highlight the spaces in the new row after Save process.
