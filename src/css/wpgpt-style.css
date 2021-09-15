@@ -221,6 +221,7 @@ span.small {
     color: #5d5c5c !important;
     text-decoration: none;
     background-color: #ebf5fd;
+    word-break: break-word;
 }
 
 .wpgpt_notranslate a.used {
