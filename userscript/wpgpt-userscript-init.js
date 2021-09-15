@@ -1,6 +1,4 @@
 /* UserScript Initialization */
-const WPGPT_VERSION = '1.6';
-
 const wpgpt_warning_icon = 'https://github.com/vlad-timotei/wpgp-tools/raw/main/src/img/warning.png';
 const wpgpt_notice_icon = 'https://github.com/vlad-timotei/wpgp-tools/raw/main/src/img/notice.png';
 

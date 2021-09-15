@@ -1,3 +1,4 @@
+const WPGPT_VERSION = '1.8';
 const wpgpt_settings = {
 	'checks': {
 		'desc':           'General Checks',
@@ -157,21 +158,6 @@ const wpgpt_settings = {
 		'state':          'disabled',
 		'setting_type':   2,
 		'parent_setting': 'others',
-	},
-	'last_checked': {
-		'state':          'never',
-		'parent_setting': 'none',
-		'setting_type':   -1,
-	},
-	'last_version': {
-		'state':          WPGPT_VERSION,
-		'parent_setting': 'none',
-		'setting_type':   -1,
-	},
-	'current_version': {
-		'state':          WPGPT_VERSION,
-		'parent_setting': 'none',
-		'setting_type':   -1,
 	},
 };
 jQuery( '#menu-headline-nav' ).append( '<li class="menu-item wpgpt_settings_menu" style="cursor:pointer;"><a>Tools Settings</a></li>' );
