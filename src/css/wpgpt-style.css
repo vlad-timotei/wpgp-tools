@@ -565,14 +565,14 @@ li.consistency_index {
 }
 
 /* History check */
-del {
+.diff-removed {
 	text-decoration: none;
 	color: #000000;
 	background: #ffb2b2;
 	white-space: pre;
 }
 
-ins {
+.diff-added {
 	background: #dae893;
 	color: #000000;
 	text-decoration: none;
@@ -588,24 +588,20 @@ ins {
     color:#000;
 }
 
-.preview.untranslated .wpgpt-h-label {
-    background-color: #dddddd;
-}
-
 .wpgpt-h-label.editor {
 	display:inline-block;
     background-color:#808286;
-    color:#fff;
+    color:#fff !important;
     margin-top:15px;
 	margin-bottom:10px;	
 }
 
-.wpgpt-h-label.preview a {
+.wpgpt-h-label.preview {
 	color: #000 !important;
 }
 
-.wpgpt-h-label.editor a {
-	color: #fff !important;
+.preview.untranslated .wpgpt-h-label {
+    background-color: #dddddd;
 }
 
 .wpgpt_diff ol,
