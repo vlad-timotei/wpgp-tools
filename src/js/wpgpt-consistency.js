@@ -506,8 +506,8 @@ function consistency_tools() {
 		window.onbeforeunload = function() { wpgpt_close_tabs( 'all' ); };
 		document.addEventListener( 'keydown', ( event ) => {
 			if ( event.altKey ) {
-				if ( ! isNaN( parseInt( event.key ) ) ) {
-					wpgpt_do_event( '.suggestions__translation-consistency .copy-suggestion', parseInt( event.key ), 'click', '.suggestions__translation-consistency .copy-full-alternative' ); // Alt + number - Copy consistency suggestion
+				if ( ! isNaN( parseInt( event.key, 10 ) ) ) {
+					wpgpt_do_event( '.suggestions__translation-consistency .copy-suggestion', parseInt( event.key, 10 ), 'click', '.suggestions__translation-consistency .copy-full-alternative' ); // Alt + number - Copy consistency suggestion
 				} else {
 					switch ( event.key.toLowerCase() ) {
 					case 'c': wpgpt_do_event( '.wpgpt_get_consistency' ); // Alt + C  - Show consistency suggestions
