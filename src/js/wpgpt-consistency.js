@@ -420,7 +420,7 @@ function consistency_tools() {
 		if ( wpgpt_search_settings.copy_me ) {
 			const btn_target = event.currentTarget;
 			const current_aria_label = btn_target.getAttribute( 'aria-label' );
-			wpgpt_copyClipboard( event.currentTarget.dataset.quicklink );
+			navigator.clipboard.writeText( event.currentTarget.dataset.quicklink );
 			btn_target.setAttribute( 'aria-label', 'Copied!' );
 			setTimeout( () => { btn_target.setAttribute( 'aria-label', current_aria_label ); }, 2000 );
 		} else {
@@ -546,15 +546,6 @@ function consistency_tools() {
 		if ( alternative_target_selector ) {
 			wpgpt_do_event( alternative_target_selector, target_index, event_type );
 		}
-	}
-
-	function wpgpt_copyClipboard( text ) {
-		const elem = document.createElement( 'textarea' );
-		elem.value = text;
-		document.body.appendChild( elem );
-		elem.select();
-		document.execCommand( 'copy' );
-		document.body.removeChild( elem );
 	}
 
 	function do_refferences( event ) {
