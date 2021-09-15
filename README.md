@@ -1,6 +1,8 @@
 
 # WPGPTools - Translate faster and better
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/77e59eac3b844bc8b7c2f553497105b6)](https://app.codacy.com/gh/vlad-timotei/wpgp-tools?utm_source=github.com&utm_medium=referral&utm_content=vlad-timotei/wpgp-tools&utm_campaign=Badge_Grade_Settings)
+
 <img align="right" src="https://user-images.githubusercontent.com/65488419/124776835-6defbf00-df48-11eb-9594-c538fe220dbd.png">
 
 Adjust the **Settings** for this extension in the top blue navigation menu *Tools Settings*
