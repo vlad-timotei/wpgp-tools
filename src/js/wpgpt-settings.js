@@ -25,7 +25,7 @@ const wpgpt_settings = {
 		'parent_setting': 'checks',
 	},
 	'end_question_exclamation': {
-		'desc':           'Missing end <b>?</b> or <b>!</b>',
+		'desc':           'Missing end ? or !',
 		'state':          'notice',
 		'setting_type':   3,
 		'parent_setting': 'checks',
@@ -154,15 +154,18 @@ const wpgpt_settings = {
 		'parent_setting': 'others',
 	},
 	'bulk_consistency': {
-		'desc':           'Bulk Consistency replacement <br><small>(only works for GTEs)</small>',
+		'desc':           'Bulk Consistency Replacement for GTEs',
 		'state':          'disabled',
 		'setting_type':   2,
 		'parent_setting': 'others',
 	},
 };
-jQuery( '#menu-headline-nav' ).append( '<li class="menu-item wpgpt_settings_menu" style="cursor:pointer;"><a>Tools Settings</a></li>' );
-jQuery( '.wpgpt_settings_menu' ).click( () => { wpgpt_settings_page(); } );
-const wpgpt_info = `<div class="wpgpt-info"><strong>WPGPT version ${WPGPT_VERSION}</strong> | <a href="https://github.com/vlad-timotei/wpgp-tools/blob/main/README.md">Documentation</a> | <a href="https://github.com/vlad-timotei/wpgp-tools/issues/new?assignees=&amp;labels=&amp;template=bug_report.md">Report a bug</a> or <a href="https://github.com/vlad-timotei/wpgp-tools/issues/new?assignees=&amp;labels=&amp;template=feature_request.md">request a feature</a> | <a href="#" class="wpgpt-backup" title="Drag and drop to Bookmarks bar to backup your settings.">Backup WPGPT settings</a> | Happy translating!</div>`;
+const settings_li = document.createElement( 'li' );
+settings_li.classList.add( 'menu-item', 'wpgpt_settings_menu' );
+settings_li.appendChild( document.createElement( 'a' ) ).appendChild( document.createTextNode( 'Tools Settings' ) );
+document.querySelector( '#menu-headline-nav' ).append( settings_li );
+settings_li.addEventListener( 'click', wpgpt_settings_page );
+
 let wpgpt_user_settings = {};
 if ( wpgpt_getLS( 'wpgpt-user-settings' ) !== null ) {
 	wpgpt_user_settings = JSON.parse( wpgpt_getLS( 'wpgpt-user-settings' ) );
@@ -173,131 +176,122 @@ if ( wpgpt_getLS( 'wpgpt-user-settings' ) !== null ) {
 	}
 }
 
-let wpgpt_settings_state = 0;
-
+let wpgpt_settings_state = 'closed';
 function wpgpt_settings_page() {
-	if ( wpgpt_settings_state ) {
+	if ( 'open' === wpgpt_settings_state ) {
 		wpgpt_exit_settings();
 		return;
-	} else {
-		jQuery( '.wpgpt_settings a' ).html( '<b>Close</b> Settings' );
-		wpgpt_settings_state = 1;
 	}
+	wpgpt_settings_state = 'open';
+	settings_li.querySelector( 'a' ).textContent = 'Close Settings';
 
-	if ( jQuery( '.wpgpt-snippets-window' ).length !== 0 ) {
-		jQuery( '.wpgpt-snippets-window' ).hide();
-	}
+	const settingsFragment = document.createDocumentFragment();
+	const settingsSubFragment = document.createDocumentFragment();
+	const settingsSubSubFragment = document.createDocumentFragment();
+	const settingsLabel = document.createElement( 'label' );
 
-	if ( jQuery( '.wpgpt-settings-window' ).length !== 0 ) {
-		jQuery( '.wpgpt-settings-window' ).toggle();
-		return;
-	}
+	const wpgpt_info = document.createElement( 'div' );
+	wpgpt_info.className = 'wpgpt-info';
+	wpgpt_info.append(
+		$wpgpt_createElement( 'strong', {}, `WPGPT version ${WPGPT_VERSION}` ), ' | ',
+		$wpgpt_createElement( 'a', { 'href': 'https://github.com/vlad-timotei/wpgp-tools/blob/main/README.md' }, 'Documentation' ), ' | ',
+		$wpgpt_createElement( 'a', { 'href': 'https://github.com/vlad-timotei/wpgp-tools/issues/new?assignees=&amp;labels=&amp;template=bug_report.md' }, 'Report a bug' ),	' or ',
+		$wpgpt_createElement( 'a', { 'href': 'https://github.com/vlad-timotei/wpgp-tools/issues/new?assignees=&amp;labels=&amp;template=feature_request.md' }, 'request a feature' ), ' | ',
+		$wpgpt_createElement( 'a', { 'href': '#', 'title': 'Drag and drop to Bookmarks bar to backup your settings.', 'id': 'wpgpt-backup' }, 'Backup WPGPT settings' ), ' | Happy translating!',
+	);
+	settingsFragment.appendChild( wpgpt_info.cloneNode( true ) );
 
-	const container = '<div class="wpgpt-settings-window"></div>';
-	jQuery( '.gp-content' ).html( container );
-
-	const wpgpt_settings_count = Object.keys( wpgpt_settings ).length;
-	let i = 1;
-
-	let this_shtml, this_shtml_class;
-	let shtml = '';
-
-	jQuery.each( wpgpt_settings, ( key ) => {
-		if ( wpgpt_settings[ key ][ 'parent_setting' ] !== 'none' ) {
-			this_shtml = '';
-			this_shtml_class = '';
-
-			switch ( wpgpt_settings[ key ][ 'setting_type' ] ) {
-			case 0:
-				this_shtml = 	`<div class="wpgpt-setting-description">${wpgpt_settings[ key ][ 'desc' ]}</div>${( wpgpt_settings[ key ][ 'state' ] !== undefined ) ? wpgpt_settings[ key ][ 'state' ] : ''}`;
-				break;
+	let setting_class;
+	Object.entries( wpgpt_settings ).forEach( setting_data => {
+		const [ key, setting ] = setting_data;
+		if ( setting.parent_setting !== 'none' ) {
+			settingsSubFragment.append( $wpgpt_createElement( 'div', { 'class': 'wpgpt-setting-description' }, setting.desc ) );
+			const setting_type = document.createElement( 'div' );
+			setting_type.className = `wpgpt-setting-type-${setting.setting_type}`;
+			switch ( setting.setting_type ) {
 			case 2:
-				this_shtml = 	`<div class="wpgpt-setting-description">${wpgpt_settings[ key ][ 'desc' ]}</div>` +
-									`<div class="wpgpt-setting-type-2"><label><input type="radio" class="wpgpt-update" name="${key}" value="enabled" ${( 'enabled' === wpgpt_settings[ key ][ 'state' ] ) ? 'checked' : ''}> Enabled</label></div>` +
-									`<div class="wpgpt-setting-type-2"><label><input type="radio" class="wpgpt-update" name="${key}" value="disabled" ${( 'disabled' === wpgpt_settings[ key ][ 'state' ] ) ? 'checked' : ''}> Disabled</label></div>`;
-				break;
 			case 3:
-				this_shtml = 	`<div class="wpgpt-setting-description">${wpgpt_settings[ key ][ 'desc' ]}</div>` +
-									`<div class="wpgpt-setting-type-3"><label><input type="radio" class="wpgpt-update" name="${key}" value="warning" ${( 'warning' === wpgpt_settings[ key ][ 'state' ] ) ? 'checked' : ''}> Warn & prevent save</label></div>` +
-									`<div class="wpgpt-setting-type-3"><label><input type="radio" class="wpgpt-update" name="${key}" value="notice" ${( 'notice' === wpgpt_settings[ key ][ 'state' ] ) ? 'checked' : ''}> Just notification</label></div>` +
-									`<div class="wpgpt-setting-type-3"><label><input type="radio" class="wpgpt-update" name="${key}" value="nothing" ${( 'nothing' === wpgpt_settings[ key ][ 'state' ] ) ? 'checked' : ''}> Don't check</label></div>`;
+				Object.entries( ( 2 === setting.setting_type ) ? { 'enabled': 'Enabled', 'disabled': 'Disabled' } : { 'warning': 'Warn & prevent save', 'notice': 'Just notification', 'nothing': 'Don\'t check' } ).forEach( ( data ) => {
+					const [ value, value_txt ] = data;
+					const isChecked = ( value === setting.state ) ? 'checked' : 'not_checked';
+					settingsSubSubFragment.appendChild( setting_type.cloneNode( true ) ).append(
+						$wpgpt_createElement( 'input', { 'type': 'radio', 'class': 'wpgpt-update', 'name': key, 'value': value, [isChecked]: true } ),
+						value_txt,
+					);
+					settingsSubFragment.appendChild( settingsLabel.cloneNode( true ) ).appendChild( settingsSubSubFragment );
+				} );
 				break;
 			case 4:
-				this_shtml = 	`<div class="wpgpt-setting-description">${wpgpt_settings[ key ][ 'desc' ]}</div>` +
-									`<input type="text" id="${key}" placeholder="Leave empty to disable. Case insensitive. Separate by comma (,) with no spaces" value="${
-										wpgpt_settings[ key ][ 'state' ]}">`;
+				settingsSubFragment.appendChild(
+					$wpgpt_createElement( 'input', { 'type': 'text', 'id': key, 'placeholder': 'Leave empty to disable. Case insensitive. Separate by comma (,) with no spaces', 'value': setting.state } ),
+				);
 				break;
 			case 5:
-				this_shtml = 	`<div class="wpgpt-setting-description">${wpgpt_settings[ key ][ 'desc' ]}</div>` +
-									`<input type="text" id="${key}" placeholder="E.g. 。 Leave empty if you use . symbol"value="${
-										wpgpt_settings[ key ][ 'state' ]}">`;
+				settingsSubFragment.appendChild( $wpgpt_createElement( 'input', { 'type': 'text', 'id': key, 'placeholder': 'E.g. 。 Leave empty if you use . symbol', 'value': setting.state } ) );
 			}
 
-			if ( wpgpt_settings[ key ][ 'parent_setting' ] !== 'self' ) {
-				if ( wpgpt_settings[wpgpt_settings[ key ][ 'parent_setting' ]][ 'parent_setting' ] !== 'self' ) {
-					this_shtml_class += `wpgpt-sub-sub-setting wpgpt-child-of-${wpgpt_settings[ key ][ 'parent_setting' ]} wpgpt-s-${key}`;
-				} else {
-					this_shtml_class += `wpgpt-sub-setting wpgpt-child-of-${wpgpt_settings[ key ][ 'parent_setting' ]} wpgpt-s-${key}`;
-				}
+			if ( 'self' === setting.parent_setting ) {
+				setting_class = `wpgpt-main-setting wpgpt-s-${key}`;
+			} else if ( 'self' === wpgpt_settings[ setting.parent_setting ][ 'parent_setting' ] ) {
+				setting_class = `wpgpt-sub-setting wpgpt-child-of-${setting.parent_setting} wpgpt-s-${key}`;
 			} else {
-				this_shtml_class += `wpgpt-main-setting wpgpt-s-${key}`;
+				setting_class = `wpgpt-sub-sub-setting wpgpt-child-of-${setting.parent_setting} wpgpt-s-${key}`;
 			}
 
-			shtml += `<div class="${this_shtml_class}">${this_shtml}</div>`;
-		}
-
-		if ( i === wpgpt_settings_count ) {
-			shtml += '<button id="save_settings" >Save all settings</button>';
-			jQuery( '.wpgpt-settings-window' ).append( shtml );
-			jQuery.each( wpgpt_settings, ( key ) => {
-				if ( 'disabled' === wpgpt_settings[ key ][ 'state' ] ) {
-					jQuery( `.wpgpt-child-of-${key}` ).hide();
-				}
-			} );
-		}
-		i++;
-	} );
-
-	let shortcuts_html =	'<div class="gp-shortcuts"><div class="gp-header gp-row"><div class="gp-shortcut">Default shortcuts</div><div class="gp-shortcut">Key</div><div class="gp-shortcut">Alternative key</div></div>' +
-						'<div class="gp-row"><div class="gp-shortcut">Cancel</div><div class="gp-shortcut">Escape</div><div class="gp-shortcut">Ctrl + Shift + Z</div></div>' +
-						'<div class="gp-row"><div class="gp-shortcut">Previous String Editor</div><div class="gp-shortcut">Page Up</div><div class="gp-shortcut">Ctrl + Up Arrow</div></div>' +
-						'<div class="gp-row"><div class="gp-shortcut">Next String Editor</div><div class="gp-shortcut">Page Down</div><div class="gp-shortcut">Ctrl + Down Arrow</div></div>' +
-						'<div class="gp-row"><div class="gp-shortcut"><span class="s">S</span>ave</div><div class="gp-shortcut"><span class="s">S</span>hift + Enter</div><div class="gp-shortcut"></div></div>' +
-						'<div class="gp-row"><div class="gp-shortcut"><span class="c">C</span>opy original</div><div class="gp-shortcut"><span class="c">C</span>trl + Enter</div><div class="gp-shortcut">Ctrl + Shift + <span class="c">B</span></div></div>' +
-						'<div class="gp-row"><div class="gp-shortcut"><span class="a">A</span>pprove</div><div class="gp-shortcut">Ctrl + <span class="a big">+</span> <span class="small note">(numeric keyboard)</span></div><div class="gp-shortcut">Ctrl + Shift + <span class="a">A</span></div></div>' +
-						'<div class="gp-row"><div class="gp-shortcut"><span class="r">R</span>eject</div><div class="gp-shortcut">Ctrl + <span class="r big">-</span> <span class="small note">(numeric keyboard)</span></div><div class="gp-shortcut">Ctrl + Shift + <span class="r">R</span></div></div>' +
-						'<div class="gp-row"><div class="gp-shortcut"><span class="f">F</span>uzzy</div><div class="gp-shortcut">Ctrl + <span class="f big">~</span></div><div class="gp-shortcut">Ctrl + Shift + <span class="big f">~</span></div></div></div>';
-	shortcuts_html +=	'<div class="gp-shortcuts"><div class="gp-header gp-row"><div class="gp-shortcut">Custom shortcuts</div><div class="gp-shortcut">Key</div><div class="gp-shortcut">Alternative key</div></div>' +
-						'<div class="gp-row"><div class="gp-shortcut"><span class="f">F</span>uzzy</div><div class="gp-shortcut">Ctrl + <span class="f big">*</span><span class="small note">(numeric keyboard)</span></div><div class="gp-shortcut">Ctrl + Shift + <span class="f">F</span></div></div>' +
-						'<div class="gp-row"><div class="gp-shortcut"><span class="r">G</span>oogle Translate<span class="note">*</span></div><div class="gp-shortcut">Alt + <span class="r">G</span></div></div>' +
-						'<div class="gp-row"><div class="gp-shortcut"><span class="s">C</span>onsistency<span class="note">*</span></div><div class="gp-shortcut">Alt + <span class="s">C</span></div></div>' +
-						'<div class="gp-row"><div class="gp-shortcut">Copy consistency* <span class="c">#2</span></div><div class="gp-shortcut">Alt + <span class="c">2</span></div><div class="gp-shortcut"><span class="small note">works for suggestions #1 to #9</span></div></div>' +
-						'<div class="gp-row"><div class="gp-shortcut">Focus on <span class="a">S</span>earch in <span class="a">P</span>rojects<span class="note">*</span></div><div class="gp-shortcut">Alt + <span class="a">S</span></div><div class="gp-shortcut">Alt + <span class="a">P</span></div></div>' +
-						'<div class="gp-row"><div class="gp-shortcut">Insert all <span class="f">N</span>on-translatables</div><div class="gp-shortcut">Alt + <span class="f">N</span></div><div class="gp-shortcut"></div></div>' +
-						'<span class="small note">*if setting is enabled<span>' +
-						'</div><br><br>';
-
-	jQuery( '.wpgpt-settings-window' )
-		.prepend( wpgpt_info )
-		.append( shortcuts_html, wpgpt_info );
-
-	jQuery( '.wpgpt-update' ).click( function() {
-		const option_name = jQuery( this ).attr( 'name' );
-		const option_value = jQuery( this ).val();
-		wpgpt_update_setting( option_name, option_value );
-
-		if ( 'disabled' === option_value ) {
-			jQuery( `.wpgpt-child-of-${option_name}` ).hide( 200 );
-		} else {
-			jQuery( `.wpgpt-child-of-${option_name}` ).show( 200 );
+			const setting_div = document.createElement( 'div' );
+			setting_div.className = setting_class;
+			setting_div.appendChild( settingsSubFragment );
+			settingsFragment.appendChild( setting_div );
 		}
 	} );
 
-	jQuery( '#save_settings' ).click( wpgpt_exit_settings );
+	settingsFragment.appendChild( $wpgpt_createElement( 'button', { 'id': 'save_settings' }, 'Save all settings' ) );
 
-	jQuery( '.wpgpt-backup' ).on( 'mousedown', function() {
+	const shortcuts_el_default = document.createElement( 'div' );
+	shortcuts_el_default.className = 'gp-shortcuts';
+	const shortcuts_el_custom = shortcuts_el_default.cloneNode( true );
+	shortcuts_el_default.innerHTML = `<div class="gp-header gp-row"><div class="gp-shortcut">Default shortcuts</div><div class="gp-shortcut">Key</div><div class="gp-shortcut">Alternative key</div></div>
+	<div class="gp-row"><div class="gp-shortcut">Cancel</div><div class="gp-shortcut">Escape</div><div class="gp-shortcut">Ctrl + Shift + Z</div></div>
+	<div class="gp-row"><div class="gp-shortcut">Previous String Editor</div><div class="gp-shortcut">Page Up</div><div class="gp-shortcut">Ctrl + Up Arrow</div></div>
+	<div class="gp-row"><div class="gp-shortcut">Next String Editor</div><div class="gp-shortcut">Page Down</div><div class="gp-shortcut">Ctrl + Down Arrow</div></div>
+	<div class="gp-row"><div class="gp-shortcut"><span class="s">S</span>ave</div><div class="gp-shortcut"><span class="s">S</span>hift + Enter</div><div class="gp-shortcut"></div></div>
+	<div class="gp-row"><div class="gp-shortcut"><span class="c">C</span>opy original</div><div class="gp-shortcut"><span class="c">C</span>trl + Enter</div><div class="gp-shortcut">Ctrl + Shift + <span class="c">B</span></div></div>
+	<div class="gp-row"><div class="gp-shortcut"><span class="a">A</span>pprove</div><div class="gp-shortcut">Ctrl + <span class="a big">+</span> <span class="small note">(numeric keyboard)</span></div><div class="gp-shortcut">Ctrl + Shift + <span class="a">A</span></div></div>
+	<div class="gp-row"><div class="gp-shortcut"><span class="r">R</span>eject</div><div class="gp-shortcut">Ctrl + <span class="r big">-</span> <span class="small note">(numeric keyboard)</span></div><div class="gp-shortcut">Ctrl + Shift + <span class="r">R</span></div></div>
+	<div class="gp-row"><div class="gp-shortcut"><span class="f">F</span>uzzy</div><div class="gp-shortcut">Ctrl + <span class="f big">~</span></div><div class="gp-shortcut">Ctrl + Shift + <span class="big f">~</span></div></div>`;
+
+	shortcuts_el_custom.innerHTML = `<div class="gp-header gp-row"><div class="gp-shortcut">Custom shortcuts</div><div class="gp-shortcut">Key</div><div class="gp-shortcut">Alternative key</div></div>
+	<div class="gp-row"><div class="gp-shortcut"><span class="f">F</span>uzzy</div><div class="gp-shortcut">Ctrl + <span class="f big">*</span><span class="small note">(numeric keyboard)</span></div><div class="gp-shortcut">Ctrl + Shift + <span class="f">F</span></div></div>
+	<div class="gp-row"><div class="gp-shortcut"><span class="r">G</span>oogle Translate<span class="note">*</span></div><div class="gp-shortcut">Alt + <span class="r">G</span></div></div>
+	<div class="gp-row"><div class="gp-shortcut"><span class="s">C</span>onsistency<span class="note">*</span></div><div class="gp-shortcut">Alt + <span class="s">C</span></div></div>
+	<div class="gp-row"><div class="gp-shortcut">Copy consistency* <span class="c">#2</span></div><div class="gp-shortcut">Alt + <span class="c">2</span></div><div class="gp-shortcut"><span class="small note">works for suggestions #1 to #9</span></div></div>
+	<div class="gp-row"><div class="gp-shortcut">Focus on <span class="a">S</span>earch in <span class="a">P</span>rojects<span class="note">*</span></div><div class="gp-shortcut">Alt + <span class="a">S</span></div><div class="gp-shortcut">Alt + <span class="a">P</span></div></div>
+	<div class="gp-row"><div class="gp-shortcut">Insert all <span class="f">N</span>on-translatables</div><div class="gp-shortcut">Alt + <span class="f">N</span></div><div class="gp-shortcut"></div></div>
+	<span class="small note">*if setting is enabled<span><br><br>`;
+	settingsFragment.append( shortcuts_el_default, shortcuts_el_custom );
+
+	const settings_window = document.createElement( 'div' );
+	settings_window.classList.add( 'wpgpt-settings-window', 'gp-content' );
+	settingsFragment.appendChild( wpgpt_info );
+	settings_window.appendChild( settingsFragment );
+	const gp_div = document.querySelector( '.gp-content' );
+	gp_div.parentNode.replaceChild( settings_window, gp_div );
+
+	Object.keys( wpgpt_settings ).forEach( ( key ) => {
+		( 'disabled' === wpgpt_settings[ key ][ 'state' ] ) && document.querySelectorAll( `.wpgpt-child-of-${key}` ).forEach( ( el ) => { el.style.display = 'none'; } );
+	} );
+
+	$wpgpt_addEvtListener( 'click', '.wpgpt-update', ( ev ) => {
+		wpgpt_update_setting( ev.target.name, ev.target.value );
+		( 'enabled' === ev.target.value ) && jQuery( `.wpgpt-child-of-${ev.target.name}` ).show( 200 );
+		( 'disabled' === ev.target.value ) && jQuery( `.wpgpt-child-of-${ev.target.name}` ).hide( 200 );
+	} );
+
+	document.getElementById( 'save_settings' ).addEventListener( 'click', wpgpt_exit_settings );
+
+	document.getElementById( 'wpgpt-backup' ).addEventListener( 'mousedown', ( ev ) => {
 		wpgpt_exit_settings( false );
-		const backup_script = `javascript: 
+		ev.target.href = `javascript: 
 		if ( typeof WPGPT_VERSION !== 'undefined' ) {
 			let confirm_message = 'Backup from ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()} of WPGPT version ${WPGPT_VERSION}.\\n\\n';
 			confirm_message += 	( '${WPGPT_VERSION}' !== WPGPT_VERSION ) ? 'New settings from WPGPT ' + WPGPT_VERSION + ' will be lost. \\n' : '';
@@ -310,7 +304,6 @@ function wpgpt_settings_page() {
 		} else { 
 			alert( 'To restore settings, click this bookmark while being on a translate.w.org page with WPGPT active.' ); 
 		}`;
-		jQuery( this ).attr( 'href', backup_script );
 	} );
 }
 
@@ -325,9 +318,9 @@ function wpgpt_update_setting( name, val ) {
 }
 
 function wpgpt_exit_settings( reload = true ) {
-	wpgpt_settings[ 'custom_period' ][ 'state' ] = jQuery( '#custom_period' ).val();
-	wpgpt_settings[ 'warning_words' ][ 'state' ] = jQuery( '#warning_words' ).val(); // to avoid redundancy
-	wpgpt_update_setting( 'match_words', jQuery( '#match_words' ).val() );
+	wpgpt_settings.custom_period.state = document.getElementById( 'custom_period' ).value;
+	wpgpt_settings.warning_words.state = document.getElementById( 'warning_words' ).value; // to avoid redundancy
+	wpgpt_update_setting( 'match_words', document.getElementById( 'match_words' ).value );
 	if ( reload ) {
 		location.reload();
 	}

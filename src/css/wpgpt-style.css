@@ -1,4 +1,14 @@
 /* ToDo: Remove !important and load stylesheet in the footer */
+.fadeOut {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s linear 300ms, opacity 300ms;
+  }
+.fadeIn {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s linear 0s, opacity 300ms;
+  }
 /* Navigation menu */
 .navigation-main,
 .site-branding {
@@ -13,8 +23,8 @@
 
 /* Settings */
 .wpgpt_settings_menu {
-    color:#fff;
-    cursor:pointer;
+    color: #fff;
+    cursor: pointer !important;
 }
 
 .wpgpt-settings-window {
@@ -26,6 +36,11 @@
     display: block;
     margin: 0 auto;
     text-align: center;
+    clear: both;
+}
+
+.wpgpt-update {
+    margin-right: 5px;
 }
 
 @media ( max-width:500px ) {
@@ -385,7 +400,7 @@ table.translations a.action {
 /* Search */
 
 .wpgpt-search label,
-.wpgpt-backup {
+#wpgpt-backup {
     -webkit-touch-callout: none;
 	-webkit-user-select: none;
 	-khtml-user-select: none;
