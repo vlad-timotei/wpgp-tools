@@ -297,26 +297,18 @@ function wpgpt_settings_page() {
 
 	jQuery( '.wpgpt-backup' ).on( 'mousedown', function() {
 		wpgpt_exit_settings( false );
-		const backup_user_settings = wpgpt_getLS( 'wpgpt-user-settings' );
-		const backup_date = `${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}`;
 		const backup_script = `javascript: 
-		if ( 'translate.wordpress.org' === document.location.hostname ) {
-			var backup_version = '${WPGPT_VERSION}';
-			var backup_date = '${backup_date}';
-			var current_settings = JSON.parse( localStorage.getItem( 'wpgpt-user-settings') );
-			var confirm_message; 
-			if ( backup_version == current_settings.current_version ) { 
-				confirm_message = 'Backup from ' + backup_date + ' of WPGPT version ' + backup_version + '.\\n\\nRestore old settings?';
-			} else {
-				confirm_message = 'Backup from ' + backup_date + ' of WPGPT version ' + backup_version + '. \\n\\nNew settings from WPGPT ' + current_settings.current_version + ' will be lost. \\nRestore old settings?';
-			}
+		if ( typeof WPGPT_VERSION !== 'undefined' ) {
+			let confirm_message = 'Backup from ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()} of WPGPT version ${WPGPT_VERSION}.\\n\\n';
+			confirm_message += 	( '${WPGPT_VERSION}' !== WPGPT_VERSION ) ? 'New settings from WPGPT ' + WPGPT_VERSION + ' will be lost. \\n' : '';
+			confirm_message +=  'Restore old settings?';
 			if ( confirm( confirm_message ) ) {
-				localStorage.setItem( 'wpgpt-user-settings', '${backup_user_settings}' );
+				localStorage.setItem( 'wpgpt-user-settings', '${wpgpt_getLS( 'wpgpt-user-settings' )}' );
 				alert( 'Settings restored from backup!' );
 				location.reload(); 
 			}
 		} else { 
-			alert( 'To restore settings, click this bookmark while being on a translate.w.org page.' ); 
+			alert( 'To restore settings, click this bookmark while being on a translate.w.org page with WPGPT active.' ); 
 		}`;
 		jQuery( this ).attr( 'href', backup_script );
 	} );
