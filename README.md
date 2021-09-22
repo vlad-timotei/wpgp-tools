@@ -1,5 +1,6 @@
 
 # WPGPTools - Translate faster and better
+[![License](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://github.com/vlad-timotei/wpgp-tools/blob/main/LICENSE) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/181eea3a14fe4b9cae1c6ad2ff8c802a)](https://www.codacy.com/gh/vlad-timotei/wpgp-tools/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=vlad-timotei/wpgp-tools&amp;utm_campaign=Badge_Grade)
 
 <img align="right" src="https://user-images.githubusercontent.com/65488419/124776835-6defbf00-df48-11eb-9594-c538fe220dbd.png">
 
