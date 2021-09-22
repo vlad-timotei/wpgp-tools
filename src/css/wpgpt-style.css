@@ -279,9 +279,13 @@ span.small {
     font-weight: 700;
 }
 
-.wpgpt-warnings-list + .wpgpt-notices-list {
-    margin-top:5px;
+.wpgpt-notices-list + .wpgpt-warnings-list,
+.wpgpt-warnings-list.has_warning + .wpgpt-warnings-list {
+    border-top: 1px solid gainsboro;
+    margin-top: 10px;
+    padding-top:5px;
 }
+
 
 .wpgpt-ignore-warnings {
 	display: none;

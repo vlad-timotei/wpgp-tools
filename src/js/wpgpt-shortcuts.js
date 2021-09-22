@@ -18,11 +18,13 @@ if ( typeof $gp_editor_options !== 'undefined' ) {
 					$gp.notices.error( 'Translation is empty.' );
 					return false;
 				}
+				const translation_e_id = `#${$gp.editor.current.attr( 'id' )}`;
+				const translation_p_id = translation_e_id.replace( 'editor', 'preview' );
 				/*								wpgpt_next_is_strict = true		wpgpt_next_is_strict = false
-					 * warnings_passd = true		false && true = FALSE			false && false = FALSE
-					 *  warnings_passd = false		true && true = TRUE				true && false = FALSE
-					 */
-				if ( wpgpt_checks_shortcuts && ( ! wpgpt_check_this_translation( $gp.editor.current.attr( 'id' ) ) ) && wpgpt_next_is_strict ) {
+				 * warnings_passd = true		false && true = FALSE			false && false = FALSE
+				 *  warnings_passd = false		true && true = TRUE				true && false = FALSE
+				 */
+				if ( wpgpt_checks_shortcuts && ( ! wpgpt_check_this_translation( translation_e_id, translation_p_id ) ) && wpgpt_next_is_strict ) {
 					$gp.notices.error( wpgpt_error_message );
 					return false;
 				} else {
@@ -32,9 +34,11 @@ if ( typeof $gp_editor_options !== 'undefined' ) {
 					$gp.editor.save( $gp.editor.current.find( 'button.translation-actions__save' ) );
 				}
 			} else if ( ( 107 === event.keyCode && event.ctrlKey ) || ( 65 === event.keyCode && event.shiftKey && event.ctrlKey ) ) { // Ctrl-+ or Ctrl-Shift-A = Approve.
-				const approve = jQuery( '.editor:visible' ).find( '.approve' );
-				if ( approve.length > 0 ) {
-					if ( wpgpt_checks_shortcuts && ( ! wpgpt_check_this_translation( $gp.editor.current.attr( 'id' ) ) ) && wpgpt_next_is_strict ) {
+				const approve = event.target.closest( '.editor-panel' ).querySelector( '.approve' );
+				if ( approve ) {
+					const translation_e_id = `#${$gp.editor.current.attr( 'id' )}`;
+					const translation_p_id = translation_e_id.replace( 'editor', 'preview' );
+					if ( wpgpt_checks_shortcuts && ( ! wpgpt_check_this_translation( translation_e_id, translation_p_id ) ) && wpgpt_next_is_strict ) {
 						$gp.notices.error( wpgpt_error_message );
 						return false;
 					} else {

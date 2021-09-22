@@ -3,306 +3,376 @@ let wpgpt_checks_shortcuts = false;
 let wpgpt_user_edited = false;
 
 const wpgpt_period = ( wpgpt_settings.custom_period.state !== '' ) ? wpgpt_settings.custom_period.state : '.';
+const approve_with_warnings = document.createElement( 'div' );
+approve_with_warnings.classList.add( 'wpgpt-ignore-warnings', 'noselect' );
+approve_with_warnings.appendChild( $wpgpt_createElement( 'label', {}, 'Save / Approve with warnings' ) ).appendChild( $wpgpt_createElement( 'input', { 'type': 'checkbox' } ) );
+const wpgpt_li = document.createElement( 'li' );
 
 if ( typeof $gp_editor_options !== 'undefined' && ( 'enabled' === wpgpt_settings.checks.state || 'enabled' === wpgpt_settings.ro_checks.state ) ) {
-	jQuery( document ).ready( wpgpt_checks );
+	wpgpt_check_all_translations();
+	wpgpt_filters();
 	wpgpt_checks_shortcuts = true;
 }
 
 let wpgpt_next_is_strict = true;
 const wpgpt_error_message = '<b>Fix warnings first!</b><br><br>Alternatively, check <br><i>Save / Approve with warnings!</i><br><br>';
 
-function wpgpt_checks() {
-	wpgpt_early_init_editors();
-	wpgpt_check_all_translations();
-	wpgpt_late_init_editors();
-	wpgpt_filters();
-}
-
-function wpgpt_early_init_editors() {
-	jQuery( '#translations tbody tr.editor' ).each( function() {
-		jQuery( this ).find( '.translation-wrapper' ).after( '<div class="wpgpt-ignore-warnings noselect"><label>Save / Approve with warnings <input type="checkbox"></label></div>' );
-	} );
-}
-
 function wpgpt_check_all_translations() {
-	jQuery( '#translations tbody tr.preview.has-translations' ).each( function() {
-		const $translation = jQuery( this );
-		const original_forms = [], translated_forms = [];
-		let check_results, preview_class;
-		let prev_check_status = '', edit_check_list = '';
-		let has_warning = false, has_notice = false;
-		const translation_id_p = $translation.attr( 'id' );
-		const translation_id_e = translation_id_p.replace( 'preview', 'editor' );
-		const missing_translation = ( $translation.find( 'td.translation .missing' ).length ) ? true : false;
+	document.querySelectorAll( '#translations tbody tr.preview' ).forEach( ( translation_p ) => {
+		const translation_p_id = `#${translation_p.id}`;
+		const translation_e_id = translation_p_id.replace( 'preview', 'editor' );
+		wpgpt_editor_init( translation_e_id );
 
-		$translation.find( 'td.original .original-text' ).each(
-			function() {
-				original_forms.push( jQuery( this ).text() );
-			},
-		);
-		$translation.find( 'td.translation .translation-text' ).each(
-			function() {
-				translated_forms.push( jQuery( this ).text() );
-			},
-		);
-
-		let original_form_i = 0;
-		translated_forms.forEach( ( translated_form, translated_form_i ) => {
-			check_results = wpgpt_run_checks( original_forms[ original_form_i ], translated_form, translation_id_e );
-			edit_check_list += '<div class="wpgpt-warnings-list"> Warnings';
-			edit_check_list += ( ( translated_forms.length > 1 ) ? ( ` #${translated_form_i + 1}` ) : '' );
-			edit_check_list += ':';
-			edit_check_list += ( check_results.warnings !== 'none' )
-				? ( `<ul>${check_results.warnings}</ul>` )
-				: ' <b>&#10003;</b>';
-			edit_check_list += '</div>';
-
-			if ( check_results.notices !== 'none' ) {
-				edit_check_list += `<div class="wpgpt-notices-list"> Notices${( translated_forms.length > 1 ) ? ( ` #${translated_form_i + 1}` ) : ''}: <ul>${check_results.notices}</ul></div>`;
-				has_notice = true;
-				if ( 'enabled' === wpgpt_settings.checks_labels.state ) {
-					$translation.find( '.translation-text' ).eq( translated_form_i ).after( `<ul class="wpgpt-notice-labels">${check_results.notices}</ul>` );
-				}
-			}
-
-			if ( check_results.warnings !== 'none' ) {
-				has_warning = true;
-				if ( 'enabled' === wpgpt_settings.checks_labels.state ) {
-					$translation.find( '.translation-text' ).eq( translated_form_i ).after( `<ul class="wpgpt-warning-labels">${check_results.warnings}</ul>` );
-				}
-			}
-
-			if ( 'enabled' === wpgpt_settings.checks_labels.state && check_results.highlight_me.length ) {
-				wpgpt_highlights( $translation.find( '.translation-text' ).eq( translated_form_i )[ 0 ], check_results.highlight_me, 'wpgpt-highlight' );
-			}
-
-			if ( original_forms.length > 1 ) {
-				original_form_i = 1;
-			}
-		} );
-
-		if ( missing_translation ) {
-			has_warning = true;
-			edit_check_list += '<div class="wpgpt-warnings-list empty"><ul><li>Empty translation!</li></ul></div>';
-			$translation.find( '.missing' ).before( '<div class="wpgpt-warning-labels"><li>Empty translation!</li></div>' );
+		if ( translation_p.classList.contains( 'untranslated' ) ) {
+			return;
 		}
 
-		edit_check_list = `<div class="wpgpt-checks-list">${edit_check_list}</div>`;
-
-		if ( has_warning ) {
-			prev_check_status = `<img class="wpgpt-check-preview" title="String has a warning." src="${wpgpt_warning_icon}">`;
-			jQuery( `#${translation_id_e}` ).find( '.wpgpt-ignore-warnings' ).show();
-			preview_class = 'wpgpt-has-warning';
-		} else if ( has_notice ) {
-			prev_check_status = `<img class="wpgpt-check-preview" title="String has a notice." src="${wpgpt_notice_icon}">`;
-			preview_class = 'wpgpt-has-notice';
-		} else {
-			prev_check_status = '<span class="wpgpt-check-preview passed" title="All checks passed.">&#10003;</span>';
-			preview_class = 'wpgpt-has-nothing';
+		const thisTranslation = {
+			has_notice:     false,
+			has_warning:    false,
+			check_results:  '',
+			preview_class:  '',
+			preview_status: '',
+			labels:         [],
+			highlights:     [],
+			ignore_status:  '',
 		}
 
-		$translation.addClass( preview_class );
-		jQuery( `#${translation_id_e}` ).find( '.editor-panel__right .panel-content .meta dl' ).eq( 0 ).before( edit_check_list );
-		$translation.find( '.actions .action.edit' ).prepend( prev_check_status );
+		prepare_checks( thisTranslation, translation_e_id, true );
+		translation_p.classList.add( thisTranslation.preview_class );
+		document.querySelector( `${translation_e_id} .wpgpt-ignore-warnings` ).style.display = thisTranslation.ignore_status;
+		document.querySelector( `${translation_e_id} .editor-panel__right .panel-content .meta dl` ).insertAdjacentElement( 'beforebegin', thisTranslation.check_results );
+		translation_p.querySelector( '.actions .action.edit' ).insertAdjacentElement( 'afterbegin', thisTranslation.preview_status );
+
+		if ( 'enabled' === wpgpt_settings.checks_labels.state ) {
+			const translation_p_text = translation_p.querySelectorAll( '.translation-text' )
+			thisTranslation.labels.forEach( ( form_label, form_i ) => {
+				wpgpt_add_labels_highlights( form_label, form_i, translation_p_text, thisTranslation.highlights );
+			} );
+		}
 	} );
 }
 
-function wpgpt_late_init_editors() {
-	jQuery( '#translations tbody tr.editor' ).each( function() {
-		const translation_id = jQuery( this ).attr( 'id' );
-		jQuery( this ).find( '.translation-actions__save' ).click( ( event ) => {
-			if ( ( ! wpgpt_check_this_translation( translation_id ) ) && wpgpt_next_is_strict ) {
-				event.preventDefault();
-				event.stopPropagation();
+function wpgpt_add_labels_highlights( form_label, form_i, translation_p_text, highlights ) {
+	if ( form_label.warnings !== '' || form_label.notices !== '' ) {
+		const labels_final_w = document.createElement( 'div' );
+		const labels_final_n = labels_final_w.cloneNode( true );
+		labels_final_w.className = 'wpgpt-warning-labels';
+		labels_final_n.className = 'wpgpt-notices-labels';
+		( form_label.warnings !== '' ) && labels_final_w.appendChild( form_label.warnings );
+		( form_label.notices !== '' ) && labels_final_n.appendChild( form_label.notices );
+		translation_p_text[ form_i ].insertAdjacentElement( 'afterend', labels_final_n );
+		translation_p_text[ form_i ].insertAdjacentElement( 'afterend', labels_final_w );
+		if ( highlights.length ) {
+			wpgpt_highlights( translation_p_text[ form_i ], highlights[ form_i ], 'wpgpt-highlight' );
+		}
+	}
+}
+
+function wpgpt_editor_init( translation_e_id, translation_p_id ) {
+	const new_approve_with_warnings = approve_with_warnings.cloneNode( true );
+	new_approve_with_warnings.querySelector( 'input' ).addEventListener( 'click', ( ev ) => { wpgpt_next_is_strict = ! ( ev.target.checked ); } );
+	$wpgpt_addElement( `${translation_e_id} .translation-wrapper`, 'afterend', new_approve_with_warnings );
+
+	document.querySelectorAll( `${translation_e_id} .translation-actions__save, ${translation_e_id} .approve` ).forEach( ( btn ) => {
+		btn.addEventListener( 'click', ( e ) => {
+			if ( ( ! wpgpt_check_this_translation( translation_e_id, translation_p_id ) ) && wpgpt_next_is_strict ) {
+				e.preventDefault();
+				e.stopPropagation();
 				$gp.notices.error( wpgpt_error_message );
 			}
+			document.querySelectorAll( '.wpgpt-ignore-warnings input' ).forEach( ( el ) => { el.checked = false; } );
 			wpgpt_next_is_strict = true;
-			jQuery( '.wpgpt-ignore-warnings input' ).prop( 'checked', false );
 			wpgpt_user_edited = false;
 		} );
-
-		jQuery( this ).find( '.approve' ).click( ( event ) => {
-			if ( ( ! wpgpt_check_this_translation( translation_id ) ) && wpgpt_next_is_strict ) {
-				event.preventDefault();
-				event.stopPropagation();
-				$gp.notices.error( wpgpt_error_message );
-			}
-			wpgpt_next_is_strict = true;
-			jQuery( '.wpgpt-ignore-warnings input' ).prop( 'checked', false );
-			wpgpt_user_edited = false;
-		} );
-	} );
-
-	jQuery( '.wpgpt-ignore-warnings input' ).click( function() {
-		wpgpt_next_is_strict = ( true === jQuery( this ).prop( 'checked' ) ) ? false : true;
 	} );
 }
 
-function wpgpt_check_this_translation( translation_id_e ) {
-	translation_id_e = `#${translation_id_e}`;
-	let translation_id_p = translation_id_e.replace( 'editor', 'preview' );
-	const original_forms = [], translated_forms = [];
-	let check_results, preview_class, save_warnings_state;
-	let prev_check_status = '', edit_check_list = '';
-	let has_warning = false, has_notice = false;
+function wpgpt_check_this_translation( translation_e_id, translation_p_id ) {
 	let when_to_do = 0;
-	const this_labels = [];
-	const this_highlights = [];
+	const thisTranslation = {
+		has_notice:     false,
+		has_warning:    false,
+		check_results:  '',
+		preview_class:  '',
+		preview_status: '',
+		labels:         [],
+		highlights:     [],
+		ignore_status:  '',
 
-	jQuery( `${translation_id_e} .source-string.strings div` ).each(
-		function() {
-			original_forms.push( jQuery( this ).find( '.original-raw' ).text() );
-		},
-	);
-	jQuery( `${translation_id_e} .translation-wrapper div.textareas` ).each(
-		function() {
-			translated_forms.push( jQuery( this ).find( 'textarea' ).val() );
-		},
-	);
+	};
+
+	prepare_checks( thisTranslation, translation_e_id, false );
+
+	let saved = false;
+	if ( ! ( thisTranslation.has_warning && wpgpt_next_is_strict ) ) {
+		when_to_do = 1000;
+		saved = true;
+		translation_e_id = `tr[id^="${translation_e_id.replace( /(?:(editor-[^- ]*)(?:-[^' ]*))/g, '$1' ).replace( '#', '' )}"]`;
+		translation_p_id = translation_e_id.replace( 'editor', 'preview' );
+	}
+	setTimeout( () => {
+		wpgpt_attempt_save( translation_e_id, translation_p_id, thisTranslation, saved );
+	}, when_to_do );
+	return ! thisTranslation.has_warning;
+}
+
+function wpgpt_attempt_save ( translation_e_id, translation_p_id, thisTranslation, saved ) {
+	const next_has_ignore_warnings = document.querySelector( `${translation_e_id} .wpgpt-ignore-warnings` );
+	if ( next_has_ignore_warnings ) {
+		next_has_ignore_warnings.style.display = thisTranslation.ignore_status;
+	}
+
+	document.querySelector( `${translation_e_id} .editor-panel__right .panel-content .meta dl` ).insertAdjacentElement( 'beforebegin', thisTranslation.check_results );
+
+	const current_check_results = document.querySelector( `${translation_e_id} .meta .wpgpt-checks-list` );
+	if ( current_check_results ) {
+		current_check_results.parentNode.replaceChild( thisTranslation.check_results, current_check_results );
+	} else {
+		document.querySelector( `${translation_e_id} .meta dl` ).insertAdjacentElement( 'beforebegin', thisTranslation.check_results );
+	}
+
+	if ( saved ) {
+		const new_translation_p = document.querySelector( `${translation_p_id}` );
+		new_translation_p.classList.remove( 'wpgpt-has-warning', 'wpgpt-has-notice', 'wpgpt-has-nothing' );
+		new_translation_p.classList.add( thisTranslation.preview_class );
+
+		const current_preview = new_translation_p.querySelector( '.wpgpt-check-preview' );
+		if ( current_preview ) {
+			current_preview.parentNode.replaceChild( thisTranslation.preview_status, current_preview );
+		} else {
+			new_translation_p.querySelector( '.actions .action.edit' ).insertAdjacentElement( 'afterbegin', thisTranslation.preview_status );
+		}
+
+		if ( 'enabled' === wpgpt_settings.checks_labels.state ) {
+			new_translation_p.querySelectorAll( '.wpgpt-warning-labels, .wpgpt-notices-labels' ).forEach( ( label ) => {
+				label.parentElement.removeChild( label );
+			} );
+			const new_translation_p_text = new_translation_p.querySelectorAll( '.translation-text' )
+			thisTranslation.labels.forEach( ( form_label, form_i ) => {
+				wpgpt_add_labels_highlights( form_label, form_i, new_translation_p_text, thisTranslation.highlights )
+			} );
+		}
+		wpgpt_filters();
+	}
+}
+
+function prepare_checks( thisTranslation, translation_e_id, highlight_spaces ) {
+	const original_forms = [], translated_forms = [];
+	document.querySelectorAll( `${translation_e_id} .source-string.strings div .original-raw` ).forEach( ( form ) => {
+		original_forms[ original_forms.length ] = form.textContent;
+	} );
+	document.querySelectorAll( `${translation_e_id} .translation-wrapper div.textareas textarea` ).forEach( ( form ) => {
+		translated_forms[ translated_forms.length ] = form.value;
+	} );
+
+	thisTranslation.check_results = document.createDocumentFragment();
 
 	let original_form_i = 0;
+	let check_results;
 	translated_forms.forEach( ( translated_form, translated_form_i ) => {
-		check_results = wpgpt_run_checks( original_forms[ original_form_i ], translated_form );
-		edit_check_list += `<div class="wpgpt-warnings-list">Warnings${
-			( translated_forms.length > 1 ) ? ( ` #${translated_form_i + 1}` ) : ''
+		check_results = wpgpt_run_checks( original_forms[ original_form_i ], translated_form, highlight_spaces ? translation_e_id : false );
+		const warnings_list = document.createElement( 'div' );
+		const notices_list = warnings_list.cloneNode( true );
+		warnings_list.classList.add( 'wpgpt-warnings-list' );
 
-		}${( check_results.warnings !== 'none' )
-			? ( `<ul>${check_results.warnings}</ul>` )
-			: ' <b>&#10003;</b>'
-		}</div>`;
+		thisTranslation.labels[ translated_form_i ] = { 'notices': '', 'warnings': '' };
 
-		this_labels[ translated_form_i ] = { 'notices': '', 'warnings': '' };
+		if ( check_results.warning.length ) {
+			thisTranslation.has_warning = true;
+			warnings_list.classList.add( 'has_warning' );
 
-		if ( check_results.notices !== 'none' ) {
-			edit_check_list += `<div class="wpgpt-notices-list"> Notices${
-				( translated_forms.length > 1 ) ? ( ` #${translated_form_i + 1}` ) : ''
-			}: <ul>${check_results.notices}</ul></div>`;
-			has_notice = true;
-			this_labels[ translated_form_i ].notices = `<ul class="wpgpt-notice-labels">${check_results.notices}</ul>`;
+			const warningsF = document.createDocumentFragment();
+			check_results.warning.forEach( ( el ) => {
+				warningsF.appendChild( el );
+			} );
+			warnings_list.textContent = `Warnings${( translated_forms.length > 1 ) ? ` #${translated_form_i + 1}:` : ''}`;
+			warnings_list.appendChild( document.createElement( 'ul' ) ).appendChild( warningsF.cloneNode( true ) );
+
+			const warnings_labels = document.createElement( 'ul' );
+			warnings_labels.className = 'wpgpt-warning-labels';
+			warnings_labels.appendChild( warningsF );
+
+			thisTranslation.check_results.appendChild( warnings_list );
+			thisTranslation.labels[ translated_form_i ].warnings = warnings_labels;
+		} else {
+			warnings_list.textContent = `Warnings${( translated_forms.length > 1 ) ? ` #${translated_form_i + 1}:` : ''} ✓`;
+			thisTranslation.check_results.appendChild( warnings_list );
 		}
 
-		if ( check_results.warnings !== 'none' ) {
-			has_warning = true;
-			this_labels[ translated_form_i ].warnings = `<ul class="wpgpt-warning-labels">${check_results.warnings}</ul>`;
+		if ( check_results.notice.length ) {
+			thisTranslation.has_notice = true;
+			notices_list.className = 'wpgpt-notices-list';
+
+			const noticesF = document.createDocumentFragment();
+			check_results.notice.forEach( ( el ) => {
+				noticesF.appendChild( el );
+			} );
+			if ( ! thisTranslation.has_warning ) {
+				notices_list.textContent = `Notices${( translated_forms.length > 1 ) ? ` #${translated_form_i + 1}:` : ''}`;
+			}
+			notices_list.appendChild( document.createElement( 'ul' ) ).appendChild( noticesF.cloneNode( true ) );
+
+			const notices_labels = document.createElement( 'ul' );
+			notices_labels.className = 'wpgpt-notice-labels';
+			notices_labels.appendChild( noticesF );
+
+			thisTranslation.check_results.appendChild( notices_list );
+			thisTranslation.labels[ translated_form_i ].notices = notices_labels;
 		}
 
-		if ( 'enabled' === wpgpt_settings.checks_labels.state && check_results.highlight_me.length ) {
-			this_highlights[ translated_form_i ] = check_results.highlight_me;
-		}
+		thisTranslation.highlights[ translated_form_i ] = check_results.highlight_me;
 
 		if ( original_forms.length > 1 ) {
 			original_form_i = 1;
 		}
 	} );
 
-	edit_check_list = `<div class="wpgpt-checks-list">${edit_check_list}</div>`;
+	const final_list = document.createElement( 'div' );
+	final_list.className = 'wpgpt-checks-list';
+	final_list.appendChild( thisTranslation.check_results );
+	thisTranslation.check_results = final_list;
 
-	if ( has_warning ) {
-		save_warnings_state = 'block';
-		preview_class = 'wpgpt-has-warning';
-		prev_check_status = `<img class="wpgpt-check-preview" src="${wpgpt_warning_icon}">`;
-	} else if ( has_notice ) {
-		save_warnings_state = 'none';
-		preview_class = 'wpgpt-has-notice';
-		prev_check_status = `<img class="wpgpt-check-preview" src="${wpgpt_notice_icon}">`;
+	if ( thisTranslation.has_warning ) {
+		thisTranslation.ignore_status = 'block';
+		thisTranslation.preview_class = 'wpgpt-has-warning';
+		thisTranslation.preview_status = $wpgpt_createElement( 'img', { 'class': 'wpgpt-check-preview', 'title': 'String has a warning.', 'src': wpgpt_warning_icon } );
+	} else if ( thisTranslation.has_notice ) {
+		thisTranslation.ignore_status = 'none';
+		thisTranslation.preview_class = 'wpgpt-has-notice';
+		thisTranslation.preview_status = $wpgpt_createElement( 'img', { 'class': 'wpgpt-check-preview', 'title': 'String has a notice.', 'src': wpgpt_notice_icon } );
 	} else {
-		save_warnings_state = 'none';
-		preview_class = 'wpgpt-has-nothing';
-		prev_check_status = '<span class="wpgpt-check-preview passed">&#10003;</span>';
+		thisTranslation.ignore_status = 'none';
+		thisTranslation.preview_class = 'wpgpt-has-nothing';
+		const preview_status_passed = $wpgpt_createElement( 'span', { 'class': 'wpgpt-check-preview passed', 'title': 'All checks passed.' } );
+		preview_status_passed.textContent = '✓';
+		thisTranslation.preview_status = preview_status_passed;
 	}
-
-	let saved = false;
-	if ( ! ( has_warning && wpgpt_next_is_strict ) ) {
-		when_to_do = 1000;
-		saved = true;
-		translation_id_e = `tr[id^="${translation_id_e.replace( /(?:(editor-[^- ]*)(?:-[^' ]*))/g, '$1' ).replace( '#', '' )}"]`;
-		translation_id_p = translation_id_e.replace( 'editor', 'preview' );
-	}
-
-	setTimeout( () => {
-		jQuery( translation_id_e ).find( '.wpgpt-ignore-warnings' ).fadeIn().css( 'display', save_warnings_state );
-
-		const current_edit_check_list = jQuery( translation_id_e ).find( '.meta .wpgpt-checks-list' );
-		if ( current_edit_check_list.length > 0 ) {
-			current_edit_check_list.replaceWith( edit_check_list );
-		} else {
-			jQuery( translation_id_e ).find( '.meta dl' ).first().before( edit_check_list );
-		}
-		if ( saved ) {
-			jQuery( translation_id_p ).removeClass( 'wpgpt-has-warning wpgpt-has-notice wpgpt-has-nothing' ).addClass( preview_class );
-
-			const current_preview = jQuery( translation_id_p ).find( '.wpgpt-check-preview' );
-			if ( current_preview.length > 0 ) {
-				current_preview.replaceWith( prev_check_status );
-			} else {
-				jQuery( translation_id_p ).find( '.actions .action.edit' ).prepend( prev_check_status );
-			}
-			if ( 'enabled' === wpgpt_settings.checks_labels.state ) {
-				jQuery( translation_id_p ).find( '.wpgpt-warning-labels, .wpgpt-notices-labels' ).remove();
-				this_labels.forEach( ( form_label, form_i ) => {
-					if ( form_label.warnings !== '' || form_label.notices !== '' ) {
-						const $this_translation_p = jQuery( translation_id_p ).find( '.translation-text' ).eq( form_i );
-						$this_translation_p.after( `<div class="wpgpt-warning-labels">${form_label.warnings}</div><div class="wpgpt-notices-labels">${form_label.notices}</div>` );
-						if ( this_highlights.length ) {
-							wpgpt_highlights( $this_translation_p[ 0 ], this_highlights[ form_i ], 'wpgpt-highlight' );
-						}
-					}
-				} );
-			}
-			wpgpt_filters();
-		}
-	}, when_to_do );
-	return ! has_warning;
 }
 
-function wpgpt_run_checks( original, translated, translation_id_e = false ) {
-	const warnings = {
-		'placeholders':	   '', // A.
-		'start_end_space':	'', // B.
-		'end_char': 	      '', // C.
-		'others':	         '', // D. + E.3, E.4, E.5
-		'ro_diacritics':	  '', // E.1
-		'ro_quotes':	      '', // E.2
-	};
-	const notices = {
-		'placeholders':	   '',
-		'start_end_space':	'',
-		'end_char': 	      '',
-		'others':	         '',
-		'ro_diacritics':	  '',
-		'ro_quotes':	      '',
-	};
+function wpgpt_run_checks( original, translated, translation_e_id = false ) {
+	if ( '' === translated ) {
+		const msg = wpgpt_li.cloneNode( true );
+		msg.textContent = 'Empty translation!';
+		return { 'warning': [ msg ], 'notice': [], 'highlight_me': [] };
+	}
+	const results = { warning: [], notice: [], highlight_me: [] };
+	wpgpt_push1( results.warning, wpgpt_check_placeholders( original, translated ) );
+	( 'enabled' === wpgpt_settings.checks.state ) && wpgpt_run_general_checks( results, original, translated, translation_e_id );
+	( 'enabled' === wpgpt_settings.ro_checks.state ) && wpgpt_run_romanian_checks( results, translated );
+	return results;
+}
 
-	let highlight_me = [];
-	let error_message = '';
+function wpgpt_run_general_checks( results, original, translated, translation_e_id ) {
+	const original_first = original.substr( 0, 1 );
+	const translated_first = translated.substr( 0, 1 );
+	const original_last = original.substr( original.length - 1 );
+	const translated_last = translated.substr( translated.length - 1 );
 
-	// A. Placeholders.
+	if ( wpgpt_settings.start_end_space.state !== 'none' ) {
+		wpgpt_push1( results[ wpgpt_settings.start_end_space.state ], wpgpt_check_start_space( translated_first, original_first ) );
+	}
+
+	if ( original_last !== translated_last ) {
+		const end_char = { warning: '', notice: '' };
+		if ( wpgpt_settings.start_end_space.state !== 'nothing' ) {
+			end_char[ wpgpt_settings.start_end_space.state ] = wpgpt_check_end_space( translated_last, original_last );
+		}
+
+		if ( '' === end_char.warning && '' === end_char.notice && wpgpt_settings.end_colon.state !== 'nothing' ) {
+			end_char[ wpgpt_settings.end_colon.state ] = wpgpt_check_end_colon( translated_last, original_last );
+		}
+
+		if ( '' === end_char.warning && '' === end_char.notice && wpgpt_settings.end_question_exclamation.state !== 'nothing' ) {
+			end_char[ wpgpt_settings.end_question_exclamation.state ] = wpgpt_check_end_question_exclamation( original_last );
+		}
+
+		if ( '' === end_char.warning && '' === end_char.notice && wpgpt_settings.end_period.state !== 'none' ) {
+			end_char[ wpgpt_settings.end_period.state ] = wpgpt_check_missing_end_symbol( translated, original, translated_last, original_last );
+			if ( '' === end_char.warning && '' === end_char.notice ) {
+				end_char[ wpgpt_settings.end_period.state ] = wpgpt_check_additional_end_symbol( translated, original, translated_last, original_last );
+			}
+		}
+		wpgpt_push1( results.warning, end_char.warning );
+		wpgpt_push1( results.notice, end_char.notice );
+	}
+
+	if ( wpgpt_settings.double_spaces.state !== 'nothing' ) {
+		const double_spaces = wpgpt_check_double_spaces( translated, original, translation_e_id );
+		wpgpt_push1( results[ wpgpt_settings.double_spaces.state ], double_spaces.msg );
+		results.highlight_me.push( ... double_spaces.arr );
+	}
+
+	if ( wpgpt_settings.warning_words.state !== '' ) {
+		const warning_words = wpgpt_check_warning_words( translated );
+		wpgpt_push1( results.warning, warning_words.msg );
+		warning_words.arr.length && results.highlight_me.push( ... warning_words.arr );
+	}
+	if ( wpgpt_settings.match_words.state !== '' ) {
+		wpgpt_push1( results.warning, wpgpt_check_match_words( translated, original ) );
+	}
+}
+
+function wpgpt_run_romanian_checks( results, translated ) {
+	if ( wpgpt_settings.ro_diacritics.state !== 'nothing' ) {
+		const ro_diacritics = wpgpt_check_ro_diacritics( translated );
+		wpgpt_push1( results[ wpgpt_settings.ro_diacritics.state ], ro_diacritics.msg );
+		results.highlight_me.push( ... ro_diacritics.arr );
+	}
+
+	if ( wpgpt_settings.ro_quotes.state !== 'nothing' ) {
+		const ro_quotes = wpgpt_check_ro_quotes( translated );
+		wpgpt_push1( results[ wpgpt_settings.ro_quotes.state ], ro_quotes.msg )
+		results.highlight_me.push( ... ro_quotes.arr );
+	}
+
+	if ( wpgpt_settings.ro_slash.state !== 'nothing' ) {
+		const ro_slash = wpgpt_check_ro_slash( translated );
+		wpgpt_push1( results[ wpgpt_settings.ro_slash.state ], ro_slash.msg );
+		results.highlight_me.push( ... ro_slash.arr );
+	}
+
+	if ( wpgpt_settings.ro_ampersand.state !== 'nothing' ) {
+		wpgpt_push1( results[ wpgpt_settings.ro_ampersand.state ], wpgpt_check_ro_ampersand( translated ) );
+	}
+
+	if ( wpgpt_settings.ro_dash.state !== 'nothing' ) {
+		const ro_dash = wpgpt_check_ro_dash( translated );
+		wpgpt_push1( results[ wpgpt_settings.ro_dash.state ], ro_dash.msg );
+		results.highlight_me.push( ... ro_dash.arr );
+	}
+}
+
+function wpgpt_check_placeholders( original, translated ) {
 	const placeholder_pattern = /(?:%[bcdefgosuxl]|%\d[$][bcdefgosuxl])/g;
 	const original_ph = original.match( placeholder_pattern );
 	const translated_ph = translated.match( placeholder_pattern );
-
 	if (
 		original_ph !== null ||
 		translated_ph !== null
 	) {
+		const msg = wpgpt_li.cloneNode( true );
 		if (
 			original_ph !== null &&
 			null === translated_ph
 		) {
-			warnings.placeholders = `<li>Missing/broken placeholder${( original_ph.length > 1 ) ? 's' : ''}: <b>${original_ph.toString()}</b></li>`;
+			msg.textContent = `Missing/broken placeholder${( original_ph.length > 1 ) ? 's' : ''}: ${original_ph.toString()}`;
+			return msg;
 		} else {
 			if (
 				null === original_ph &&
 				translated_ph !== null
 			) {
-				warnings.placeholders = `<li>Additional placeholder${( translated_ph.length > 1 ) ? 's' : ''}: <b>${translated_ph.toString()}</b></li>`;
+				msg.textContent = `Additional placeholder${( translated_ph.length > 1 ) ? 's' : ''}: ${translated_ph.toString()}`;
+				return msg;
 			} else {
 				if ( original_ph.length < translated_ph.length ) {
-					warnings.placeholders = `<li>Additional placeholder${( ( translated_ph.length - original_ph.length ) > 1 ) ? 's' : ''}: <b>${arr_diff( translated_ph, original_ph )}</b></li>`;
+					msg.textContent = `Additional placeholder${( ( translated_ph.length - original_ph.length ) > 1 ) ? 's' : ''}: ${arr_diff( translated_ph, original_ph )}`;
+					return msg;
 				}
 				if ( original_ph.length > translated_ph.length ) {
-					warnings.placeholders = `<li>Missing/broken placeholder${( ( original_ph.length - translated_ph.length ) > 1 ) ? 's' : ''}: <b>${arr_diff( original_ph, translated_ph )}</b></li>`;
+					msg.textContent = `Missing/broken placeholder${( ( original_ph.length - translated_ph.length ) > 1 ) ? 's' : ''}: ${arr_diff( original_ph, translated_ph )}`;
+					return msg;
 				}
 				if ( original_ph.length === translated_ph.length ) {
 					original_ph.sort();
@@ -314,375 +384,278 @@ function wpgpt_run_checks( original, translated, translation_id_e = false ) {
 						}
 					} );
 					if ( broken_placeholders.length ) {
-						warnings.placeholders = `<li>Possible broken: <b>${broken_placeholders.toString()}</b></li>`;
+						msg.textContent = `Possible broken: ${broken_placeholders.toString()}`;
+						return msg;
 					}
 				}
 			}
 		}
 	}
+	return '';
+}
 
-	if ( 'enabled' === wpgpt_settings.checks.state ) {
-		const first_original_char = original.substr( 0, 1 );
-		const first_translated_char = translated.substr( 0, 1 );
-		const last_original_char = original.substr( original.length - 1 );
-		const last_translated_char = translated.substr( translated.length - 1 );
-		const last_but_one_original_char = original.substr( original.length - 2, 1 );
-		const last_but_one_translated_char = translated.substr( translated.length - 2, 1 );
+function wpgpt_check_start_space( translated_first, original_first ) {
+	if ( ' ' === translated_first && original_first !== ' '	) {
+		const msg = wpgpt_li.cloneNode( true );
+		msg.textContent = 'Additional start space';
+		return msg;
+	}
+	if ( translated_first !== ' ' && ' ' === original_first	) {
+		const msg = wpgpt_li.cloneNode( true );
+		msg.textContent = 'Missing start space';
+		return msg;
+	}
+	return '';
+}
 
-		/* 	B. Start character
-			B. 1. Additional start space */
-		if (
-			' ' === first_translated_char &&
-			first_original_char !== ' '
-		) {
-			error_message = '<li>Additional start space</li>';
-			switch ( wpgpt_settings.start_end_space.state ) {
-			case 'warning': warnings.start_end_space = error_message; break;
-			case 'notice': notices.start_end_space = error_message;
+function wpgpt_check_end_space ( translated_last, original_last ) {
+	if ( ' ' === translated_last ) {
+		const msg = wpgpt_li.cloneNode( true );
+		msg.textContent = 'Additional end space';
+		return msg;
+	}
+	if ( ' ' === original_last ) {
+		const msg = wpgpt_li.cloneNode( true );
+		msg.textContent = 'Missing end space';
+		return msg;
+	}
+	return '';
+}
+
+function wpgpt_check_end_colon ( translated_last, original_last ) {
+	if ( ':' === original_last ) {
+		const msg = wpgpt_li.cloneNode( true );
+		msg.textContent = 'Missing end :';
+		return msg;
+	}
+	if ( ':' === translated_last ) {
+		const msg = wpgpt_li.cloneNode( true );
+		msg.textContent = 'Additional end :';
+		return msg;
+	}
+	return '';
+}
+
+function wpgpt_check_end_question_exclamation ( original_last ) {
+	if ( '?' === original_last ) {
+		const msg = wpgpt_li.cloneNode( true );
+		msg.textContent = 'Missing end ?';
+		return msg;
+	}
+	if ( '!' === original_last ) {
+		const msg = wpgpt_li.cloneNode( true );
+		msg.textContent = 'Missing end !';
+		return msg;
+	}
+	return '';
+}
+
+/** Missing end period symbol;
+* Ignore if:
+*	a. original ends with . and translation ends with a period symbol
+*	b. char - period swap( char should not be a letter or number ); Ideal examples: ". => ." or ). => .)
+*	c. tag - period swap
+*	d. 3 periods translated as elipsis
+*/
+function wpgpt_check_missing_end_symbol ( translated, original, translated_last, original_last ) {
+	let not_tag_period_swap = true,
+		not_translated_as_elipsis = true,
+		not_character_period_swap = true;
+	const original_last_but_one = original.substr( original.length - 2, 1 );
+	const translated_last_but_one = translated.substr( translated.length - 2, 1 );
+
+	if ( '.' === original_last && translated_last !== wpgpt_period && translated_last !== '.' ) {
+		const a = ( translated_last_but_one === wpgpt_period || '.' === translated_last_but_one );
+		const b = ( original_last_but_one === translated_last || is_locale_alternative( original_last_but_one, translated_last ) );
+		const c = ( /[^a-zA-Z1-50]/ ).test( translated_last );
+		not_character_period_swap = ! (	a && b && c );
+		if ( not_character_period_swap ) {
+			if ( '>' === translated_last ) {
+				let translated_last_period_index = translated.lastIndexOf( wpgpt_period );
+				let translated_last_tag = translated.substr( translated_last_period_index + 1 );
+				if ( translated_last_tag === original.substr( original.length - translated_last_tag.length - 1, translated_last_tag.length ) ) {
+					not_tag_period_swap = false;
+				} else if ( wpgpt_period !== '.' ) {
+					translated_last_period_index = translated.lastIndexOf( '.' );
+					translated_last_tag = translated.substr( translated_last_period_index + 1 );
+					if ( translated_last_tag === original.substr( original.length - translated_last_tag.length - 1, translated_last_tag.length ) ) {
+						not_tag_period_swap = false;
+					}
+				}
+			}
+			if ( not_tag_period_swap ) {
+				not_translated_as_elipsis = ! ( '…' === translated_last && '.' === original_last_but_one );
 			}
 		}
 
-		// B. 2. Missing start space.
-		if (
-			first_translated_char !== ' ' &&
-			' ' === first_original_char
-		) {
-			error_message = '<li>Missing start space</li>';
-			switch ( wpgpt_settings.start_end_space.state ) {
-			case 'warning': warnings.start_end_space = error_message; break;
-			case 'notice': notices.start_end_space = error_message;
-			}
-		}
-
-		// C. Ending character/
-		if ( last_original_char !== last_translated_char ) {
-			// C. 1. Additional end space/
-			if ( ' ' === last_translated_char ) {
-				error_message = '<li>Additional end space</li>';
-				switch ( wpgpt_settings.start_end_space.state ) {
-				case 'warning': warnings.end_char = error_message; break;
-				case 'notice': notices.end_char = error_message;
-				}
-			}
-
-			// C. 2. Missing end space.
-			if (
-				'' === warnings.end_char &&
-				'' === notices.end_char &&
-				' ' === last_original_char
-			) {
-				error_message = '<li>Missing end space</li>';
-				switch ( wpgpt_settings.start_end_space.state ) {
-				case 'warning': warnings.end_char = error_message; break;
-				case 'notice': notices.end_char = error_message;
-				}
-			}
-
-			// C. 3. Missing end :
-			if (
-				'' === warnings.end_char &&
-				'' === notices.end_char &&
-				':' === last_original_char
-			) {
-				error_message = '<li>Missing end <b>:</b></li>';
-				switch ( wpgpt_settings.end_colon.state ) {
-				case 'warning': warnings.end_char = error_message; break;
-				case 'notice': notices.end_char = error_message;
-				}
-			}
-
-			// C. 4. Additional end :
-			if (
-				'' === warnings.end_char &&
-				'' === notices.end_char &&
-				':' === last_translated_char
-			) {
-				error_message = '<li>Additional end <b>:</b></li>';
-				switch ( wpgpt_settings.end_colon.state ) {
-				case 'warning': warnings.end_char = error_message; break;
-				case 'notice': notices.end_char = error_message;
-				}
-			}
-
-			// C. 5. Missing end ?
-			if (
-				'' === warnings.end_char &&
-				'' === notices.end_char &&
-				'?' === last_original_char
-			) {
-				error_message = '<li>Missing end <b>?</b></li>';
-				switch ( wpgpt_settings.end_question_exclamation.state ) {
-				case 'warning': warnings.end_char = error_message; break;
-				case 'notice': notices.end_char = error_message;
-				}
-			}
-
-			// C. 6. Missing end !
-			if (
-				'' === warnings.end_char &&
-				'' === notices.end_char &&
-				'!' === last_original_char
-			) {
-				error_message = '<li>Missing end <b>!</b></li>';
-				switch ( wpgpt_settings.end_question_exclamation.state ) {
-				case 'warning': warnings.end_char = error_message; break;
-				case 'notice': notices.end_char = error_message;
-				}
-			}
-
-			/* C. 7. Missing end period symbol;
-			* Ignore if:
-			*	a. original ends with . and translation ends with a period symbol
-			*	b. char - period swap( char should not be a letter or number ); Ideal examples: ". => ." or ). => .)
-			*	c. tag - period swap
-			*	d. 3 periods translated as elipsis
-			*/
-			let not_tag_period_swap = true,
-				not_translated_as_elipsis = true,
-				not_character_period_swap = true;
-			if (
-				'' === warnings.end_char &&
-				'' === notices.end_char &&
-				'.' === last_original_char &&
-				last_translated_char !== wpgpt_period &&
-				last_translated_char !== '.'
-			) {
-				const a = ( last_but_one_translated_char === wpgpt_period || '.' === last_but_one_translated_char );
-				const b = ( last_but_one_original_char === last_translated_char || is_locale_alternative( last_but_one_original_char, last_translated_char ) );
-				const c = ( /[^a-zA-Z1-50]/ ).test( last_translated_char );
-				not_character_period_swap = ! (	a && b && c );
-				if ( not_character_period_swap ) {
-					if ( '>' === last_translated_char ) {
-						let translated_last_period_index = translated.lastIndexOf( wpgpt_period );
-						let translated_last_tag = translated.substr( translated_last_period_index + 1 );
-						if ( translated_last_tag === original.substr( original.length - translated_last_tag.length - 1, translated_last_tag.length ) ) {
-							not_tag_period_swap = false;
-						} else if ( wpgpt_period !== '.' ) {
-							translated_last_period_index = translated.lastIndexOf( '.' );
-							translated_last_tag = translated.substr( translated_last_period_index + 1 );
-							if ( translated_last_tag === original.substr( original.length - translated_last_tag.length - 1, translated_last_tag.length ) ) {
-								not_tag_period_swap = false;
-							}
-						}
-					}
-					if ( not_tag_period_swap ) {
-						not_translated_as_elipsis = ! ( '…' === last_translated_char && '.' === last_but_one_original_char );
-					}
-				}
-
-				if ( not_tag_period_swap && not_translated_as_elipsis && not_character_period_swap ) {
-					error_message = `<li>Missing end period (<b>${wpgpt_period}${( wpgpt_period !== '.' ) ? ' or . ' : ''}</b>)</li>`;
-					switch ( wpgpt_settings.end_period.state ) {
-					case 'warning': warnings.end_char = error_message; break;
-					case 'notice': notices.end_char = error_message;
-					}
-				}
-			}
-
-			/* C. 8. Additional end period;
-			* Ignore if:
-			*	a. original doesn't end with . and translation doesn't end with period symbol
-			*	b. period - char swap ( char should not be a letter or number )
-			*	c. period - tag swap
-			*	d. elipsis translated as 3 periods
-			*/
-			let not_period_tag_swap = true,
-				not_translated_from_elipsis = true,
-				not_period_character_swap = true;
-			if (
-				'' === warnings.end_char &&
-				'' === notices.end_char &&
-				last_original_char !== '.' &&
-				( last_translated_char === wpgpt_period || '.' === last_translated_char )
-			) {
-				const a = ( last_but_one_original_char === wpgpt_period || '.' === last_but_one_original_char );
-				const b = ( last_original_char === last_but_one_translated_char || is_locale_alternative( last_original_char, last_but_one_translated_char ) );
-				const c = ( /[^a-zA-Z1-50]/ ).test( last_original_char );
-				not_period_character_swap = ! (	a && b && c );
-				if ( not_period_character_swap ) {
-					if ( '>' === last_but_one_translated_char ) {
-						const original_last_period_index = original.lastIndexOf( '.' );
-						const original_last_tag = original.substr( original_last_period_index + 1 );
-						if ( original_last_tag === translated.substr( translated.length - original_last_tag.length - 1, original_last_tag.length ) ) {
-							not_period_tag_swap = false;
-						}
-					}
-					if ( not_period_tag_swap ) {
-						not_translated_from_elipsis = ! ( '…' === last_original_char && '.' === last_but_one_translated_char );
-					}
-				}
-
-				if (	not_translated_from_elipsis && not_period_character_swap && not_period_tag_swap ) {
-					error_message = `<li>Additional end period (<b>${wpgpt_period}${( wpgpt_period !== '.' ) ? ' or . ' : ''}</b>)</li>`;
-					switch ( wpgpt_settings.end_period.state ) {
-					case 'warning': warnings.end_char = error_message; break;
-					case 'notice': notices.end_char = error_message;
-					}
-				}
-			}
-		}
-		/* D. Others
-			D. 1. Double spaces */
-		const translated_double_spaces = translated.match( /[^ ]* {2,7}[^ ]*/gm ) || [];
-		const original_double_spaces = original.match( /[^ ]* {2,7}[^ ]*/gm ) || [];
-
-		if ( translation_id_e && original_double_spaces.length ) {
-			wpgpt_highlights( document.querySelector( `#${translation_id_e} .original` ), [ '  ' ], 'wpgpt-space' );
-			wpgpt_highlights( document.querySelector( `#${translation_id_e.replaceAll( 'editor', 'preview' )} .original-text` ), [ '  ' ], 'wpgpt-space' );
-			// To do: Highlight the spaces in the new row after Save process.
-		}
-
-		if ( translated_double_spaces.length > original_double_spaces.length ) {
-			error_message = `<li alt="Remove this double space.">${translated_double_spaces.length - original_double_spaces.length} double space${( ( translated_double_spaces.length - original_double_spaces.length ) > 1 ) ? 's' : ''}: ` + `"${translated_double_spaces.join( '", "' ).replaceAll( ' ', '&nbsp;' )}"` + `</li>`;
-			switch ( wpgpt_settings.double_spaces.state ) {
-			case 'warning':
-				warnings.others += error_message;
-				highlight_me = highlight_me.concat( translated_double_spaces );
-				break;
-			case 'notice':
-				notices.others += error_message;
-				highlight_me = highlight_me.concat( translated_double_spaces );
-				break;
-			}
-		} else if ( wpgpt_settings.double_spaces.state !== 'nothing' && ( translated_double_spaces.length < original_double_spaces.length ) ) {
-			notices.others += `<li>${original_double_spaces.length - translated_double_spaces.length} missing double space${( ( original_double_spaces.length - translated_double_spaces.length ) > 1 ) ? 's' : ''}</li>`;
-		}
-
-		let findW_list, findW, findW_transl_count;
-
-		// D. 2. Warning words.
-		if ( wpgpt_settings.warning_words.state !== '' ) {
-			findW_list = wpgpt_settings.warning_words.state.split( ',' );
-			for ( findW of findW_list ) {
-				if ( findW !== '' && findW !== ' ' ) {
-					findW_transl_count = wpgpt_occurrences( translated, findW );
-					if ( findW_transl_count ) {
-						warnings.others += `<li class="has-highlight" alt="Replace in translation this user defined warning word.">Using <b>${findW}</b></li>`;
-						highlight_me.push( findW );
-					}
-				}
-			}
-		}
-
-		// D. 3. Match words
-		if ( wpgpt_settings.match_words.state !== '' ) {
-			findW_list = wpgpt_settings.match_words.state.split( ',' );
-			for ( findW of findW_list ) {
-				if ( findW !== '' && findW !== ' ' ) {
-					findW_transl_count = wpgpt_occurrences( translated, findW );
-					const findW_orig_count = wpgpt_occurrences( original, findW );
-					if ( findW_transl_count > findW_orig_count ) {
-						warnings.others += `<li alt="Remove this additional user defined symbol.">Additional ${findW_transl_count - findW_orig_count} <b>${findW}</b></li>`;
-					} else if ( findW_transl_count < findW_orig_count ) {
-						warnings.others += `<li alt="Add this missing user defined symbol.">Missing ${findW_orig_count - findW_transl_count} <b>${findW}</b></li>`;
-					}
-				}
-			}
+		if ( not_tag_period_swap && not_translated_as_elipsis && not_character_period_swap ) {
+			const msg = wpgpt_li.cloneNode( true );
+			msg.textContent = `Missing end period (${wpgpt_period}${( wpgpt_period !== '.' ) ? ' or . ' : ''})`;
+			return msg;
 		}
 	}
+	return '';
+}
 
-	// E. Romanian checks.
-	if ( 'enabled' === wpgpt_settings.ro_checks.state ) {
-		const not_ro_diacritics = /[ãşţ]/ig;
-		const not_ro_quotes = /(?<!=)"(?:[^"<=>]*)"|(?<!=)'(?:[^'<=>]*)'/g;
-		const not_ro_ampersand = /[&](?!.{1,7}?[;=])/g;
+/* Additional end period symbol
+* Ignore if:
+*	a. original doesn't end with . and translation doesn't end with period symbol
+*	b. period - char swap ( char should not be a letter or number )
+*	c. period - tag swap
+*	d. elipsis translated as 3 periods
+*/
+function wpgpt_check_additional_end_symbol ( translated, original, translated_last, original_last ) {
+	let not_period_tag_swap = true,
+		not_translated_from_elipsis = true,
+		not_period_character_swap = true;
+	const original_last_but_one = original.substr( original.length - 2, 1 );
+	const translated_last_but_one = translated.substr( translated.length - 2, 1 );
 
-		// E. 1. ro diacritics.
-		const not_using_ro_diacritics = translated.match( not_ro_diacritics );
-		if ( not_using_ro_diacritics !== null ) {
-			error_message = `<li class="has-highlight" alt="Replace this wrong Romanian diacritic.">${not_using_ro_diacritics.length} wrong diacritic${( not_using_ro_diacritics.length > 1 ) ? 's' : ''}: <b>${not_using_ro_diacritics.toString()}</b></li>`;
-			switch ( wpgpt_settings.ro_diacritics.state ) {
-			case 'warning':
-				warnings.ro_diacritics = error_message;
-				highlight_me = highlight_me.concat( not_using_ro_diacritics );
-				break;
-			case 'notice':
-				notices.ro_diacritics = error_message;
-				highlight_me = highlight_me.concat( not_using_ro_diacritics );
-				break;
-			}
-		}
-
-		// E. 2. ro quotes.
-		let findW_list, findW;
-		const not_using_ro_quotes = translated.match( not_ro_quotes );
-		if ( not_using_ro_quotes !== null ) {
-			error_message = `<li>${not_using_ro_quotes.length} wrong quotes: <b>${not_using_ro_quotes.toString()}</b>. Use „ ”</li>`;
-			switch ( wpgpt_settings.ro_quotes.state ) {
-			case 'warning': warnings.ro_quotes = error_message; break;
-			case 'notice': notices.ro_quotes = error_message;
-			}
-		} else {
-			findW_list = [ '&quot;', '&#34;', '&apos;', '&#39;', '&ldquo;', '&#8220;', '“' ];
-			for ( findW of findW_list ) {
-				if ( wpgpt_occurrences( translated, findW ) ) {
-					error_message = `<li class="has-highlight" alt="Replace these wrong quotes.">Wrong quote: <b>${findW.replaceAll( '&', '&amp;' )}</b></li>`;
-					switch ( wpgpt_settings.ro_quotes.state ) {
-					case 'warning':
-						warnings.ro_quotes = error_message;
-						highlight_me.push( findW );
-						break;
-					case 'notice':
-						notices.ro_quotes = error_message;
-						highlight_me.push( findW );
-						break;
-					}
-					break;
+	if ( original_last !== '.' && ( translated_last === wpgpt_period || '.' === translated_last ) ) {
+		const a = ( original_last_but_one === wpgpt_period || '.' === original_last_but_one );
+		const b = ( original_last === translated_last_but_one || is_locale_alternative( original_last, translated_last_but_one ) );
+		const c = ( /[^a-zA-Z1-50]/ ).test( original_last );
+		not_period_character_swap = ! (	a && b && c );
+		if ( not_period_character_swap ) {
+			if ( '>' === translated_last_but_one ) {
+				const original_last_period_index = original.lastIndexOf( '.' );
+				const original_last_tag = original.substr( original_last_period_index + 1 );
+				if ( original_last_tag === translated.substr( translated.length - original_last_tag.length - 1, original_last_tag.length ) ) {
+					not_period_tag_swap = false;
 				}
 			}
-		}
-
-		// E. 3. ro slash spaces.
-		const not_using_ro_slash_spaces = wpgpt_occurrences( translated, ' / ' );
-		if ( not_using_ro_slash_spaces ) {
-			error_message = `<li class="has-highlight" alt="Remove spaces around slash.">${not_using_ro_slash_spaces} <b>/</b> space${( not_using_ro_slash_spaces > 1 ) ? 's' : ''}</li>`;
-			switch ( wpgpt_settings.ro_slash.state ) {
-			case 'warning':
-				warnings.others += error_message;
-				highlight_me.push( ' / ' );
-				break;
-			case 'notice':
-				notices.others += error_message;
-				highlight_me.push( ' / ' );
-				break;
+			if ( not_period_tag_swap ) {
+				not_translated_from_elipsis = ! ( '…' === original_last && '.' === translated_last_but_one );
 			}
 		}
 
-		// E. 4. ro ampersand.
-		const not_using_ro_ampersand = translated.match( not_ro_ampersand );
-		if ( not_using_ro_ampersand !== null ) {
-			error_message = `<li> Using ${not_using_ro_ampersand.length} <b>&</b></li>`;
-			switch ( wpgpt_settings.ro_ampersand.state ) {
-			case 'warning': warnings.others += error_message; break;
-			case 'notice': notices.others += error_message;
-			}
-		}
-
-		// E. 5. ro — dash.
-		const not_using_ro_dash = wpgpt_occurrences( translated, '—' );
-		if ( not_using_ro_dash ) {
-			error_message = `<li class="has-highlight" alt="Use simple dash instead."> Using ${not_using_ro_dash} <b>—</b></li>`;
-			switch ( wpgpt_settings.ro_dash.state ) {
-			case 'warning':
-				warnings.others += error_message;
-				highlight_me.push( '—' );
-				break;
-			case 'notice':
-				notices.others += error_message;
-				highlight_me.push( '—' );
-				break;
-			}
+		if ( not_translated_from_elipsis && not_period_character_swap && not_period_tag_swap ) {
+			const msg = wpgpt_li.cloneNode( true );
+			msg.textContent = `Additional end period (${wpgpt_period}${( wpgpt_period !== '.' ) ? ' or . ' : ''})`;
+			return msg;
 		}
 	}
+	return '';
+}
 
-	let warnings_results = Object.values( warnings ).join( '' );
-	warnings_results = ( '' === warnings_results ) ? 'none' : ( warnings_results );
+function wpgpt_check_double_spaces( translated, original, translation_e_id ) {
+	const translated_double_spaces = translated.match( /[^ ]* {2,7}[^ ]*/gm ) || [];
+	const original_double_spaces = original.match( /[^ ]* {2,7}[^ ]*/gm ) || [];
 
-	let notices_results = Object.values( notices ).join( '' );
-	notices_results = ( '' === notices_results ) ? 'none' : ( notices_results );
+	if ( translation_e_id && original_double_spaces.length ) {
+		wpgpt_highlights( document.querySelector( `${translation_e_id} .original` ), [ '  ' ], 'wpgpt-space' );
+		wpgpt_highlights( document.querySelector( `${translation_e_id.replaceAll( 'editor', 'preview' )} .original-text` ), [ '  ' ], 'wpgpt-space' );
+		// To do: Highlight the spaces in the new row after Save process.
+	}
+	if ( translated_double_spaces.length > original_double_spaces.length ) {
+		const msg = wpgpt_li.cloneNode( true );
+		msg.textContent = `${translated_double_spaces.length - original_double_spaces.length} double space${( ( translated_double_spaces.length - original_double_spaces.length ) > 1 ) ? 's' : ''}: "${translated_double_spaces.join( '", "' ).replaceAll( ' ', '_' )}"`;
+		return { msg: msg, arr: translated_double_spaces };
+	}
+	if ( translated_double_spaces.length < original_double_spaces.length ) {
+		const msg = wpgpt_li.cloneNode( true );
+		msg.textContent = `${original_double_spaces.length - translated_double_spaces.length} missing double space${( ( original_double_spaces.length - translated_double_spaces.length ) > 1 ) ? 's' : ''}`;
+		return { msg: msg, arr: original_double_spaces };
+	}
+	return { msg: '', arr: [] };
+}
 
-	const results = { 'warnings': warnings_results, 'notices': notices_results, 'highlight_me': highlight_me };
-	return results;
+function wpgpt_check_warning_words ( translated ) {
+	const result = { msg: '', arr: [] };
+	wpgpt_settings.warning_words.state.split( ',' ).forEach( ( word ) => {
+		( word !== '' && word !== ' ' ) && wpgpt_occurrences( translated, word ) && wpgpt_push1( result.arr, word );
+	} );
+	if ( result.arr.length ) {
+		const msg = wpgpt_li.cloneNode( true );
+		msg.textContent = `Using ${result.arr.join( ', ' )}`;
+		msg.className = 'has-highlight';
+		result.msg = msg;
+	}
+	return result;
+}
+
+function wpgpt_check_match_words( translated, original ) {
+	let msgTxt = '';
+	wpgpt_settings.match_words.state.split( ',' ).forEach( ( word ) => {
+		if ( word !== '' && word !== ' ' ) {
+			const word_in_translated = wpgpt_occurrences( translated, word );
+			const word_in_original = wpgpt_occurrences( original, word );
+			if ( word_in_translated > word_in_original ) {
+				msgTxt += `Additional ${word_in_translated - word_in_original} "${word}". `;
+			} else if ( word_in_translated < word_in_original ) {
+				msgTxt += `Missing ${word_in_original - word_in_translated} "${word}". `;
+			}
+		}
+	} );
+	if ( msgTxt !== '' ) {
+		const msg = wpgpt_li.cloneNode( true );
+		msg.textContent = msgTxt;
+		return msg;
+	}
+	return '';
+}
+
+function wpgpt_check_ro_diacritics( translated ) {
+	const not_using_ro_diacritics = translated.match( /[ãşţ]/ig );
+	if ( not_using_ro_diacritics !== null ) {
+		const msg = wpgpt_li.cloneNode( true );
+		msg.textContent = `${not_using_ro_diacritics.length} wrong diacritic${( not_using_ro_diacritics.length > 1 ) ? 's' : ''}: "${not_using_ro_diacritics.toString()}"`;
+		msg.className = 'has-highlight';
+		return { msg: msg, arr: not_using_ro_diacritics };
+	}
+	return { msg: '', arr: [] };
+}
+
+function wpgpt_check_ro_quotes ( translated ) {
+	const result = { msg: '', arr: [] }
+	const not_using_ro_quotes = translated.match( /(?<!=)"(?:[^"<=>]*)"|(?<!=)'(?:[^'<=>]*)'/g );
+	if ( not_using_ro_quotes !== null ) {
+		const msg = wpgpt_li.cloneNode( true );
+		msg.textContent = `${not_using_ro_quotes.length} wrong quotes: ${not_using_ro_quotes.toString()}. Use „ ”`;
+		msg.className = 'has-highlight';
+		return { msg: msg, arr: not_using_ro_quotes };
+	}
+	[ '&quot;', '&#34;', '&apos;', '&#39;', '&ldquo;', '&#8220;', '“' ].forEach( ( word ) => {
+		( wpgpt_occurrences( translated, word ) ) && wpgpt_push1( result.arr, word );
+	} );
+	if ( result.arr.length ) {
+		const msg = wpgpt_li.cloneNode( true );
+		msg.textContent = `${result.arr.length} wrong quote: ${result.arr.join( ', ' ).replaceAll( '&', '&amp;' )}`;
+		msg.className = 'has-highlight';
+	}
+	return result;
+}
+
+function wpgpt_check_ro_slash ( translated ) {
+	const not_using_ro_slash_spaces = wpgpt_occurrences( translated, ' / ' );
+	if ( not_using_ro_slash_spaces ) {
+		const msg = wpgpt_li.cloneNode( true );
+		msg.textContent = `${not_using_ro_slash_spaces} / space${( not_using_ro_slash_spaces > 1 ) ? 's' : ''}`;
+		msg.className = 'has-highlight';
+		return { msg: msg, arr: [ ' / ' ] };
+	}
+	return { msg: '', arr: [] };
+}
+
+function wpgpt_check_ro_ampersand ( translated ) {
+	const not_using_ro_ampersand = translated.match( /[&](?!.{1,7}?[;=])/g );
+	if ( not_using_ro_ampersand !== null ) {
+		const msg = wpgpt_li.cloneNode( true );
+		msg.textContent = `Using ${not_using_ro_ampersand.length} &`;
+		return msg;
+	}
+	return '';
+}
+
+function wpgpt_check_ro_dash ( translated ) {
+	const not_using_ro_dash = wpgpt_occurrences( translated, '—' );
+	if ( not_using_ro_dash ) {
+		const msg = wpgpt_li.cloneNode( true );
+		msg.textContent = `Using ${not_using_ro_dash} —`;
+		msg.className = 'has-highlight';
+		return { msg: msg, arr: [ '—' ] };
+	}
+	return { msg: '', arr: [] };
 }
 
 /*
@@ -749,40 +722,62 @@ function wpgpt_highlights( looking_for_container, looking_for_arr, highlight_cla
 };
 
 // Prevent leaving without saving.
-jQuery( 'textarea' ).bind( 'input propertychange', () => { wpgpt_user_edited = true; } );
-jQuery( window ).on( 'beforeunload', () => {
-	if ( 'enabled' === wpgpt_settings.prevent_unsaved.state && wpgpt_user_edited && jQuery( '.editor:visible textarea' ).val() !== undefined ) {
-		return false;
+document.querySelectorAll( 'textarea' ).forEach( ( el ) => { el.addEventListener( 'change', () => { wpgpt_user_edited = true; } ); } );
+window.addEventListener( 'beforeunload', ( e ) => {
+	if ( 'enabled' === wpgpt_settings.prevent_unsaved.state && wpgpt_user_edited ) {
+		const open_editor = document.querySelector( '.editor[style="display: table-row;"] textarea' );
+		if ( open_editor && open_editor.value !== '' ) {
+			e.preventDefault();
+			e.returnValue = '';
+			return e;
+		}
 	}
 } );
 
 // Row filter by existance of warnings and notices.
 function wpgpt_filters() {
-	const notices_count = jQuery( '.wpgpt-has-notice' ).length;
-	const warnings_count = jQuery( '.wpgpt-has-warning' ).length;
-	let filters = '';
-	filters += `<a href="#" title="Click to view strings with notice only - ${notices_count} strings" class="wpgpt-filter-notices count-${notices_count}"><img src="${wpgpt_notice_icon}"> Notices (${notices_count})</a><span class="separator">•</span>`;
-	filters += `<a href="#" title="Click to view strings with warning only - ${warnings_count} strings" class="wpgpt-filter-warnings count-${warnings_count}"><img src="${wpgpt_warning_icon}"> Warnings (${warnings_count})</a><span class="separator">•</span>`;
-	filters += '<a href="#" title="Click to view all strings" class="wpgpt-filter-all">All</a>';
+	const notices_count = document.querySelectorAll( '.wpgpt-has-notice' ).length;
+	const warnings_count = document.querySelectorAll( '.wpgpt-has-warning' ).length;
 
-	const current_filters = jQuery( '.wpgpt-filters' );
-	if ( current_filters.length ) {
-		current_filters.html( filters );
+	const filtersF = document.createDocumentFragment();
+	filtersF.appendChild(
+		$wpgpt_createElement( 'a', { 'href': '#', 'title': `Click to view strings with notices only - ${notices_count} strings`, 'class': `wpgpt-filter-notices count-${notices_count}` } ),
+	).append( $wpgpt_createElement( 'img', { 'src': wpgpt_notice_icon } ), `Notices (${notices_count})` );
+	filtersF.appendChild( $wpgpt_createElement( 'span', { 'class': 'separator' }, ' ' ) );
+	filtersF.appendChild(
+		$wpgpt_createElement( 'a', { 'href': '#', 'title': `Click to view strings with warnings only - ${warnings_count} strings`, 'class': `wpgpt-filter-warnings count-${warnings_count}` } ),
+	).append( $wpgpt_createElement( 'img', { 'src': wpgpt_warning_icon } ), `Warnings (${warnings_count})` );
+	filtersF.appendChild( $wpgpt_createElement( 'span', { 'class': 'separator' }, ' ' ) );
+	filtersF.appendChild( $wpgpt_createElement( 'a', { 'href': '#', 'title': `Click to view all strings`, 'class': 'wpgpt-filter-all' }, 'All' ) );
+	const filters = document.createElement( 'div' );
+	filters.className = 'wpgpt-filters';
+	filters.appendChild( filtersF );
+
+	const current_filters = document.querySelector( '.wpgpt-filters' );
+	const paging = document.querySelector( '.paging' );
+	if ( current_filters ) {
+		current_filters.parentNode.replaceChild( filters, current_filters );
 	} else {
-		jQuery( '.paging' ).first().prepend( `<div class="wpgpt-filters">${filters}</div` );
+		paging && paging.insertAdjacentElement( 'afterbegin', filters );
 	}
 
-	jQuery( '.wpgpt-filter-warnings' ).click( () => {
-		jQuery( '#translations tr.preview' ).hide( 200 );
-		jQuery( '#translations tr.preview.wpgpt-has-warning' ).show( 200 );
+	paging && document.querySelector( '.wpgpt-filter-warnings' ).addEventListener( 'click', () => {
+		$wpgpt_hideEl( 'tr.preview' );
+		document.querySelectorAll( 'tr.preview.wpgpt-has-warning' ).forEach( ( el ) => {
+			el.style.display = 'table-row';
+		} );
 	} );
 
-	jQuery( '.wpgpt-filter-notices' ).click( () => {
-		jQuery( '#translations tr.preview' ).hide( 200 );
-		jQuery( '#translations tr.preview.wpgpt-has-notice' ).show( 200 );
+	paging && document.querySelector( '.wpgpt-filter-notices' ).addEventListener( 'click', () => {
+		$wpgpt_hideEl( 'tr.preview' );
+		document.querySelectorAll( 'tr.preview.wpgpt-has-notice' ).forEach( ( el ) => {
+			el.style.display = 'table-row';
+		} );
 	} );
-	jQuery( '.wpgpt-filter-all' ).click( () => {
-		jQuery( '#translations tr.preview' ).show( 200 );
+	paging && document.querySelector( '.wpgpt-filter-all' ).addEventListener( 'click', () => {
+		document.querySelectorAll( 'tr.preview' ).forEach( ( el ) => {
+			el.style.display = 'table-row';
+		} );
 	} );
 }
 

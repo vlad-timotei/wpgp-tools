@@ -930,7 +930,7 @@ function wpgpt_getLS( name ) {
 	return localStorage.getItem( name );
 }
 
-// Functions to replace jQuery library.
+// Functions to replace j library.
 function $wpgpt_createElement( tagName = 'div', attributes = {}, textContent = '' ) {
 	const element = document.createElement( tagName );
 	for ( const attribute in attributes ) {

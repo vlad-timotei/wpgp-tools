@@ -28,6 +28,18 @@ function wpgpt_delLS( name ) {
 	localStorage.removeItem( name );
 }
 
+/** Simpler naive implementation of push
+ *
+ * @param {Array} arr
+ * @param {Element} el
+ */
+
+function wpgpt_push1( arr, el ) {
+	if ( el !== '' ) {
+		arr[ arr.length	] = el;
+	}
+}
+
 /**
  * Creates HTML Element.
  *

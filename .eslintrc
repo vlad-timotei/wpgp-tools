@@ -31,9 +31,14 @@
 		"wpgpt_check_this_translation": true,
 		"wpgpt_next_is_strict": true,
 		"wpgpt_error_message": true,
-		"wpgpt_user_edited": true,
+		"wpgpt_notice_icon": true,
+		"wpgpt_occurrences": true,
+		"wpgpt_push": true,
+		"wpgpt_push1": true,
+		"wpgpt_settings": true,
 		"wpgpt_warning_icon": true,
 		"wpgpt_notice_icon": true,
+		"wpgpt_push1": true,
 		"GM_addStyle": true,
 		"GM_getResourceText": true
 
