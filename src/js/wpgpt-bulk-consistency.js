@@ -38,7 +38,7 @@ function wpgpt_do_bulk_consistency() {
 		if ( comment_el !== null ) {
 			const comment = comment_el.textContent;
 			if ( wpgpt_occurrences( comment, 'name' ) && ( wpgpt_occurrences( comment, 'plugin' ) || wpgpt_occurrences( comment, 'theme' ) || wpgpt_occurrences( comment, 'author' ) ) ) {
-				wpgpt_bulk_warning.innerHTML = 'WPGPT: This might be the name of a plugin, theme or author. <br>If not, please click Save!';
+				wpgpt_bulk_warning.innerText = `WPGPT: This might be the name of a plugin, theme or author. \n If not, please click Save!`;
 				$wpgpt_addElement( '.translation-wrapper', 'beforebegin', wpgpt_bulk_warning );
 				comment_el.open = true;
 				return;

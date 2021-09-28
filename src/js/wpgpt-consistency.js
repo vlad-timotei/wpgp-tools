@@ -1,6 +1,6 @@
 let _wpgpt_settings = { 'search': 'enabled', 'bulk_consistency': 'disabled' };
 //	_wpgpt_settings is a known/accepted redundancy for TM script that runs in the same environment.
-_wpgpt_settings = ( wpgpt_getLS( 'wpgpt-user-settings' ) !== null ) ? JSON.parse( wpgpt_getLS( 'wpgpt-user-settings' ) ) : _wpgpt_settings;
+_wpgpt_settings = ( localStorage.getItem( 'wpgpt-user-settings' ) !== null ) ? JSON.parse( localStorage.getItem( 'wpgpt-user-settings' ) ) : _wpgpt_settings;
 const wpgpt_safe_limit = 25;
 
 if ( 'enabled' === _wpgpt_settings.search ) {
@@ -35,7 +35,7 @@ function consistency_tools() {
 		'plugin_slug':  '',
 		'copy_me':      false,
 	};
-	wpgpt_search_settings = ( wpgpt_getLS( 'wpgpt-search' ) !== null ) ? JSON.parse( wpgpt_getLS( 'wpgpt-search' ) ) : wpgpt_search_settings;
+	wpgpt_search_settings = ( localStorage.getItem( 'wpgpt-search' ) !== null ) ? JSON.parse( localStorage.getItem( 'wpgpt-search' ) ) : wpgpt_search_settings;
 
 	let notice_time;
 
@@ -150,7 +150,7 @@ function consistency_tools() {
 
 		if ( wpgpt_search_settings.plugin ) {
 			wpgpt_search_settings.plugin_slug = also_searching_in_plugin;
-			wpgpt_setLS( 'wpgpt-search', JSON.stringify( wpgpt_search_settings ) );
+			localStorage.setItem( 'wpgpt-search', JSON.stringify( wpgpt_search_settings ) );
 			if ( wpgpt_search_settings.plugin_slug !== 'undefined' ) {
 				document.querySelectorAll( '.wpgpt-search-plugin-slug' ).forEach( ( el ) => {
 					el.value = wpgpt_search_settings.plugin_slug;
@@ -195,7 +195,9 @@ function consistency_tools() {
 				tabs_state[ tab_key ] = 'closed';
 			}
 		} );
-		$wpgpt_hideEl( '.wpgpt-search-close-tabs' );
+		document.querySelectorAll( '.wpgpt-search-close-tabs' ).forEach( ( el ) => {
+			el.style.display = 'none';
+		} );
 	}
 
 	function wpgpt_do_search_options( event ) {
@@ -203,7 +205,7 @@ function consistency_tools() {
 		document.querySelectorAll( '.wpgpt-search-option' ).forEach( ( el ) => {
 			el.checked = wpgpt_search_settings[ el.dataset.searchproject ];
 		} );
-		wpgpt_setLS( 'wpgpt-search', JSON.stringify( wpgpt_search_settings ) );
+		localStorage.setItem( 'wpgpt-search', JSON.stringify( wpgpt_search_settings ) );
 	}
 
 	function wpgpt_do_search_notice( msg ) {
@@ -439,7 +441,7 @@ function consistency_tools() {
 			el.classList.toggle( 'inactive' );
 		} );
 		wpgpt_search_settings.copy_me = ! wpgpt_search_settings.copy_me;
-		wpgpt_setLS( 'wpgpt-search', JSON.stringify( wpgpt_search_settings ) );
+		localStorage.setItem( 'wpgpt-search', JSON.stringify( wpgpt_search_settings ) );
 	}
 
 	// Adds checkbox to set user field value to 'anonymous' - author submitted translations.
@@ -448,7 +450,7 @@ function consistency_tools() {
 		if ( ! user_filter_el ) {
 			return;
 		}
-		const anonymous = $wpgpt_createElement( 'div' );
+		const anonymous = document.createElement( 'div' );
 		const anonymous_input = $wpgpt_createElement( 'input', { 'type': 'checkbox', 'id': 'wpgpt_search_anonymous' } );
 		const anonymous_label = $wpgpt_createElement( 'label', { 'for': 'wpgpt_search_anonymous' }, 'Anonymous author' );
 		anonymous.append( anonymous_input, anonymous_label );
@@ -575,7 +577,7 @@ function consistency_tools() {
 
 	function wpgpt_notranslate() {
 		const notranslate_header = document.createElement( 'div' );
-		notranslate_header.innerHTML = '<span>&#9654;</span> Non-translatable:';
+		notranslate_header.textContent = 'Non-translatable';
 		notranslate_header.append( $wpgpt_createElement( 'button', { 'type': 'button', 'class': 'wpgpt_notranslate_copy_all' }, 'Copy all' ) );
 		document.querySelectorAll( '.preview .original' ).forEach( ( original_preview ) => {
 			let has_notranslate = false;
@@ -730,8 +732,8 @@ function wpgpt_bulk_consistency() {
 		document.querySelectorAll( '.fire_magic_save_close, .wpgpt-relax' ).forEach( ( el ) => { el.style.display = 'block'; } )
 		event.target.insertAdjacentElement( 'beforeBegin', $wpgpt_createElement( 'strong', {}, 'This translation will be used to replace all others. ' ) );
 		event.target.parentNode.removeChild( event.target );
-		const table_head = $wpgpt_createElement( 'thead' );
-		const table_tr = $wpgpt_createElement( 'tr' );
+		const table_head = document.createElement( 'thead' );
+		const table_tr = document.createElement( 'tr' );
 		const table_th = $wpgpt_createElement( 'th', { 'colspan': '2' }, 'These are the transations that will be replaced:' );
 		table_tr.append( table_th );
 		table_head.append( table_tr );
@@ -897,7 +899,7 @@ function wpgpt_bulk_consistency() {
 					bulk_instructions.append( bulk_instructions_ol );
 					if ( ! constant_alternative_forms ) {
 						const note = document.createElement( 'div' );
-						note.innerHTML = 'Note: The above translations have both <strong>singular and plural</strong> forms, but replacement of translations with a different form will be skipped';
+						note.textContent = 'Note: The above translations have both singular and plural forms, but replacement of translations with a different form will be skipped';
 						$wpgpt_addElement( '#translations-overview', 'beforeend', note );
 					}
 					$wpgpt_addElement( '#translations-overview p', 'afterbegin', bulk_instructions );
@@ -922,32 +924,7 @@ function wpgpt_bulk_consistency() {
 	}
 }
 
-function wpgpt_setLS( name, value ) {
-	localStorage.setItem( name, value );
-}
-
-function wpgpt_getLS( name ) {
-	return localStorage.getItem( name );
-}
-
-// Functions to replace j library.
-function $wpgpt_createElement( tagName = 'div', attributes = {}, textContent = '' ) {
-	const element = document.createElement( tagName );
-	for ( const attribute in attributes ) {
-		if ( attributes.hasOwnProperty( attribute ) ) {
-			element.setAttribute( attribute, attributes[ attribute ] );
-		}
-	}
-	element.textContent = textContent;
-	return element;
-}
-
-function $wpgpt_addElement( target_selector, el_position, new_element ) {
-	const el = document.querySelector( target_selector );
-	if ( el !== null ) {
-		el.insertAdjacentElement( el_position, new_element );
-	}
-}
+// Functions to replace jQuery library.
 
 function $wpgpt_addElements( target_selector, el_position, new_element ) {
 	document.querySelectorAll( target_selector ).forEach( ( el ) => {
@@ -973,19 +950,12 @@ function $wpgpt_showEl( target_selector ) {
 	} );
 }
 
-function $wpgpt_hideEl( target_selector ) {
-	document.querySelectorAll( target_selector ).forEach( ( el ) => {
-		el.style.display = 'none';
-	} );
-}
-
 function $wpgpt_setTextContent( target_selector, new_txt ) {
 	document.querySelectorAll( target_selector ).forEach( ( el ) => {
 		el.textContent = new_txt;
 	} );
 }
 
-// This is not a duplicate.
 function $wpgpt_addClickEvt( target_selector, function_to_call, function_parameters = [] ) {
 	document.querySelectorAll( target_selector ).forEach( ( el ) => {
 		el.onclick = function() {
@@ -993,7 +963,7 @@ function $wpgpt_addClickEvt( target_selector, function_to_call, function_paramet
 		};
 	} );
 }
-// This is not a duplicate.
+
 function $wpgpt_scrollTo( target_selector, scroll_behavior = 'auto', vertical_align = 'start', horizontal_align = 'nearest' ) {
 	const el = document.querySelector( target_selector );
 	el.scrollIntoView( { behavior: scroll_behavior, block: vertical_align, inline: horizontal_align } );

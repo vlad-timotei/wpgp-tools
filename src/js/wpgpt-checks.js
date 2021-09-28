@@ -5,7 +5,9 @@ let wpgpt_user_edited = false;
 const wpgpt_period = ( wpgpt_settings.custom_period.state !== '' ) ? wpgpt_settings.custom_period.state : '.';
 const approve_with_warnings = document.createElement( 'div' );
 approve_with_warnings.classList.add( 'wpgpt-ignore-warnings', 'noselect' );
-approve_with_warnings.appendChild( $wpgpt_createElement( 'label', {}, 'Save / Approve with warnings' ) ).appendChild( $wpgpt_createElement( 'input', { 'type': 'checkbox' } ) );
+const label_warnings = document.createElement( 'label' );
+label_warnings.append( $wpgpt_createElement( 'input', { 'type': 'checkbox' } ), 'Save / Approve with warnings' );
+approve_with_warnings.appendChild( label_warnings );
 const wpgpt_li = document.createElement( 'li' );
 
 if ( typeof $gp_editor_options !== 'undefined' && ( 'enabled' === wpgpt_settings.checks.state || 'enabled' === wpgpt_settings.ro_checks.state ) ) {
@@ -110,6 +112,7 @@ function wpgpt_check_this_translation( translation_e_id, translation_p_id ) {
 		saved = true;
 		translation_e_id = `tr[id^="${translation_e_id.replace( /(?:(editor-[^- ]*)(?:-[^' ]*))/g, '$1' ).replace( '#', '' )}"]`;
 		translation_p_id = translation_e_id.replace( 'editor', 'preview' );
+		// To Do: on history page, this will alter the first row, not the one intended!
 	}
 	setTimeout( () => {
 		wpgpt_attempt_save( translation_e_id, translation_p_id, thisTranslation, saved );
@@ -762,22 +765,16 @@ function wpgpt_filters() {
 	}
 
 	paging && document.querySelector( '.wpgpt-filter-warnings' ).addEventListener( 'click', () => {
-		$wpgpt_hideEl( 'tr.preview' );
-		document.querySelectorAll( 'tr.preview.wpgpt-has-warning' ).forEach( ( el ) => {
-			el.style.display = 'table-row';
-		} );
+		document.querySelectorAll( 'tr.preview' ).forEach( ( el ) => { el.style.display = 'none'; } );
+		document.querySelectorAll( 'tr.preview.wpgpt-has-warning' ).forEach( ( el ) => { el.style.display = 'table-row'; } );
 	} );
 
 	paging && document.querySelector( '.wpgpt-filter-notices' ).addEventListener( 'click', () => {
-		$wpgpt_hideEl( 'tr.preview' );
-		document.querySelectorAll( 'tr.preview.wpgpt-has-notice' ).forEach( ( el ) => {
-			el.style.display = 'table-row';
-		} );
+		document.querySelectorAll( 'tr.preview' ).forEach( ( el ) => { el.style.display = 'none'; } );
+		document.querySelectorAll( 'tr.preview.wpgpt-has-notice' ).forEach( ( el ) => { el.style.display = 'table-row'; } );
 	} );
 	paging && document.querySelector( '.wpgpt-filter-all' ).addEventListener( 'click', () => {
-		document.querySelectorAll( 'tr.preview' ).forEach( ( el ) => {
-			el.style.display = 'table-row';
-		} );
+		document.querySelectorAll( 'tr.preview' ).forEach( ( el ) => { el.style.display = 'table-row'; } );
 	} );
 }
 

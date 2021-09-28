@@ -167,8 +167,8 @@ document.querySelector( '#menu-headline-nav' ).append( settings_li );
 settings_li.addEventListener( 'click', wpgpt_settings_page );
 
 let wpgpt_user_settings = {};
-if ( wpgpt_getLS( 'wpgpt-user-settings' ) !== null ) {
-	wpgpt_user_settings = JSON.parse( wpgpt_getLS( 'wpgpt-user-settings' ) );
+if ( localStorage.getItem( 'wpgpt-user-settings' ) !== null ) {
+	wpgpt_user_settings = JSON.parse( localStorage.getItem( 'wpgpt-user-settings' ) );
 	for ( const property in wpgpt_settings ) {
 		if ( wpgpt_settings[ property ][ 'setting_type' ] !== 0 && wpgpt_user_settings[ property ] !== undefined ) {
 			wpgpt_settings[ property ][ 'state' ] = wpgpt_user_settings[ property ];
@@ -281,10 +281,12 @@ function wpgpt_settings_page() {
 		( 'disabled' === wpgpt_settings[ key ][ 'state' ] ) && document.querySelectorAll( `.wpgpt-child-of-${key}` ).forEach( ( el ) => { el.style.display = 'none'; } );
 	} );
 
-	$wpgpt_addEvtListener( 'click', '.wpgpt-update', ( ev ) => {
-		wpgpt_update_setting( ev.target.name, ev.target.value );
-		( 'enabled' === ev.target.value ) && jQuery( `.wpgpt-child-of-${ev.target.name}` ).show( 200 );
-		( 'disabled' === ev.target.value ) && jQuery( `.wpgpt-child-of-${ev.target.name}` ).hide( 200 );
+	document.querySelectorAll( '.wpgpt-update' ).forEach( ( el ) => {
+		el.addEventListener( 'click', ( ev ) => {
+			wpgpt_update_setting( ev.target.name, ev.target.value );
+			( 'enabled' === ev.target.value ) && jQuery( `.wpgpt-child-of-${ev.target.name}` ).show( 200 );
+			( 'disabled' === ev.target.value ) && jQuery( `.wpgpt-child-of-${ev.target.name}` ).hide( 200 );
+		} );
 	} );
 
 	document.getElementById( 'save_settings' ).addEventListener( 'click', wpgpt_exit_settings );
@@ -297,7 +299,7 @@ function wpgpt_settings_page() {
 			confirm_message += 	( '${WPGPT_VERSION}' !== WPGPT_VERSION ) ? 'New settings from WPGPT ' + WPGPT_VERSION + ' will be lost. \\n' : '';
 			confirm_message +=  'Restore old settings?';
 			if ( confirm( confirm_message ) ) {
-				localStorage.setItem( 'wpgpt-user-settings', '${wpgpt_getLS( 'wpgpt-user-settings' )}' );
+				localStorage.setItem( 'wpgpt-user-settings', '${localStorage.getItem( 'wpgpt-user-settings' )}' );
 				alert( 'Settings restored from backup!' );
 				location.reload(); 
 			}
@@ -314,7 +316,7 @@ function wpgpt_update_setting( name, val ) {
 			wpgpt_user_settings[ property ] = wpgpt_settings[ property ][ 'state' ];
 		}
 	}
-	wpgpt_setLS( 'wpgpt-user-settings', JSON.stringify( wpgpt_user_settings ) );
+	localStorage.setItem( 'wpgpt-user-settings', JSON.stringify( wpgpt_user_settings ) );
 }
 
 function wpgpt_exit_settings( reload = true ) {

@@ -223,8 +223,11 @@ span.small {
     color: #666666;
 }
 
-.wpgpt_notranslate div span {
-    font-size: 0.85em;
+.wpgpt_notranslate div:before {
+    content: '\25B6';
+    font-size: 0.8em;
+    padding-right: 5px;
+    color: #666666;
 }
 
 .wpgpt_notranslate a {
@@ -296,7 +299,8 @@ span.small {
 
 .wpgpt-ignore-warnings label,
 .wpgpt-ignore-warnings input {
-    cursor:pointer;
+    cursor: pointer;
+    margin-right: 5px;
 }
 
 .wpgpt-filters {
@@ -316,6 +320,7 @@ span.small {
     width:20px;
     height:20px;
     vertical-align: middle;
+    padding-right: 5px;
 }
 
 .wpgpt-filters a.count-0 img {
@@ -328,7 +333,10 @@ span.small {
     font-size:1.1em;
     vertical-align:middle;
 }
-
+.wpgpt-filters .separator:before {
+    content: '\2758';
+    color: #dddddd;
+}
 .wpgpt-check-preview.passed {
     display:block;
     font-weight:600;
