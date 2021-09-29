@@ -19,6 +19,7 @@
 		"wpgpt_next_is_strict": true,
 		"wpgpt_notice_icon": true,
 		"wpgpt_occurrences": true,
+		"wpgpt_push": true,
 		"wpgpt_push1": true,
 		"wpgpt_settings": true,
 		"wpgpt_user_edited": true,

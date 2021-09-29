@@ -235,7 +235,7 @@ function consistency_tools() {
 		const translation_forms = this_panel_content.querySelectorAll( '.translation-form-list .translation-form-list__tab' );
 		const translation_forms_name = [];
 		translation_forms.forEach( ( form ) => {
-			translation_forms_name.push( form.textContent.trim() );
+			translation_forms_name[ translation_forms_name.length ] = form.textContent.trim();
 		} );
 		const consistency_response = await wpgpt_get_fetch_results( consistency_url );
 		const consistency_parser = new DOMParser();
@@ -765,7 +765,7 @@ function wpgpt_bulk_consistency() {
 		const replace_strings = [];
 		document.querySelectorAll( '.consistency-table tr td' ).forEach( ( td, td_i ) => {
 			if ( td_i % 2 ) {
-				replace_strings.push( td.querySelector( '.meta a ' ) );
+				replace_strings[ replace_strings.length ] = td.querySelector( '.meta a ' );
 			}
 		} );
 		const replace_strings_length = ( replace_strings.length > wpgpt_safe_limit ) ? wpgpt_safe_limit : replace_strings.length;
@@ -805,7 +805,7 @@ function wpgpt_bulk_consistency() {
 		const reject_strings = [];
 		document.querySelectorAll( '.consistency-table tr td' ).forEach( ( td, td_i ) => {
 			if ( td_i % 2 ) {
-				reject_strings.push( td.querySelector( '.meta a ' ) );
+				reject_strings[ reject_strings.length ] = td.querySelector( '.meta a ' );
 			}
 		} );
 		const reject_strings_length = ( reject_strings.length > wpgpt_safe_limit ) ? wpgpt_safe_limit : reject_strings.length;
@@ -842,7 +842,7 @@ function wpgpt_bulk_consistency() {
 
 				alternative_forms_name = [];
 				alternative_page.querySelectorAll( '.translation-form-list .translation-form-list__tab' ).forEach( ( form_tab ) => {
-					alternative_forms_name.push( form_tab.textContent.trim() );
+					alternative_forms_name[ alternative_forms_name.length ] = form_tab.textContent.trim();
 				} );
 
 				const alternative_forms = [];

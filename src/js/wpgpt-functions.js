@@ -1,4 +1,4 @@
-/** Simpler naive implementation of push
+/** Simpler naive implementation of one push
  *
  * @param {Array} arr
  * @param {Element} el
@@ -7,6 +7,20 @@
 function wpgpt_push1( arr, el ) {
 	if ( el !== '' ) {
 		arr[ arr.length	] = el;
+	}
+}
+
+/** Simpler naive implementation of push
+ *
+ * @param {Array} arr1
+ * @param {Array} arr2
+ */
+
+function wpgpt_push( arr1, arr2 ) {
+	const arr1Length = arr1.length;
+	arr1.length += arr2.length;
+	for ( let i = 0; i < arr2.length; i++ ) {
+		arr1[ arr1Length + i ] = arr2[ i ];
 	}
 }
 

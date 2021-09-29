@@ -92,7 +92,7 @@ function wpgpt_init_history_status() {
 		function removeEmpty( array_data ) {
 			const ret = [];
 			array_data.forEach( ( arr ) => {
-				arr && ret.push( arr );
+				arr && wpgpt_push( ret, arr );
 			} );
 			return ret;
 		}
@@ -106,7 +106,7 @@ function wpgpt_init_history_status() {
 					removed: removed,
 				};
 			} else {
-				components.push( {
+				wpgpt_push1( components, {
 					value:   value,
 					added:   added,
 					removed: removed,
@@ -240,8 +240,8 @@ function wpgpt_analyse_history_status( history_data, translation_id, translation
 	if ( translation_status !== 'current' && translation_status !== 'untranslated' && history_length ) {
 		compared_translations_row = history_page.querySelectorAll( `#translations tbody tr.preview.status-${compare_to_status}` );
 		if ( compared_translations_row.length ) {
-			document.querySelectorAll( `#${translation_id.replace( 'editor', 'preview' )} .translation-text` ).forEach( ( translation_form ) => { translation_forms.push( translation_form.textContent ); } );
-			compared_translations_row[ 0 ].querySelectorAll( '.translation-text' ).forEach( ( compared_translation_form ) => { compared_translation_forms.push( compared_translation_form.textContent ); } );
+			document.querySelectorAll( `#${translation_id.replace( 'editor', 'preview' )} .translation-text` ).forEach( ( translation_form ) => { translation_forms[ translation_forms.length ] = translation_form.textContent; } );
+			compared_translations_row[ 0 ].querySelectorAll( '.translation-text' ).forEach( ( compared_translation_form ) => { compared_translation_forms[ compared_translation_forms.length ] = compared_translation_form.textContent; } );
 
 			single_multiple = ( translation_forms.length > 1 ) ? 'multiple' : 'single';
 
