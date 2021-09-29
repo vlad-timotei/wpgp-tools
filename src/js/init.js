@@ -3,7 +3,7 @@
 * Scripts are loaded at the end of the head to override some editor keyboard shortcuts*
 */
 
-const wpgpt_scripts = [ 'functions', 'settings', 'checks', 'shortcuts', 'history', 'bulk-consistency' ];
+const wpgpt_scripts = [ 'functions', 'settings', 'checks', 'history', 'bulk-consistency' ];
 // wp-gp-tools-consistency.js must load as content_script
 
 wpgpt_load_scripts( wpgpt_scripts );

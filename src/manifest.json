@@ -7,7 +7,6 @@
 		"js/wpgpt-checks.js",
 		"js/wpgpt-settings.js",
 		"js/wpgpt-functions.js",
-		"js/wpgpt-shortcuts.js",
 		"js/wpgpt-history.js",
 		"js/wpgpt-bulk-consistency.js",
 		"img/warning.png",
