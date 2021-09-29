@@ -163,10 +163,10 @@ function wpgpt_attempt_save ( translation_e_id, translation_p_id, thisTranslatio
 function prepare_checks( thisTranslation, translation_e_id, highlight_spaces ) {
 	const original_forms = [], translated_forms = [];
 	document.querySelectorAll( `${translation_e_id} .source-string.strings div .original-raw` ).forEach( ( form ) => {
-		original_forms[ original_forms.length ] = form.innerText;
+		original_forms[ original_forms.length ] = form.textContent;
 	} );
 	document.querySelectorAll( `${translation_e_id} .translation-wrapper div.textareas textarea` ).forEach( ( form ) => {
-		translated_forms[ translated_forms.length ] = form.innerText;
+		translated_forms[ translated_forms.length ] = form.value;
 	} );
 
 	thisTranslation.check_results = document.createDocumentFragment();
