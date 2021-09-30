@@ -175,10 +175,11 @@ This is an **opt-in** only for GTEs tool. Even if you activate it, it only fully
 Only choose one of these two:
 
 ### Chrome, Edge, Opera & Brave - [Download from Chrome Web Store](https://chrome.google.com/webstore/detail/wpgp-tools/bioidgadpdnajjaddfmoaohflfbmmhcn)
-The unpacked version no longer gets updates notifications, so please use the official extension.
+### Firefox - [Download from Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/wpgpt/)
 
-### Firefox and other browsers via Tampermonkey
-
+### Via Tampermonkey user script.
+The unpacked version and the Tampermonkey version no longer get updates notifications, so please use the official extension, but they will continue to be available.
+ 
 1. Install the [Tampermonkey](http://tampermonkey.net/) browser extensions.
 2. Visit [this page](https://github.com/vlad-timotei/wpgp-tools/raw/main/userscript/wpgpt-userscript-latest.user.js). TamperMonkey should take over from there and prompt to install the userscript.
 If this somehow fails, you can: manually copy the URL and install it in the Utilities > Install from URL or manually copy the script, click the + button and install it.
@@ -201,7 +202,6 @@ To backup and restore WPGPT settings:
  
 ## Known issues
 - Tooltips overlap for the Quick Links section (should be fixed upstream)
-- It's an unpacked extension and the repo doesn't use workflows to build the release additional zip
 
 ## Future version features
 
