@@ -14,7 +14,8 @@ if ( 'enabled' === _wpgpt_settings.bulk_consistency ) {
 }
 
 function consistency_tools() {
-	const tabs = [];
+	const tabs = {};
+	tabs.plugin = [];
 	const tabs_state = {
 		'consistency':  'closed',
 		'wp':           'closed',
@@ -26,6 +27,7 @@ function consistency_tools() {
 	};
 
 	const search_url = {};
+	search_url.plugin = [];
 
 	let wpgpt_search_settings = {
 		'this_project': true,
@@ -90,7 +92,7 @@ function consistency_tools() {
 		wpgpt_search_label_WP.prepend(
 			$wpgpt_createElement( 'input', { 'type': 'checkbox', 'class': 'wpgpt-search-option ', 'data-searchproject': 'wp' } ),
 		);
-		const wpgpt_search_label_plugin = $wpgpt_createElement( 'label', { 'class': 'wpgpt-search-plugin-label' }, ' another plugin' );
+		const wpgpt_search_label_plugin = $wpgpt_createElement( 'label', { 'class': 'wpgpt-search-plugin-label' }, ' other plugins' );
 		wpgpt_search_label_plugin.prepend(
 			$wpgpt_createElement( 'input', { 'type': 'checkbox', 'class': 'wpgpt-search-option wpgpt-search-plugin-option', 'data-searchproject': 'plugin' } ),
 		);
@@ -106,7 +108,7 @@ function consistency_tools() {
 			wpgpt_search_label_project,
 			wpgpt_search_label_WP,
 			wpgpt_search_label_plugin,
-			$wpgpt_createElement( 'input', { 'class': 'wpgpt-search-plugin-slug hidden', 'name': 'wpgpt_search_plugin_slug', 'placeholder': ' enter slug', 'type': 'text', 'size': '15' } ),
+			$wpgpt_createElement( 'input', { 'class': 'wpgpt-search-plugin-slug hidden', 'name': 'wpgpt_search_plugin_slug', 'placeholder': 'slug1 slug2 slug3', 'type': 'text', 'size': '15' } ),
 			wpgpt_search_label_consistency,
 			$wpgpt_createElement( 'button', { 'class': 'wpgpt-search-close-tabs', 'style': 'display:none;', 'type': 'button' }, 'Close all tabs' ),
 		);
@@ -140,7 +142,7 @@ function consistency_tools() {
 		$wpgpt_addEvtListener( 'click', '.wpgpt-search-option', wpgpt_do_search_options );
 	}
 
-	function wpgpt_do_search( searching_for, also_searching_in_plugin ) {
+	function wpgpt_do_search( searching_for, also_searching_in_plugins ) {
 		let any_tab = 0;
 		const filters = `?filters[term]=${searching_for}&filters[status]=current`;
 
@@ -149,22 +151,32 @@ function consistency_tools() {
 		search_url.consistency = encodeURI( `https://${hostname}/consistency/?search=${searching_for}&set=${current_locale}&consistencypage` );
 
 		if ( wpgpt_search_settings.plugin ) {
-			wpgpt_search_settings.plugin_slug = also_searching_in_plugin;
+			wpgpt_search_settings.plugin_slug = also_searching_in_plugins;
 			localStorage.setItem( 'wpgpt-search', JSON.stringify( wpgpt_search_settings ) );
 			if ( wpgpt_search_settings.plugin_slug !== 'undefined' ) {
 				document.querySelectorAll( '.wpgpt-search-plugin-slug' ).forEach( ( el ) => {
 					el.value = wpgpt_search_settings.plugin_slug;
 				} );
 			}
-			search_url.plugin = encodeURI( `https://${hostname}/projects/wp-plugins/${also_searching_in_plugin}/dev/${current_locale}${filters}&resultpage` );
+			also_searching_in_plugins.split( ' ' ).forEach( ( slug ) => {
+				if ( slug !== '' ) {
+					search_url.plugin[ search_url.plugin.length ] = encodeURI( `https://${hostname}/projects/wp-plugins/${slug}/dev/${current_locale}${filters}&resultpage` );
+				}
+			} );
 		}
 
-		if ( searching_for !== '' && ( also_searching_in_plugin !== '' || ! wpgpt_search_settings.plugin ) ) {
+		if ( searching_for !== '' && ( also_searching_in_plugins !== '' || ! wpgpt_search_settings.plugin ) ) {
 			wpgpt_close_tabs( 'searching' );
 			Object.entries( search_url ).forEach( ( url ) => {
 				const [ key, value ] = url;
 				if ( wpgpt_search_settings[ key ] ) {
-					tabs[ key ] = window.open( value, '_blank' );
+					if ( 'plugin' === key ) {
+						search_url.plugin.forEach( ( plugin_url ) => {
+							tabs.plugin[ tabs.plugin.length ] = window.open( plugin_url, '_blank' );
+						} );
+					} else {
+						tabs[ key ] = window.open( value, '_blank' );
+					}
 					tabs_state[ key ] = 'opened';
 					any_tab = 1;
 				}
@@ -190,7 +202,12 @@ function consistency_tools() {
 	function wpgpt_close_tabs( tabs_group ) {
 		Object.entries( tabs_state ).forEach( ( tab ) => {
 			const [ tab_key, tab_value ] = tab;
-			if ( ( 'opened' === tab_value ) && ( 'all' === tabs_group || ( tab_key !== 'gt' && tab_key !== 'references' && tab_key !== 'panel_links' ) ) ) {
+			if ( 'plugin' === tab_key ) {
+				tabs.plugin.forEach( ( tab ) => {
+					tab && tab.close();
+				} );
+				tabs_state.plugin = 'closed';
+			} else if ( ( 'opened' === tab_value ) && ( 'all' === tabs_group || ( tab_key !== 'gt' && tab_key !== 'references' && tab_key !== 'panel_links' ) ) ) {
 				tabs[ tab_key ] && tabs[ tab_key ].close();
 				tabs_state[ tab_key ] = 'closed';
 			}
