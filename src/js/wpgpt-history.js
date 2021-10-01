@@ -250,14 +250,14 @@ function wpgpt_analyse_history_status( history_data, translation_id, translation
 			diff_title.append(
 				$wpgpt_createElement( 'b', {}, `this ${translation_status}` ),
 				document.createTextNode( ' string and ' ),
-				$wpgpt_createElement( 'b', {}, compare_to_status ),
+				$wpgpt_createElement( 'b', {}, `${( compared_translations_row.length > 1 ) ? 'last ' : ''}${compare_to_status}` ),
 				document.createTextNode( ' string:' ),
 			);
 			const diff_content = document.createElement( 'ol' );
 
 			raw_compare_to_output = $wpgpt_createElement( 'details', { 'class': `wpgpt_compared_to ${single_multiple}`, 'open': 'open' } );
 			const raw_compare_to_title = $wpgpt_createElement( 'summary', {}, ' string:' );
-			raw_compare_to_title.prepend( $wpgpt_createElement( 'b', {}, compare_to_status.charAt( 0 ).toUpperCase() + compare_to_status.slice( 1 ) )	);
+			raw_compare_to_title.prepend( $wpgpt_createElement( 'b', {}, `${( compared_translations_row.length > 1 ) ? 'Last ' : ''}${compare_to_status.charAt( 0 ).toUpperCase()}${compare_to_status.slice( 1 )}` )	);
 			const raw_compare_to_content = document.createElement( 'ol' );
 
 			translation_forms.forEach( ( translation_form, form_i ) => {
@@ -275,7 +275,7 @@ function wpgpt_analyse_history_status( history_data, translation_id, translation
 			diff_output.append( diff_title, diff_content );
 			raw_compare_to_output.append( raw_compare_to_title, raw_compare_to_content );
 
-			diff_label = `${diff_state} ${compare_to_status}`;
+			diff_label = `${( compared_translations_row.length > 1 ) ? 'Multiple ' : ''}${diff_state} ${compare_to_status}`;
 		}
 	}
 
