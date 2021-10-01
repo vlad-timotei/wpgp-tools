@@ -172,6 +172,10 @@ function prepare_checks( thisTranslation, translation_e_id, highlight_spaces ) {
 	thisTranslation.check_results = document.createDocumentFragment();
 
 	let original_form_i = 0;
+	// For locales that have `nplurals === 1`. See issue #34.
+	if ( 2 === original_forms.length && 1 === translated_forms.length ) {
+		original_form_i = 1;
+	}
 	let check_results;
 	translated_forms.forEach( ( translated_form, translated_form_i ) => {
 		check_results = wpgpt_run_checks( original_forms[ original_form_i ], translated_form, highlight_spaces ? translation_e_id : false );
@@ -226,7 +230,7 @@ function prepare_checks( thisTranslation, translation_e_id, highlight_spaces ) {
 
 		thisTranslation.highlights[ translated_form_i ] = check_results.highlight_me;
 
-		if ( original_forms.length > 1 ) {
+		if ( 2 === original_forms.length ) {
 			original_form_i = 1;
 		}
 	} );
