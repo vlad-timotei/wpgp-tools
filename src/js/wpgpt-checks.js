@@ -151,8 +151,8 @@ function wpgpt_attempt_save ( translation_e_id, translation_p_id, thisTranslatio
 			new_translation_p.querySelectorAll( '.wpgpt-warning-labels, .wpgpt-notices-labels' ).forEach( ( label ) => {
 				label.parentElement.removeChild( label );
 			} );
-			const new_translation_p_text = new_translation_p.querySelectorAll( '.translation-text' )
-			thisTranslation.labels.forEach( ( form_label, form_i ) => {
+			const new_translation_p_text = new_translation_p.querySelectorAll( '.translation-text' );
+			new_translation_p_text.length && thisTranslation.labels.forEach( ( form_label, form_i ) => {
 				wpgpt_add_labels_highlights( form_label, form_i, new_translation_p_text, thisTranslation.highlights )
 			} );
 		}
