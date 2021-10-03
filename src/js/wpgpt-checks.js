@@ -556,7 +556,7 @@ function wpgpt_check_double_spaces( translated, original, translation_e_id ) {
 	}
 	if ( translated_double_spaces.length > original_double_spaces.length ) {
 		const msg = wpgpt_li.cloneNode( true );
-		msg.textContent = `${translated_double_spaces.length - original_double_spaces.length} double space${( ( translated_double_spaces.length - original_double_spaces.length ) > 1 ) ? 's' : ''}: "${translated_double_spaces.join( '", "' ).replaceAll( ' ', '_' )}"`;
+		msg.textContent = `${translated_double_spaces.length - original_double_spaces.length} double space${( ( translated_double_spaces.length - original_double_spaces.length ) > 1 ) ? 's' : ''}: "${translated_double_spaces.join( '", "' ).replaceAll( ' ', '\xa0' )}"`;
 		return { msg: msg, arr: translated_double_spaces };
 	}
 	if ( translated_double_spaces.length < original_double_spaces.length ) {
