@@ -108,11 +108,10 @@ function wpgpt_check_this_translation( translation_e_id, translation_p_id ) {
 
 	let saved = false;
 	if ( ! ( thisTranslation.has_warning && wpgpt_next_is_strict ) ) {
-		when_to_do = 1000;
+		when_to_do = 3210;
 		saved = true;
-		translation_e_id = `tr[id^="${translation_e_id.replace( /(?:(editor-[^- ]*)(?:-[^' ]*))/g, '$1' ).replace( '#', '' )}"]`;
+		translation_e_id = `tr[id^="${translation_e_id.replace( /(?:(editor-[^- ]*)(?:-[^' ]*))/g, '$1' ).replace( '#', '' )}"][class*="status-current"]`;
 		translation_p_id = translation_e_id.replace( 'editor', 'preview' );
-		// To Do: on history page, this will alter the first row, not the one intended!
 	}
 	setTimeout( () => {
 		wpgpt_attempt_save( translation_e_id, translation_p_id, thisTranslation, saved );
