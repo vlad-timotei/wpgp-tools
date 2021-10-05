@@ -430,6 +430,7 @@ table.translations a.action {
 
 label.wpgpt-search-plugin-label,
 .wpgpt-search-plugin-slug {
+    margin-left: 20px;
     display: inline-block;
     margin-right:5px;
 }
@@ -474,7 +475,6 @@ label.wpgpt-search-plugin-label,
 
 .wpgpt-search-close-tabs {
     float: left;
-    margin-left: 17px !important;
     margin-top: 15px !important;
 	margin-bottom: 10px;
 }
@@ -587,8 +587,15 @@ li.consistency_index {
 }
 
 /* GT Suggestions */
+a.wpgpt_get_gt:before {
+    content: "▶";
+    font-size: 0.9em;
+    padding-right: 5px;
+    color: rgb(102, 102, 102);
+}
+
 .wpgpt_get_gt {
-	margin-left: 10px !important;
+    font-size: 0.9em;
 }
 
 /* History check */
