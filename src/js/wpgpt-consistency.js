@@ -155,10 +155,10 @@ function consistency_tools() {
 		}
 		const wpgpt_consistency_output = $wpgpt_createElement( 'details', { 'class': 'wpgpt_consistency suggestions__translation-consistency', 'open': 'open' } );
 		const wpgpt_consistency_summary = $wpgpt_createElement( 'summary', { }, 'Suggestions from Consistency' );
-		const wpgpt_consistency_button = document.querySelector( '.suggestions__loading-indicator' ).cloneNode( true );
+		const wpgpt_consistency_loading = document.querySelector( '.suggestions__loading-indicator' );
 
-		wpgpt_consistency_output.append( wpgpt_consistency_summary, wpgpt_consistency_button );
-
+		wpgpt_consistency_output.append( wpgpt_consistency_summary );
+		wpgpt_consistency_loading && wpgpt_consistency_output.append( wpgpt_consistency_loading );
 		$wpgpt_addElements( '.editor-panel__left .suggestions-wrapper', 'afterBegin', wpgpt_consistency_output );
 		wpgpt_consistency_observer();
 	}
