@@ -595,6 +595,17 @@ li.consistency_index {
     margin-top: 5px;
 }
 
+.gte-warning {
+    color: red;
+    margin-top: -5px;
+    padding-left: 15px;
+    padding-bottom: 10px;
+}
+
+.consistency_count.gte {
+    color: red;
+}
+
 /* GT Suggestions */
 a.wpgpt_get_gt:before {
     content: "▶";

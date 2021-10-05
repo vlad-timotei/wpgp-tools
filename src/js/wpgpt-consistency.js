@@ -186,6 +186,7 @@ function consistency_tools() {
 
 		let wpgpt_consistency_suggestions;
 		if ( consistency_alternatives.length ) {
+			const translation_count_class = ( 'enabled' === _wpgpt_settings.bulk_consistency ) ? 'consistency_count gte' : 'consistency_count';
 			let wpgpt_consistency_item, wpgpt_consistency_item_div, wpgpt_consistency_item_translation, wpgpt_consistency_item_meta, wpgpt_consistency_item_count, wpgpt_consistency_item_raw, wpgpt_consistency_item_button, wpgpt_consistency_item_header;
 
 			wpgpt_consistency_suggestions = $wpgpt_createElement( 'ul', { class: 'wpgpt-suggestions-list' } );
@@ -208,7 +209,7 @@ function consistency_tools() {
 					wpgpt_consistency_item_header = $wpgpt_createElement( 'li', { 'class': 'consistency_index' }, `#${consistency_alternatives_i + 1}` );
 					wpgpt_consistency_item_header.append(
 						$wpgpt_createElement( 'button', { 'type': 'button', 'class': 'copy-full-alternative', 'data-alternative_id': consistency_alternatives_i }, 'Copy' ),
-						$wpgpt_createElement( 'span', { 'class': 'consistency_count' }, this_translation_count ),
+						$wpgpt_createElement( 'span', { 'class': translation_count_class }, this_translation_count ),
 					);
 					wpgpt_consistency_suggestions.append( wpgpt_consistency_item_header );
 				}
@@ -235,7 +236,7 @@ function consistency_tools() {
 					wpgpt_consistency_item_translation.prepend( wpgpt_consistency_item_meta );
 
 					if ( translation_forms.length < 2 ) {
-						wpgpt_consistency_item_count = $wpgpt_createElement( 'span', { 'class': 'consistency_count' }, this_translation_count );
+						wpgpt_consistency_item_count = $wpgpt_createElement( 'span', { 'class': translation_count_class }, this_translation_count );
 						wpgpt_consistency_item_translation.append( wpgpt_consistency_item_count );
 					}
 
@@ -243,6 +244,12 @@ function consistency_tools() {
 					wpgpt_consistency_item.append( wpgpt_consistency_item_div );
 					wpgpt_consistency_suggestions.append( wpgpt_consistency_item );
 				} );
+			}
+			if ( 'enabled' === _wpgpt_settings.bulk_consistency && consistency_alternatives.length > 1 ) {
+				const warning = document.createElement( 'div' );
+				warning.className = 'gte-warning';
+				warning.textContent = `${consistency_alternatives.length} current different translations!`;
+				wpgpt_consistency_suggestions.insertAdjacentElement( 'afterBegin', warning );
 			}
 		} else {
 			wpgpt_consistency_suggestions = 'No suggestions.';
