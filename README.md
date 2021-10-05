@@ -25,18 +25,18 @@ Adjust the **Settings** for this extension in the top blue navigation menu *Tool
 - multiple plugin slugs separated by &nbsp; ` `
 
 <br>
-<img align="right" src="https://user-images.githubusercontent.com/65488419/136012205-5e9be301-6939-4104-a520-05dd70ea81b2.png">
+<img align="right" src="https://user-images.githubusercontent.com/65488419/136034004-c4cc7d52-36c3-4123-81f8-622eb5833540.png">
 
 
 **Suggestions** directly from Consistency
- - Auto loads on editor opening
+ - Auto loads on editor opening or `Alt + C` to load them all.
  - Translation Memory sometimes has bad translations (see [#meta5340](https://meta.trac.wordpress.org/ticket/5340))
  - This shows Consistency translations directly in the editor panel
  - Button or Alt + the number of the suggestion to replace it in the textarea
  - Also displays plural forms and highlights spaces
+ - ` ⟵` next to the current translation of the string if available
 
-**GoogleTranslate** button 
-- Link or Alt + G to open in a new tab current translated string in current locale, if locale exists on GT. ([missing locales in GT](https://gist.github.com/vlad-timotei/3f558547ac2bc0f3120f869fba7d8bec))
+**GoogleTranslate** button - Link or Alt + G to open in a new tab current translated string in current locale, if locale exists on GT. ([missing locales in GT](https://gist.github.com/vlad-timotei/3f558547ac2bc0f3120f869fba7d8bec))
 
 **Non-translatable** strings
 - Highlight non-translatable strings in original
@@ -159,6 +159,7 @@ This is an **opt-in** only for GTEs tool. Even if you activate it, it only fully
 | --- | --- | --- |
 | **F**uzzy | Ctrl + \* (numeric keyboard) | Ctrl + Shift + **F**  | 
 | **S**ave with warnings | **S**hift + Ctrl + Enter | 
+| Load all **C**onsistency suggestions | Alt + **C** | 
 | Copy consistency #**3** | Alt + **3** | *works for 1-9* |
 | **G**oogle Translate | Alt + **G** | 
 | Focus on **S**earch in **P**rojects  |   Alt + **S**  |  Alt + **P** |

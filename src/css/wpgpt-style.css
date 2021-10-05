@@ -607,8 +607,9 @@ li.consistency_index {
     padding-bottom: 10px;
 }
 
-.consistency_count.gte {
-    color: red;
+.wpgpt-arrow,
+.consistency_count {
+    color: rgb(119, 0, 0);
 }
 
 /* GT Suggestions */
