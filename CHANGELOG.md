@@ -1,4 +1,4 @@
-# 1.8.2
+# 1.8.5
 06.10.2021
 - Enhancement: Autoload consistency suggestions on editor open, as other suggestions
 - Enhancement: Display ⟵ next to the current consistency suggestion
