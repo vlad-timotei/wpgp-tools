@@ -3,7 +3,7 @@ let _wpgpt_settings = { 'search': 'enabled', 'bulk_consistency': 'disabled' };
 _wpgpt_settings = ( localStorage.getItem( 'wpgpt-user-settings' ) !== null ) ? JSON.parse( localStorage.getItem( 'wpgpt-user-settings' ) ) : _wpgpt_settings;
 const wpgpt_safe_limit = 25;
 
-if ( 'enabled' === _wpgpt_settings.search ) {
+if ( 'enabled' === _wpgpt_settings.search && document.querySelector( '#translations tbody' ) ) {
 	consistency_tools();
 }
 
@@ -155,18 +155,17 @@ function consistency_tools() {
 		}
 		const wpgpt_consistency_output = $wpgpt_createElement( 'details', { 'class': 'wpgpt_consistency suggestions__translation-consistency', 'open': 'open' } );
 		const wpgpt_consistency_summary = $wpgpt_createElement( 'summary', { }, 'Suggestions from Consistency' );
-		const wpgpt_consistency_button = $wpgpt_createElement( 'button', { 'class': 'wpgpt_get_consistency' }, 'View Consistency suggestions' );
+		const wpgpt_consistency_button = document.querySelector( '.suggestions__loading-indicator' ).cloneNode( true );
 
 		wpgpt_consistency_output.append( wpgpt_consistency_summary, wpgpt_consistency_button );
 
-		$wpgpt_addElements( '.editor-panel__left .suggestions-wrapper', 'beforeend', wpgpt_consistency_output );
-		$wpgpt_addEvtListener( 'click', '.wpgpt_get_consistency', wpgpt_do_consistency );
+		$wpgpt_addElements( '.editor-panel__left .suggestions-wrapper', 'afterBegin', wpgpt_consistency_output );
+		wpgpt_consistency_observer();
 	}
 
-	async function wpgpt_do_consistency( event ) {
-		event.target.textContent = 'Loading...';
-		const consistency_url = event.target.closest( '.editor-panel' ).querySelectorAll( '.button-menu__dropdown li a' )[ 2 ].href.replace( 'consistency?search', 'consistency/?search' );
-		const this_panel_content = event.target.closest( '.panel-content' );
+	async function wpgpt_do_consistency( el ) {
+		const consistency_url = el.closest( '.editor-panel' ).querySelectorAll( '.button-menu__dropdown li a' )[ 2 ].href.replace( 'consistency?search', 'consistency/?search' );
+		const this_panel_content = el.closest( '.panel-content' );
 		const translation_forms = this_panel_content.querySelectorAll( '.translation-form-list .translation-form-list__tab' );
 		const translation_forms_name = [];
 		translation_forms.forEach( ( form ) => {
@@ -189,7 +188,7 @@ function consistency_tools() {
 		if ( consistency_alternatives.length ) {
 			let wpgpt_consistency_item, wpgpt_consistency_item_div, wpgpt_consistency_item_translation, wpgpt_consistency_item_meta, wpgpt_consistency_item_count, wpgpt_consistency_item_raw, wpgpt_consistency_item_button, wpgpt_consistency_item_header;
 
-			wpgpt_consistency_suggestions = $wpgpt_createElement( 'ul', { class: 'suggestions-list' } );
+			wpgpt_consistency_suggestions = $wpgpt_createElement( 'ul', { class: 'wpgpt-suggestions-list' } );
 
 			for ( let consistency_alternatives_i = 0; consistency_alternatives_i < consistency_alternatives.length; consistency_alternatives_i++ ) {
 				const this_translation_count = ( 1 === consistency_alternatives.length ) ? unique_translation_count : translations_count[ consistency_alternatives_i ].textContent;
@@ -248,8 +247,10 @@ function consistency_tools() {
 		} else {
 			wpgpt_consistency_suggestions = 'No suggestions.';
 		}
-		event.target.before( wpgpt_consistency_suggestions );
-		event.target.parentNode.removeChild( event.target );
+		el.append( wpgpt_consistency_suggestions );
+		const loading = el.querySelector( '.suggestions__loading-indicator' );
+		loading && el.removeChild( loading );
+
 		if ( translation_forms.length > 1 ) {
 			$wpgpt_addEvtListener( 'click', '.copy-full-alternative', wpgpt_copy_full_alternative );
 			this_panel_content.querySelectorAll( '.wpgpt_consistency .copy-suggestion' ).forEach( ( el ) => {
@@ -283,6 +284,26 @@ function consistency_tools() {
 			}
 		} );
 		panel_content.querySelector( ' .textareas.active textarea' ).focus();
+	}
+
+	function wpgpt_consistency_observer() {
+		const observer = new MutationObserver( ( mutations ) => {
+			mutations.forEach( ( mutation ) => {
+				mutation.addedNodes.forEach( ( el ) => {
+					if ( 1 === el.nodeType &&
+						( el.classList.contains( 'suggestions-list' ) || el.classList.contains( 'no-suggestions' ) ) &&
+						el.parentElement.classList.contains( 'suggestions__other-languages' )
+					) {
+						const consistency = el.parentElement.parentElement.querySelector( '.wpgpt_consistency' );
+						consistency && wpgpt_do_consistency( consistency );
+					}
+				} );
+			} );
+		} );
+		observer.observe( document.querySelector( '#translations tbody' ), {
+			childList: true,
+			subtree:   true,
+		} );
 	}
 
 	function wpgpt_quicklinks() {

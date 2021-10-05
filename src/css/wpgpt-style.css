@@ -586,6 +586,15 @@ li.consistency_index {
     opacity: .4;
 }
 
+.wpgpt-suggestions-list {
+    list-style: none;
+    padding-left: 0 !important;
+}
+
+.wpgpt-suggestions-list li + li {
+    margin-top: 5px;
+}
+
 /* GT Suggestions */
 a.wpgpt_get_gt:before {
     content: "▶";
