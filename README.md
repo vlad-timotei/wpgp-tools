@@ -180,6 +180,7 @@ This is an **opt-in** only for GTEs tool. Even if you activate it, it only fully
 #### Chrome, Edge, Opera & Brave - [Download from Chrome Web Store](https://chrome.google.com/webstore/detail/wpgp-tools/bioidgadpdnajjaddfmoaohflfbmmhcn)
 #### Firefox - [Download from Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/wpgpt/)
 
+
 (The Tampermonkey user script version no longer get updates notifications and will not be maintained, so please use the official extension.)
 
 ## Backup & Restore Settings
