@@ -506,6 +506,11 @@ label.wpgpt-search-plugin-label,
 	font-weight: 500;
 }
 
+.wpgpt-search-plugin-slug {
+    width: 90%;
+    margin-bottom: 20px;
+}
+
 /*QuickLinks*/
 .editor-panel__right .panel-header button {
     background: none;

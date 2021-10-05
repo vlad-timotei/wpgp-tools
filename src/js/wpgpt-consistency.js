@@ -75,7 +75,7 @@ function consistency_tools() {
 		} );
 		const plugin_slugs = wpgpt_search_settings.plugin_slug !== undefined ? wpgpt_search_settings.plugin_slug : '';
 		const hide_plugin_slugs = wpgpt_search_settings.plugin ? '' : 'hidden';
-		wpgpt_searchFragment.appendChild( $wpgpt_createElement( 'input', { 'class': `wpgpt-search-plugin-slug ${hide_plugin_slugs}`, 'name': 'wpgpt_search_plugin_slug', 'placeholder': 'slug1 slug2 slug3', 'type': 'text', 'size': '30', value: plugin_slugs } ) );
+		wpgpt_searchFragment.appendChild( $wpgpt_createElement( 'input', { 'class': `wpgpt-search-plugin-slug ${hide_plugin_slugs}`, 'name': 'wpgpt_search_plugin_slug', 'placeholder': 'slug1 slug2 slug3', 'type': 'text', value: plugin_slugs } ) );
 		wpgpt_searchFragment.appendChild( $wpgpt_createElement( 'button', { 'class': 'wpgpt-search-close-tabs', 'style': 'display:none;', 'type': 'button' }, 'Close all tabs' ) );
 		wpgpt_search_output.appendChild( wpgpt_searchFragment );
 		$wpgpt_addElements( '.editor-panel .editor-panel__right .panel-content', 'beforeend', wpgpt_search_output );
