@@ -1,32 +1,27 @@
-const WPGPT_VERSION = '1.7';
-
-/**
- * Sets LocalStorage value.
+/** Simpler naive implementation of one push
  *
- * @param {String} name
- * @param {String} value
+ * @param {Array} arr
+ * @param {Element} el
  */
-function wpgpt_setLS( name, value ) {
-	localStorage.setItem( name, value );
+
+function wpgpt_push1( arr, el ) {
+	if ( el !== '' ) {
+		arr[ arr.length	] = el;
+	}
 }
 
-/**
- * Gets LocalStorage value.
+/** Simpler naive implementation of push
  *
- * @param {String} name
- * @returns {String}
+ * @param {Array} arr1
+ * @param {Array} arr2
  */
-function wpgpt_getLS( name ) {
-	return localStorage.getItem( name );
-}
 
-/**
- * Deletes LocalStorage item.
- *
- * @param {String} name
- */
-function wpgpt_delLS( name ) {
-	localStorage.removeItem( name );
+function wpgpt_push( arr1, arr2 ) {
+	const arr1Length = arr1.length;
+	arr1.length += arr2.length;
+	for ( let i = 0; i < arr2.length; i++ ) {
+		arr1[ arr1Length + i ] = arr2[ i ];
+	}
 }
 
 /**
@@ -60,76 +55,4 @@ function $wpgpt_addElement( target_selector, el_position, new_element ) {
 	if ( el !== null ) {
 		el.insertAdjacentElement( el_position, new_element );
 	}
-}
-
-/**
- * Inserts adjacent elements to all target selectors.
- *
- * @param {String} target_selector This must be valid CSS syntax.
- * @param {('beforebegin' | 'afterbegin' | 'beforeend' | 'afterend')} el_position
- * @param {Element} new_element
- */
-function $wpgpt_addElements( target_selector, el_position, new_element ) {
-	document.querySelectorAll( target_selector ).forEach( ( el ) => {
-		el.insertAdjacentElement( el_position, new_element.cloneNode( true ) );
-	} );
-}
-
-/**
- * Adds event listeners for all target selectors.
- *
- * @param {Event} event_name
- * @param {String} target_selector This must be valid CSS syntax.
- * @param {Function} function_to_call
- */
-function $wpgpt_addEvtListener( event_name, target_selector, function_to_call ) {
-	document.querySelectorAll( target_selector ).forEach( ( el ) => {
-		el.addEventListener( event_name, function_to_call );
-	} );
-}
-
-/**
- * Toggles class for all target selectors.
- *
- * @param {String} target_selector This must be valid CSS syntax.
- * @param {String} el_class
- */
-function $wpgpt_toggleEl( target_selector, el_class ) {
-	document.querySelectorAll( target_selector ).forEach( ( el ) => {
-		el.classList.toggle( el_class );
-	} );
-}
-
-/**
- * Shows all target selctors.
- *
- * @param {String} target_selector This must be valid CSS syntax.
- */
-function $wpgpt_showEl( target_selector ) {
-	document.querySelectorAll( target_selector ).forEach( ( el ) => {
-		el.style.display = 'inline-block';
-	} );
-}
-
-/**
- * Hides all target selectors.
- *
- * @param {String} target_selector This must be valid CSS syntax.
- */
-function $wpgpt_hideEl( target_selector ) {
-	document.querySelectorAll( target_selector ).forEach( ( el ) => {
-		el.style.display = 'none';
-	} );
-}
-
-/**
- * Sets textContent for all target selectors.
- *
- * @param {String} target_selector This must be valid CSS syntax.
- * @param {String} new_txt
- */
-function $wpgpt_setTextContent( target_selector, new_txt ) {
-	document.querySelectorAll( target_selector ).forEach( ( el ) => {
-		el.textContent = new_txt;
-	} );
 }

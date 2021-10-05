@@ -1,4 +1,14 @@
 /* ToDo: Remove !important and load stylesheet in the footer */
+.fadeOut {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s linear 300ms, opacity 300ms;
+  }
+.fadeIn {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s linear 0s, opacity 300ms;
+  }
 /* Navigation menu */
 .navigation-main,
 .site-branding {
@@ -13,8 +23,8 @@
 
 /* Settings */
 .wpgpt_settings_menu {
-    color:#fff;
-    cursor:pointer;
+    color: #fff;
+    cursor: pointer !important;
 }
 
 .wpgpt-settings-window {
@@ -26,6 +36,11 @@
     display: block;
     margin: 0 auto;
     text-align: center;
+    clear: both;
+}
+
+.wpgpt-update {
+    margin-right: 5px;
 }
 
 @media ( max-width:500px ) {
@@ -208,8 +223,11 @@ span.small {
     color: #666666;
 }
 
-.wpgpt_notranslate div span {
-    font-size: 0.85em;
+.wpgpt_notranslate div:before {
+    content: '\25B6';
+    font-size: 0.8em;
+    padding-right: 5px;
+    color: #666666;
 }
 
 .wpgpt_notranslate a {
@@ -221,6 +239,7 @@ span.small {
     color: #5d5c5c !important;
     text-decoration: none;
     background-color: #ebf5fd;
+    word-break: break-word;
 }
 
 .wpgpt_notranslate a.used {
@@ -263,9 +282,13 @@ span.small {
     font-weight: 700;
 }
 
-.wpgpt-warnings-list + .wpgpt-notices-list {
-    margin-top:5px;
+.wpgpt-notices-list + .wpgpt-warnings-list,
+.wpgpt-warnings-list.has_warning + .wpgpt-warnings-list {
+    border-top: 1px solid gainsboro;
+    margin-top: 10px;
+    padding-top:5px;
 }
+
 
 .wpgpt-ignore-warnings {
 	display: none;
@@ -276,7 +299,8 @@ span.small {
 
 .wpgpt-ignore-warnings label,
 .wpgpt-ignore-warnings input {
-    cursor:pointer;
+    cursor: pointer;
+    margin-right: 5px;
 }
 
 .wpgpt-filters {
@@ -296,6 +320,7 @@ span.small {
     width:20px;
     height:20px;
     vertical-align: middle;
+    padding-right: 5px;
 }
 
 .wpgpt-filters a.count-0 img {
@@ -308,7 +333,10 @@ span.small {
     font-size:1.1em;
     vertical-align:middle;
 }
-
+.wpgpt-filters .separator:before {
+    content: '\2758';
+    color: #dddddd;
+}
 .wpgpt-check-preview.passed {
     display:block;
     font-weight:600;
@@ -384,7 +412,7 @@ table.translations a.action {
 /* Search */
 
 .wpgpt-search label,
-.wpgpt-backup {
+#wpgpt-backup {
     -webkit-touch-callout: none;
 	-webkit-user-select: none;
 	-khtml-user-select: none;
@@ -402,6 +430,7 @@ table.translations a.action {
 
 label.wpgpt-search-plugin-label,
 .wpgpt-search-plugin-slug {
+    margin-left: 20px;
     display: inline-block;
     margin-right:5px;
 }
@@ -446,7 +475,6 @@ label.wpgpt-search-plugin-label,
 
 .wpgpt-search-close-tabs {
     float: left;
-    margin-left: 17px !important;
     margin-top: 15px !important;
 	margin-bottom: 10px;
 }
@@ -476,6 +504,11 @@ label.wpgpt-search-plugin-label,
 .wpgpt-results-notice span {
 	color: #d04300;
 	font-weight: 500;
+}
+
+.wpgpt-search-plugin-slug {
+    width: 90%;
+    margin-bottom: 20px;
 }
 
 /*QuickLinks*/
@@ -558,20 +591,48 @@ li.consistency_index {
     opacity: .4;
 }
 
+.wpgpt-suggestions-list {
+    list-style: none;
+    padding-left: 0 !important;
+}
+
+.wpgpt-suggestions-list li + li {
+    margin-top: 5px;
+}
+
+.gte-warning {
+    color: red;
+    margin-top: -5px;
+    padding-left: 15px;
+    padding-bottom: 10px;
+}
+
+.wpgpt-arrow,
+.consistency_count {
+    color: rgb(119, 0, 0);
+}
+
 /* GT Suggestions */
+a.wpgpt_get_gt:before {
+    content: "▶";
+    font-size: 0.9em;
+    padding-right: 5px;
+    color: rgb(102, 102, 102);
+}
+
 .wpgpt_get_gt {
-	margin-left: 10px !important;
+    font-size: 0.9em;
 }
 
 /* History check */
-del {
+.diff-removed {
 	text-decoration: none;
 	color: #000000;
 	background: #ffb2b2;
 	white-space: pre;
 }
 
-ins {
+.diff-added {
 	background: #dae893;
 	color: #000000;
 	text-decoration: none;
@@ -587,24 +648,20 @@ ins {
     color:#000;
 }
 
-.preview.untranslated .wpgpt-h-label {
-    background-color: #dddddd;
-}
-
 .wpgpt-h-label.editor {
 	display:inline-block;
     background-color:#808286;
-    color:#fff;
+    color:#fff !important;
     margin-top:15px;
 	margin-bottom:10px;	
 }
 
-.wpgpt-h-label.preview a {
+.wpgpt-h-label.preview {
 	color: #000 !important;
 }
 
-.wpgpt-h-label.editor a {
-	color: #fff !important;
+.preview.untranslated .wpgpt-h-label {
+    background-color: #dddddd;
 }
 
 .wpgpt_diff ol,

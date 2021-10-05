@@ -3,15 +3,15 @@
 * Scripts are loaded at the end of the head to override some editor keyboard shortcuts*
 */
 
-const wpgpt_scripts = [ 'functions', 'settings', 'checks', 'shortcuts', 'history', 'bulk-consistency' ];
+const wpgpt_scripts = [ 'functions', 'settings', 'checks', 'history', 'bulk-consistency' ];
 // wp-gp-tools-consistency.js must load as content_script
 
 wpgpt_load_scripts( wpgpt_scripts );
 wpgpt_load_imgs();
 
 function wpgpt_load_imgs() {
-	const warning_icon = chrome.extension.getURL( 'img/warning.png' );
-	const notice_icon = chrome.extension.getURL( 'img/notice.png' );
+	const warning_icon = chrome.runtime.getURL( 'img/warning.png' );
+	const notice_icon = chrome.runtime.getURL( 'img/notice.png' );
 	const img_script = document.createElement( 'script' );
 	img_script.type = 'text/javascript';
 	img_script.textContent = `var wpgpt_warning_icon = '${warning_icon}'; var wpgpt_notice_icon = '${notice_icon}';`;
@@ -32,7 +32,7 @@ function wpgpt_load_scripts( resource ) {
 		const t = document.getElementsByTagName( 'head' )[0];
 		const	s = document.createElement( 'script' );
 		s.type = 'text/javascript';
-		s.src = chrome.extension.getURL( `js/wpgpt-${resource}.js` );
+		s.src = chrome.runtime.getURL( `js/wpgpt-${resource}.js` );
 		s.async = false;
 		s.onload = s.onreadystatechange = function() {
 			if ( ! r && ( ! this.readyState || 'complete' === this.readyState ) ) {

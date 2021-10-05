@@ -1,5 +1,6 @@
 
 # WPGPTools - Translate faster and better
+[![License](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://github.com/vlad-timotei/wpgp-tools/blob/main/LICENSE) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/181eea3a14fe4b9cae1c6ad2ff8c802a)](https://www.codacy.com/gh/vlad-timotei/wpgp-tools/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=vlad-timotei/wpgp-tools&amp;utm_campaign=Badge_Grade)
 
 <img align="right" src="https://user-images.githubusercontent.com/65488419/124776835-6defbf00-df48-11eb-9594-c538fe220dbd.png">
 
@@ -15,25 +16,27 @@ Adjust the **Settings** for this extension in the top blue navigation menu *Tool
 - History
 - Consistency
 
-<img align="right" src="https://user-images.githubusercontent.com/65488419/117619811-61cdc800-b178-11eb-8754-88d03ca00c09.png">
+<img align="right" src="https://user-images.githubusercontent.com/65488419/136012481-2c578ceb-8eaa-461a-9240-1ae84f54ef35.png">
 
 **Search** a string in:
 - current project, current locale
 - WordPress development project, current locale
 - consistency tool, current locale
-- a plugin of your choice
+- multiple plugin slugs separated by &nbsp; ` `
 
-<img align="right" src="https://user-images.githubusercontent.com/65488419/125750657-bf694aa2-f816-41ef-bebe-a8fd78715b74.png">
+<br>
+<img align="right" src="https://user-images.githubusercontent.com/65488419/136034004-c4cc7d52-36c3-4123-81f8-622eb5833540.png">
+
 
 **Suggestions** directly from Consistency
- - Button or Alt + C
+ - Auto loads on editor opening or `Alt + C` to load them all.
  - Translation Memory sometimes has bad translations (see [#meta5340](https://meta.trac.wordpress.org/ticket/5340))
  - This shows Consistency translations directly in the editor panel
  - Button or Alt + the number of the suggestion to replace it in the textarea
  - Also displays plural forms and highlights spaces
+ - ` ⟵` next to the current translation of the string if available
 
-**GoogleTranslate** button 
-- Button or Alt + G opens new tab with current translated string in current locale, if locale exists on GT. ([missing locales in GT](https://gist.github.com/vlad-timotei/3f558547ac2bc0f3120f869fba7d8bec))
+**GoogleTranslate** button - Link or Alt + G to open in a new tab current translated string in current locale, if locale exists on GT. ([missing locales in GT](https://gist.github.com/vlad-timotei/3f558547ac2bc0f3120f869fba7d8bec))
 
 **Non-translatable** strings
 - Highlight non-translatable strings in original
@@ -155,7 +158,8 @@ This is an **opt-in** only for GTEs tool. Even if you activate it, it only fully
 | Action | Shortcut | Alternative Shortcut |
 | --- | --- | --- |
 | **F**uzzy | Ctrl + \* (numeric keyboard) | Ctrl + Shift + **F**  | 
-| **C**onsistency | Alt + **C** | 
+| **S**ave with warnings | **S**hift + Ctrl + Enter | 
+| Load all **C**onsistency suggestions | Alt + **C** | 
 | Copy consistency #**3** | Alt + **3** | *works for 1-9* |
 | **G**oogle Translate | Alt + **G** | 
 | Focus on **S**earch in **P**rojects  |   Alt + **S**  |  Alt + **P** |
@@ -172,22 +176,12 @@ This is an **opt-in** only for GTEs tool. Even if you activate it, it only fully
 
 
 ## Installation
-Only choose one of these two:
 
-### Chrome, Edge, Opera & Brave - [Download from Chrome Web Store](https://chrome.google.com/webstore/detail/wpgp-tools/bioidgadpdnajjaddfmoaohflfbmmhcn)
-### Firefox - [Download from Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/wpgpt/)
+#### Chrome, Edge, Opera & Brave - [Download from Chrome Web Store](https://chrome.google.com/webstore/detail/wpgp-tools/bioidgadpdnajjaddfmoaohflfbmmhcn)
+#### Firefox - [Download from Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/wpgpt/)
 
-### Via Tampermonkey user script.
-The unpacked version and the Tampermonkey version no longer get updates notifications, so please use the official extension, but they will continue to be available.
- 
-1. Install the [Tampermonkey](http://tampermonkey.net/) browser extensions.
-2. Visit [this page](https://github.com/vlad-timotei/wpgp-tools/raw/main/userscript/wpgpt-userscript-latest.user.js). TamperMonkey should take over from there and prompt to install the userscript.
-If this somehow fails, you can: manually copy the URL and install it in the Utilities > Install from URL or manually copy the script, click the + button and install it.
-3. Make sure to check *Check for updates* in Tampermonkey settings.
-<img align="right" src="https://user-images.githubusercontent.com/65488419/118153870-0a04ba80-b41f-11eb-9e96-bfb9dc405247.png">
 
-- The first time you use Search in multiple projects feature, the browser will prevent opening multiple tabs. 
-- Click on Options > Allow pop-ups for translate.wordpress.org and this will work properly in the future.
+(The Tampermonkey user script version no longer get updates notifications and will not be maintained, so please use the official extension.)
 
 ## Backup & Restore Settings
 

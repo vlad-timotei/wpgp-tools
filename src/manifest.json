@@ -1,13 +1,12 @@
 {
 	"manifest_version":2,
 	"name":"WPGP Tools",
-	"version":"1.7",
+	"version":"1.8.2",
 	"description":"Enhanced Translation Tools for translate.w.org",
 	"web_accessible_resources": [
 		"js/wpgpt-checks.js",
 		"js/wpgpt-settings.js",
 		"js/wpgpt-functions.js",
-		"js/wpgpt-shortcuts.js",
 		"js/wpgpt-history.js",
 		"js/wpgpt-bulk-consistency.js",
 		"img/warning.png",
@@ -20,6 +19,7 @@
 		],
 		"js":[
 			"js/init.js",
+			"js/wpgpt-functions.js",
 			"js/wpgpt-consistency.js"
 			],
 		"css":[

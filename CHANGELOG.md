@@ -1,3 +1,17 @@
+# 1.8.2
+06.10.2021
+- Enhancement: Autoload consistency suggestions on editor open, as other suggestions
+- Enhancement: Display ⟵ next to the current consistency suggestion
+- Enhancement: Alt + C shortcut loads all consistency suggestions
+- Enhancement: Warn GTEs about multiple consistency alternatives
+- Enhancement: Refine placeholders count for nplural === 1
+- Enhancement: Adjust labels for multiple waiting strings
+- Enhancement: Shift + Ctrl + Enter - save with warnings
+- Enhancement: Allow search in multiple plugins
+- Fix: Word-break non-translatable items
+- Fix: Replace some deprecated methods
+- Performance: Full Code refactory
+
 # 1.7
 13.09.2021
 - Enhancement: Highlight spaces in original
