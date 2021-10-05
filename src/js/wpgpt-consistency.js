@@ -463,9 +463,6 @@ function consistency_tools() {
 					wpgpt_do_event( '.suggestions__translation-consistency .copy-suggestion', parseInt( event.key, 10 ), 'click', '.suggestions__translation-consistency .copy-full-alternative' ); // Alt + number - Copy consistency suggestion
 				} else {
 					switch ( event.key.toLowerCase() ) {
-					case 'c': wpgpt_do_event( '.wpgpt_get_consistency' ); // Alt + C  - Show consistency suggestions
-						break;
-
 					case 'g': wpgpt_do_event( '.wpgpt_get_gt' ); // Alt + G - Google Translate string
 						break;
 
