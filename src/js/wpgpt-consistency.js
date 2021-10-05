@@ -124,23 +124,32 @@ function consistency_tools() {
 	}
 
 	function wpgpt_open_tab( tab_key, tab_uri ) {
-		( page_tabs[ tab_key ] !== 'undefined' ) && page_tabs[ tab_key ].close();
+		wpgpt_close_tab( page_tabs[ tab_key ] );
 		page_tabs[ tab_key ] = window.open( tab_uri, '_blank' );
 		$wpgpt_showEl( '.wpgpt-search-close-tabs' );
 	}
 
 	function wpgpt_close_tabs( tabs_group ) {
-		search_tabs.forEach( ( tab ) => { tab.close(); } );
+		search_tabs.forEach( ( tab ) => { wpgpt_close_tab( tab ); } );
 		search_tabs = [];
 		if ( 'all' === tabs_group ) {
 			Object.entries( page_tabs ).forEach( ( tab ) => {
-				if ( tab[ 1 ] !== 'undefined' ) {
-					tab[ 1 ].close();
-					tab[ 1 ] = 'undefinded';
-				}
+				wpgpt_close_tab( tab[ 1 ] );
+				tab[ 1 ] = 'undefined';
 			} );
+			document.querySelectorAll( '.wpgpt-search-close-tabs' ).forEach( ( el ) => { el.style.display = 'none'; } );
 		}
-		document.querySelectorAll( '.wpgpt-search-close-tabs' ).forEach( ( el ) => { el.style.display = 'none'; 	} );
+	}
+
+	function wpgpt_close_tab( tab ) {
+		if ( 'undefined' === tab ) {
+			return;
+		}
+		try {
+			tab.close();
+		} catch ( e ) {
+			// Window already closed. Carry on.
+		}
 	}
 
 	function wpgpt_do_search_notice( msg ) {
