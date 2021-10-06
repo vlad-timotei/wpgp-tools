@@ -1,11 +1,8 @@
 {
 	"env": {
 		"browser": true,
-		"es6": true,
+		"es2020": true,
 		"webextensions": true
-	},
-	"parserOptions": {
-		"ecmaVersion": 2021
 	},
 	"globals": {
 		"$gp": true,
