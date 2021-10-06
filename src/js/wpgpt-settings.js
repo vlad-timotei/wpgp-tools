@@ -159,6 +159,12 @@ const wpgpt_settings = {
 		'setting_type':   2,
 		'parent_setting': 'others',
 	},
+	'using_gd': {
+		'desc':           'Also using GlotDict?',
+		'state':          'enabled',
+		'setting_type':   2,
+		'parent_setting': 'others',
+	},
 };
 const settings_li = document.createElement( 'li' );
 settings_li.classList.add( 'menu-item', 'wpgpt_settings_menu' );
@@ -212,7 +218,7 @@ function wpgpt_settings_page() {
 			switch ( setting.setting_type ) {
 			case 2:
 			case 3:
-				Object.entries( ( 2 === setting.setting_type ) ? { 'enabled': 'Enabled', 'disabled': 'Disabled' } : { 'warning': 'Warn & prevent save', 'notice': 'Just notification', 'nothing': 'Don\'t check' } ).forEach( ( data ) => {
+				Object.entries( ( 2 === setting.setting_type ) ? { 'enabled': 'Yes', 'disabled': 'No' } : { 'warning': 'Warn & prevent save', 'notice': 'Just notification', 'nothing': 'Don\'t check' } ).forEach( ( data ) => {
 					const [ value, value_txt ] = data;
 					const isChecked = ( value === setting.state ) ? 'checked' : 'not_checked';
 					settingsSubSubFragment.appendChild( setting_type.cloneNode( true ) ).append(

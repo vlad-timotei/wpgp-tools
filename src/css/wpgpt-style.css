@@ -696,9 +696,11 @@ span.context + span.priority {
     font-style: italic;
 }
 
-/* GD fall-back compatibility*/
-.gd_consistency,
-.gd_quicklinks {
+/* GD fall-back compatibility in case user uses GD but says they don't */
+.gd_quicklinks + .wpgpt_quicklinks,
+.wpgpt_quicklinks + .gd_quicklinks,
+.wpgpt-consistency + .gd-consistency,
+.gd-consistency + .wpgpt-consistency {
     display:none;
 }
 

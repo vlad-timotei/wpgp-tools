@@ -1,4 +1,4 @@
-let _wpgpt_settings = { 'search': 'enabled', 'bulk_consistency': 'disabled' };
+let _wpgpt_settings = { 'search': 'enabled', 'bulk_consistency': 'disabled', 'using_gd': 'enabled' };
 //	_wpgpt_settings is a known/accepted redundancy for TM script that runs in the same environment.
 _wpgpt_settings = ( localStorage.getItem( 'wpgpt-user-settings' ) !== null ) ? JSON.parse( localStorage.getItem( 'wpgpt-user-settings' ) ) : _wpgpt_settings;
 const wpgpt_safe_limit = 25;
@@ -37,9 +37,11 @@ function consistency_tools() {
 		wpgpt_search();
 	}
 
-	wpgpt_quicklinks();
-	wpgpt_consistency();
-	wpgpt_anonymous();
+	if ( 'disabled' === _wpgpt_settings.using_gd ) {
+		wpgpt_quicklinks();
+		wpgpt_consistency();
+		wpgpt_anonymous();
+	}
 	wpgpt_gt();
 	wpgpt_events();
 	wpgpt_localdate();
