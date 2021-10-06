@@ -12,13 +12,13 @@
 /* Navigation menu */
 .navigation-main,
 .site-branding {
-	max-width: 1050px !important;
+    max-width: 1050px !important;
 }
 
 @media screen and ( max-width: 1000px ) {
-	.navigation-main {
-		margin: 18px 5px 5px !important;
-	}
+    .navigation-main {
+        margin: 18px 5px 5px !important;
+    }
 }
 
 /* Settings */
@@ -92,7 +92,7 @@
 
 .wpgpt-main-setting {
     margin-top:20px;
-	padding:0px 0 10px 0;
+    padding:0px 0 10px 0;
 }
 
 .wpgpt-main-setting + .wpgpt-sub-setting {
@@ -113,22 +113,22 @@ padding:10px 10px 10px;
 }
 
 .note {
-	color: #8e8989;
+    color: #8e8989;
 }
 
 #warning_words,
 #match_words,
 #custom_period {
-	width:62%;
-	cursor: text;
-	border: 1px  solid #d8d8d8;
+    width:62%;
+    cursor: text;
+    border: 1px  solid #d8d8d8;
     color:#4a4a4a;
 }
 
 #save_settings {
     float:left;
     height:30px;
-	width: 200px;
+    width: 200px;
     font-size:1.1em;
     margin-top:25px;
     background-color:#0073aa;
@@ -137,13 +137,13 @@ padding:10px 10px 10px;
 
 .gp-shortcuts {
     font-size:1.3em;
-	clear: both;
+    clear: both;
     padding-top: 30px;
 }
 
 .gp-shortcut {
     display: inline-block;
-	vertical-align: middle;
+    vertical-align: middle;
 }
 
 .gp-row .gp-shortcut {
@@ -268,14 +268,14 @@ span.small {
 }
 
 .wpgpt-warnings-list ul li {
-	color: red;
+    color: red;
     font-weight: 700;
 }
 
 .wpgpt-warnings-list.empty ul li {
-	color: red;
-	list-style: none;
-	margin-left: -20px;
+    color: red;
+    list-style: none;
+    margin-left: -20px;
 }
 
 .wpgpt-notices-list ul li {
@@ -291,8 +291,8 @@ span.small {
 
 
 .wpgpt-ignore-warnings {
-	display: none;
-	float: right;
+    display: none;
+    float: right;
     margin: 0 10px;
     color: red;
 }
@@ -367,8 +367,8 @@ table.translations a.action {
     margin-left: 0.2em;
     padding: 0.1em 5px;
     border-radius: 2px;
-	color: #000;
-	padding-bottom: 0.1em !important;
+    color: #000;
+    padding-bottom: 0.1em !important;
     border-bottom: none !important;
 }
 
@@ -399,11 +399,11 @@ table.translations a.action {
 
 .wpgpt-warning-labels .has-highlight,
 .wpgpt-notice-labels .has-highlight {
-	display:none;
+    display:none;
 }
 
 .wpgpt-highlight + .wpgpt-highlight {
-	border-left:none;
+    border-left:none;
 }
 .wpgpt-space {
     background-color: #b5b5b5;
@@ -414,14 +414,14 @@ table.translations a.action {
 .wpgpt-search label,
 #wpgpt-backup {
     -webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	width: -webkit-fit-content;
-	width: -moz-fit-content;
-	width: fit-content;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
 }
 
 .wpgpt-search label{
@@ -436,65 +436,65 @@ label.wpgpt-search-plugin-label,
 }
 
 .wpgpt-search {
-	padding: 0 15px 0 15px;
+    padding: 0 15px 0 15px;
 }
 
 .wpgpt-search-action,
 .wpgpt-search input,
 .wpgpt-search button,
 .wpgpt-search label {
-	vertical-align: middle
+    vertical-align: middle
 }
 
 .wpgpt-search label {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 .wpgpt-search input[type=submit],
 .wpgpt-search button {
-	height: 25px;
+    height: 25px;
 }
 
 .wpgpt-search input[type=checkbox] {
-	margin-left: 5px;
+    margin-left: 5px;
 }
 
 .hidden {
-	display: none;
+    display: none;
 }
 
 .wpgpt-search-plugin-slug {
-	height: 1.5em;
-	border: #efefef 1px solid;
+    height: 1.5em;
+    border: #efefef 1px solid;
 }
 
 .wpgpt-search-action,
 .wpgpt-search-close-tabs {
-	font-size: 1.1em;
+    font-size: 1.1em;
 }
 
 .wpgpt-search-close-tabs {
     float: left;
     margin-top: 15px !important;
-	margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 .wpgpt-search-notice {
-	padding-bottom: 15px;
+    padding-bottom: 15px;
 }
 
 .wpgpt-search-dismiss-notice {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 .wpgpt-search-word {
-	margin-right: 5px;
+    margin-right: 5px;
 }
 
 .wpgpt-search .error-notice {
-	display: block;
-	height: 20px;
-	color: #6d6d6d;
+    display: block;
+    height: 20px;
+    color: #6d6d6d;
 }
 
 .wpgpt-results-notice {
@@ -502,8 +502,8 @@ label.wpgpt-search-plugin-label,
 }
 
 .wpgpt-results-notice span {
-	color: #d04300;
-	font-weight: 500;
+    color: #d04300;
+    font-weight: 500;
 }
 
 .wpgpt-search-plugin-slug {
@@ -538,14 +538,14 @@ label.wpgpt-search-plugin-label,
 }
 
 .wpgpt_quicklinks_plus.dashicons-plus {
-	margin: 0 10px;
+    margin: 0 10px;
     vertical-align: middle;
     color: #0073aa;
     cursor: pointer;
 }
 
 .wpgpt_quicklinks_plus.separator {
-	margin: 0 10px;
+    margin: 0 10px;
     vertical-align: middle;
 }
 
@@ -555,40 +555,36 @@ label.wpgpt-search-plugin-label,
 }
 
 /* Consistency Suggestions */
-.wpgpt_get_consistency {
-	margin-left: 10px !important;
-}
-
-.translation-suggestion__translation.index,
-.consistency_count {
-	padding: 0 4px;
-	color: #666;
+.wpgpt-consistency .index,
+.consistency-count {
+    padding: 0 4px;
+    color: #666;
     font-size: 0.9em;
 }
 
-.consistency_count {
-	font-size: 0.8em;
+.consistency-count {
+    font-size: 0.8em;
 }
 
-li.consistency_index {
+li.consistency-header-index {
     font-size: 0.9em;
     color: grey;
     border-bottom: 1px dashed #cabfbf;
 }
 
-.consistency_index .copy-full-alternative,
-.consistency_index .consistency_count {
+.consistency-header-index .copy-full-alternative,
+.consistency-header-index .consistency-count {
     float: right;
 }
 
-.consistency_index .copy-full-alternative {
+.consistency-header-index .copy-full-alternative {
     box-shadow: none !important;
 }
 
-.wpgpt_consistency .space {
-    background: #cbcdce;
-    white-space: pre-wrap;
-    opacity: .4;
+.gte-warning {
+    margin-top: -5px;
+    padding-left: 15px;
+    padding-bottom: 10px;
 }
 
 .wpgpt-suggestions-list {
@@ -600,18 +596,29 @@ li.consistency_index {
     margin-top: 5px;
 }
 
-.gte-warning {
-    color: red;
-    margin-top: -5px;
-    padding-left: 15px;
-    padding-bottom: 10px;
+.wpgpt-consistency .space {
+    background: #cbcdce;
+    white-space: pre-wrap;
+    opacity: .4;
 }
 
 .wpgpt-arrow,
-.consistency_count {
+.gte-warning,
+.consistency-count {
     color: rgb(119, 0, 0);
 }
 
+.wpgpt-suggestions-list.with-plural .wpgpt-arrow {
+    float:right;
+}
+
+.suggestions__other-languages .suggestions-list,
+.suggestions__translation-memory .suggestions-list,
+.wpgpt-suggestions-list {
+    max-height: 300px !important;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
 /* GT Suggestions */
 a.wpgpt_get_gt:before {
     content: "▶";
@@ -626,17 +633,17 @@ a.wpgpt_get_gt:before {
 
 /* History check */
 .diff-removed {
-	text-decoration: none;
-	color: #000000;
-	background: #ffb2b2;
-	white-space: pre;
+    text-decoration: none;
+    color: #000000;
+    background: #ffb2b2;
+    white-space: pre;
 }
 
 .diff-added {
-	background: #dae893;
-	color: #000000;
-	text-decoration: none;
-	white-space: pre;
+    background: #dae893;
+    color: #000000;
+    text-decoration: none;
+    white-space: pre;
 }
 
 .wpgpt-h-label {
@@ -649,15 +656,15 @@ a.wpgpt_get_gt:before {
 }
 
 .wpgpt-h-label.editor {
-	display:inline-block;
+    display:inline-block;
     background-color:#808286;
     color:#fff !important;
     margin-top:15px;
-	margin-bottom:10px;	
+    margin-bottom:10px;    
 }
 
 .wpgpt-h-label.preview {
-	color: #000 !important;
+    color: #000 !important;
 }
 
 .preview.untranslated .wpgpt-h-label {
@@ -672,7 +679,7 @@ a.wpgpt_get_gt:before {
 .wpgpt_diff.single ol,
 .wpgpt_compared_to.single ol {
     list-style-type: none;
-	padding-left:20px;
+    padding-left:20px;
 }
 
 span.context + span.priority {
@@ -692,7 +699,7 @@ span.context + span.priority {
 /* GD fall-back compatibility*/
 .gd_consistency,
 .gd_quicklinks {
-	display:none;
+    display:none;
 }
 
 /* Consistency Page*/
