@@ -565,65 +565,57 @@ function consistency_tools() {
 		notranslate_header.textContent = 'Non-translatable';
 		notranslate_header.append( $wpgpt_createElement( 'button', { 'type': 'button', 'class': 'wpgpt_notranslate_copy_all' }, 'Copy all' ) );
 		document.querySelectorAll( '.preview .original' ).forEach( ( original_preview ) => {
-			let has_notranslate = false;
 			const editor = original_preview.parentNode.nextElementSibling;
 			const notranslate = $wpgpt_createElement( 'div', { 'class': 'wpgpt_notranslate' } );
 			const notranslate_fragment = document.createDocumentFragment();
 			const original_preview_forms = original_preview.querySelectorAll( '.original-text' );
 
-			/*
-			* This is a workaround that clones <span class="original-text"> node from preview in editor.
-			* Reason for this is that strings having plurals do not go trough preapre_original in GlotPress
-			* https://github.com/WordPress/wordpress.org/blob/a6274d460e522dc99cdd4900431a0b9423c4b92f/wordpress.org/public_html/wp-content/plugins/wporg-gp-customizations/templates/translation-row-preview.php#L29-L41
-			* https://github.com/WordPress/wordpress.org/blob/8a6414e009ae9cc4035486ccb168e17cea49b098/wordpress.org/public_html/wp-content/plugins/wporg-gp-customizations/templates/translation-row-editor.php#L81-L98
-			* https://github.com/GlotPress/GlotPress-WP/blob/0c395a7a8f37ab3b5ebafd2b239c74392e5177f9/gp-templates/translation-row-editor.php#L34
-			* https://github.com/GlotPress/GlotPress-WP/blob/0c395a7a8f37ab3b5ebafd2b239c74392e5177f9/gp-templates/helper-functions.php#L17
-			* This needs to be fixed upstrean.
-			*/
-			if ( original_preview_forms.length > 1 ) {
-				editor.querySelectorAll( '.source-string.strings div .original' ).forEach( ( original_editor_form, form_i ) => {
-					original_editor_form.textContent = '';
-					original_editor_form.append( original_preview_forms[ form_i ].cloneNode( true ) );
-				} );
-			}
+			// Workaround. See https://gist.github.com/vlad-timotei/9fc62e9c1b7a40d4708a3b0345ad2a22
+			( original_preview_forms.length > 1 ) && editor.querySelectorAll( '.source-string.strings div .original' ).forEach( ( original_editor_form, form_i ) => {
+				original_editor_form.textContent = '';
+				original_editor_form.append( original_preview_forms[ form_i ].cloneNode( true ) );
+			} );
 
+			let has_notranslate = false;
 			original_preview_forms[ 0 ].parentNode.querySelectorAll( '.original-text > .notranslate' ).forEach( ( item ) => {
 				const notranslate_item = document.createElement( 'a' );
 				notranslate_item.setAttribute( 'title', 'Click to insert this item to textarea!' );
 				notranslate_item.textContent = item.textContent;
 				notranslate_fragment.appendChild( notranslate_item );
 				has_notranslate = true;
-			},
-			);
+			} );
+
 			if ( has_notranslate ) {
 				notranslate.prepend( notranslate_header.cloneNode( true ) );
 				notranslate.append( notranslate_fragment );
-				// To prevent errors for not-logged in users. To do: use a global check.
+				// To do: Replace with user object to check if is logged in.
 				const suggestion_wrapper_el = editor.querySelector( '.suggestions-wrapper' );
 				( suggestion_wrapper_el ) && suggestion_wrapper_el.prepend( notranslate );
 			}
 		} );
+		document.querySelectorAll( '.editor .notranslate' ).forEach( ( el ) => { el.setAttribute( 'title', 'Click to insert this item to textarea!' ); } );
+		wpgpt_notranslate_events();
+	}
 
+	function wpgpt_notranslate_events() {
 		$wpgpt_addEvtListener( 'click', '.translation-form-list li button', ( ev ) => {
 			const textareas = ev.currentTarget.closest( '.translation-wrapper' ).querySelectorAll( '.textareas' )[ ev.currentTarget.dataset.pluralIndex ];
 			textareas.classList.add( 'active' );
 			textareas.querySelector( 'textarea' ).focus();
 		} );
-		$wpgpt_addEvtListener( 'focus', '.editor textarea', wpgpt_update_notranslate );
-		$wpgpt_addEvtListener( 'keyup', '.editor textarea', wpgpt_update_notranslate );
+		$wpgpt_addEvtListener( 'focus', '.editor textarea', wpgpt_notranslate_update );
+		$wpgpt_addEvtListener( 'keyup', '.editor textarea', wpgpt_notranslate_update );
 		$wpgpt_addEvtListener( 'click', '.wpgpt_notranslate a, .editor .notranslate', ( ev ) => {
-			wpgpt_insertText( ev.currentTarget.closest( '.editor-panel__left' ).querySelector( '.textareas.active textarea' ), ev.currentTarget.textContent );
+			wpgpt_notranslate_insertText( ev.currentTarget.closest( '.editor-panel__left' ).querySelector( '.textareas.active textarea' ), ev.currentTarget.textContent );
 		} );
-		document.querySelectorAll( '.editor .notranslate' ).forEach( ( el ) => { el.setAttribute( 'title', 'Click to insert this item to textarea!' ); } );
 		$wpgpt_addEvtListener( 'click', '.wpgpt_notranslate_copy_all', ( ev ) => {
 			let all_notranslate = '';
 			const notranslate_div = ev.currentTarget.parentNode.parentNode;
 			notranslate_div.querySelectorAll( 'a' ).forEach( ( el ) => {
 				all_notranslate += `${el.textContent} `;
 			} );
-			wpgpt_insertText( notranslate_div.closest( '.editor-panel__left' ).querySelector( '.textareas.active textarea' ), all_notranslate );
+			wpgpt_notranslate_insertText( notranslate_div.closest( '.editor-panel__left' ).querySelector( '.textareas.active textarea' ), all_notranslate );
 		} );
-
 		const unique_editor = document.querySelector( '.editor[style*="display: table-row;"] textarea' );
 		if ( unique_editor ) {
 			unique_editor.blur();
@@ -631,7 +623,7 @@ function consistency_tools() {
 		}
 	}
 
-	function wpgpt_insertText( el, text ) {
+	function wpgpt_notranslate_insertText( el, text ) {
 		const selection = { start: el.selectionStart, end: el.selectionEnd };
 		const new_position = selection.start + text.length;
 		el.value = el.value.slice( 0, selection.start ) + text + el.value.slice( selection.end );
@@ -639,16 +631,16 @@ function consistency_tools() {
 		el.setSelectionRange( new_position, new_position );
 	}
 
-	function wpgpt_update_notranslate( ev ) {
+	function wpgpt_notranslate_update( ev ) {
 		let textarea_content = ev.currentTarget.value;
 		ev.currentTarget.closest( '.editor-panel__left' ).querySelectorAll( '.wpgpt_notranslate a' ).forEach( ( notranslate_item ) => {
 			const notranslate_text = notranslate_item.textContent;
 			if ( textarea_content.indexOf( notranslate_text ) > -1 ) {
 				notranslate_item.classList.add( 'used' );
 				textarea_content = textarea_content.replace( notranslate_text, '' );
-			} else {
-				notranslate_item.classList.remove( 'used' );
+				return;
 			}
+			notranslate_item.classList.remove( 'used' );
 		} );
 	}
 }
