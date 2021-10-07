@@ -41,10 +41,10 @@ function consistency_tools() {
 		wpgpt_quicklinks();
 		wpgpt_consistency();
 		wpgpt_anonymous();
+		wpgpt_localdate();
 	}
 	wpgpt_gt();
 	wpgpt_events();
-	wpgpt_localdate();
 	wpgpt_notranslate();
 
 	function wpgpt_page( page_type ) {

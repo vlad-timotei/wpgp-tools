@@ -700,7 +700,8 @@ span.context + span.priority {
 .gd_quicklinks + .wpgpt_quicklinks,
 .wpgpt_quicklinks + .gd_quicklinks,
 .wpgpt-consistency + .gd-consistency,
-.gd-consistency + .wpgpt-consistency {
+.gd-consistency + .wpgpt-consistency,
+span.localized_date + span.localized_date {
     display:none;
 }
 
