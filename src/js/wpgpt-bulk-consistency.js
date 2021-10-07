@@ -59,7 +59,7 @@ function wpgpt_do_bulk_consistency() {
 	function gp_action( action_type ) {
 		if ( null === $gp.editor.current || 'undefined' === typeof $gp.editor.current ) {
 			console.log( `$gp.editor.current not available yet. Trying to ${action_type} after 1 second again.` );
-			setTimeout( () => { gp_action( action_type ) }, 1000 );
+			setTimeout( () => { gp_action( action_type ); }, 1000 );
 			return;
 		}
 		switch ( action_type ) {

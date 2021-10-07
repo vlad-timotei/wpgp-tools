@@ -305,7 +305,7 @@ function consistency_tools() {
 	function wpgpt_consistency_format_for_plural( this_panel_content ) {
 		$wpgpt_addEvtListener( 'click', '.copy-full-alternative', wpgpt_consistency_copy_full_alternative );
 		this_panel_content.querySelectorAll( '.wpgpt-consistency .copy-suggestion' ).forEach( ( el ) => {
-			el.parentNode.removeChild( el )
+			el.parentNode.removeChild( el );
 		} );
 		this_panel_content.querySelectorAll( '.wpgpt-consistency .translation-suggestion' ).forEach( ( el ) => {
 			el.classList.remove( 'translation-suggestion' );
@@ -508,7 +508,7 @@ function consistency_tools() {
 					case 'g': wpgpt_do_event( '.wpgpt_get_gt' ); // Alt + G - Google Translate string
 						break;
 
-					case 'n': wpgpt_do_event( '.wpgpt_notranslate_copy_all' ) // Alt + N - Copy all non-translatable strings
+					case 'n': wpgpt_do_event( '.wpgpt_notranslate_copy_all' );// Alt + N - Copy all non-translatable strings
 						break;
 
 					case 'p':
@@ -706,7 +706,7 @@ function wpgpt_bulk_consistency() {
 		document.querySelectorAll( '.delete-consistency-strings' ).forEach( ( el ) => { el.disabled = false; } );
 		document.querySelectorAll( '.choose-consistency-string' ).forEach( ( el ) => { el.disabled = true; } );
 		document.querySelector( `#delete-${alternative_id}` ).click();
-		document.querySelectorAll( '.fire_magic_save_close, .wpgpt-relax' ).forEach( ( el ) => { el.style.display = 'block'; } )
+		document.querySelectorAll( '.fire_magic_save_close, .wpgpt-relax' ).forEach( ( el ) => { el.style.display = 'block'; } );
 		event.target.insertAdjacentElement( 'beforeBegin', $wpgpt_createElement( 'strong', {}, 'This translation will be used to replace all others. ' ) );
 		event.target.parentNode.removeChild( event.target );
 		const table_head = document.createElement( 'thead' );

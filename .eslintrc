@@ -299,6 +299,7 @@
 			"error",
 			"always"
 		],
+		"semi": [ "error", "always" ],
 		"semi-spacing": [
 			"error",
 			{

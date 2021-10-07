@@ -38,7 +38,7 @@ function wpgpt_check_all_translations() {
 			labels:         [],
 			highlights:     [],
 			ignore_status:  '',
-		}
+		};
 
 		prepare_checks( thisTranslation, translation_e_id, true );
 		translation_p.classList.add( thisTranslation.preview_class );
@@ -47,7 +47,7 @@ function wpgpt_check_all_translations() {
 		translation_p.querySelector( '.actions .action.edit' ).insertAdjacentElement( 'afterbegin', thisTranslation.preview_status );
 
 		if ( 'enabled' === wpgpt_settings.checks_labels.state ) {
-			const translation_p_text = translation_p.querySelectorAll( '.translation-text' )
+			const translation_p_text = translation_p.querySelectorAll( '.translation-text' );
 			thisTranslation.labels.forEach( ( form_label, form_i ) => {
 				wpgpt_add_labels_highlights( form_label, form_i, translation_p_text, thisTranslation.highlights );
 			} );
@@ -152,7 +152,7 @@ function wpgpt_attempt_save ( translation_e_id, translation_p_id, thisTranslatio
 			} );
 			const new_translation_p_text = new_translation_p.querySelectorAll( '.translation-text' );
 			new_translation_p_text.length && thisTranslation.labels.forEach( ( form_label, form_i ) => {
-				wpgpt_add_labels_highlights( form_label, form_i, new_translation_p_text, thisTranslation.highlights )
+				wpgpt_add_labels_highlights( form_label, form_i, new_translation_p_text, thisTranslation.highlights );
 			} );
 		}
 		wpgpt_filters();
@@ -328,7 +328,7 @@ function wpgpt_run_romanian_checks( results, translated ) {
 
 	if ( wpgpt_settings.ro_quotes.state !== 'nothing' ) {
 		const ro_quotes = wpgpt_check_ro_quotes( translated );
-		wpgpt_push1( results[ wpgpt_settings.ro_quotes.state ], ro_quotes.msg )
+		wpgpt_push1( results[ wpgpt_settings.ro_quotes.state ], ro_quotes.msg );
 		ro_quotes.arr.length && wpgpt_push( results.highlight_me, ro_quotes.arr );
 	}
 
@@ -613,7 +613,7 @@ function wpgpt_check_ro_diacritics( translated ) {
 }
 
 function wpgpt_check_ro_quotes ( translated ) {
-	const result = { msg: '', arr: [] }
+	const result = { msg: '', arr: [] };
 	const not_using_ro_quotes = translated.match( /(?<!=)"(?:[^"<=>]*)"|(?<!=)'(?:[^'<=>]*)'/g );
 	if ( not_using_ro_quotes !== null ) {
 		const msg = wpgpt_li.cloneNode( true );
