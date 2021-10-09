@@ -305,7 +305,9 @@ function wpgpt_run_general_checks( results, original, translated, translation_e_
 
 	if ( wpgpt_settings.double_spaces.state !== 'nothing' ) {
 		const double_spaces = wpgpt_check_double_spaces( translated, original, translation_e_id );
-		wpgpt_push1( results[ wpgpt_settings.double_spaces.state ], double_spaces.msg );
+		double_spaces.arr.length && wpgpt_push1( results[ wpgpt_settings.double_spaces.state ], double_spaces.msg );
+		// If missing double spaces, set a notice instead.
+		( ! double_spaces.arr.length ) && wpgpt_push1( results[ 'notice' ], double_spaces.msg );
 		double_spaces.arr.length && wpgpt_push( results.highlight_me, double_spaces.arr );
 	}
 
@@ -561,7 +563,7 @@ function wpgpt_check_double_spaces( translated, original, translation_e_id ) {
 	if ( translated_double_spaces.length < original_double_spaces.length ) {
 		const msg = wpgpt_li.cloneNode( true );
 		msg.textContent = `${original_double_spaces.length - translated_double_spaces.length} missing double space${( ( original_double_spaces.length - translated_double_spaces.length ) > 1 ) ? 's' : ''}`;
-		return { msg: msg, arr: original_double_spaces };
+		return { msg: msg, arr: [] };
 	}
 	return { msg: '', arr: [] };
 }
