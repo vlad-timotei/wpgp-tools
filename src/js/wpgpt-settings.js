@@ -56,7 +56,7 @@ const wpgpt_settings = {
 	},
 	'placeholders': {
 		'desc':           'Missing or broken placeholders',
-		'state':          '<span class="note">Can\'t be disabled. To bypass, click <i>Save / approve with warnings</i> when prompted.</span>',
+		'state':          'Can\'t be disabled. To bypass, click “Save / approve with warnings” when prompted.',
 		'setting_type':   0,
 		'parent_setting': 'checks',
 	},
@@ -216,6 +216,9 @@ function wpgpt_settings_page() {
 			const setting_type = document.createElement( 'div' );
 			setting_type.className = `wpgpt-setting-type-${setting.setting_type}`;
 			switch ( setting.setting_type ) {
+			case 0:
+				setting.hasOwnProperty( 'state' ) && settingsSubFragment.appendChild( $wpgpt_createElement( 'span', { 'class': 'note' }, setting.state ) );
+				break;
 			case 2:
 			case 3:
 				Object.entries( ( 2 === setting.setting_type ) ? { 'enabled': 'Yes', 'disabled': 'No' } : { 'warning': 'Warn & prevent save', 'notice': 'Just notification', 'nothing': 'Don\'t check' } ).forEach( ( data ) => {
