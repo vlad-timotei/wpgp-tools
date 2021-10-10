@@ -701,7 +701,9 @@ span.context + span.priority {
 .wpgpt_quicklinks + .gd_quicklinks,
 .wpgpt-consistency + .gd-consistency,
 .gd-consistency + .wpgpt-consistency,
-span.localized_date + span.localized_date {
+span.localized_date + span.localized_date,
+.gd_notranslate + .wpgpt_notranslate,
+.wpgpt_notranslate + .gd_notranslate {
     display:none;
 }
 
