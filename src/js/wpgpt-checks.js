@@ -120,18 +120,22 @@ function wpgpt_check_this_translation( translation_e_id, translation_p_id ) {
 }
 
 function wpgpt_attempt_save ( translation_e_id, translation_p_id, thisTranslation, saved ) {
-	const next_has_ignore_warnings = document.querySelector( `${translation_e_id} .wpgpt-ignore-warnings` );
+	const next_row = document.querySelector( `${translation_e_id} ` );
+	if ( ! next_row ) {
+		return;
+	}
+	const next_has_ignore_warnings = next_row.querySelector( '.wpgpt-ignore-warnings' );
 	if ( next_has_ignore_warnings ) {
 		next_has_ignore_warnings.style.display = thisTranslation.ignore_status;
 	}
 
-	document.querySelector( `${translation_e_id} .editor-panel__right .panel-content .meta dl` ).insertAdjacentElement( 'beforebegin', thisTranslation.check_results );
+	next_row.querySelector( '.editor-panel__right .panel-content .meta dl' ).insertAdjacentElement( 'beforebegin', thisTranslation.check_results );
 
-	const current_check_results = document.querySelector( `${translation_e_id} .meta .wpgpt-checks-list` );
+	const current_check_results = next_row.querySelector( '.meta .wpgpt-checks-list' );
 	if ( current_check_results ) {
 		current_check_results.parentNode.replaceChild( thisTranslation.check_results, current_check_results );
 	} else {
-		document.querySelector( `${translation_e_id} .meta dl` ).insertAdjacentElement( 'beforebegin', thisTranslation.check_results );
+		next_row.querySelector( 'meta dl' ).insertAdjacentElement( 'beforebegin', thisTranslation.check_results );
 	}
 
 	if ( saved ) {
