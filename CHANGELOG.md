@@ -1,3 +1,10 @@
+# 1.8.6
+11.10.2021
+- Feature - Setting: Also using GlotDict? (Default is Yes.)
+- Enhancement: Keep Translation Memory suggesitons first
+- Enhancement: Only notice for missing double spaces
+- Enhancement: code optimization
+
 # 1.8.5
 06.10.2021
 - Enhancement: Autoload consistency suggestions on editor open, as other suggestions
