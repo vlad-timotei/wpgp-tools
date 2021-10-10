@@ -1,4 +1,4 @@
-# 1.8.6
+# 1.9
 11.10.2021
 - Feature - Setting: Also using GlotDict? (Default is Yes.)
 - Enhancement: Keep Translation Memory suggesitons first
