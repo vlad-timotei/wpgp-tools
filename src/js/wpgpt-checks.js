@@ -110,7 +110,7 @@ function wpgpt_check_this_translation( translation_e_id, translation_p_id ) {
 	if ( ! ( thisTranslation.has_warning && wpgpt_next_is_strict ) ) {
 		when_to_do = 3210;
 		saved = true;
-		translation_e_id = `tr[id^="${translation_e_id.replace( /(?:(editor-[^- ]*)(?:-[^' ]*))/g, '$1' ).replace( '#', '' )}"][class*="status-current"]`;
+		translation_e_id = `tr[id^="${translation_e_id.replace( /(?:(editor-[^- ]*)(?:-[^' ]*))/g, '$1' ).replace( '#', '' )}"]`;
 		translation_p_id = translation_e_id.replace( 'editor', 'preview' );
 	}
 	setTimeout( () => {
@@ -140,6 +140,12 @@ function wpgpt_attempt_save ( translation_e_id, translation_p_id, thisTranslatio
 
 	if ( saved ) {
 		const new_translation_p = document.querySelector( `${translation_p_id}` );
+		if ( ! new_translation_p ) {
+			return;
+		}
+		/*
+		* Temporary fix for edge cases. To do: mutation observer for the new line inserted.
+		*/
 		new_translation_p.classList.remove( 'wpgpt-has-warning', 'wpgpt-has-notice', 'wpgpt-has-nothing' );
 		new_translation_p.classList.add( thisTranslation.preview_class );
 
