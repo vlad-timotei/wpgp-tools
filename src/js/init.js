@@ -10,12 +10,12 @@ wpgpt_load_scripts( wpgpt_scripts );
 wpgpt_load_imgs();
 
 function wpgpt_load_imgs() {
-	const warning_icon = chrome.runtime.getURL( 'img/warning.png' );
-	const notice_icon = chrome.runtime.getURL( 'img/notice.png' );
-	const img_script = document.createElement( 'script' );
-	img_script.type = 'text/javascript';
-	img_script.textContent = `var wpgpt_warning_icon = '${warning_icon}'; var wpgpt_notice_icon = '${notice_icon}';`;
-	document.getElementsByTagName( 'head' )[0].appendChild( img_script );
+	const assets = document.createElement( 'span' );
+	assets.style.display = 'none';
+	assets.dataset.warning = chrome.runtime.getURL( 'img/warning.png' );
+	assets.dataset.notice = chrome.runtime.getURL( 'img/notice.png' );
+	assets.id = 'wpgpt_assets';
+	document.querySelector( '#wporg-footer' ).appendChild( assets );
 }
 
 function wpgpt_load_scripts( resource ) {
