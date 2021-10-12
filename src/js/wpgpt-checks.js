@@ -13,6 +13,7 @@ const wpgpt_li = document.createElement( 'li' );
 if ( typeof $gp_editor_options !== 'undefined' && ( 'enabled' === wpgpt_settings.checks.state || 'enabled' === wpgpt_settings.ro_checks.state ) ) {
 	wpgpt_check_all_translations();
 	wpgpt_filters();
+	wpgpt_mutations_checks();
 	wpgpt_checks_shortcuts = true;
 }
 
@@ -23,7 +24,7 @@ function wpgpt_check_all_translations() {
 	document.querySelectorAll( '#translations tbody tr.preview' ).forEach( ( translation_p ) => {
 		const translation_p_id = `#${translation_p.id}`;
 		const translation_e_id = translation_p_id.replace( 'preview', 'editor' );
-		wpgpt_editor_init( translation_e_id );
+		wpgpt_editor_init( translation_e_id, translation_p_id );
 
 		if ( translation_p.classList.contains( 'untranslated' ) ) {
 			return;
@@ -91,7 +92,6 @@ function wpgpt_editor_init( translation_e_id, translation_p_id ) {
 }
 
 function wpgpt_check_this_translation( translation_e_id, translation_p_id ) {
-	let when_to_do = 0;
 	const thisTranslation = {
 		has_notice:     false,
 		has_warning:    false,
@@ -101,72 +101,62 @@ function wpgpt_check_this_translation( translation_e_id, translation_p_id ) {
 		labels:         [],
 		highlights:     [],
 		ignore_status:  '',
-
 	};
-
 	prepare_checks( thisTranslation, translation_e_id, false );
-
-	let saved = false;
-	if ( ! ( thisTranslation.has_warning && wpgpt_next_is_strict ) ) {
-		when_to_do = 3210;
-		saved = true;
-		translation_e_id = `tr[id^="${translation_e_id.replace( /(?:(editor-[^- ]*)(?:-[^' ]*))/g, '$1' ).replace( '#', '' )}"]`;
-		translation_p_id = translation_e_id.replace( 'editor', 'preview' );
-	}
-	setTimeout( () => {
-		wpgpt_attempt_save( translation_e_id, translation_p_id, thisTranslation, saved );
-	}, when_to_do );
+	wpgpt_display_check_results( translation_e_id, translation_p_id, thisTranslation );
 	return ! thisTranslation.has_warning;
 }
 
-function wpgpt_attempt_save ( translation_e_id, translation_p_id, thisTranslation, saved ) {
-	const next_row = document.querySelector( `${translation_e_id} ` );
-	if ( ! next_row ) {
+function wpgpt_display_check_results( translation_e_id, translation_p_id, thisTranslation ) {
+	const editor = document.querySelector( `${translation_e_id} ` );
+	const preview = document.querySelector( `${translation_p_id}` );
+	if ( ! editor || ! preview ) {
 		return;
 	}
-	const next_has_ignore_warnings = next_row.querySelector( '.wpgpt-ignore-warnings' );
-	if ( next_has_ignore_warnings ) {
-		next_has_ignore_warnings.style.display = thisTranslation.ignore_status;
+
+	const editor_check_results = editor.querySelector( '.meta .wpgpt-checks-list' );
+	editor_check_results &&	editor_check_results.parentNode.replaceChild( thisTranslation.check_results, editor_check_results );
+	( !	editor_check_results ) && editor.querySelector( '.meta dl' ).insertAdjacentElement( 'beforebegin', thisTranslation.check_results );
+
+	const editor_ignore_warnings = editor.querySelector( '.wpgpt-ignore-warnings' );
+	if ( editor_ignore_warnings ) {
+		editor_ignore_warnings.style.display = thisTranslation.ignore_status;
 	}
 
-	next_row.querySelector( '.editor-panel__right .panel-content .meta dl' ).insertAdjacentElement( 'beforebegin', thisTranslation.check_results );
+	preview.classList.remove( 'wpgpt-has-warning', 'wpgpt-has-notice', 'wpgpt-has-nothing' );
+	preview.classList.add( thisTranslation.preview_class );
 
-	const current_check_results = next_row.querySelector( '.meta .wpgpt-checks-list' );
-	if ( current_check_results ) {
-		current_check_results.parentNode.replaceChild( thisTranslation.check_results, current_check_results );
-	} else {
-		next_row.querySelector( 'meta dl' ).insertAdjacentElement( 'beforebegin', thisTranslation.check_results );
+	const check_status = preview.querySelector( '.wpgpt-check-preview' );
+	check_status && check_status.parentNode.replaceChild( thisTranslation.preview_status, check_status );
+	( ! check_status ) && preview.querySelector( '.actions .action.edit' ).insertAdjacentElement( 'afterbegin', thisTranslation.preview_status );
+
+	if ( 'enabled' === wpgpt_settings.checks_labels.state ) {
+		preview.querySelectorAll( '.wpgpt-warning-labels, .wpgpt-notices-labels' ).forEach( ( label ) => {
+			label.parentElement.removeChild( label );
+		} );
+		const new_translation_p_text = preview.querySelectorAll( '.translation-text' );
+		new_translation_p_text.length && thisTranslation.labels.forEach( ( form_label, form_i ) => {
+			wpgpt_add_labels_highlights( form_label, form_i, new_translation_p_text, thisTranslation.highlights );
+		} );
 	}
+	wpgpt_filters();
+}
 
-	if ( saved ) {
-		const new_translation_p = document.querySelector( `${translation_p_id}` );
-		if ( ! new_translation_p ) {
-			return;
-		}
-		/*
-		* Temporary fix for edge cases. To do: mutation observer for the new line inserted.
-		*/
-		new_translation_p.classList.remove( 'wpgpt-has-warning', 'wpgpt-has-notice', 'wpgpt-has-nothing' );
-		new_translation_p.classList.add( thisTranslation.preview_class );
-
-		const current_preview = new_translation_p.querySelector( '.wpgpt-check-preview' );
-		if ( current_preview ) {
-			current_preview.parentNode.replaceChild( thisTranslation.preview_status, current_preview );
-		} else {
-			new_translation_p.querySelector( '.actions .action.edit' ).insertAdjacentElement( 'afterbegin', thisTranslation.preview_status );
-		}
-
-		if ( 'enabled' === wpgpt_settings.checks_labels.state ) {
-			new_translation_p.querySelectorAll( '.wpgpt-warning-labels, .wpgpt-notices-labels' ).forEach( ( label ) => {
-				label.parentElement.removeChild( label );
+function wpgpt_mutations_checks() {
+	const observer = new MutationObserver( ( mutations ) => {
+		mutations.forEach( ( mutation ) => {
+			mutation.addedNodes.forEach( ( el ) => {
+				if ( 1 !== el.nodeType || ! el.classList.contains( 'editor' ) ) {
+					return;
+				}
+				wpgpt_check_this_translation( `#${el.id}`, `#${el.id.replace( 'editor', 'preview' )}` );
 			} );
-			const new_translation_p_text = new_translation_p.querySelectorAll( '.translation-text' );
-			new_translation_p_text.length && thisTranslation.labels.forEach( ( form_label, form_i ) => {
-				wpgpt_add_labels_highlights( form_label, form_i, new_translation_p_text, thisTranslation.highlights );
-			} );
-		}
-		wpgpt_filters();
-	}
+		} );
+	} );
+	observer.observe( document.querySelector( '#translations tbody' ), {
+		childList: true,
+		subtree:   true,
+	} );
 }
 
 function prepare_checks( thisTranslation, translation_e_id, highlight_spaces ) {
