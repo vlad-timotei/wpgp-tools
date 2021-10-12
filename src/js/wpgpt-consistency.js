@@ -42,10 +42,11 @@ function consistency_tools() {
 		wpgpt_consistency();
 		wpgpt_anonymous();
 		wpgpt_localdate();
+		wpgpt_observer();
+		wpgpt_notranslate();
 	}
 	wpgpt_gt();
 	wpgpt_events();
-	wpgpt_notranslate();
 
 	function wpgpt_page( page_type ) {
 		$wpgpt_scrollTo( '.breadcrumb', 'smooth', 'start' );
@@ -63,7 +64,7 @@ function consistency_tools() {
 		}
 	}
 
-	function wpgpt_search() {
+	function wpgpt_search( current_editor = '.editor' ) {
 		const wpgpt_search_output = $wpgpt_createElement( 'form', { 'class': 'wpgpt-search' } );
 		const wpgpt_searchFragment = document.createDocumentFragment();
 		wpgpt_searchFragment.appendChild( $wpgpt_createElement( 'span', { 'class': 'error-notice' } ) );
@@ -80,9 +81,10 @@ function consistency_tools() {
 		wpgpt_searchFragment.appendChild( $wpgpt_createElement( 'input', { 'class': `wpgpt-search-plugin-slug ${hide_plugin_slugs}`, 'name': 'wpgpt_search_plugin_slug', 'placeholder': 'slug1 slug2 slug3', 'type': 'text', value: plugin_slugs } ) );
 		wpgpt_searchFragment.appendChild( $wpgpt_createElement( 'button', { 'class': 'wpgpt-search-close-tabs', 'style': 'display:none;', 'type': 'button' }, 'Close all tabs' ) );
 		wpgpt_search_output.appendChild( wpgpt_searchFragment );
-		$wpgpt_addElements( '.editor-panel .editor-panel__right .panel-content', 'beforeend', wpgpt_search_output );
 
-		$wpgpt_addEvtListener( 'click', '.wpgpt-search-option', ( event ) => {
+		$wpgpt_addElements( `${current_editor} .editor-panel .editor-panel__right .panel-content`, 'beforeend', wpgpt_search_output );
+
+		$wpgpt_addEvtListener( 'click', `${current_editor} .wpgpt-search-option`, ( event ) => {
 			wpgpt_search_settings[ event.target.dataset.searchproject ] = event.target.checked;
 			document.querySelectorAll( '.wpgpt-search-option' ).forEach( ( el ) => {
 				el.checked = wpgpt_search_settings[ el.dataset.searchproject ];
@@ -90,12 +92,12 @@ function consistency_tools() {
 			localStorage.setItem( 'wpgpt-search', JSON.stringify( wpgpt_search_settings ) );
 		} );
 
-		$wpgpt_addClickEvt( '.wpgpt-search-option.plugin', $wpgpt_toggleEl, [ '.wpgpt-search-plugin-slug', 'hidden' ] );
-		$wpgpt_addEvtListener( 'submit', '.wpgpt-search', ( event ) => {
+		$wpgpt_addClickEvt( `${current_editor} .wpgpt-search-option.plugin`, $wpgpt_toggleEl, [ '.wpgpt-search-plugin-slug', 'hidden' ] );
+		$wpgpt_addEvtListener( 'submit', `${current_editor} .wpgpt-search`, ( event ) => {
 			event.preventDefault();
 			wpgpt_do_search( event.target.elements.wpgpt_search_word.value, event.target.elements.wpgpt_search_plugin_slug.value );
 		} );
-		$wpgpt_addClickEvt( '.wpgpt-search-close-tabs', wpgpt_close_tabs, [ 'all' ] );
+		$wpgpt_addClickEvt( `${current_editor} .wpgpt-search-close-tabs`, wpgpt_close_tabs, [ 'all' ] );
 	}
 
 	function wpgpt_do_search( s, plugin_slugs ) {
@@ -160,7 +162,7 @@ function consistency_tools() {
 		notice_time = setTimeout( () => { $wpgpt_setTextContent( '.error-notice', '' ); }, 3000 );
 	}
 
-	function wpgpt_consistency() {
+	function wpgpt_consistency( current_editor = '.editor' ) {
 		if ( document.querySelector( '.gd-get-consistency' ) !== null ) {
 			return;
 		}
@@ -170,8 +172,7 @@ function consistency_tools() {
 
 		wpgpt_consistency_output.append( wpgpt_consistency_summary );
 		wpgpt_consistency_loading && wpgpt_consistency_output.append( wpgpt_consistency_loading );
-		$wpgpt_addElements( '.editor-panel__left .suggestions-wrapper .suggestions__translation-memory', 'afterEnd', wpgpt_consistency_output );
-		wpgpt_consistency_observer();
+		$wpgpt_addElements( `${current_editor} .editor-panel__left .suggestions-wrapper .suggestions__translation-memory`, 'afterEnd', wpgpt_consistency_output );
 	}
 
 	async function wpgpt_do_consistency( el ) {
@@ -333,16 +334,27 @@ function consistency_tools() {
 		loading && el.removeChild( loading );
 	}
 
-	function wpgpt_consistency_observer() {
+	function wpgpt_observer() {
 		const observer = new MutationObserver( ( mutations ) => {
 			mutations.forEach( ( mutation ) => {
 				mutation.addedNodes.forEach( ( el ) => {
-					if ( 1 === el.nodeType &&
-						( el.classList.contains( 'suggestions-list' ) || el.classList.contains( 'no-suggestions' ) ) &&
+					if ( 1 !== el.nodeType ) {
+						return;
+					}
+					if ( ( el.classList.contains( 'suggestions-list' ) || el.classList.contains( 'no-suggestions' ) ) &&
 						el.parentElement.classList.contains( 'suggestions__other-languages' )
 					) {
 						const consistency = el.parentElement.parentElement.querySelector( '.wpgpt-consistency' );
 						consistency && wpgpt_do_consistency( consistency );
+					}
+					if ( el.classList.contains( 'editor' ) ) {
+						const editor_id = `#${el.id}`;
+						wpgpt_consistency( editor_id );
+						wpgpt_notranslate( editor_id );
+						wpgpt_quicklinks( editor_id );
+						wpgpt_localdate( editor_id );
+						wpgpt_search( editor_id );
+						wpgpt_gt( editor_id );
 					}
 				} );
 			} );
@@ -353,7 +365,7 @@ function consistency_tools() {
 		} );
 	}
 
-	function wpgpt_quicklinks() {
+	function wpgpt_quicklinks( current_editor = '.editor' ) {
 		if ( document.querySelector( '.gd_quicklink' ) !== null ) {
 			/* In case GD removes it.
 			document.querySelectorAll( '.editor' ).forEach( ( editor ) => {
@@ -405,9 +417,8 @@ function consistency_tools() {
 			wpgpt_quicklinks_consistency,
 		);
 
-		$wpgpt_addElements( '.editor-panel__right .panel-header', 'beforeend', wpgpt_quicklinks_output );
-
-		document.querySelectorAll( '.editor' ).forEach( ( editor ) => {
+		$wpgpt_addElements( `${current_editor} .editor-panel__right .panel-header`, 'beforeend', wpgpt_quicklinks_output );
+		document.querySelectorAll( `${current_editor}` ).forEach( ( editor ) => {
 			const editor_menu = editor.querySelectorAll( '.button-menu__dropdown li a' );
 			if ( editor_menu.length ) {
 				editor.querySelector( '.wpgpt_quicklinks_permalink' ).dataset.quicklink = editor_menu[ 0 ].href;
@@ -417,8 +428,8 @@ function consistency_tools() {
 			}
 		} );
 
-		$wpgpt_addEvtListener( 'click', '.wpgpt_quicklinks_copy, .wpgpt_quicklinks_plus', wpgpt_toggle_quicklinks_copy );
-		$wpgpt_addEvtListener( 'click', '.wpgpt_quicklinks_item', wpgpt_do_quicklinks );
+		$wpgpt_addEvtListener( 'click', `${current_editor} .wpgpt_quicklinks_copy, ${current_editor} .wpgpt_quicklinks_plus`, wpgpt_toggle_quicklinks_copy );
+		$wpgpt_addEvtListener( 'click', `${current_editor} .wpgpt_quicklinks_item`, wpgpt_do_quicklinks );
 	}
 
 	function wpgpt_do_quicklinks( event ) {
@@ -466,7 +477,7 @@ function consistency_tools() {
 		} );
 	}
 
-	function wpgpt_gt() {
+	function wpgpt_gt( current_editor = '.editor' ) {
 		if ( 'undefined' === typeof short_locale ) {
 			return;
 		}
@@ -479,7 +490,7 @@ function consistency_tools() {
 			short_locale = short_locale[ 0 ];
 		}
 
-		document.querySelectorAll( '.editor' ).forEach( ( editor_el ) => {
+		document.querySelectorAll( `${current_editor}` ).forEach( ( editor_el ) => {
 			const suggestion_wrapper = editor_el.querySelector( '.editor-panel__left .suggestions-wrapper' );
 			if ( null === suggestion_wrapper ) {
 				return;
@@ -540,13 +551,13 @@ function consistency_tools() {
 		}
 	}
 
-	function wpgpt_localdate() {
+	function wpgpt_localdate( current_editor = '.editor' ) {
 		const local_time = new Date();
 		let timezone_offset = local_time.getTimezoneOffset() / 60 * -1;
 		timezone_offset = `UTC${( timezone_offset !== 0 ) ? ( ( ( timezone_offset > 0 ) ? '+' : '' ) + timezone_offset ) : ''}`;
 		const localized_date = $wpgpt_createElement( 'span', { 'class': 'localized_date' } );
 		localized_date.append( $wpgpt_createElement( 'span', { 'class': 'timezone' }, timezone_offset ) );
-		document.querySelectorAll( '.editor-panel__right .meta dd' ).forEach( ( dd ) => {
+		document.querySelectorAll( `${current_editor} .editor-panel__right .meta dd` ).forEach( ( dd ) => {
 			if ( dd.textContent.includes( 'UTC' ) ) {
 				const date_data = dd.textContent.split( ' ', 3 );
 				const date_date = date_data[ 0 ].split( '-', 3 );
@@ -560,11 +571,11 @@ function consistency_tools() {
 		} );
 	}
 
-	function wpgpt_notranslate() {
+	function wpgpt_notranslate( current_editor = '.editor' ) {
 		const notranslate_header = document.createElement( 'div' );
 		notranslate_header.textContent = 'Non-translatable';
 		notranslate_header.append( $wpgpt_createElement( 'button', { 'type': 'button', 'class': 'wpgpt_notranslate_copy_all' }, 'Copy all' ) );
-		document.querySelectorAll( '.preview .original' ).forEach( ( original_preview ) => {
+		document.querySelectorAll( `${current_editor.replace( 'editor', 'preview' )} .original` ).forEach( ( original_preview ) => {
 			const editor = original_preview.parentNode.nextElementSibling;
 			const notranslate = $wpgpt_createElement( 'div', { 'class': 'wpgpt_notranslate' } );
 			const notranslate_fragment = document.createDocumentFragment();
@@ -594,21 +605,21 @@ function consistency_tools() {
 			}
 		} );
 		document.querySelectorAll( '.editor .notranslate' ).forEach( ( el ) => { el.setAttribute( 'title', 'Click to insert this item to textarea!' ); } );
-		wpgpt_notranslate_events();
+		wpgpt_notranslate_events( current_editor );
 	}
 
-	function wpgpt_notranslate_events() {
-		$wpgpt_addEvtListener( 'click', '.translation-form-list li button', ( ev ) => {
+	function wpgpt_notranslate_events( current_editor ) {
+		$wpgpt_addEvtListener( 'click', `${current_editor} .translation-form-list li button`, ( ev ) => {
 			const textareas = ev.currentTarget.closest( '.translation-wrapper' ).querySelectorAll( '.textareas' )[ ev.currentTarget.dataset.pluralIndex ];
 			textareas.classList.add( 'active' );
 			textareas.querySelector( 'textarea' ).focus();
 		} );
-		$wpgpt_addEvtListener( 'focus', '.editor textarea', wpgpt_notranslate_update );
-		$wpgpt_addEvtListener( 'keyup', '.editor textarea', wpgpt_notranslate_update );
-		$wpgpt_addEvtListener( 'click', '.wpgpt_notranslate a, .editor .notranslate', ( ev ) => {
+		$wpgpt_addEvtListener( 'focus', `${current_editor} textarea`, wpgpt_notranslate_update );
+		$wpgpt_addEvtListener( 'keyup', `${current_editor} textarea`, wpgpt_notranslate_update );
+		$wpgpt_addEvtListener( 'click', `${current_editor} .wpgpt_notranslate a, ${current_editor} .notranslate`, ( ev ) => {
 			wpgpt_notranslate_insertText( ev.currentTarget.closest( '.editor-panel__left' ).querySelector( '.textareas.active textarea' ), ev.currentTarget.textContent );
 		} );
-		$wpgpt_addEvtListener( 'click', '.wpgpt_notranslate_copy_all', ( ev ) => {
+		$wpgpt_addEvtListener( 'click', `${current_editor} .wpgpt_notranslate_copy_all`, ( ev ) => {
 			let all_notranslate = '';
 			const notranslate_div = ev.currentTarget.parentNode.parentNode;
 			notranslate_div.querySelectorAll( 'a' ).forEach( ( el ) => {

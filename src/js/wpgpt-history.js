@@ -15,7 +15,7 @@
 	IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-let WPGPTdiff, wpgpt_page_rows, wpgpt_cache = '';
+let WPGPTdiff, wpgpt_history_editors, wpgpt_cache = '';
 wpgpt_init_history_status();
 
 function wpgpt_init_history_status() {
@@ -152,17 +152,17 @@ function wpgpt_init_history_status() {
 		};
 		return methods;
 	} )();
-	wpgpt_page_rows = document.querySelectorAll( '#translations tbody tr.editor' );
+	wpgpt_history_editors = document.querySelectorAll( '#translations tbody tr.editor' );
 	wpgpt_load_history_status( 0, is_history );
 }
 
-function wpgpt_load_history_status( row_id, is_history ) {
-	if ( row_id >= wpgpt_page_rows.length ) {
+function wpgpt_load_history_status( row_id, is_history = false ) {
+	if ( row_id >= wpgpt_history_editors.length ) {
 		return;
 	}
 
 	let translation_status;
-	switch ( wpgpt_page_rows[ row_id ].querySelector( '.panel-header__bubble' ).textContent ) {
+	switch ( wpgpt_history_editors[ row_id ].querySelector( '.panel-header__bubble' ).textContent ) {
 	case 'current': translation_status = 'current'; break;
 	case 'waiting': translation_status = 'waiting'; break;
 	case 'rejected': translation_status = 'rejected'; break;
@@ -172,7 +172,7 @@ function wpgpt_load_history_status( row_id, is_history ) {
 	}
 
 	if ( ( translation_status !== 'current' && translation_status !== 'untranslated' ) || 'enabled' === wpgpt_settings.history_count.state ) {
-		const translation_id = wpgpt_page_rows[ row_id ].id;
+		const translation_id = wpgpt_history_editors[ row_id ].id;
 		const string_id = translation_id.split( '-', 3 )[1];
 		const url = `https://translate.wordpress.org${window.location.pathname}?filters%5Bstatus%5D=either&filters%5Boriginal_id%5D=${string_id}&sort%5Bby%5D=translation_date_added&sort%5Bhow%5D=desc`;
 

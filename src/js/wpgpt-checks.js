@@ -13,7 +13,7 @@ const wpgpt_li = document.createElement( 'li' );
 if ( typeof $gp_editor_options !== 'undefined' && ( 'enabled' === wpgpt_settings.checks.state || 'enabled' === wpgpt_settings.ro_checks.state ) ) {
 	wpgpt_check_all_translations();
 	wpgpt_filters();
-	wpgpt_mutations_checks();
+	wpgpt_mutations();
 	wpgpt_checks_shortcuts = true;
 }
 
@@ -142,7 +142,7 @@ function wpgpt_display_check_results( translation_e_id, translation_p_id, thisTr
 	wpgpt_filters();
 }
 
-function wpgpt_mutations_checks() {
+function wpgpt_mutations() {
 	const observer = new MutationObserver( ( mutations ) => {
 		mutations.forEach( ( mutation ) => {
 			mutation.addedNodes.forEach( ( el ) => {
@@ -150,6 +150,13 @@ function wpgpt_mutations_checks() {
 					return;
 				}
 				wpgpt_check_this_translation( `#${el.id}`, `#${el.id.replace( 'editor', 'preview' )}` );
+				if (
+					'disabled' === wpgpt_settings.history_main.state ||
+					( document.location.href.includes( 'historypage' ) && 'disabled' === wpgpt_settings.history_page.state )
+				) { return; }
+				wpgpt_history_editors = [];
+				wpgpt_history_editors[ 0 ] = document.querySelector( `#${el.id}` );
+				wpgpt_load_history_status( 0 );
 			} );
 		} );
 	} );
