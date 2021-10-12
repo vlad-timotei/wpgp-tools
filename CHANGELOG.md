@@ -1,3 +1,8 @@
+# 1.9.1
+12.10.2021
+- Fix: various compatibility edge cases
+- Enhancement: re-add tools after saving the string
+
 # 1.9
 11.10.2021
 - Feature - Setting: Also using GlotDict? (Default is Yes.)
