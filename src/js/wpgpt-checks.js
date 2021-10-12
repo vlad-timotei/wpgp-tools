@@ -57,6 +57,9 @@ function wpgpt_check_all_translations() {
 }
 
 function wpgpt_add_labels_highlights( form_label, form_i, translation_p_text, highlights ) {
+	if ( ! translation_p_text[ form_i ] ) {
+		return;
+	}
 	if ( form_label.warnings !== '' || form_label.notices !== '' ) {
 		const labels_final_w = document.createElement( 'div' );
 		const labels_final_n = labels_final_w.cloneNode( true );
