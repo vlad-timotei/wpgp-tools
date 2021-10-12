@@ -655,7 +655,7 @@ a.wpgpt_get_gt:before {
     color:#000;
 }
 
-.wpgpt-h-label.editor {
+.wpgpt-h-label.editor_label {
     display:inline-block;
     background-color:#808286;
     color:#fff !important;
@@ -663,7 +663,7 @@ a.wpgpt_get_gt:before {
     margin-bottom:10px;    
 }
 
-.wpgpt-h-label.preview {
+.wpgpt-h-label.preview_label {
     color: #000 !important;
 }
 

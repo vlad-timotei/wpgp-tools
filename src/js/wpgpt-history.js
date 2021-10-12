@@ -290,24 +290,24 @@ function wpgpt_analyse_history_status( history_data, translation_id, translation
 	if ( diff_label !== '' ) {
 		const diff_a_preview = h_label.cloneNode( true );
 		diff_a_preview.textContent = diff_label;
-		diff_a_preview.classList.add( 'preview' );
+		diff_a_preview.classList.add( 'preview_label' );
 		preview_fragment.appendChild( diff_a_preview );
 
 		const diff_a_editor = h_label.cloneNode( true );
 		diff_a_editor.textContent = `${diff_label} ↧ `;
-		diff_a_editor.classList.add( 'editor' );
+		diff_a_editor.classList.add( 'editor_label' );
 		editor_fragment.appendChild( diff_a_editor );
 	}
 
 	if ( count_label !== '' ) {
 		const count_a_preview = h_label.cloneNode( true );
 		count_a_preview.textContent = count_label;
-		count_a_preview.classList.add( 'preview' );
+		count_a_preview.classList.add( 'preview_label' );
 		preview_fragment.appendChild( count_a_preview );
 
 		const count_a_editor = h_label.cloneNode( true );
 		count_a_editor.textContent = count_label;
-		count_a_editor.classList.add( 'editor' );
+		count_a_editor.classList.add( 'editor_label' );
 		editor_fragment.appendChild( count_a_editor );
 	}
 
