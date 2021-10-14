@@ -614,7 +614,7 @@ function consistency_tools() {
 			textareas.classList.add( 'active' );
 			textareas.querySelector( 'textarea' ).focus();
 		} );
-		$wpgpt_addEvtListener( 'focus', `${current_editor} textarea`, wpgpt_notranslate_update );
+		$wpgpt_addEvtListener( 'focusin', `${current_editor} textarea`, wpgpt_notranslate_update );
 		$wpgpt_addEvtListener( 'keyup', `${current_editor} textarea`, wpgpt_notranslate_update );
 		$wpgpt_addEvtListener( 'click', `${current_editor} .wpgpt_notranslate a, ${current_editor} .notranslate`, ( ev ) => {
 			wpgpt_notranslate_insertText( ev.currentTarget.closest( '.editor-panel__left' ).querySelector( '.textareas.active textarea' ), ev.currentTarget.textContent );
