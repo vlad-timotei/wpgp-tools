@@ -1,5 +1,13 @@
-const WPGPT_VERSION = '1.9.1';
-const wpgpt_settings = {
+const WPGPT_VERSION: string = '1.9.1';
+interface Settings {
+	[ index: string ]: {
+		desc: string,
+		state: string,
+		setting_type: number,
+		parent_setting: string,
+	}
+}
+const wpgpt_settings: Settings = {
 	'checks': {
 		'desc':           'General Checks',
 		'state':          'enabled',
@@ -63,6 +71,7 @@ const wpgpt_settings = {
 	'locale_checks': {
 		'desc':           'Locale specific checks',
 		'setting_type':   0,
+		'state': 		'',
 		'parent_setting': 'self',
 	},
 	'custom_period': {
@@ -110,6 +119,7 @@ const wpgpt_settings = {
 	'history': {
 		'desc':           'History Tools',
 		'setting_type':   0,
+		'state': '',
 		'parent_setting': 'self',
 	},
 	'history_main': {
@@ -133,6 +143,7 @@ const wpgpt_settings = {
 	'others': {
 		'desc':           'Other settings',
 		'setting_type':   0,
+		'state': '',
 		'parent_setting': 'self',
 	},
 	'search': {
@@ -173,11 +184,14 @@ const menu_headline = document.querySelector( '#menu-headline-nav' );
 menu_headline && menu_headline.append( settings_li );
 settings_li.addEventListener( 'click', wpgpt_settings_page );
 
-let wpgpt_user_settings = {};
+interface UserSettings {
+	[ index: keyof Settings ]: string
+}
+let wpgpt_user_settings: UserSettings = {};
 if ( localStorage.getItem( 'wpgpt-user-settings' ) !== null ) {
-	wpgpt_user_settings = JSON.parse( localStorage.getItem( 'wpgpt-user-settings' ) );
-	for ( const property in wpgpt_settings ) {
-		if ( wpgpt_settings[ property ][ 'setting_type' ] !== 0 && wpgpt_user_settings[ property ] !== undefined ) {
+	wpgpt_user_settings = JSON.parse( localStorage.getItem( 'wpgpt-user-settings' ) || '' );
+	for ( const property in wpgpt_settings  ) {
+		if ( wpgpt_settings[ property ][ 'setting_type' ] !== 0 && wpgpt_user_settings[ property  ] !== undefined ) {
 			wpgpt_settings[ property ][ 'state' ] = wpgpt_user_settings[ property ];
 		}
 	}
@@ -190,7 +204,7 @@ function wpgpt_settings_page() {
 		return;
 	}
 	wpgpt_settings_state = 'open';
-	settings_li.querySelector( 'a' ).textContent = 'Close Settings';
+	settings_li.querySelector( 'a' )!.textContent = 'Close Settings';
 
 	const settingsFragment = document.createDocumentFragment();
 	const settingsSubFragment = document.createDocumentFragment();
@@ -217,14 +231,15 @@ function wpgpt_settings_page() {
 			setting_type.className = `wpgpt-setting-type-${setting.setting_type}`;
 			switch ( setting.setting_type ) {
 			case 0:
-				setting.hasOwnProperty( 'state' ) && settingsSubFragment.appendChild( $wpgpt_createElement( 'span', { 'class': 'note' }, setting.state ) );
+				( setting.state !== '' ) && settingsSubFragment.appendChild( $wpgpt_createElement( 'span', { 'class': 'note' }, setting.state ) );
 				break;
 			case 2:
 			case 3:
 				Object.entries( ( 2 === setting.setting_type ) ? { 'enabled': 'Yes', 'disabled': 'No' } : { 'warning': 'Warn & prevent save', 'notice': 'Just notification', 'nothing': 'Don\'t check' } ).forEach( ( data ) => {
 					const [ value, value_txt ] = data;
 					const isChecked = ( value === setting.state ) ? 'checked' : 'not_checked';
-					settingsSubSubFragment.appendChild( setting_type.cloneNode( true ) ).append(
+					settingsSubSubFragment.appendChild( setting_type.cloneNode( true ) );
+					settingsSubSubFragment.append(
 						$wpgpt_createElement( 'input', { 'type': 'radio', 'class': 'wpgpt-update', 'name': key, 'value': value, [isChecked]: true } ),
 						value_txt,
 					);
@@ -259,7 +274,7 @@ function wpgpt_settings_page() {
 
 	const shortcuts_el_default = document.createElement( 'div' );
 	shortcuts_el_default.className = 'gp-shortcuts';
-	const shortcuts_el_custom = shortcuts_el_default.cloneNode( true );
+	const shortcuts_el_custom = shortcuts_el_default.cloneNode( true ) as HTMLElement;
 	shortcuts_el_default.innerHTML = `<div class="gp-header gp-row"><div class="gp-shortcut">Default shortcuts</div><div class="gp-shortcut">Key</div><div class="gp-shortcut">Alternative key</div></div>
 	<div class="gp-row"><div class="gp-shortcut">Cancel</div><div class="gp-shortcut">Escape</div><div class="gp-shortcut">Ctrl + Shift + Z</div></div>
 	<div class="gp-row"><div class="gp-shortcut">Previous String Editor</div><div class="gp-shortcut">Page Up</div><div class="gp-shortcut">Ctrl + Up Arrow</div></div>
@@ -285,26 +300,28 @@ function wpgpt_settings_page() {
 	settings_window.classList.add( 'wpgpt-settings-window', 'gp-content' );
 	settingsFragment.appendChild( wpgpt_info );
 	settings_window.appendChild( settingsFragment );
-	const gp_div = document.querySelector( '.gp-content' );
-	gp_div.parentNode.replaceChild( settings_window, gp_div );
+	const gp_div = document.querySelector( '.gp-content' )!;
+	gp_div.parentNode!.replaceChild( settings_window, gp_div );
 
 	Object.keys( wpgpt_settings ).forEach( ( key ) => {
-		( 'disabled' === wpgpt_settings[ key ][ 'state' ] ) && document.querySelectorAll( `.wpgpt-child-of-${key}` ).forEach( ( el ) => { el.style.display = 'none'; } );
+		( 'disabled' === wpgpt_settings[ key ][ 'state' ] ) && document.querySelectorAll<HTMLElement>( `.wpgpt-child-of-${key}` ).forEach( ( el ) => { el.style.display = 'none'; } );
 	} );
 
 	document.querySelectorAll( '.wpgpt-update' ).forEach( ( el ) => {
-		el.addEventListener( 'click', ( ev ) => {
-			wpgpt_update_setting( ev.target.name, ev.target.value );
-			( 'enabled' === ev.target.value ) && jQuery( `.wpgpt-child-of-${ev.target.name}` ).show( 200 );
-			( 'disabled' === ev.target.value ) && jQuery( `.wpgpt-child-of-${ev.target.name}` ).hide( 200 );
+		el.addEventListener( 'click', ( ev: Event ) => {
+			const evtarget = ev.target as HTMLInputElement;
+			wpgpt_update_setting( evtarget.name, evtarget.value );
+			( 'enabled' === evtarget.value ) && ( window as any ).jQuery( `.wpgpt-child-of-${evtarget.name}` ).show( 200 );
+			( 'disabled' === evtarget.value ) && ( window as any ).jQuery( `.wpgpt-child-of-${evtarget.name}` ).hide( 200 );
 		} );
 	} );
 
-	document.getElementById( 'save_settings' ).addEventListener( 'click', wpgpt_exit_settings );
+	document.getElementById( 'save_settings' )!.addEventListener( 'click', wpgpt_exit_settings );
 
-	document.getElementById( 'wpgpt-backup' ).addEventListener( 'mousedown', ( ev ) => {
-		wpgpt_exit_settings( false );
-		ev.target.href = `javascript: 
+	document.getElementById( 'wpgpt-backup' )!.addEventListener( 'mousedown', ( ev: Event ) => {
+		wpgpt_exit_settings( ev, false );
+		const evtarget = ev.target as HTMLAnchorElement;
+		evtarget.href = `javascript: 
 		if ( typeof WPGPT_VERSION !== 'undefined' ) {
 			let confirm_message = 'Backup from ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()} of WPGPT version ${WPGPT_VERSION}.\\n\\n';
 			confirm_message += 	( '${WPGPT_VERSION}' !== WPGPT_VERSION ) ? 'New settings from WPGPT ' + WPGPT_VERSION + ' will be lost. \\n' : '';
@@ -320,20 +337,20 @@ function wpgpt_settings_page() {
 	} );
 }
 
-function wpgpt_update_setting( name, val ) {
+function wpgpt_update_setting( name: string, val:string ) {
 	wpgpt_settings[ name ][ 'state' ] = val;
-	for ( const property in wpgpt_settings ) {
-		if ( wpgpt_settings[ property ][ 'setting_type' ] !== 0 ) {
-			wpgpt_user_settings[ property ] = wpgpt_settings[ property ][ 'state' ];
+	for ( const [ key, val ] of Object.entries( wpgpt_settings ) ) {
+		if ( wpgpt_settings[ key ][ 'setting_type' ] !== 0 ) {
+			wpgpt_user_settings[ key ] = wpgpt_settings[ key ][ 'state' ] as string;
 		}
 	}
 	localStorage.setItem( 'wpgpt-user-settings', JSON.stringify( wpgpt_user_settings ) );
 }
 
-function wpgpt_exit_settings( reload = true ) {
-	wpgpt_settings.custom_period.state = document.getElementById( 'custom_period' ).value;
-	wpgpt_settings.warning_words.state = document.getElementById( 'warning_words' ).value; // to avoid redundancy
-	wpgpt_update_setting( 'match_words', document.getElementById( 'match_words' ).value );
+function wpgpt_exit_settings( ev?: Event, reload: boolean = true ) {
+	wpgpt_settings.custom_period.state = ( document.getElementById( 'custom_period' ) as HTMLInputElement ).value;
+	wpgpt_settings.warning_words.state = ( document.getElementById( 'warning_words' ) as HTMLInputElement  ).value; // to avoid redundancy
+	wpgpt_update_setting( 'match_words', ( document.getElementById( 'match_words' ) as HTMLInputElement ).value );
 	if ( reload ) {
 		location.reload();
 	}
@@ -344,15 +361,18 @@ function wpgpt_exit_settings( reload = true ) {
 * Based on: https://meta.trac.wordpress.org/browser/sites/trunk/wordpress.org/public_html/wp-content/plugins/wporg-gp-customizations/templates/js/editor.js#L143
 */
 
-if ( typeof $gp_editor_options !== 'undefined' ) {
-	$gp.editor.show = ( function( original ) {
-		return function( element ) {
-			original.apply( $gp.editor, arguments );
-			document.getElementById( `editor-${element.closest( 'tr' ).attr( 'row' )}` ).scrollIntoView( {
+interface TranslationRow extends HTMLTableRowElement {
+	row: string;
+}
+if ( typeof ( window as any ).$gp_editor_options !== 'undefined' ) {
+	( window as any ).$gp.editor.show = ( function( original ) {
+		return function( element: HTMLTableRowElement ) {
+			original.apply( ( window as any ).$gp.editor, arguments );
+			document.getElementById( `editor-${( element.closest( 'tr' ) as TranslationRow ).row}` )!.scrollIntoView( {
 				behavior: 'auto',
 				block:    'center',
 				inline:   'center',
 			} );
 		};
-	} )( $gp.editor.show );
+	} )( ( window as any ).$gp.editor.show );
 }

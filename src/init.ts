@@ -10,29 +10,33 @@ wpgpt_load_scripts( wpgpt_scripts );
 wpgpt_load_imgs();
 
 function wpgpt_load_imgs() {
-	const warning_icon = chrome.runtime.getURL( 'img/warning.png' );
-	const notice_icon = chrome.runtime.getURL( 'img/notice.png' );
+	const warning_icon = ( window as any ).chrome.runtime.getURL( 'img/warning.png' );
+	const notice_icon = ( window as any ).chrome.runtime.getURL( 'img/notice.png' );
 	const img_script = document.createElement( 'script' );
 	img_script.type = 'text/javascript';
 	img_script.textContent = `var wpgpt_warning_icon = '${warning_icon}'; var wpgpt_notice_icon = '${notice_icon}';`;
 	document.getElementsByTagName( 'head' )[0].appendChild( img_script );
 }
 
-function wpgpt_load_scripts( resource ) {
+function wpgpt_load_scripts( resource: string | string[] ): Promise<void> {
 	if ( Array.isArray( resource ) ) {
-		const self = this,
-			prom = [];
+		const prom: Array<Promise<void>> = [];
 		resource.forEach( ( item ) => {
-			prom.push( self.wpgpt_load_scripts( item ) );
+			prom.push( wpgpt_load_scripts( item ) );
 		} );
 		return Promise.all( prom );
 	}
-	return new Promise( ( resolve, reject ) => {
+	return new Promise<void>( ( resolve, reject ) => {
 		let r = false;
 		const t = document.getElementsByTagName( 'head' )[0];
-		const	s = document.createElement( 'script' );
+		interface Script extends HTMLScriptElement {
+			onreadystatechange: Function;
+			readyState: boolean | string;
+
+		}
+		const	s = document.createElement( 'script' ) as Script;
 		s.type = 'text/javascript';
-		s.src = chrome.runtime.getURL( `js/wpgpt-${resource}.js` );
+		s.src = ( window as any ).chrome.runtime.getURL( `js/wpgpt-${resource}.js` );
 		s.async = false;
 		s.onload = s.onreadystatechange = function() {
 			if ( ! r && ( ! this.readyState || 'complete' === this.readyState ) ) {
