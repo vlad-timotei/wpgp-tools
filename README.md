@@ -83,7 +83,9 @@ Personalize checks as you see fit:
 
 ![image](https://user-images.githubusercontent.com/65488419/125194373-b4e7f800-e259-11eb-8432-6bbcbbfefd2c.png)
 
-**Prevent saving these words** is a user defined list of words that if found in a translation will generate a warning. Separated by comma, no space, case insensitive.
+**Prevent saving these words** is a user defined list of words that if found in a translation will generate a warning. Separated by comma, no space, case insensitive. 
+
+TIP: Include a double space string  ` ` ` `  in this field to **always** prevent the saving of double spaces. 
 
 **Count and match these** is a user defined list of terms or symbols that will be counted both in original and in translation. If counts don't match, a warning will be generated. Separated by comma, no space, case insensitive.
 
