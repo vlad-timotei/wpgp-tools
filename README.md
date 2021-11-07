@@ -184,6 +184,9 @@ This is an **opt-in** only for GTEs tool. Even if you activate it, it only fully
 
 
 (The Tampermonkey user script version no longer get updates notifications and will not be maintained, so please use the official extension.)
+ 
+## GlotDict compatibility
+ WPGPT asumes by default that you use GlotDict as well and so it disables features that have been imported in GlotDict. If you don't use GlotDict, change this behaviour in Tools Settings. But take a look first at what GlotDict has for you! :) 
 
 ## Backup & Restore Settings
 

@@ -43,6 +43,18 @@
     margin-right: 5px;
 }
 
+.gd-compat {
+    text-align: center;
+    padding: 15px;
+    margin: 0 10px;
+    border-radius: 0 0 5px 5px;
+    background: rgb(229, 245, 250);
+}
+
+a.x-gd-compat {
+    margin-left: 5px;
+}
+
 @media ( max-width:500px ) {
     .wpgpt-settings-window {
         font-size: 0.9em;

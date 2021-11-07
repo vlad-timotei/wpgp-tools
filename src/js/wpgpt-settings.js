@@ -356,3 +356,28 @@ if ( typeof $gp_editor_options !== 'undefined' ) {
 		};
 	} )( $gp.editor.show );
 }
+
+if ( 'enabled' === wpgpt_settings.using_gd.state && null === localStorage.getItem( 'wpgpt-gdcompat' ) && null === localStorage.getItem( 'gd_locales_date' ) ) {
+	const masthead = document.querySelector( '#masthead' );
+	const gd_compat = document.createElement( 'div' );
+	const x = document.createElement( 'a' );
+	x.className = 'x-gd-compat';
+	x.textContent = 'Close';
+	x.href = '#';
+	gd_compat.innerHTML = 'Some WPGPT features are currently <b>disabled</b>. <a id="not-using-gd" href="#" >Click here to activate them</a> if you\'re not using GlotDict or consider using GlotDict as well!';
+	gd_compat.insertAdjacentElement( 'beforeend', x );
+	gd_compat.className = 'gd-compat';
+	masthead.insertAdjacentElement( 'afterend', gd_compat );
+	document.querySelector( '#not-using-gd' ).addEventListener( 'click', e => {
+		e.preventDefault();
+		localStorage.setItem( 'wpgpt-gdcompat', 'closed' );
+		wpgpt_settings.using_gd.state = 'disabled';
+		wpgpt_update_setting( 'using_gd', 'disabled' );
+		location.reload();
+	} );
+	x.addEventListener( 'click', e => {
+		e.preventDefault();
+		localStorage.setItem( 'wpgpt-gdcompat', 'closed' );
+		gd_compat.style.display = 'none';
+	} );
+}
