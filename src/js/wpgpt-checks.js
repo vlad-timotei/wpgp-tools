@@ -432,11 +432,22 @@ function wpgpt_check_end_space ( translated_last, original_last ) {
 		msg.textContent = 'Additional end space';
 		return msg;
 	}
+	if ( '	' === translated_last ) {
+		const msg = wpgpt_li.cloneNode( true );
+		msg.textContent = 'Additional end tab';
+		return msg;
+	}
 	if ( ' ' === original_last ) {
 		const msg = wpgpt_li.cloneNode( true );
 		msg.textContent = 'Missing end space';
 		return msg;
 	}
+	if ( '	' === original_last ) {
+		const msg = wpgpt_li.cloneNode( true );
+		msg.textContent = 'Missing end tab';
+		return msg;
+	}
+
 	return '';
 }
 
