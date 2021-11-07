@@ -578,7 +578,7 @@ function wpgpt_check_double_spaces( translated, original, translation_e_id ) {
 	}
 	if ( translated_double_spaces.length > original_double_spaces.length ) {
 		const msg = wpgpt_li.cloneNode( true );
-		msg.textContent = `${translated_double_spaces.length - original_double_spaces.length} double space${( ( translated_double_spaces.length - original_double_spaces.length ) > 1 ) ? 's' : ''}: "${translated_double_spaces.join( '", "' ).replaceAll( ' ', '\xa0' )}"`;
+		msg.textContent = `${translated_double_spaces.length - original_double_spaces.length} double space${( ( translated_double_spaces.length - original_double_spaces.length ) > 1 ) ? 's' : ''}: “${translated_double_spaces.join( '”, “' ).replaceAll( ' ', '\xa0' )}”`;
 		return { msg: msg, arr: translated_double_spaces };
 	}
 	if ( translated_double_spaces.length < original_double_spaces.length ) {
@@ -596,7 +596,7 @@ function wpgpt_check_warning_words ( translated ) {
 	} );
 	if ( result.arr.length ) {
 		const msg = wpgpt_li.cloneNode( true );
-		msg.textContent = `Using ${result.arr.join( ', ' )}`;
+		msg.textContent = `Using “${result.arr.join( ', ' )}”`;
 		msg.className = 'has-highlight';
 		result.msg = msg;
 	}
@@ -610,9 +610,9 @@ function wpgpt_check_match_words( translated, original ) {
 			const word_in_translated = wpgpt_occurrences( translated, word );
 			const word_in_original = wpgpt_occurrences( original, word );
 			if ( word_in_translated > word_in_original ) {
-				msgTxt += `Additional ${word_in_translated - word_in_original} "${word}". `;
+				msgTxt += `Additional ${word_in_translated - word_in_original} “${word}”`;
 			} else if ( word_in_translated < word_in_original ) {
-				msgTxt += `Missing ${word_in_original - word_in_translated} "${word}". `;
+				msgTxt += `Missing ${word_in_original - word_in_translated} “${word}”`;
 			}
 		}
 	} );
@@ -628,7 +628,7 @@ function wpgpt_check_ro_diacritics( translated ) {
 	const not_using_ro_diacritics = translated.match( /[ãşţ]/ig );
 	if ( not_using_ro_diacritics !== null ) {
 		const msg = wpgpt_li.cloneNode( true );
-		msg.textContent = `${not_using_ro_diacritics.length} wrong diacritic${( not_using_ro_diacritics.length > 1 ) ? 's' : ''}: "${not_using_ro_diacritics.toString()}"`;
+		msg.textContent = `${not_using_ro_diacritics.length} wrong diacritic${( not_using_ro_diacritics.length > 1 ) ? 's' : ''}: “${not_using_ro_diacritics.toString()}”`;
 		msg.className = 'has-highlight';
 		return { msg: msg, arr: not_using_ro_diacritics };
 	}
