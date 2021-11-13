@@ -81,13 +81,17 @@ To bypass warnings, click <br> Save / Approve with warnings
 
 Personalize checks as you see fit:
 
-![image](https://user-images.githubusercontent.com/65488419/125194373-b4e7f800-e259-11eb-8432-6bbcbbfefd2c.png)
+![image](https://user-images.githubusercontent.com/65488419/141654544-7ad1ea41-1dba-4338-b724-41becdcbef75.png)
 
 **Prevent saving these words** is a user defined list of words that if found in a translation will generate a warning. Separated by comma, no space, case insensitive. 
 
 TIP: Include a double space string  ` ` ` `  in this field to **always** prevent the saving of double spaces. 
 
 **Count and match these** is a user defined list of terms or symbols that will be counted both in original and in translation. If counts don't match, a warning will be generated. Separated by comma, no space, case insensitive.
+
+**Tag spaces** checks will ensure that:
+- there are no missing spaces before or after the tag pair. Wrong example: `This is<strong>bold</strong>and nice.`
+- there are no additional spaces inside the tag pair. Wrong example: `This is <strong> bold </strong> and nice.`
 
 Filter strings based on warnings: <br>
 ![image](https://user-images.githubusercontent.com/65488419/121800720-26715e00-cc3c-11eb-8b29-6e63f5db5b13.png)<br>
