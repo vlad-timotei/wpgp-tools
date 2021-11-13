@@ -36,6 +36,12 @@ const wpgpt_settings = {
 		'setting_type':   3,
 		'parent_setting': 'checks',
 	},
+	'tag_spaces': {
+		'desc':            'Missing tag spaces',
+		'state':           'warning',
+		'setting_type':    3,
+		'parent_settings': 'checks',
+	},
 	'warning_words': {
 		'desc':           'Prevent saving these words:',
 		'state':          '',
