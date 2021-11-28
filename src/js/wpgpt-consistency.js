@@ -47,7 +47,6 @@ function consistency_tools() {
 	}
 	wpgpt_gt();
 	wpgpt_events();
-	wpgpt_easy_nav();
 
 	function wpgpt_page( page_type ) {
 		$wpgpt_scrollTo( '.breadcrumb', 'smooth', 'start' );
@@ -648,49 +647,6 @@ function consistency_tools() {
 			}
 			notranslate_item.classList.remove( 'used' );
 		} );
-	}
-
-	function wpgpt_easy_nav() {
-		const paging = document.querySelectorAll( '.paging' );
-		if ( ! paging.length ) {
-			return;
-		}
-
-		const pages = paging[ 0 ].querySelectorAll( 'a' );
-		if ( ! pages.length ) {
-			return;
-		}
-
-		const last_page = {};
-		if ( '→' === pages[ pages.length - 1 ].textContent ) {
-			last_page.id = parseInt( pages[ pages.length - 2 ].textContent );
-			last_page.url = pages[ pages.length - 2 ].href;
-		} else {
-			last_page.id = parseInt( pages[ pages.length - 1 ].textContent ) + 1;
-			last_page.url = pages[ pages.length - 1 ].href;
-		}
-
-		const easy_nav = document.createElement( 'select' );
-		const nav_option = document.createElement( 'option' );
-		easy_nav.className = 'wpgpt-easy-nav';
-		const current = parseInt( paging[ 0 ].querySelector( '.current' ).textContent );
-
-		for ( let i = 1; i <= last_page.id; i++ ) {
-			const this_option = nav_option.cloneNode( true );
-			this_option.value = i;
-			this_option.textContent = i;
-			if ( i === current ) {
-				this_option.className = 'current-page';
-			}
-			easy_nav.appendChild( this_option );
-		}
-
-		paging.forEach( el => {
-			const this_easy_nav = easy_nav.cloneNode( true );
-			this_easy_nav.addEventListener( 'change', ( ev ) => { window.location = last_page.url.replace( /page=\d+/, `page=${ev.target.value}` ); } );
-			el.insertAdjacentElement( 'beforeend', this_easy_nav );
-		} );
-		document.querySelectorAll( '.wpgpt-easy-nav .current-page' ).forEach( el => { el.selected = true; } );
 	}
 }
 
