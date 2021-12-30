@@ -171,6 +171,8 @@ This is an **opt-in** only for GTEs tool. Even if you activate it, it only fully
 | Focus on **S**earch in **P**rojects  |   Alt + **S**  |  Alt + **P** |
 | Insert all **N**on-translatables | Alt + **N** | 
 
+Note: Disable custom keyboard shortcuts if you use keyboard `Alt + numbers` to insert special characters. WPGPT overrides that shortcut.
+
 ## #7 Other features
 - Keeps the editor in the middle of the screen when Page Up/Page Down shortcuts are used
 - *Added* and *Last modified* in browser's local date format and time zone. This works correctly if the device language and time are set to your country language and timezone.

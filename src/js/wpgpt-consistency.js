@@ -1,4 +1,4 @@
-let _wpgpt_settings = { 'search': 'enabled', 'bulk_consistency': 'disabled', 'using_gd': 'enabled' };
+let _wpgpt_settings = { 'search': 'enabled', 'bulk_consistency': 'disabled', 'using_gd': 'enabled', 'shortcuts': 'enabled' };
 //	_wpgpt_settings is a known/accepted redundancy for TM script that runs in the same environment.
 _wpgpt_settings = ( localStorage.getItem( 'wpgpt-user-settings' ) !== null ) ? JSON.parse( localStorage.getItem( 'wpgpt-user-settings' ) ) : _wpgpt_settings;
 const wpgpt_safe_limit = 25;
@@ -508,7 +508,7 @@ function consistency_tools() {
 			wpgpt_open_tab( 'references', event.currentTarget.href );
 		} );
 		window.onbeforeunload = function() { wpgpt_close_tabs( 'all' ); };
-		document.addEventListener( 'keydown', ( event ) => {
+		'enabled' === _wpgpt_settings.shortcuts && document.addEventListener( 'keydown', ( event ) => {
 			if ( event.altKey ) {
 				if ( ! isNaN( parseInt( event.key, 10 ) ) ) {
 					wpgpt_do_event( '.suggestions__translation-consistency .copy-suggestion', parseInt( event.key, 10 ), 'click', '.suggestions__translation-consistency .copy-full-alternative' ); // Alt + number - Copy consistency suggestion
