@@ -1,4 +1,4 @@
-const WPGPT_VERSION = '1.9.1';
+const WPGPT_VERSION = '2.0.0';
 const wpgpt_settings = {
 	'checks': {
 		'desc':           'General Checks',
