@@ -814,3 +814,17 @@ button.choose-consistency-string {
     display: none;
     margin-bottom: 10px;
 }
+
+/* Non-sticky translate.w.org header */
+.wp-block-group.global-header {
+    position: relative !important;
+    top: 0 !important;
+}
+
+@media screen and (min-width: 890px) {
+    .admin-bar .editor-panel__left .panel-header,
+    .admin-bar .editor-panel__right,
+    .consistency-table tr.new-translation th {
+        top: 30px !important;
+    }
+}
