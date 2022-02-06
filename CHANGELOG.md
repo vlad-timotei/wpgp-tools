@@ -1,5 +1,6 @@
 # 2.0.1
 - Enhancement: check for multiple current translations
+- Enhancement: don't throw a warning for period as separator
 
 # 2.0.0
 - Enhancement: allow all custom shortcuts to be disabled
