@@ -141,8 +141,7 @@ It adds preview and editor label and a diff highlighter in editor.
 
  <br>
  
-**II. History Count** counts (regardless of string status) types of strings in History for the respective string; doesn't count itself.
-
+**II. History Count** counts (regardless of string status) types of strings in History for the respective string; doesn't count itself. It also checks if there are multiple current translations for the same string and will show a visual status of this check: ❌ or ✔️.
  
 **III. History Tools in Translation History** enables or disables these tools on History pages opened trough a link.
  

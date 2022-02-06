@@ -1,3 +1,6 @@
+# 2.0.1
+- Enhancement: check for multiple current translations
+
 # 2.0.0
 - Enhancement: allow all custom shortcuts to be disabled
 - Enhancement: check for additional or missing end tabs 

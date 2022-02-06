@@ -177,13 +177,13 @@ function wpgpt_load_history_status( row_id, is_history = false ) {
 		const url = `https://translate.wordpress.org${window.location.pathname}?filters%5Bstatus%5D=either&filters%5Boriginal_id%5D=${string_id}&sort%5Bby%5D=translation_date_added&sort%5Bhow%5D=desc`;
 
 		if ( wpgpt_cache !== '' ) {
-			wpgpt_analyse_history_status( wpgpt_cache, translation_id, translation_status, url );
+			wpgpt_analyse_history_status( wpgpt_cache, translation_id, translation_status, url, row_id === wpgpt_history_editors.length - 1 );
 			wpgpt_load_history_status( row_id + 1, is_history );
 		} else {
 			fetch( url, { headers: new Headers( { 'User-agent': 'Mozilla/4.0 Custom User Agent' } ) } )
 				.then( response => response.text() )
 				.then( data => {
-					wpgpt_analyse_history_status( data, translation_id, translation_status, url );
+					wpgpt_analyse_history_status( data, translation_id, translation_status, url, row_id === wpgpt_history_editors.length - 1 );
 					if ( is_history ) {
 						wpgpt_cache = data;
 						wpgpt_load_history_status( row_id + 1, is_history );
@@ -207,7 +207,7 @@ function wpgpt_load_history_status( row_id, is_history = false ) {
 *		Old, Rejected and Waiting 		 		=>		compares to Current
 *		Fuzzy 									=> 		compares to Waiting
 */
-function wpgpt_analyse_history_status( history_data, translation_id, translation_status, url ) {
+function wpgpt_analyse_history_status( history_data, translation_id, translation_status, url, isLast ) {
 	let 	compared_translations_row = [];
 	const	compared_translation_forms = [];
 	const	translation_forms = [];
@@ -218,16 +218,29 @@ function wpgpt_analyse_history_status( history_data, translation_id, translation
 	let 	single_multiple;
 	const 	string_history = [];
 	let		count_label = '';
+	let 	unique_warning_class = null;
 
 	const history_parser = new DOMParser();
 	const history_page = history_parser.parseFromString( history_data, 'text/html' );
 	const history_length = history_page.querySelectorAll( '#translations tbody tr.preview' ).length;
+	const unique_state = 'current';
 
 	// Histoy Count.
 	if ( 'enabled' === wpgpt_settings.history_count.state && history_length ) {
 		[ 'current', 'waiting', 'fuzzy', 'rejected', 'old' ].forEach( ( state ) => {
 			string_history[ state ] = history_page.querySelectorAll( `#translations tbody tr.preview.status-${state}` ).length;
-			if ( state === translation_status && string_history[ translation_status ] ) {
+			if (
+				translation_status === unique_state &&
+				state === unique_state &&
+				string_history[unique_state] > 1
+			) {
+				string_history[unique_state] = `❌ ${string_history[unique_state]}`;
+				unique_warning_class = 'label_error';
+			}
+			if (
+				state === translation_status &&
+				'number' === typeof ( string_history[ translation_status ] )
+			) {
 				string_history[ translation_status ]--;
 			}
 			count_label += ( string_history[ state ] ) ? ( `${( ( count_label !== '' ) ? ', ' : '' ) + string_history[ state ]} ${state}` ) : '';
@@ -302,17 +315,33 @@ function wpgpt_analyse_history_status( history_data, translation_id, translation
 	if ( count_label !== '' ) {
 		const count_a_preview = h_label.cloneNode( true );
 		count_a_preview.textContent = count_label;
-		count_a_preview.classList.add( 'preview_label' );
+		count_a_preview.classList.add( 'preview_label', unique_warning_class );
 		preview_fragment.appendChild( count_a_preview );
 
 		const count_a_editor = h_label.cloneNode( true );
 		count_a_editor.textContent = count_label;
-		count_a_editor.classList.add( 'editor_label' );
+		count_a_editor.classList.add( 'editor_label', unique_warning_class );
 		editor_fragment.appendChild( count_a_editor );
 	}
 
 	if ( diff_label !== '' || count_label !== '' ) {
 		document.querySelector( `#${translation_id.replace( 'editor', 'preview' )} .original-tags` ).append( preview_fragment );
 		document.querySelector( `#${translation_id} .source-details` ).append( editor_fragment, diff_output, raw_compare_to_output );
+	}
+
+	if ( isLast ) {
+		const errors_count = document.querySelectorAll( '.preview .label_error' ).length;
+		const txt = errors_count ? ' ❌ ' : ' ✔️ ';
+		const label = errors_count ? `${errors_count} duplicate current translation(s) found.
+Please correct them!` : `Perfect!
+No duplicate translations found.`;
+		const unique_status = document.querySelector( '.wpgpt_unique_status' );
+		if ( unique_status ) {
+			unique_status.title = label;
+			unique_status.textContent = txt;
+		} else {
+			document.querySelectorAll( '#upper-filters-toolbar a' )[3]
+				.insertAdjacentElement( 'afterend', $wpgpt_createElement( 'span', {class: 'wpgpt_unique_status', title: label}, txt ) );
+		}
 	}
 }
