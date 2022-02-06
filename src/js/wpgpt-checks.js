@@ -547,7 +547,7 @@ function wpgpt_check_additional_end_symbol ( translated, original, translated_la
 	const translated_last_but_one = translated.substr( translated.length - 2, 1 );
 
 	if ( original_last !== '.' && ( translated_last === wpgpt_period || '.' === translated_last ) ) {
-		if ( '.' === translated && 'number_format_thousands_sep' === original ) {
+		if ( '.' === translated && original.includes( 'number_format' ) ) {
 			return '';
 		}
 		const a = ( original_last_but_one === wpgpt_period || '.' === original_last_but_one );
