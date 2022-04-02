@@ -1,7 +1,8 @@
 // Translation checks.
 let wpgpt_checks_shortcuts = false;
 let wpgpt_user_edited = false;
-let wpgpt_warning_icon, wpgpt_notice_icon;
+let wpgpt_warning_icon = wpgpt_warning_icon;
+let wpgpt_notice_icon = wpgpt_notice_icon;
 
 const wpgpt_period = ( wpgpt_settings.custom_period.state !== '' ) ? wpgpt_settings.custom_period.state : '.';
 const approve_with_warnings = document.createElement( 'div' );
