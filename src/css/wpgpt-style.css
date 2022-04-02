@@ -32,6 +32,15 @@
    margin:10px 0 50px 0;
 }
 
+.wpgpt-settings-window label {
+    display: unset !important;
+    vertical-align: top !important;
+}
+
+.wpgpt-settings-window input {
+   padding: 5px;
+}
+
 .wpgpt-info {
     display: block;
     margin: 0 auto;
@@ -40,7 +49,7 @@
 }
 
 .wpgpt-update {
-    margin-right: 5px;
+    margin-right: 5px !important;
 }
 
 .gd-compat {
@@ -57,7 +66,7 @@ a.x-gd-compat {
 
 @media ( max-width:500px ) {
     .wpgpt-settings-window {
-        font-size: 0.9em;
+        font-size: 0.9em !important;
     }
 }
 
@@ -249,7 +258,7 @@ span.small {
     margin: 5px 3px 0;
     cursor: pointer;
     color: #5d5c5c !important;
-    text-decoration: none;
+    text-decoration: none !important;
     background-color: #ebf5fd;
     word-break: break-word;
 }
@@ -312,12 +321,18 @@ span.small {
 .wpgpt-ignore-warnings label,
 .wpgpt-ignore-warnings input {
     cursor: pointer;
-    margin-right: 5px;
+    margin-right: 5px !important;
 }
 
 .wpgpt-filters {
     float: left;
     margin-right: 5px;
+    box-sizing: content-box;
+    display: flex;
+}
+
+.paging {
+    flex-wrap: wrap;
 }
 
 .wpgpt-filters a,
@@ -437,7 +452,7 @@ table.translations a.action {
 }
 
 .wpgpt-search label{
-   display: block;
+   display: block !important;
 }
 
 label.wpgpt-search-plugin-label,
@@ -455,7 +470,7 @@ label.wpgpt-search-plugin-label,
 .wpgpt-search input,
 .wpgpt-search button,
 .wpgpt-search label {
-    vertical-align: middle
+    vertical-align: middle !important;
 }
 
 .wpgpt-search label {
@@ -500,7 +515,7 @@ label.wpgpt-search-plugin-label,
 }
 
 .wpgpt-search-word {
-    margin-right: 5px;
+    margin-right: 5px !important;
 }
 
 .wpgpt-search .error-notice {
@@ -665,6 +680,7 @@ a.wpgpt_get_gt:before {
     background-color: rgba(255,255,255,0.85);
     border-radius:2px;
     color:#000 !important;
+    text-decoration: none !important;
 }
 
 .wpgpt-h-label.editor_label {
@@ -731,6 +747,7 @@ button[disabled]:hover {
 
 .fire_magic_reject_close_div {
     float: right;
+    padding-top: 10px;
 }
 
 button.fire_magic_reject_close {
@@ -825,5 +842,13 @@ button.choose-consistency-string {
     .admin-bar .editor-panel__right,
     .consistency-table tr.new-translation th {
         top: 30px !important;
+    }
+}
+
+/* Mobile */
+
+@media ( max-width:500px ) {
+    .gp-content {
+        padding: 0px !important;
     }
 }
