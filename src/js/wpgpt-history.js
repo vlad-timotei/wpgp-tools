@@ -325,7 +325,14 @@ function wpgpt_analyse_history_status( history_data, translation_id, translation
 	}
 
 	if ( diff_label !== '' || count_label !== '' ) {
-		document.querySelector( `#${translation_id.replace( 'editor', 'preview' )} .original-tags` ).append( preview_fragment );
+		let original_tags = document.querySelector( `#${translation_id.replace( 'editor', 'preview' )} .original-tags` );
+		if ( original_tags ) {
+			original_tags.append( preview_fragment );
+		} else {
+			original_tags = $wpgpt_createElement( 'div', {class: 'original-tags'}, '' );
+			original_tags.append( preview_fragment );
+			document.querySelector( `#${translation_id.replace( 'editor', 'preview' )} .original` ).append( original_tags );
+		}
 		document.querySelector( `#${translation_id} .source-details` ).append( editor_fragment, diff_output, raw_compare_to_output );
 	}
 
