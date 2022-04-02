@@ -573,7 +573,7 @@ label.wpgpt-search-plugin-label,
 
 .wpgpt_quicklinks_plus.separator {
     margin: 0 10px;
-    vertical-align: middle;
+    vertical-align: baseline;
 }
 
 .wpgpt_quicklinks_plus.separator:before {
