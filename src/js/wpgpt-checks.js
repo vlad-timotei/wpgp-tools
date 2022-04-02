@@ -1,6 +1,7 @@
 // Translation checks.
 let wpgpt_checks_shortcuts = false;
 let wpgpt_user_edited = false;
+let wpgpt_warning_icon, wpgpt_notice_icon;
 
 const wpgpt_period = ( wpgpt_settings.custom_period.state !== '' ) ? wpgpt_settings.custom_period.state : '.';
 const approve_with_warnings = document.createElement( 'div' );
@@ -9,9 +10,12 @@ const label_warnings = document.createElement( 'label' );
 label_warnings.append( $wpgpt_createElement( 'input', { 'type': 'checkbox' } ), 'Save / Approve with warnings' );
 approve_with_warnings.appendChild( label_warnings );
 const wpgpt_li = document.createElement( 'li' );
-const wpgpt_assets = document.querySelector( '#wpgpt_assets' );
-const wpgpt_warning_icon = wpgpt_assets.dataset.warning;
-const wpgpt_notice_icon = wpgpt_assets.dataset.notice;
+
+if ( ! wpgpt_warning_icon ) {
+    const wpgpt_assets = document.querySelector( '#wpgpt_assets' );
+    wpgpt_warning_icon = wpgpt_assets.dataset.warning;
+    wpgpt_notice_icon = wpgpt_assets.dataset.notice;
+}
 
 if ( typeof $gp_editor_options !== 'undefined' && ( 'enabled' === wpgpt_settings.checks.state || 'enabled' === wpgpt_settings.ro_checks.state ) ) {
 	wpgpt_check_all_translations();
