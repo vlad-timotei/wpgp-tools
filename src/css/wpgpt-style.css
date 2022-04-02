@@ -597,10 +597,10 @@ li.consistency-header-index {
     font-size: 0.9em;
     color: grey;
     border-bottom: 1px dashed #cabfbf;
+    padding-bottom: 10px;
 }
 
-.consistency-header-index .copy-full-alternative,
-.consistency-header-index .consistency-count {
+.consistency-header-index .copy-full-alternative {
     float: right;
 }
 

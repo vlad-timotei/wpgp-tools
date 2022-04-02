@@ -69,7 +69,7 @@ function consistency_tools() {
 		const wpgpt_searchFragment = document.createDocumentFragment();
 		wpgpt_searchFragment.appendChild( $wpgpt_createElement( 'span', { 'class': 'error-notice' } ) );
 		wpgpt_searchFragment.appendChild( $wpgpt_createElement( 'input', { 'class': 'wpgpt-search-word', 'name': 'wpgpt_search_word', 'placeholder': 'Search for...', 'type': 'text' } ) );
-		wpgpt_searchFragment.appendChild( $wpgpt_createElement( 'input', { 'class': 'wpgpt-search-action', 'value': 'Search', 'type': 'submit' } ) );
+		wpgpt_searchFragment.appendChild( $wpgpt_createElement( 'input', { 'class': 'button wpgpt-search-action', 'value': 'Search', 'type': 'submit' } ) );
 		[ [ 'this_project', 'this project' ], [ 'wp', 'WordPress' ], [ 'consistency', 'consistency tool' ], [ 'plugin', 'other plugins' ] ].forEach( ( item ) => {
 			const [ slug, label ] = item;
 			const label_project = $wpgpt_createElement( 'label', {}, ` ${label}` );
@@ -79,7 +79,7 @@ function consistency_tools() {
 		const plugin_slugs = wpgpt_search_settings.plugin_slug !== undefined ? wpgpt_search_settings.plugin_slug : '';
 		const hide_plugin_slugs = wpgpt_search_settings.plugin ? '' : 'hidden';
 		wpgpt_searchFragment.appendChild( $wpgpt_createElement( 'input', { 'class': `wpgpt-search-plugin-slug ${hide_plugin_slugs}`, 'name': 'wpgpt_search_plugin_slug', 'placeholder': 'slug1 slug2 slug3', 'type': 'text', value: plugin_slugs } ) );
-		wpgpt_searchFragment.appendChild( $wpgpt_createElement( 'button', { 'class': 'wpgpt-search-close-tabs', 'style': 'display:none;', 'type': 'button' }, 'Close all tabs' ) );
+		wpgpt_searchFragment.appendChild( $wpgpt_createElement( 'button', { 'class': 'button wpgpt-search-close-tabs', 'style': 'display:none;', 'type': 'button' }, 'Close all tabs' ) );
 		wpgpt_search_output.appendChild( wpgpt_searchFragment );
 
 		$wpgpt_addElements( `${current_editor} .editor-panel .editor-panel__right .panel-content`, 'beforeend', wpgpt_search_output );
@@ -232,7 +232,7 @@ function consistency_tools() {
 
 				const wpgpt_consistency_item_header = $wpgpt_createElement( 'li', { 'class': 'consistency-header-index' }, `#${consistency_alternatives_i + 1}` );
 				wpgpt_consistency_item_header.append(
-					$wpgpt_createElement( 'button', { 'type': 'button', 'class': 'copy-full-alternative', 'data-alternative_id': consistency_alternatives_i }, 'Copy' ),
+					$wpgpt_createElement( 'button', { 'type': 'button', 'class': 'button is-small copy-full-alternative', 'data-alternative_id': consistency_alternatives_i }, 'Copy' ),
 					$wpgpt_createElement( 'span', { 'class': 'consistency-count' }, current_string.alternatives_count[ consistency_alternatives_i ] ),
 				);
 				wpgpt_consistency_suggestions.append( wpgpt_consistency_item_header );
@@ -293,7 +293,7 @@ function consistency_tools() {
 			const meta_info = ( current_string.form_names.length ) ? `${current_string.form_names[ form_text_i ]}: ` : `${alternative.i + 1}: `;
 			const wpgpt_consistency_item_meta = $wpgpt_createElement( 'span', { 'class': 'translation-suggestion__translation index' }, meta_info );
 			const wpgpt_consistency_item_raw = $wpgpt_createElement( 'span', { 'class': `translation-suggestion__translation-raw consistency_alternative__${alternative.i}_${form_text_i}`, 'aria-hidden': 'true' }, form_text );
-			const wpgpt_consistency_item_button = $wpgpt_createElement( 'button', { 'type': 'button', 'class': 'copy-suggestion' }, 'Copy' );
+			const wpgpt_consistency_item_button = $wpgpt_createElement( 'button', { 'type': 'button', 'class': 'is-small button copy-suggestion' }, 'Copy' );
 			wpgpt_consistency_item_translation.prepend( wpgpt_consistency_item_meta );
 			( 0 === current_string.form_names.length ) && wpgpt_consistency_item_translation.append( $wpgpt_createElement( 'span', { 'class': 'consistency-count' }, current_string.alternatives_count[ alternative.i ] ) );
 			wpgpt_consistency_item_div.append( wpgpt_consistency_item_translation, wpgpt_consistency_item_raw, wpgpt_consistency_item_button );
@@ -574,7 +574,7 @@ function consistency_tools() {
 	function wpgpt_notranslate( current_editor = '.editor' ) {
 		const notranslate_header = document.createElement( 'div' );
 		notranslate_header.textContent = 'Non-translatable';
-		notranslate_header.append( $wpgpt_createElement( 'button', { 'type': 'button', 'class': 'wpgpt_notranslate_copy_all' }, 'Copy all' ) );
+		notranslate_header.append( $wpgpt_createElement( 'button', { 'type': 'button', 'class': 'is-small button wpgpt_notranslate_copy_all' }, 'Copy all' ) );
 		document.querySelectorAll( `${current_editor.replace( 'editor', 'preview' )} .original` ).forEach( ( original_preview ) => {
 			const editor = original_preview.parentNode.nextElementSibling;
 			const notranslate = $wpgpt_createElement( 'div', { 'class': 'wpgpt_notranslate' } );
@@ -670,14 +670,14 @@ function wpgpt_bulk_consistency() {
 
 	const reject_div = $wpgpt_createElement( 'div', { 'class': 'fire_magic_reject_close_div' }, 'Danger zone: ' );
 	reject_div.append(
-		$wpgpt_createElement( 'button', { 'class': 'fire_magic_reject_close' }, 'Reject all translations' ),
+		$wpgpt_createElement( 'button', { 'class': 'button fire_magic_reject_close' }, 'Reject all translations' ),
 	);
 	$wpgpt_addElement( '.notice', 'afterbegin', reject_div );
 
 	const relax_text = 'Click the button below, sit back, relax and let me do the work for you. It\'s your one minute break and you deserve it!';
 	const relax = $wpgpt_createElement( 'div', { 'class': 'wpgpt-relax' }, relax_text );
 
-	const replace_btn = $wpgpt_createElement( 'button', { 'class': 'fire_magic_save_close', 'style': 'display:none;' }, 'Bulk replace & Save' );
+	const replace_btn = $wpgpt_createElement( 'button', { 'class': 'button fire_magic_save_close', 'style': 'display:none;' }, 'Bulk replace & Save' );
 	const translation_overview = document.querySelector( '#translations-overview' );
 	translation_overview && translation_overview.after( relax, replace_btn );
 
@@ -698,8 +698,8 @@ function wpgpt_bulk_consistency() {
 		const alternative_id = alternative.href.split( '#' )[ 1 ];
 		const bulk_buttons = $wpgpt_createElement( 'div', { 'class': 'wpgpt-bulk-buttons' } );
 		bulk_buttons.append(
-			$wpgpt_createElement( 'button', { 'id': `choose-${alternative_id}`, 'class': 'choose-consistency-string', 'type': 'button' }, 'Set this translation as replacement' ),
-			$wpgpt_createElement( 'button', { 'id': `delete-${alternative_id}`, 'class': 'delete-consistency-strings', 'type': 'button', 'disabled': 'disabled' }, 'Do not replace this translation' ),
+			$wpgpt_createElement( 'button', { 'id': `choose-${alternative_id}`, 'class': 'button is-small choose-consistency-string', 'type': 'button' }, 'Set this translation as replacement' ),
+			$wpgpt_createElement( 'button', { 'id': `delete-${alternative_id}`, 'class': 'button is-small delete-consistency-strings', 'type': 'button', 'disabled': 'disabled' }, 'Do not replace this translation' ),
 		);
 		alternative.insertAdjacentElement( 'afterend', bulk_buttons );
 		wpgpt_get_alternative( consistency_alternatives_url[ alternative_id ], alternative_id, alternative, header_alternatives.length );

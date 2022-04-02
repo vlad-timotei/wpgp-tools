@@ -261,7 +261,7 @@ function wpgpt_settings_page() {
 		}
 	} );
 
-	settingsFragment.appendChild( $wpgpt_createElement( 'button', { 'id': 'save_settings' }, 'Save all settings' ) );
+	settingsFragment.appendChild( $wpgpt_createElement( 'button', { id: 'save_settings', class: 'button' }, 'Save all settings' ) );
 
 	const shortcuts_el_default = document.createElement( 'div' );
 	shortcuts_el_default.className = 'gp-shortcuts';
