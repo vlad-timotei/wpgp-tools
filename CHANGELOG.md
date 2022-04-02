@@ -3,6 +3,7 @@
 - Enhancement: don't throw a warning for period as separator
 
 # 2.0.0
+31.01.2022
 - Enhancement: allow all custom shortcuts to be disabled
 - Enhancement: check for additional or missing end tabs 
 - Enhancement: check for correct tags spaces
