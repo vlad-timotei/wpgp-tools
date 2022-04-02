@@ -15,7 +15,7 @@ function wpgpt_load_imgs() {
 	assets.dataset.warning = chrome.runtime.getURL( 'img/warning.png' );
 	assets.dataset.notice = chrome.runtime.getURL( 'img/notice.png' );
 	assets.id = 'wpgpt_assets';
-	document.querySelector( '#wporg-footer' ).appendChild( assets );
+	document.querySelector( 'footer' ).appendChild( assets );
 }
 
 function wpgpt_load_scripts( resource ) {
