@@ -9,9 +9,10 @@ const label_warnings = document.createElement( 'label' );
 label_warnings.append( $wpgpt_createElement( 'input', { 'type': 'checkbox' } ), 'Save / Approve with warnings' );
 approve_with_warnings.appendChild( label_warnings );
 const wpgpt_li = document.createElement( 'li' );
+
 const wpgpt_assets = document.querySelector( '#wpgpt_assets' );
-const wpgpt_warning_icon = wpgpt_assets.dataset.warning;
-const wpgpt_notice_icon = wpgpt_assets.dataset.notice;
+const wpgpt_warning_icon = wpgpt_assets?.dataset?.warning ?? wpgpt_us_assets?.wpgpt_warning_icon;
+const wpgpt_notice_icon = wpgpt_assets?.dataset?.notice ?? wpgpt_us_assets?.wpgpt_notice_icon;
 
 if ( typeof $gp_editor_options !== 'undefined' && ( 'enabled' === wpgpt_settings.checks.state || 'enabled' === wpgpt_settings.ro_checks.state ) ) {
 	wpgpt_check_all_translations();
