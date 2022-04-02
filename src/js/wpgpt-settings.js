@@ -174,7 +174,7 @@ const wpgpt_settings = {
 };
 const settings_li = document.createElement( 'li' );
 settings_li.classList.add( 'menu-item', 'wpgpt_settings_menu' );
-settings_li.appendChild( document.createElement( 'a' ) ).appendChild( document.createTextNode( 'Tools Settings' ) );
+settings_li.appendChild( document.createElement( 'a' ) ).appendChild( document.createTextNode( 'WPGPT Settings' ) );
 const menu_headline = document.querySelector( '#menu-headline-nav' );
 menu_headline && menu_headline.append( settings_li );
 settings_li.addEventListener( 'click', wpgpt_settings_page );
