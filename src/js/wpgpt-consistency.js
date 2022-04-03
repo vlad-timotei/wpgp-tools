@@ -70,7 +70,7 @@ function consistency_tools() {
 		wpgpt_searchFragment.appendChild( $wpgpt_createElement( 'span', { 'class': 'error-notice' } ) );
 		wpgpt_searchFragment.appendChild( $wpgpt_createElement( 'input', { 'class': 'wpgpt-search-word', 'name': 'wpgpt_search_word', 'placeholder': 'Search for...', 'type': 'text' } ) );
 		wpgpt_searchFragment.appendChild( $wpgpt_createElement( 'input', { 'class': 'button wpgpt-search-action', 'value': 'Search', 'type': 'submit' } ) );
-		[ [ 'this_project', 'this project' ], [ 'wp', 'WordPress' ], [ 'consistency', 'consistency tool' ], [ 'plugin', 'other plugins' ] ].forEach( ( item ) => {
+		[ [ 'this_project', 'in this project' ], [ 'wp', 'in WordPress' ], [ 'consistency', 'in Consistency Tool' ], [ 'plugin', 'in other plugins:' ] ].forEach( ( item ) => {
 			const [ slug, label ] = item;
 			const label_project = $wpgpt_createElement( 'label', {}, ` ${label}` );
 			label_project.prepend( $wpgpt_createElement( 'input', { 'type': 'checkbox', 'class': `wpgpt-search-option ${slug}`, 'data-searchproject': slug, [( true === wpgpt_search_settings[ slug ] ) ? 'checked' : 'not_checked']: true } ) );

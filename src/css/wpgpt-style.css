@@ -453,6 +453,8 @@ table.translations a.action {
 
 .wpgpt-search label{
    display: block !important;
+   padding: 5px;
+   cursor: pointer;
 }
 
 label.wpgpt-search-plugin-label,
@@ -463,7 +465,7 @@ label.wpgpt-search-plugin-label,
 }
 
 .wpgpt-search {
-    padding: 0 15px 0 15px;
+    padding: 0 15px 20px 15px;
 }
 
 .wpgpt-search-action,
@@ -471,10 +473,6 @@ label.wpgpt-search-plugin-label,
 .wpgpt-search button,
 .wpgpt-search label {
     vertical-align: middle !important;
-}
-
-.wpgpt-search label {
-    cursor: pointer;
 }
 
 .wpgpt-search input[type=submit],
@@ -535,7 +533,7 @@ label.wpgpt-search-plugin-label,
 
 .wpgpt-search-plugin-slug {
     width: 90%;
-    margin-bottom: 20px;
+    padding: 15px 10px !important;
 }
 
 /*QuickLinks*/
