@@ -1,6 +1,11 @@
 # 2.0.1
 - Enhancement: check for multiple current translations
 - Enhancement: don't throw a warning for period as separator
+- Enhancement: use Manifest v3
+- Enhancement: clarify Settings title
+- Enhancement: allow bulk replacement for context edgecases
+- Compatibility: GP 3.0
+- Announcement: For a better unified experience, features merged in GD will soon become unavailable in WPGPT.
 
 # 2.0.0
 31.01.2022
