@@ -25,8 +25,8 @@
 		"$wpgpt_createElement": true,
 		"WPGPT_VERSION": true,
 		"GM_addStyle": true,
-		"GM_getResourceText": true
-
+		"GM_getResourceText": true,
+		"wpgpt_us_assets": true
 	},
 	"rules": {
 		"accessor-pairs": "error",
