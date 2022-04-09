@@ -1,4 +1,4 @@
-# 2.0.1
+# 2.1.0
 - Enhancement: check for multiple current translations
 - Enhancement: don't throw a warning for period as separator
 - Enhancement: use Manifest v3
