@@ -203,10 +203,10 @@ function wpgpt_load_history_status( row_id, is_history = false ) {
 }
 
 /*			Analyze History:
-* 			String status:									Action:
-*		Old, Rejected, Waiting, Fuzzy, Current	=>		displays History Count (if History Count enabled)
-*		Old, Rejected and Waiting 		 		=>		compares to Current
-*		Fuzzy 									=> 		compares to Waiting
+* 			String status:											Action:
+*		Old, Rejected, Waiting, Fuzzy, Current, Feedback	=>		displays History Count (if History Count enabled)
+*		Old, Rejected and Waiting 		 					=>		compares to Current
+*		Fuzzy 												=> 		compares to Waiting
 */
 function wpgpt_analyse_history_status( history_data, translation_id, translation_status, url, isLast ) {
 	let 	compared_translations_row = [];
