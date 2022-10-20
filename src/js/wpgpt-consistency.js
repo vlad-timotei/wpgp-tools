@@ -409,12 +409,19 @@ function consistency_tools() {
 			$wpgpt_createElement( 'span', { 'class': 'dashicons dashicons-list-view', 'aria-hidden': 'true' } ),
 		);
 
+		const wpgpt_quicklinks_discussion = $wpgpt_createElement( 'button', { 'class': 'wpgpt_quicklinks_item wpgpt_quicklinks_discussion with-tooltip', 'aria-label': 'Discussion' } );
+		wpgpt_quicklinks_discussion.append(
+			$wpgpt_createElement( 'span', { 'class': 'screen-reader-text' }, 'Discussion' ),
+			$wpgpt_createElement( 'span', { 'class': 'dashicons dashicons-format-chat', 'aria-hidden': 'true' } ),
+		);
+
 		wpgpt_quicklinks_output.append(
 			wpgpt_quicklinks_copy,
 			wpgpt_quicklinks_separator,
 			wpgpt_quicklinks_permalink,
 			wpgpt_quicklinks_history,
 			wpgpt_quicklinks_consistency,
+			wpgpt_quicklinks_discussion,
 		);
 
 		$wpgpt_addElements( `${current_editor} .editor-panel__right .panel-header`, 'beforeend', wpgpt_quicklinks_output );
@@ -425,6 +432,7 @@ function consistency_tools() {
 				editor_menu[ 1 ].href += '&historypage';
 				editor.querySelector( '.wpgpt_quicklinks_history' ).dataset.quicklink = editor_menu[ 1 ].href;
 				editor.querySelector( '.wpgpt_quicklinks_consistency' ).dataset.quicklink = `${editor_menu[ 2 ].href}&consistencypage`;
+				editor.querySelector( '.wpgpt_quicklinks_discussion' ).dataset.quicklink = editor_menu[ 3 ].href;
 			}
 		} );
 
