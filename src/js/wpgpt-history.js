@@ -168,6 +168,7 @@ function wpgpt_load_history_status( row_id, is_history = false ) {
 	case 'rejected': translation_status = 'rejected'; break;
 	case 'old': translation_status = 'old'; break;
 	case 'fuzzy': translation_status = 'fuzzy'; break;
+	case 'changes requested': translation_status = 'changesrequested'; break;
 	default: translation_status = 'untranslated';
 	}
 
@@ -227,7 +228,7 @@ function wpgpt_analyse_history_status( history_data, translation_id, translation
 
 	// Histoy Count.
 	if ( 'enabled' === wpgpt_settings.history_count.state && history_length ) {
-		[ 'current', 'waiting', 'fuzzy', 'rejected', 'old' ].forEach( ( state ) => {
+		[ 'current', 'waiting', 'fuzzy', 'rejected', 'old', 'changesrequested' ].forEach( ( state ) => {
 			string_history[ state ] = history_page.querySelectorAll( `#translations tbody tr.preview.status-${state}` ).length;
 			if (
 				translation_status === unique_state &&
@@ -243,7 +244,7 @@ function wpgpt_analyse_history_status( history_data, translation_id, translation
 			) {
 				string_history[ translation_status ]--;
 			}
-			count_label += ( string_history[ state ] ) ? ( `${( ( count_label !== '' ) ? ', ' : '' ) + string_history[ state ]} ${state}` ) : '';
+			count_label += ( string_history[ state ] ) ? ( `${( ( count_label !== '' ) ? ', ' : '' ) + string_history[ state ]} ${state.replace( 'changesrequested', 'feedback' )}` ) : '';
 		} );
 		if ( ! history_page.querySelectorAll( '.next.disabled' ).length ) {count_label = `More than ${count_label} | Click to view`;}
 	}
