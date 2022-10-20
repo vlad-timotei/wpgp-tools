@@ -242,7 +242,7 @@ function wpgpt_analyse_history_status( history_data, translation_id, translation
 				state === translation_status &&
 				'number' === typeof ( string_history[ translation_status ] )
 			) {
-				string_history[ translation_status ]--;
+				! is_history && string_history[ translation_status ]--;
 			}
 			count_label += ( string_history[ state ] ) ? ( `${( ( count_label !== '' ) ? ', ' : '' ) + string_history[ state ]} ${state.replace( 'changesrequested', 'feedback' )}` ) : '';
 		} );
