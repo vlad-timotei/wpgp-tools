@@ -535,21 +535,6 @@ label.wpgpt-search-plugin-label,
 }
 
 /*QuickLinks*/
-.editor-panel__right .panel-header button {
-    background: none;
-    border: none;
-    height: 40px;
-    width: 40px;
-    padding: 0;
-    margin: 0;
-    vertical-align: middle;
-    box-shadow: none;
-    border-radius: 0;
-}
-
-.editor-panel__right .panel-header button:hover {
-    background: #fafafa;
-}
 
 .wpgpt_quicklinks_copy.active {
     color: #0073aa;
@@ -720,7 +705,7 @@ span.context + span.priority {
 }
 
 /* GD fall-back compatibility in case user uses GD but says they don't */
-.gd_quicklinks + .wpgpt_quicklinks,
+.gd_quicklinks,
 .wpgpt_quicklinks + .gd_quicklinks,
 .wpgpt-consistency + .gd-consistency,
 .gd-consistency + .wpgpt-consistency,
@@ -849,5 +834,8 @@ button.choose-consistency-string {
 @media ( max-width:500px ) {
     .gp-content {
         padding: 0px !important;
+    }
+    .wpgpt_quicklinks {
+        display: none;
     }
 }
