@@ -1,22 +1,16 @@
 {
-	"manifest_version":3,
+	"manifest_version":2,
 	"name":"WPGP Tools",
 	"version":"2.1.0",
 	"description":"Enhanced Translation Tools for translate.w.org",
 	"web_accessible_resources": [
-		{
-			"resources": [ 
-				"js/wpgpt-checks.js",
-				"js/wpgpt-settings.js",
-				"js/wpgpt-functions.js",
-				"js/wpgpt-history.js",
-				"js/wpgpt-bulk-consistency.js",
-				"img/warning.png",
-				"img/notice.png"
-			],
-			"matches": [ "https://translate.wordpress.org/*" ]
-		}
-		
+		"js/wpgpt-checks.js",
+		"js/wpgpt-settings.js",
+		"js/wpgpt-functions.js",
+		"js/wpgpt-history.js",
+		"js/wpgpt-bulk-consistency.js",
+		"img/warning.png",
+		"img/notice.png"
 	],
 	"content_scripts":[
 	{
