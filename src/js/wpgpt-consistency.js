@@ -240,11 +240,20 @@ function consistency_tools() {
 			}
 			wpgpt_consistency_suggestions.append( wpgpt_consistency_add_alternative( alternative, current_string ) );
 		}
-		if ( 'enabled' === _wpgpt_settings.bulk_consistency && consistency_alternatives.length > 1 ) {
-			const warning = document.createElement( 'div' );
-			warning.className = 'gte-warning';
-			warning.textContent = `${consistency_alternatives.length} current different translations!`;
-			wpgpt_consistency_suggestions.insertAdjacentElement( 'afterBegin', warning );
+		if ( 'enabled' === _wpgpt_settings.bulk_consistency ) {
+			if ( consistency_alternatives.length > 1 ) {
+				const warning = document.createElement( 'div' );
+				warning.className = 'gte-warning';
+				warning.textContent = `${consistency_alternatives.length} current different translations!`;
+				wpgpt_consistency_suggestions.insertAdjacentElement( 'afterBegin', warning );
+			} else if ( 'enabled' === _wpgpt_settings.bulk_consistency ) {
+				const rejectAll = document.createElement( 'a' );
+				rejectAll.target = '_blank';
+				rejectAll.className = 'gte-warning';
+				rejectAll.textContent = `Click here to reject all translations.`;
+				rejectAll.href = `${consistency_url}#magicreject_BULK_T_WPORG`;
+				wpgpt_consistency_suggestions.insertAdjacentElement( 'afterBegin', rejectAll );
+			}
 		}
 
 		el.append( wpgpt_consistency_suggestions );
@@ -911,6 +920,10 @@ function wpgpt_bulk_consistency() {
 		document.body.appendChild( element );
 		element.click();
 		document.body.removeChild( element );
+	}
+
+	if ( window.location.href.includes( '#magicreject_BULK_T_WPORG' ) ) {
+		wpgpt_fire_reject_close()
 	}
 }
 
