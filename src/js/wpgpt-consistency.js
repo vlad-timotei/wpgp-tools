@@ -417,7 +417,7 @@ function consistency_tools() {
 			wpgpt_quicklinks_consistency,
 		);
 
-		$wpgpt_addElements( `${current_editor} .editor-panel__right .panel-header`, 'beforeend', wpgpt_quicklinks_output );
+		$wpgpt_addElements( `${current_editor} .editor-panel__left .panel-header .panel-header-actions`, 'afterBegin', wpgpt_quicklinks_output );
 		document.querySelectorAll( `${current_editor}` ).forEach( ( editor ) => {
 			const editor_menu = editor.querySelectorAll( '.button-menu__dropdown li a' );
 			if ( editor_menu.length ) {
