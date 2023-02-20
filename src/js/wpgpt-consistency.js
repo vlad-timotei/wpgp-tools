@@ -519,22 +519,22 @@ function consistency_tools() {
 		} );
 		window.onbeforeunload = function() { wpgpt_close_tabs( 'all' ); };
 		'enabled' === _wpgpt_settings.shortcuts && document.addEventListener( 'keydown', ( event ) => {
-			if ( event.altKey ) {
+			if ( event.altKey || event.ctrlKey ) { // Alt or Ctrl key pressed.
 				if ( ! isNaN( parseInt( event.key, 10 ) ) ) {
-					wpgpt_do_event( '.suggestions__translation-consistency .copy-suggestion', parseInt( event.key, 10 ), 'click', '.suggestions__translation-consistency .copy-full-alternative' ); // Alt + number - Copy consistency suggestion
+					wpgpt_do_event( '.suggestions__translation-consistency .copy-suggestion', parseInt( event.key, 10 ), 'click', '.suggestions__translation-consistency .copy-full-alternative' ); // Alt/Ctrl + number - Copy consistency suggestion
 				} else {
 					switch ( event.key.toLowerCase() ) {
 					case 'c': document.querySelectorAll( '.wpgpt-consistency' ).forEach( ( el ) => { wpgpt_do_consistency( el ); } );
 						break;
-					case 'g': wpgpt_do_event( '.wpgpt_get_gt' ); // Alt + G - Google Translate string
+					case 'g': wpgpt_do_event( '.wpgpt_get_gt' ); // Alt/Ctrl + G - Google Translate string
 						break;
 
-					case 'n': wpgpt_do_event( '.wpgpt_notranslate_copy_all' );// Alt + N - Copy all non-translatable strings
+					case 'n': wpgpt_do_event( '.wpgpt_notranslate_copy_all' );// Alt/Ctrl + N - Copy all non-translatable strings
 						break;
 
 					case 'p':
 					case 's':
-						wpgpt_do_event( '.wpgpt-search-word', 1, 'focus' ); // Alt + P OR Alt + S - Focus on Search
+						wpgpt_do_event( '.wpgpt-search-word', 1, 'focus' ); // Alt/Ctrl + P OR Alt + S - Focus on Search
 						break;
 					}
 				}
