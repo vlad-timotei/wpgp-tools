@@ -246,13 +246,6 @@ function consistency_tools() {
 				warning.className = 'gte-warning';
 				warning.textContent = `${consistency_alternatives.length} current different translations!`;
 				wpgpt_consistency_suggestions.insertAdjacentElement( 'afterBegin', warning );
-			} else if ( 'enabled' === _wpgpt_settings.bulk_consistency ) {
-				const rejectAll = document.createElement( 'a' );
-				rejectAll.target = '_blank';
-				rejectAll.className = 'gte-warning';
-				rejectAll.textContent = `Click here to reject all translations.`;
-				rejectAll.href = `${consistency_url}#magicreject_BULK_T_WPORG`;
-				wpgpt_consistency_suggestions.insertAdjacentElement( 'afterBegin', rejectAll );
 			}
 		}
 
@@ -920,10 +913,6 @@ function wpgpt_bulk_consistency() {
 		document.body.appendChild( element );
 		element.click();
 		document.body.removeChild( element );
-	}
-
-	if ( window.location.href.includes( '#magicreject_BULK_T_WPORG' ) ) {
-		wpgpt_fire_reject_close();
 	}
 }
 
