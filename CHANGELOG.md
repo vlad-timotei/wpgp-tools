@@ -1,4 +1,15 @@
+# 2.1.1
+20.02.2023
+- Enhancement: makes missing tag spaces disabled by default
+- Enhancement: adds changesrequested status
+- Enhancement: adds Discussion QuickLink
+- Enhancement: move QuickLink location to acomodate with the new translate.w.org layout
+- Enhancement: adds Ctrl keyboard as replacement for Alt on Mac devices
+- Fix: fixes various errors
+
+
 # 2.1.0
+09.04.2022
 - Enhancement: check for multiple current translations
 - Enhancement: don't throw a warning for period as separator
 - Enhancement: use Manifest v3
