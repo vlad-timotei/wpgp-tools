@@ -163,7 +163,8 @@ This is an **opt-in** only for GTEs tool. Even if you activate it, it only fully
 | Action | Shortcut | Alternative Shortcut for Mac |
 | --- | --- | --- |
 | **F**uzzy | Ctrl + \* (numeric keyboard) <br/> Control + Shift + **F**  | 
-| **S**ave with warnings | **S**hift + Ctrl + Enter | 
+| **S**ave with warnings | **S**hift + Ctrl + Enter |
+ | Load all **C**onsistency suggestions | Alt + **C** | control + **C** |
 | Copy consistency #**3** | Alt + **3** | control + **3** |
 | **G**oogle Translate | Alt + **G** | control + **G** |
 | Focus on **S**earch in **P**rojects  |   Alt + **S** or Alt + **P** |  control + **S** or control + **P** |
