@@ -160,15 +160,15 @@ This is an **opt-in** only for GTEs tool. Even if you activate it, it only fully
  
 ## #6 Custom Keyboard Shortcuts
 
-| Action | Shortcut | Alternative Shortcut |
+| Action | Shortcut | Alternative Shortcut for Mac |
 | --- | --- | --- |
-| **F**uzzy | Ctrl + \* (numeric keyboard) | Ctrl + Shift + **F**  | 
-| **S**ave with warnings | **S**hift + Ctrl + Enter | 
-| Load all **C**onsistency suggestions | Alt + **C** | 
-| Copy consistency #**3** | Alt + **3** | *works for 1-9* |
-| **G**oogle Translate | Alt + **G** | 
-| Focus on **S**earch in **P**rojects  |   Alt + **S**  |  Alt + **P** |
-| Insert all **N**on-translatables | Alt + **N** | 
+| **F**uzzy | Ctrl + \* (numeric keyboard) <br/> Control + Shift + **F**  | 
+| **S**ave with warnings | **S**hift + Ctrl + Enter |
+ | Load all **C**onsistency suggestions | Alt + **C** | control + **C** |
+| Copy consistency #**3** | Alt + **3** | control + **3** |
+| **G**oogle Translate | Alt + **G** | control + **G** |
+| Focus on **S**earch in **P**rojects  |   Alt + **S** or Alt + **P** |  control + **S** or control + **P** |
+| Insert all **N**on-translatables | Alt + **N** | control + **N** | 
 
 Note: Disable custom keyboard shortcuts if you use keyboard `Alt + numbers` to insert special characters. WPGPT overrides that shortcut.
 
