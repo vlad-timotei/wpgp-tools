@@ -923,7 +923,7 @@ function wpgpt_bulk_consistency() {
 	}
 
 	if ( window.location.href.includes( '#magicreject_BULK_T_WPORG' ) ) {
-		wpgpt_fire_reject_close()
+		wpgpt_fire_reject_close();
 	}
 }
 
