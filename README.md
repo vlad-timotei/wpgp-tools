@@ -162,7 +162,7 @@ This is an **opt-in** only for GTEs tool. Even if you activate it, it only fully
 
 | Action | Shortcut | Alternative Shortcut for Mac |
 | --- | --- | --- |
-| **F**uzzy | Ctrl + \* (numeric keyboard) or Control + Shift + **F**  | 
+| **F**uzzy | Ctrl + \* (numeric keyboard) <br/> Control + Shift + **F**  | 
 | **S**ave with warnings | **S**hift + Ctrl + Enter | 
 | Copy consistency #**3** | Alt + **3** | control + **3** |
 | **G**oogle Translate | Alt + **G** | control + **G** |
