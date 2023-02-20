@@ -16,10 +16,10 @@
 */
 
 let WPGPTdiff, wpgpt_history_editors, wpgpt_cache = '';
+const is_history = document.location.href.includes( 'historypage' );
 wpgpt_init_history_status();
 
 function wpgpt_init_history_status() {
-	const is_history = document.location.href.includes( 'historypage' );
 	if ( 	'undefined' === typeof $gp_editor_options ||
 			'disabled' === wpgpt_settings.history_main.state ||
 			( is_history && 'disabled' === wpgpt_settings.history_page.state )
@@ -153,10 +153,10 @@ function wpgpt_init_history_status() {
 		return methods;
 	} )();
 	wpgpt_history_editors = document.querySelectorAll( '#translations tbody tr.editor' );
-	wpgpt_load_history_status( 0, is_history );
+	wpgpt_load_history_status( 0 );
 }
 
-function wpgpt_load_history_status( row_id, is_history = false ) {
+function wpgpt_load_history_status( row_id ) {
 	if ( row_id >= wpgpt_history_editors.length ) {
 		return;
 	}
@@ -168,6 +168,7 @@ function wpgpt_load_history_status( row_id, is_history = false ) {
 	case 'rejected': translation_status = 'rejected'; break;
 	case 'old': translation_status = 'old'; break;
 	case 'fuzzy': translation_status = 'fuzzy'; break;
+	case 'changes requested': translation_status = 'changesrequested'; break;
 	default: translation_status = 'untranslated';
 	}
 
@@ -178,7 +179,7 @@ function wpgpt_load_history_status( row_id, is_history = false ) {
 
 		if ( wpgpt_cache !== '' ) {
 			wpgpt_analyse_history_status( wpgpt_cache, translation_id, translation_status, url, row_id === wpgpt_history_editors.length - 1 );
-			wpgpt_load_history_status( row_id + 1, is_history );
+			wpgpt_load_history_status( row_id + 1 );
 		} else {
 			fetch( url, { headers: new Headers( { 'User-agent': 'Mozilla/4.0 Custom User Agent' } ) } )
 				.then( response => response.text() )
@@ -186,26 +187,26 @@ function wpgpt_load_history_status( row_id, is_history = false ) {
 					wpgpt_analyse_history_status( data, translation_id, translation_status, url, row_id === wpgpt_history_editors.length - 1 );
 					if ( is_history ) {
 						wpgpt_cache = data;
-						wpgpt_load_history_status( row_id + 1, is_history );
+						wpgpt_load_history_status( row_id + 1 );
 					}
 				} )
 				.catch( () => console.log( `A WPGPT History URL (${url}) could not be fetched due to a network issue. Histoy count might be incomplete.` ) );
 		}
 	} else {
-		wpgpt_load_history_status( row_id + 1, is_history );
+		wpgpt_load_history_status( row_id + 1 );
 		return;
 	}
 
 	if ( ! is_history ) {
-		wpgpt_load_history_status( row_id + 1, is_history );
+		wpgpt_load_history_status( row_id + 1 );
 	}
 }
 
 /*			Analyze History:
-* 			String status:									Action:
-*		Old, Rejected, Waiting, Fuzzy, Current	=>		displays History Count (if History Count enabled)
-*		Old, Rejected and Waiting 		 		=>		compares to Current
-*		Fuzzy 									=> 		compares to Waiting
+* 			String status:											Action:
+*		Old, Rejected, Waiting, Fuzzy, Current, Feedback	=>		displays History Count (if History Count enabled)
+*		Old, Rejected and Waiting 		 					=>		compares to Current
+*		Fuzzy 												=> 		compares to Waiting
 */
 function wpgpt_analyse_history_status( history_data, translation_id, translation_status, url, isLast ) {
 	let 	compared_translations_row = [];
@@ -227,7 +228,7 @@ function wpgpt_analyse_history_status( history_data, translation_id, translation
 
 	// Histoy Count.
 	if ( 'enabled' === wpgpt_settings.history_count.state && history_length ) {
-		[ 'current', 'waiting', 'fuzzy', 'rejected', 'old' ].forEach( ( state ) => {
+		[ 'current', 'waiting', 'fuzzy', 'rejected', 'old', 'changesrequested' ].forEach( ( state ) => {
 			string_history[ state ] = history_page.querySelectorAll( `#translations tbody tr.preview.status-${state}` ).length;
 			if (
 				translation_status === unique_state &&
@@ -241,9 +242,9 @@ function wpgpt_analyse_history_status( history_data, translation_id, translation
 				state === translation_status &&
 				'number' === typeof ( string_history[ translation_status ] )
 			) {
-				string_history[ translation_status ]--;
+				! is_history && string_history[ translation_status ]--;
 			}
-			count_label += ( string_history[ state ] ) ? ( `${( ( count_label !== '' ) ? ', ' : '' ) + string_history[ state ]} ${state}` ) : '';
+			count_label += ( string_history[ state ] ) ? ( `${( ( count_label !== '' ) ? ', ' : '' ) + string_history[ state ]} ${state.replace( 'changesrequested', 'feedback' )}` ) : '';
 		} );
 		if ( ! history_page.querySelectorAll( '.next.disabled' ).length ) {count_label = `More than ${count_label} | Click to view`;}
 	}

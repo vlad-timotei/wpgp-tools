@@ -334,9 +334,9 @@ function wpgpt_run_general_checks( results, original, translated, translation_e_
 		wpgpt_push1( results.warning, wpgpt_check_match_words( translated, original ) );
 	}
 
-	if ( wpgpt_settings.tag_spaces.state !== 'nothing' ) {
+	if ( wpgpt_settings.tags_spaces.state !== 'disabled' ) {
 		const tag_spaces = wpgpt_check_tag_spaces( translated );
-		wpgpt_push1( results[ wpgpt_settings.tag_spaces.state ], tag_spaces.msg );
+		wpgpt_push1( results[ 'notice' ], tag_spaces.msg );
 		tag_spaces.arr.length && wpgpt_push( results.highlight_me, tag_spaces.arr );
 	}
 }
@@ -638,7 +638,7 @@ function wpgpt_check_match_words( translated, original ) {
 }
 
 function wpgpt_check_tag_spaces( translated ) {
-	const bad_tags_spaces = translated.match( /[^"'`„“([>/\s]+<[^>/]+>|<[^>/]+>\s|<\/[^>]+>[^.,!?:。।։។။།۔"'`”)\]+</\s]|\s<\/[^>]+>/g );
+	const bad_tags_spaces = translated.replaceAll( 'br', '' ).match( /[^"'`„“([>/\s]+<[^>/]+>|<[^>/]+>\s|<\/[^>]+>[^.,!?:。।։។။།۔"'`”)\]+</\s]|\s<\/[^>]+>/g );
 	if ( bad_tags_spaces !== null ) {
 		const msg = wpgpt_li.cloneNode( true );
 		msg.textContent = `${bad_tags_spaces.length} wrong space${( bad_tags_spaces.length > 1 ) ? 's' : ''}: “${bad_tags_spaces.toString()}”`;

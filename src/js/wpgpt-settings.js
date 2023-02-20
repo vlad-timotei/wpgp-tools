@@ -36,12 +36,6 @@ const wpgpt_settings = {
 		'setting_type':   3,
 		'parent_setting': 'checks',
 	},
-	'tag_spaces': {
-		'desc':           'Missing tag spaces',
-		'state':          'warning',
-		'setting_type':   3,
-		'parent_setting': 'checks',
-	},
 	'warning_words': {
 		'desc':           'Prevent saving these words:',
 		'state':          '',
@@ -57,6 +51,12 @@ const wpgpt_settings = {
 	'checks_labels': {
 		'desc':           'Warning labels and highlights',
 		'state':          'enabled',
+		'setting_type':   2,
+		'parent_setting': 'checks',
+	},
+	'tags_spaces': {
+		'desc':           'Missing tag spaces (experimental)',
+		'state':          'disabled',
 		'setting_type':   2,
 		'parent_setting': 'checks',
 	},

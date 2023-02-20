@@ -240,11 +240,20 @@ function consistency_tools() {
 			}
 			wpgpt_consistency_suggestions.append( wpgpt_consistency_add_alternative( alternative, current_string ) );
 		}
-		if ( 'enabled' === _wpgpt_settings.bulk_consistency && consistency_alternatives.length > 1 ) {
-			const warning = document.createElement( 'div' );
-			warning.className = 'gte-warning';
-			warning.textContent = `${consistency_alternatives.length} current different translations!`;
-			wpgpt_consistency_suggestions.insertAdjacentElement( 'afterBegin', warning );
+		if ( 'enabled' === _wpgpt_settings.bulk_consistency ) {
+			if ( consistency_alternatives.length > 1 ) {
+				const warning = document.createElement( 'div' );
+				warning.className = 'gte-warning';
+				warning.textContent = `${consistency_alternatives.length} current different translations!`;
+				wpgpt_consistency_suggestions.insertAdjacentElement( 'afterBegin', warning );
+			} else if ( 'enabled' === _wpgpt_settings.bulk_consistency ) {
+				const rejectAll = document.createElement( 'a' );
+				rejectAll.target = '_blank';
+				rejectAll.className = 'gte-warning';
+				rejectAll.textContent = `Click here to reject all translations.`;
+				rejectAll.href = `${consistency_url}#magicreject_BULK_T_WPORG`;
+				wpgpt_consistency_suggestions.insertAdjacentElement( 'afterBegin', rejectAll );
+			}
 		}
 
 		el.append( wpgpt_consistency_suggestions );
@@ -409,15 +418,22 @@ function consistency_tools() {
 			$wpgpt_createElement( 'span', { 'class': 'dashicons dashicons-list-view', 'aria-hidden': 'true' } ),
 		);
 
+		const wpgpt_quicklinks_discussion = $wpgpt_createElement( 'button', { 'class': 'wpgpt_quicklinks_item wpgpt_quicklinks_discussion with-tooltip', 'aria-label': 'Discussion' } );
+		wpgpt_quicklinks_discussion.append(
+			$wpgpt_createElement( 'span', { 'class': 'screen-reader-text' }, 'Discussion' ),
+			$wpgpt_createElement( 'span', { 'class': 'dashicons dashicons-format-chat', 'aria-hidden': 'true' } ),
+		);
+
 		wpgpt_quicklinks_output.append(
 			wpgpt_quicklinks_copy,
 			wpgpt_quicklinks_separator,
 			wpgpt_quicklinks_permalink,
 			wpgpt_quicklinks_history,
 			wpgpt_quicklinks_consistency,
+			wpgpt_quicklinks_discussion,
 		);
 
-		$wpgpt_addElements( `${current_editor} .editor-panel__right .panel-header`, 'beforeend', wpgpt_quicklinks_output );
+		$wpgpt_addElements( `${current_editor} .editor-panel__left .panel-header .panel-header-actions`, 'afterBegin', wpgpt_quicklinks_output );
 		document.querySelectorAll( `${current_editor}` ).forEach( ( editor ) => {
 			const editor_menu = editor.querySelectorAll( '.button-menu__dropdown li a' );
 			if ( editor_menu.length ) {
@@ -425,6 +441,7 @@ function consistency_tools() {
 				editor_menu[ 1 ].href += '&historypage';
 				editor.querySelector( '.wpgpt_quicklinks_history' ).dataset.quicklink = editor_menu[ 1 ].href;
 				editor.querySelector( '.wpgpt_quicklinks_consistency' ).dataset.quicklink = `${editor_menu[ 2 ].href}&consistencypage`;
+				editor.querySelector( '.wpgpt_quicklinks_discussion' ).dataset.quicklink = editor_menu[ 3 ].href;
 			}
 		} );
 
@@ -608,8 +625,8 @@ function consistency_tools() {
 			textareas.classList.add( 'active' );
 			textareas.querySelector( 'textarea' ).focus();
 		} );
-		$wpgpt_addEvtListener( 'focusin', `${current_editor} textarea`, wpgpt_notranslate_update );
-		$wpgpt_addEvtListener( 'keyup', `${current_editor} textarea`, wpgpt_notranslate_update );
+		$wpgpt_addEvtListener( 'focusin', `${current_editor} .editor-panel__left textarea`, wpgpt_notranslate_update );
+		$wpgpt_addEvtListener( 'keyup', `${current_editor} .editor-panel__left textarea`, wpgpt_notranslate_update );
 		$wpgpt_addEvtListener( 'click', `${current_editor} .wpgpt_notranslate a, ${current_editor} .notranslate`, ( ev ) => {
 			wpgpt_notranslate_insertText( ev.currentTarget.closest( '.editor-panel__left' ).querySelector( '.textareas.active textarea' ), ev.currentTarget.textContent );
 		} );
@@ -903,6 +920,10 @@ function wpgpt_bulk_consistency() {
 		document.body.appendChild( element );
 		element.click();
 		document.body.removeChild( element );
+	}
+
+	if ( window.location.href.includes( '#magicreject_BULK_T_WPORG' ) ) {
+		wpgpt_fire_reject_close()
 	}
 }
 
