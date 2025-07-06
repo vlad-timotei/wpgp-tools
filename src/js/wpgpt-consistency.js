@@ -43,7 +43,9 @@ function consistency_tools() {
 		wpgpt_anonymous();
 		wpgpt_localdate();
 		wpgpt_observer();
-		wpgpt_notranslate();
+		if ( 'enabled' === _wpgpt_settings.using_legacy_notranslate ) {
+			wpgpt_notranslate();
+		}
 	}
 	wpgpt_gt();
 	wpgpt_events();
