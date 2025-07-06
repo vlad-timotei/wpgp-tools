@@ -171,6 +171,12 @@ const wpgpt_settings = {
 		'setting_type':   2,
 		'parent_setting': 'others',
 	},
+	'using_legacy_notranslate': {
+		'desc':           '(Deprecated) Non Translatable feature',
+		'state':          'disabled',
+		'setting_type':   2,
+		'parent_setting': 'others',
+	},
 };
 const settings_li = document.createElement( 'li' );
 settings_li.classList.add( 'menu-item', 'wpgpt_settings_menu' );

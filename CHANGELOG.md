@@ -1,3 +1,6 @@
+# 2.1.2
+- Deprecate No Translate feature
+
 # 2.1.1
 20.02.2023
 - Enhancement: makes missing tag spaces disabled by default
