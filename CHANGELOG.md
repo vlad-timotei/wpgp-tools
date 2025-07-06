@@ -1,5 +1,5 @@
 # 2.1.2
-- Deprecate No Translate feature
+- Deprecate Non Translatable feature
 
 # 2.1.1
 20.02.2023
