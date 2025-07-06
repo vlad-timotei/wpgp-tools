@@ -139,7 +139,8 @@ padding:10px 10px 10px;
 
 #warning_words,
 #match_words,
-#custom_period {
+#custom_period,
+#openai_api_key {
     width:62%;
     cursor: text;
     border: 1px  solid #d8d8d8;
@@ -637,6 +638,114 @@ a.wpgpt_get_gt:before {
 
 .wpgpt_get_gt {
     font-size: 0.9em;
+}
+
+/* OpenAI Translation Styles */
+.wpgpt-openai {
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.wpgpt-openai summary {
+    background: #f7f7f7;
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+    font-weight: 600;
+}
+
+.wpgpt-openai summary:hover {
+    background: #f0f0f0;
+}
+
+.wpgpt-openai .wpgpt-get-openai-translation {
+    float: right;
+    margin-left: 10px;
+    font-size: 11px;
+    padding: 2px 8px;
+    background: #0073aa;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.wpgpt-openai .wpgpt-get-openai-translation:hover {
+    background: #005a87;
+}
+
+.wpgpt-openai .wpgpt-get-openai-translation:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.wpgpt-openai .wpgpt-get-openai-translation.loading {
+    background: #666;
+}
+
+.wpgpt-openai-content {
+    padding: 10px;
+    min-height: 20px;
+}
+
+.wpgpt-openai-content .error {
+    color: #d63638;
+    font-style: italic;
+    padding: 10px;
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 3px;
+}
+
+.wpgpt-openai-suggestions-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.wpgpt-openai-suggestions-list li {
+    margin: 0;
+    padding: 5px 0;
+}
+
+.wpgpt-openai-suggestions-list .translation-suggestion {
+    background: #f9f9f9;
+    padding: 8px;
+    border-radius: 3px;
+    border: 1px solid #e5e5e5;
+    position: relative;
+}
+
+.wpgpt-openai-suggestions-list .translation-suggestion:hover {
+    background: #f0f0f0;
+}
+
+.wpgpt-openai-suggestions-list .copy-suggestion {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 10px;
+    padding: 2px 6px;
+    background: #0073aa;
+    color: white;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.wpgpt-openai-suggestions-list .copy-suggestion:hover {
+    background: #005a87;
+}
+
+.wpgpt-openai-suggestions-list .translation-suggestion__translation {
+    display: block;
+    margin-right: 40px;
+    word-wrap: break-word;
+}
+
+.wpgpt-openai-suggestions-list .translation-suggestion__translation-raw {
+    display: none;
 }
 
 /* History check */

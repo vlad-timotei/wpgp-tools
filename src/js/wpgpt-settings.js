@@ -177,6 +177,12 @@ const wpgpt_settings = {
 		'setting_type':   2,
 		'parent_setting': 'others',
 	},
+	'openai_api_key': {
+		'desc':           'OpenAI API Key for translation suggestions:',
+		'state':          '',
+		'setting_type':   4,
+		'parent_setting': 'others',
+	},
 };
 const settings_li = document.createElement( 'li' );
 settings_li.classList.add( 'menu-item', 'wpgpt_settings_menu' );
@@ -244,8 +250,9 @@ function wpgpt_settings_page() {
 				} );
 				break;
 			case 4:
+				const placeholder = key === 'openai_api_key' ? 'Your OpenAI API key (sk-...)' : 'Leave empty to disable. Case insensitive. Separate by comma (,) with no spaces';
 				settingsSubFragment.appendChild(
-					$wpgpt_createElement( 'input', { 'type': 'text', 'id': key, 'placeholder': 'Leave empty to disable. Case insensitive. Separate by comma (,) with no spaces', 'value': setting.state } ),
+					$wpgpt_createElement( 'input', { 'type': 'text', 'id': key, 'placeholder': placeholder, 'value': setting.state } ),
 				);
 				break;
 			case 5:
@@ -286,6 +293,7 @@ function wpgpt_settings_page() {
 	<div class="gp-row"><div class="gp-shortcut"><span class="f">F</span>uzzy</div><div class="gp-shortcut">Ctrl + <span class="f big">*</span><span class="small note">(numeric keyboard) or</span> Ctrl + Shift + <span class="f">F</span></div><div class="gp-shortcut"></div></div>
 	<div class="gp-row"><div class="gp-shortcut"><span class="r">S</span>ave with Warnings</div><div class="gp-shortcut"><span class="r">S</span>hift + Ctrl + Enter</div><div class="gp-shortcut"></div></div>
 	<div class="gp-row"><div class="gp-shortcut"><span class="s">G</span>oogle Translate<span class="note">*</span></div><div class="gp-shortcut">Alt + <span class="s">G</span></div><div class="gp-shortcut">control + <span class="s">G</span></div></div>
+	<div class="gp-row"><div class="gp-shortcut"><span class="s">O</span>penAI Translation<span class="note">*</span></div><div class="gp-shortcut">Alt + <span class="s">O</span></div><div class="gp-shortcut">control + <span class="s">O</span></div></div>
 	<div class="gp-row"><div class="gp-shortcut">Load all <span class="a">C</span>onsistency suggestions</div><div class="gp-shortcut">Alt + <span class="a">C</span></div><div class="gp-shortcut">control + <span class="a">C</span></div></div>
 	<div class="gp-row"><div class="gp-shortcut">Copy consistency* <span class="c">#2</span></div><div class="gp-shortcut">Alt + <span class="c">2</span><br/><span class="small note">works for suggestions #1 to #9</span></div><div class="gp-shortcut">control + <span class="c">2</span><br/><span class="small note">works for suggestions #1 to #9</span></div></div>
 	<div class="gp-row"><div class="gp-shortcut">Focus on <span class="a">S</span>earch in <span class="a">P</span>rojects<span class="note">*</span></div><div class="gp-shortcut">Alt + <span class="a">S</span> <span class="small note">or</span> Alt + <span class="a">P</span> </div><div class="gp-shortcut">control + <span class="a">S</span> <span class="small note">or</span> control + <span class="a">P</span></div></div>
@@ -346,6 +354,7 @@ function wpgpt_exit_settings( reload = true ) {
 	wpgpt_settings.custom_period.state = document.getElementById( 'custom_period' ).value;
 	wpgpt_settings.warning_words.state = document.getElementById( 'warning_words' ).value; // to avoid redundancy
 	wpgpt_update_setting( 'match_words', document.getElementById( 'match_words' ).value );
+	wpgpt_update_setting( 'openai_api_key', document.getElementById( 'openai_api_key' ).value );
 	if ( reload ) {
 		location.reload();
 	}

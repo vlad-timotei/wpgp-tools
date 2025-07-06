@@ -48,6 +48,7 @@ function consistency_tools() {
 		}
 	}
 	wpgpt_gt();
+	wpgpt_openai();
 	wpgpt_events();
 
 	function wpgpt_page( page_type ) {
@@ -358,6 +359,7 @@ function consistency_tools() {
 						wpgpt_localdate( editor_id );
 						wpgpt_search( editor_id );
 						wpgpt_gt( editor_id );
+						wpgpt_openai( editor_id );
 					}
 				} );
 			} );
@@ -513,11 +515,238 @@ function consistency_tools() {
 		} );
 	}
 
+	function wpgpt_openai( current_editor = '.editor' ) {
+		if ( 'undefined' === typeof short_locale || !_wpgpt_settings.openai_api_key || _wpgpt_settings.openai_api_key.trim() === '' ) {
+			return;
+		}
+
+		document.querySelectorAll( `${current_editor}` ).forEach( ( editor_el ) => {
+			const suggestion_wrapper = editor_el.querySelector( '.editor-panel__left .suggestions-wrapper' );
+			if ( null === suggestion_wrapper ) {
+				return;
+			}
+			
+			// Create OpenAI suggestions container
+			const wpgpt_openai_container = $wpgpt_createElement( 'details', { 'class': 'wpgpt-openai suggestions__translation-openai', 'open': 'open' } );
+			const wpgpt_openai_summary = $wpgpt_createElement( 'summary', { }, 'OpenAI Translation Suggestions' );
+			const wpgpt_openai_button = $wpgpt_createElement( 'button', { 'class': 'button is-small wpgpt-get-openai-translation', 'type': 'button' }, 'Get OpenAI Translation' );
+			const wpgpt_openai_content = $wpgpt_createElement( 'div', { 'class': 'wpgpt-openai-content' } );
+			
+			wpgpt_openai_summary.appendChild( wpgpt_openai_button );
+			wpgpt_openai_container.append( wpgpt_openai_summary, wpgpt_openai_content );
+			suggestion_wrapper.insertAdjacentElement( 'beforeend', wpgpt_openai_container );
+		} );
+	}
+
+	async function wpgpt_get_openai_translation( editor_el, retryCount = 0 ) {
+		const button = editor_el.querySelector( '.wpgpt-get-openai-translation' );
+		const content = editor_el.querySelector( '.wpgpt-openai-content' );
+		
+		if ( button.classList.contains( 'loading' ) ) {
+			return;
+		}
+		
+		button.classList.add( 'loading' );
+		button.disabled = true;
+		button.textContent = 'Loading...';
+		
+		try {
+			const source_string = editor_el.querySelector( '.source-string__singular span.original' ).textContent;
+			const target_locale = current_locale;
+			
+			// Get locale name for better context
+			const locale_names = {
+				'en': 'English',
+				'es': 'Spanish',
+				'fr': 'French',
+				'de': 'German',
+				'it': 'Italian',
+				'pt': 'Portuguese',
+				'ru': 'Russian',
+				'zh': 'Chinese',
+				'ja': 'Japanese',
+				'ko': 'Korean',
+				'ar': 'Arabic',
+				'hi': 'Hindi',
+				'nl': 'Dutch',
+				'pl': 'Polish',
+				'tr': 'Turkish',
+				'sv': 'Swedish',
+				'da': 'Danish',
+				'no': 'Norwegian',
+				'fi': 'Finnish',
+				'he': 'Hebrew',
+				'th': 'Thai',
+				'vi': 'Vietnamese',
+				'uk': 'Ukrainian',
+				'cs': 'Czech',
+				'sk': 'Slovak',
+				'hu': 'Hungarian',
+				'ro': 'Romanian',
+				'bg': 'Bulgarian',
+				'hr': 'Croatian',
+				'sr': 'Serbian',
+				'sl': 'Slovenian',
+				'et': 'Estonian',
+				'lv': 'Latvian',
+				'lt': 'Lithuanian',
+				'mt': 'Maltese',
+				'cy': 'Welsh',
+				'ga': 'Irish',
+				'is': 'Icelandic',
+				'mk': 'Macedonian',
+				'sq': 'Albanian',
+				'ca': 'Catalan',
+				'eu': 'Basque',
+				'gl': 'Galician',
+				'pt-br': 'Brazilian Portuguese',
+				'zh-cn': 'Simplified Chinese',
+				'zh-tw': 'Traditional Chinese',
+			};
+			
+			const target_lang = locale_names[target_locale.split('/')[0]] || target_locale;
+			
+			const response = await fetch( 'https://api.openai.com/v1/chat/completions', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${_wpgpt_settings.openai_api_key}`,
+				},
+				body: JSON.stringify( {
+					model: 'gpt-4.1-mini',
+					messages: [
+						{
+							role: 'system',
+							content: `You are a professional translator specializing in WordPress interface translations. Translate using informal tone. Translate the given text from English to ${target_lang}. Maintain the original meaning, tone, and any technical terminology. Keep HTML tags, placeholders, and special characters intact. Provide only the translation without explanations.`
+						},
+						{
+							role: 'user',
+							content: source_string
+						}
+					],
+					max_tokens: 150,
+					temperature: 0.3,
+				} ),
+			} );
+			
+			if ( !response.ok ) {
+				let errorMessage = '';
+				let shouldRetry = false;
+				
+				try {
+					const errorData = await response.json();
+					switch ( response.status ) {
+						case 400:
+							errorMessage = `Bad Request: ${errorData.error?.message || 'Invalid request parameters'}`;
+							break;
+						case 401:
+							errorMessage = 'Authentication failed. Please check your API key in settings.';
+							break;
+						case 403:
+							errorMessage = 'Access forbidden. Your API key may not have the required permissions.';
+							break;
+						case 429:
+							errorMessage = 'Rate limit exceeded. ';
+							if ( errorData.error?.message?.includes('quota') ) {
+								errorMessage += 'You have exceeded your API quota. Please check your OpenAI billing.';
+							} else if ( errorData.error?.message?.includes('requests') ) {
+								errorMessage += 'Too many requests. Please wait a moment before trying again.';
+								shouldRetry = true;
+							} else {
+								errorMessage += errorData.error?.message || 'Please wait before making another request.';
+								shouldRetry = true;
+							}
+							break;
+						case 500:
+							errorMessage = 'OpenAI server error. Please try again later.';
+							shouldRetry = true;
+							break;
+						case 503:
+							errorMessage = 'OpenAI service temporarily unavailable. Please try again later.';
+							shouldRetry = true;
+							break;
+						default:
+							errorMessage = `OpenAI API error (${response.status}): ${errorData.error?.message || response.statusText}`;
+					}
+				} catch ( parseError ) {
+					errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+				}
+				
+				// Retry logic for rate limits and server errors
+				if ( shouldRetry && retryCount < 3 ) {
+					const delay = Math.pow( 2, retryCount ) * 1000; // Exponential backoff: 1s, 2s, 4s
+					button.textContent = `Retrying in ${delay/1000}s...`;
+					setTimeout( () => {
+						wpgpt_get_openai_translation( editor_el, retryCount + 1 );
+					}, delay );
+					return;
+				}
+				
+				throw new Error( errorMessage );
+			}
+			
+			const data = await response.json();
+			
+			if ( !data.choices || !data.choices[0] || !data.choices[0].message ) {
+				throw new Error( 'Invalid response format from OpenAI API' );
+			}
+			
+			const translation = data.choices[0].message.content.trim();
+			
+			if ( !translation ) {
+				throw new Error( 'Empty translation received from OpenAI' );
+			}
+			
+			// Create suggestion element similar to consistency suggestions
+			const wpgpt_openai_suggestion = $wpgpt_createElement( 'ul', { class: 'wpgpt-openai-suggestions-list' } );
+			const wpgpt_openai_item = document.createElement( 'li' );
+			const wpgpt_openai_item_div = $wpgpt_createElement( 'div', { 'class': 'translation-suggestion with-tooltip', 'role': 'button', 'aria-pressed': 'false', 'aria-label': 'Copy translation', 'tabindex': '0' } );
+			const wpgpt_openai_item_translation = $wpgpt_createElement( 'span', { 'class': 'translation-suggestion__translation' } );
+			const wpgpt_openai_item_raw = $wpgpt_createElement( 'span', { 'class': 'translation-suggestion__translation-raw', 'aria-hidden': 'true' }, translation );
+			const wpgpt_openai_item_button = $wpgpt_createElement( 'button', { 'type': 'button', 'class': 'is-small button copy-suggestion' }, 'Copy' );
+			
+			// Add word-by-word breakdown like consistency suggestions
+			const space_span = $wpgpt_createElement( 'span', { 'class': 'space' }, ' ' );
+			const translation_as_words = translation.split( ' ' );
+			const translation_words_fragment = document.createDocumentFragment();
+			
+			translation_as_words.forEach( ( word, word_i ) => {
+				translation_words_fragment.appendChild( document.createTextNode( word ) );
+				if ( word_i < translation_as_words.length - 1 ) {
+					translation_words_fragment.append( space_span.cloneNode( true ) );
+				}
+			} );
+			
+			wpgpt_openai_item_translation.appendChild( translation_words_fragment );
+			wpgpt_openai_item_div.append( wpgpt_openai_item_translation, wpgpt_openai_item_raw, wpgpt_openai_item_button );
+			wpgpt_openai_item.appendChild( wpgpt_openai_item_div );
+			wpgpt_openai_suggestion.appendChild( wpgpt_openai_item );
+			
+			content.appendChild( wpgpt_openai_suggestion );
+			
+			button.textContent = 'Get Another Translation';
+			
+		} catch ( error ) {
+			console.error( 'OpenAI translation error:', error );
+			content.innerHTML = `<div class="error">Error getting translation: ${error.message}</div>`;
+			button.textContent = 'Retry';
+		} finally {
+			button.classList.remove( 'loading' );
+			button.disabled = false;
+		}
+	}
+
 	function wpgpt_events() {
 		$wpgpt_addEvtListener( 'click', '.source-details__references ul li a', ( event ) => {
 			event.preventDefault();
 			wpgpt_open_tab( 'references', event.currentTarget.href );
 		} );
+		
+		$wpgpt_addEvtListener( 'click', '.wpgpt-get-openai-translation', ( event ) => {
+			const editor_el = event.currentTarget.closest( '.editor' );
+			wpgpt_get_openai_translation( editor_el );
+		} );
+		
 		window.onbeforeunload = function() { wpgpt_close_tabs( 'all' ); };
 		'enabled' === _wpgpt_settings.shortcuts && document.addEventListener( 'keydown', ( event ) => {
 			if ( event.altKey || event.ctrlKey ) { // Alt or Ctrl key pressed.
@@ -531,6 +760,9 @@ function consistency_tools() {
 						break;
 
 					case 'n': wpgpt_do_event( '.wpgpt_notranslate_copy_all' );// Alt/Ctrl + N - Copy all non-translatable strings
+						break;
+
+					case 'o': wpgpt_do_event( '.wpgpt-get-openai-translation' ); // Alt/Ctrl + O - Get OpenAI translation
 						break;
 
 					case 'p':
