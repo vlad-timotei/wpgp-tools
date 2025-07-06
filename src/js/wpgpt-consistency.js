@@ -345,8 +345,7 @@ function consistency_tools() {
 					if ( 1 !== el.nodeType ) {
 						return;
 					}
-					if ( ( el.classList.contains( 'suggestions-list' ) || el.classList.contains( 'no-suggestions' ) ) &&
-						el.parentElement && el.parentElement.classList.contains( 'suggestions__other-languages' )
+					if ( ( el.classList.contains( 'suggestions-list' ) || el.classList.contains( 'no-suggestions' ) ) && el.parentElement && el.parentElement.classList.contains( 'suggestions__other-languages' )
 					) {
 						const consistency = el.parentElement.parentElement.querySelector( '.wpgpt-consistency' );
 						consistency && wpgpt_do_consistency( consistency );
