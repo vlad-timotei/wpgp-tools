@@ -815,11 +815,17 @@ function wpgpt_filters() {
 	}
 
 	paging && document.querySelector( '.wpgpt-filter-warnings' ).addEventListener( 'click', () => {
+		if (event) {
+        event.preventDefault();
+        }
 		document.querySelectorAll( 'tr.preview' ).forEach( ( el ) => { el.style.display = 'none'; } );
 		document.querySelectorAll( 'tr.preview.wpgpt-has-warning' ).forEach( ( el ) => { el.style.display = 'table-row'; } );
 	} );
 
 	paging && document.querySelector( '.wpgpt-filter-notices' ).addEventListener( 'click', () => {
+		if (event) {
+        event.preventDefault();
+        }
 		document.querySelectorAll( 'tr.preview' ).forEach( ( el ) => { el.style.display = 'none'; } );
 		document.querySelectorAll( 'tr.preview.wpgpt-has-notice' ).forEach( ( el ) => { el.style.display = 'table-row'; } );
 	} );
